@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Davipocket</string>
+    <string name="id_type_hint">TIPO DE DOCUMENTO</string>
+    <string name="id_number_hint">NÚMERO DE DOCUMENTO</string>
+    <string name="login_password_hint">CLAVE VIRTUAL O SEGUNDA CLAVE</string>
+    <string name="login_button_text">INGRESAR</string>
+    <string name="login_forgot_password_button_text">¿OLVIDÓ O BLOQUEÓ SU CLAVE?</string>
+    <string name="login_validate_token_button_text">VALIDAR TOKEN</string>
+    <string name="login_token_hint">INGRESAR TOKEN</string>
+    <string name="login_token_activity_title">TOKEN</string>
+</resources>

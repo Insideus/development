@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/login_background"
+    tools:context=".activities.MainActivity">
+
+    <include
+        layout="@layout/login_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"/>
+
+    <ImageView
+        android:id="@+id/login_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/toolbar_layout"
+        android:src="@drawable/login_header"/>
+
+    <ImageView
+        android:id="@+id/login_app_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:paddingLeft="@dimen/login_side_padding"
+        android:paddingRight="@dimen/login_side_padding"
+        android:layout_below="@+id/login_header"
+        android:scaleType="fitXY"
+        android:src="@drawable/login_app_name"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/login_app_name"
+        android:layout_above="@+id/login_footer"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/login_side_padding"
+            android:paddingRight="@dimen/login_side_padding"
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:background="@android:color/transparent"
+            android:textColor="@color/login_input_text_color"
+            android:textColorHint="@color/login_hint_input_text_color"
+            android:drawableEnd="@drawable/spinner_down_arrow"
+            android:textSize="@dimen/login_input_text_size"
+            tools:ignore="MissingPrefix"
+            android:hint="@string/id_type_hint"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="#b0b0b0" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/login_side_padding"
+            android:paddingRight="@dimen/login_side_padding"
+            android:layout_marginTop="@dimen/login_input_margin_top"
+            android:background="@android:color/transparent"
+            android:textColor="@color/login_input_text_color"
+            android:textColorHint="@color/login_hint_input_text_color"
+            android:textSize="@dimen/login_input_text_size"
+            fontPath="fonts/MyriadPro-Regular.otf"
+            tools:ignore="MissingPrefix"
+            android:hint="@string/id_number_hint"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="#b0b0b0" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/login_side_padding"
+            android:paddingRight="@dimen/login_side_padding"
+            android:layout_marginTop="@dimen/login_input_margin_top"
+            android:background="@android:color/transparent"
+            android:textColor="@color/login_input_text_color"
+            android:textColorHint="@color/login_hint_input_text_color"
+            android:textSize="@dimen/login_input_text_size"
+            fontPath="fonts/MyriadPro-Regular.otf"
+            tools:ignore="MissingPrefix"
+            android:hint="@string/login_password_hint"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="#b0b0b0" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/login_side_padding"
+            android:paddingRight="@dimen/login_side_padding"
+            android:layout_marginTop="@dimen/login_input_margin_top"
+            android:background="@android:color/transparent"
+            android:textColor="@color/login_input_text_color"
+            android:textColorHint="@color/login_hint_input_text_color"
+            android:textSize="@dimen/login_input_text_size"
+            fontPath="fonts/MyriadPro-Regular.otf"
+            tools:ignore="MissingPrefix"
+            android:hint="@string/login_token_hint"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="#b0b0b0" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/do_login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/login_button_side_padding"
+            android:layout_marginRight="@dimen/login_button_side_padding"
+            android:layout_marginTop="@dimen/login_input_margin_top"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/login_button_color"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="true"
+            tools:targetApi="honeycomb">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="start"
+                android:textColor="@color/login_button_text_color"
+                android:padding="15dp"
+                android:textSize="@dimen/login_input_text_size"
+                fontPath="fonts/MyriadPro-Semibold.otf"
+                tools:ignore="MissingPrefix"
+                android:text="@string/login_validate_token_button_text" />
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/login_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/login_footer"/>
+
+</RelativeLayout>

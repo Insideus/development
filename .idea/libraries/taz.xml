@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="taz">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/taz.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
