@@ -21,6 +21,7 @@
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:layout_below="@+id/toolbar_layout"
+        android:layout_above="@+id/login_app_name"
         android:src="@drawable/login_header"/>
 
     <ImageView
@@ -30,15 +31,16 @@
         android:adjustViewBounds="true"
         android:paddingLeft="@dimen/login_side_padding"
         android:paddingRight="@dimen/login_side_padding"
-        android:layout_below="@+id/login_header"
+        android:layout_above="@+id/login_input_data_layout"
         android:scaleType="fitXY"
         android:src="@drawable/login_app_name"/>
 
     <LinearLayout
+        android:id="@+id/login_input_data_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/login_app_name"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/login_input_data_margin_top"
+        android:layout_marginBottom="@dimen/login_input_data_margin_bottom"
         android:layout_above="@+id/login_footer"
         android:layout_centerInParent="true"
         android:gravity="center"

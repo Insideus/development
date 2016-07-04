@@ -12,4 +12,5 @@ public class LoginTokenActivity extends BaseActivity {
         setContentView(R.layout.activity_token_login);
         setActionBar(getString(R.string.login_token_activity_title));
     }
+
 }

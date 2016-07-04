@@ -43,7 +43,77 @@
     <favorites_list name="Davipocket" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="activity_login.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-1.4727273">
+              <caret line="31" column="49" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="49" />
+              <folding>
+                <element signature="e#982#1009#0" expanded="true" />
+                <element signature="e#1344#1380#0" expanded="true" />
+                <element signature="e#1417#1456#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_token_login.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_token_login.xml">
+          <provider selected="true" editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.423077">
+              <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+              <folding>
+                <element signature="e#1171#1198#0" expanded="true" />
+                <element signature="e#1228#1255#0" expanded="true" />
+                <element signature="e#1590#1626#0" expanded="true" />
+                <element signature="e#1663#1702#0" expanded="true" />
+                <element signature="e#2018#2045#0" expanded="true" />
+                <element signature="e#2079#2106#0" expanded="true" />
+                <element signature="e#2443#2473#0" expanded="true" />
+                <element signature="e#2540#2562#0" expanded="true" />
+                <element signature="e#2903#2930#0" expanded="true" />
+                <element signature="e#2964#2991#0" expanded="true" />
+                <element signature="e#3029#3060#0" expanded="true" />
+                <element signature="e#3283#3313#0" expanded="true" />
+                <element signature="e#3431#3455#0" expanded="true" />
+                <element signature="e#3796#3823#0" expanded="true" />
+                <element signature="e#3857#3884#0" expanded="true" />
+                <element signature="e#3922#3953#0" expanded="true" />
+                <element signature="e#4176#4206#0" expanded="true" />
+                <element signature="e#4324#4353#0" expanded="true" />
+                <element signature="e#4694#4721#0" expanded="true" />
+                <element signature="e#4755#4782#0" expanded="true" />
+                <element signature="e#4820#4851#0" expanded="true" />
+                <element signature="e#5074#5104#0" expanded="true" />
+                <element signature="e#5222#5248#0" expanded="true" />
+                <element signature="e#5667#5701#0" expanded="true" />
+                <element signature="e#5741#5775#0" expanded="true" />
+                <element signature="e#5813#5844#0" expanded="true" />
+                <element signature="e#6533#6563#0" expanded="true" />
+                <element signature="e#6694#6736#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dimens.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-7.1923075">
+              <caret line="11" column="47" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -2336,25 +2406,26 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/forgot_password_button_border.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/SplashActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/LoginActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_token_login.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/login_toolbar.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/BaseActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/LoginTokenActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_token_login.xml" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-7" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
     <option name="width" value="1378" />
-    <option name="height" value="735" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -2777,6 +2848,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -2811,8 +2883,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -2929,6 +2999,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -3237,16 +3308,16 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="1378" height="735" extended-state="0" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1378" height="744" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3532423" sideWeight="0.5030349" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35355285" sideWeight="0.4969651" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3139932" sideWeight="0.5060698" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3139932" sideWeight="0.4939302" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -3310,14 +3381,14 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/MainActivity.java">
@@ -3341,14 +3412,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="4" column="40" selection-start-line="4" selection-start-column="40" selection-end-line="4" selection-end-column="40" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
@@ -3367,6 +3438,7 @@
             <element signature="e#526#544#0" expanded="true" />
             <element signature="e#843#861#0" expanded="true" />
             <element signature="e#1283#1301#0" expanded="true" />
+            <element signature="e#1579#1597#0" expanded="true" />
             <element signature="e#1869#1887#0" expanded="true" />
           </folding>
         </state>
@@ -3380,14 +3452,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/MainActivity.java">
@@ -3411,14 +3483,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="4" column="40" selection-start-line="4" selection-start-column="40" selection-end-line="4" selection-end-column="40" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
@@ -3437,6 +3509,7 @@
             <element signature="e#526#544#0" expanded="true" />
             <element signature="e#843#861#0" expanded="true" />
             <element signature="e#1283#1301#0" expanded="true" />
+            <element signature="e#1579#1597#0" expanded="true" />
             <element signature="e#1869#1887#0" expanded="true" />
           </folding>
         </state>
@@ -3450,14 +3523,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/MainActivity.java">
@@ -3478,6 +3551,7 @@
             <element signature="e#526#544#0" expanded="true" />
             <element signature="e#843#861#0" expanded="true" />
             <element signature="e#1283#1301#0" expanded="true" />
+            <element signature="e#1579#1597#0" expanded="true" />
             <element signature="e#1869#1887#0" expanded="true" />
           </folding>
         </state>
@@ -3491,14 +3565,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/MainActivity.java">
@@ -3519,14 +3593,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/MainActivity.java">
@@ -3547,14 +3621,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/MainActivity.java">
@@ -3568,14 +3642,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/MainActivity.java">
@@ -3589,25 +3663,25 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/app/libs/taz.jar!/com/trusteer/tas/tas.class">
@@ -3628,14 +3702,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="19" column="43" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/session/Session.java">
@@ -3682,19 +3756,6 @@
           <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.7818182">
-          <caret line="101" column="44" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="44" />
-          <folding>
-            <element signature="e#925#952#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/SplashActivity.java">
@@ -3748,49 +3809,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_token_login.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.4">
-          <caret line="20" column="39" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
-          <folding>
-            <element signature="e#1120#1147#0" expanded="true" />
-            <element signature="e#1177#1204#0" expanded="true" />
-            <element signature="e#1851#1878#0" expanded="true" />
-            <element signature="e#1912#1939#0" expanded="true" />
-            <element signature="e#2276#2306#0" expanded="true" />
-            <element signature="e#2373#2395#0" expanded="true" />
-            <element signature="e#2736#2763#0" expanded="true" />
-            <element signature="e#2797#2824#0" expanded="true" />
-            <element signature="e#2862#2893#0" expanded="true" />
-            <element signature="e#3116#3146#0" expanded="true" />
-            <element signature="e#3264#3288#0" expanded="true" />
-            <element signature="e#3629#3656#0" expanded="true" />
-            <element signature="e#3690#3717#0" expanded="true" />
-            <element signature="e#3755#3786#0" expanded="true" />
-            <element signature="e#4009#4039#0" expanded="true" />
-            <element signature="e#4157#4186#0" expanded="true" />
-            <element signature="e#4527#4554#0" expanded="true" />
-            <element signature="e#4588#4615#0" expanded="true" />
-            <element signature="e#4653#4684#0" expanded="true" />
-            <element signature="e#4907#4937#0" expanded="true" />
-            <element signature="e#5055#5081#0" expanded="true" />
-            <element signature="e#5500#5534#0" expanded="true" />
-            <element signature="e#5574#5608#0" expanded="true" />
-            <element signature="e#5646#5677#0" expanded="true" />
-            <element signature="e#6366#6396#0" expanded="true" />
-            <element signature="e#6527#6569#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3806,32 +3828,87 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/LoginTokenActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="67" selection-start-line="12" selection-start-column="67" selection-end-line="12" selection-end-column="67" />
-          <folding>
-            <element signature="e#358#404#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/login_toolbar.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.090909">
           <caret line="22" column="56" selection-start-line="22" selection-start-column="56" selection-end-line="22" selection-end-column="56" />
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="android-designer">
-        <state />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/ar/com/fennoma/davipocket/activities/LoginTokenActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.45454547">
+          <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+          <folding>
+            <element signature="e#358#404#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47962382">
-          <caret line="9" column="47" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
+        <state vertical-scroll-proportion="-7.1923075">
+          <caret line="11" column="47" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="47" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.4727273">
+          <caret line="31" column="49" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="49" />
+          <folding>
+            <element signature="e#982#1009#0" expanded="true" />
+            <element signature="e#1344#1380#0" expanded="true" />
+            <element signature="e#1417#1456#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_token_login.xml">
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.423077">
+          <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+          <folding>
+            <element signature="e#1171#1198#0" expanded="true" />
+            <element signature="e#1228#1255#0" expanded="true" />
+            <element signature="e#1590#1626#0" expanded="true" />
+            <element signature="e#1663#1702#0" expanded="true" />
+            <element signature="e#2018#2045#0" expanded="true" />
+            <element signature="e#2079#2106#0" expanded="true" />
+            <element signature="e#2443#2473#0" expanded="true" />
+            <element signature="e#2540#2562#0" expanded="true" />
+            <element signature="e#2903#2930#0" expanded="true" />
+            <element signature="e#2964#2991#0" expanded="true" />
+            <element signature="e#3029#3060#0" expanded="true" />
+            <element signature="e#3283#3313#0" expanded="true" />
+            <element signature="e#3431#3455#0" expanded="true" />
+            <element signature="e#3796#3823#0" expanded="true" />
+            <element signature="e#3857#3884#0" expanded="true" />
+            <element signature="e#3922#3953#0" expanded="true" />
+            <element signature="e#4176#4206#0" expanded="true" />
+            <element signature="e#4324#4353#0" expanded="true" />
+            <element signature="e#4694#4721#0" expanded="true" />
+            <element signature="e#4755#4782#0" expanded="true" />
+            <element signature="e#4820#4851#0" expanded="true" />
+            <element signature="e#5074#5104#0" expanded="true" />
+            <element signature="e#5222#5248#0" expanded="true" />
+            <element signature="e#5667#5701#0" expanded="true" />
+            <element signature="e#5741#5775#0" expanded="true" />
+            <element signature="e#5813#5844#0" expanded="true" />
+            <element signature="e#6533#6563#0" expanded="true" />
+            <element signature="e#6694#6736#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

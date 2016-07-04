@@ -8,5 +8,7 @@
     <dimen name="login_input_margin_top">20dp</dimen>
     <dimen name="login_button_side_padding">5dp</dimen>
     <dimen name="action_bar_title_text_size">18dp</dimen>
+    <dimen name="login_input_data_margin_bottom">50dp</dimen>
+    <dimen name="login_input_data_margin_top">40dp</dimen>
 
 </resources>
