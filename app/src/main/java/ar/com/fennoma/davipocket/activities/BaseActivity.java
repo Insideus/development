@@ -9,9 +9,6 @@ import android.widget.TextView;
 import ar.com.fennoma.davipocket.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-/**
- * Created by Julian Vega on 21/06/2016.
- */
 public class BaseActivity extends AppCompatActivity {
 
     @Override
@@ -19,20 +16,25 @@ public class BaseActivity extends AppCompatActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    public void setActionBar(String title) {
+    public void setActionBar(String title, boolean backButton) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(toolbar == null){
+            return;
+        }
         toolbar.setTitle("");
         toolbar.setSubtitle("");
         TextView titleTv = (TextView) toolbar.findViewById(R.id.toolbar_title);
         titleTv.setText(title);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ab_back_icon);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        if(backButton) {
+            toolbar.setNavigationIcon(R.drawable.ab_back_icon);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
+        }
     }
 
 }

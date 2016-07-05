@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -44,7 +45,11 @@ public class SplashActivity extends AppCompatActivity {
         an.setRepeatMode(Animation.INFINITE);
         an.setFillAfter(false);
         an.setInterpolator(new LinearInterpolator());
-        findViewById(R.id.splash_loading).setAnimation(an);
+        View splashLoading = findViewById(R.id.splash_loading);
+        if(splashLoading == null){
+            return;
+        }
+        splashLoading.setAnimation(an);
     }
 
 }

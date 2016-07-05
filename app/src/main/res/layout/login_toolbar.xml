@@ -23,7 +23,7 @@
             android:textSize="@dimen/action_bar_title_text_size"
             fontPath="fonts/MyriadPro-Regular.otf"
             tools:ignore="MissingPrefix"
-            android:textColor="@color/login_toolbar_text_color"/>
+            android:textColor="@color/red_base_color"/>
 
     </android.support.v7.widget.Toolbar>
 

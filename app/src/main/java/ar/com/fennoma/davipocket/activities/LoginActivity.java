@@ -18,7 +18,10 @@ public class LoginActivity extends BaseActivity {
             getSupportActionBar().hide();
         }
 
-        CardView loginButton = (CardView) findViewById(R.id.do_login_button);
+        CardView loginButton = (CardView) findViewById(R.id.continue_button);
+        if(loginButton == null){
+            return;
+        }
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

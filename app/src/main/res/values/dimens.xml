@@ -10,5 +10,10 @@
     <dimen name="action_bar_title_text_size">18dp</dimen>
     <dimen name="login_input_data_margin_bottom">50dp</dimen>
     <dimen name="login_input_data_margin_top">40dp</dimen>
+    <dimen name="subtitle_margin">30dp</dimen>
+    <dimen name="number_code_text_size">50dp</dimen>
+    <dimen name="check_box_text_size">14dp</dimen>
+    <dimen name="check_box_padding_top_and_bottom">10dp</dimen>
+
 
 </resources>
