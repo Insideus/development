@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.activities;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;

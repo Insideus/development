@@ -1,6 +1,7 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
@@ -30,12 +31,12 @@ public class LoginActivity extends BaseActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-
         setActionToButtons();
     }
 
     private void setActionToButtons() {
         CardView loginButton = (CardView) findViewById(R.id.login_button);
+        View forgotPassword = findViewById(R.id.forgot_password_button);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,7 +44,12 @@ public class LoginActivity extends BaseActivity {
                 doLogin();
             }
         });
-
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ChangePasswordStep1Activity.class));
+            }
+        });
         idTypeSpinner = (Spinner) findViewById(R.id.login_id_type_spinner);
         selectedIdTypeText = (TextView) findViewById(R.id.login_id_type_text);
         virtualPasswordText = (TextView) findViewById(R.id.login_virtual_password);

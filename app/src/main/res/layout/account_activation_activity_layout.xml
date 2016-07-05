@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="MissingPrefix">
+    tools:ignore="MissingPrefix"
+    tools:context=".activities.AccountActivationActivity">
 
     <include
         android:id="@+id/toolbar_layout"
@@ -102,13 +103,13 @@
 
         <TextView
             fontPath="fonts/MyriadPro-Regular.otf"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/login_input_data_margin_bottom"
             android:gravity="center"
             android:text="@string/account_activation_explanation_text"
             android:textColor="@color/gray_text_color"
-            android:textSize="14dp" />
+            android:textSize="@dimen/common_text_size" />
 
     </LinearLayout>
 
