@@ -1,6 +1,8 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -10,6 +12,10 @@ import ar.com.fennoma.davipocket.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class BaseActivity extends AppCompatActivity {
+
+    private Dialog loadingDialog = null;
+    private Handler loadingHandler = null;
+    private Runnable loadingRunnable = null;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -35,6 +41,46 @@ public class BaseActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    protected void showLoading() {
+        loadingHandler = new Handler();
+        loadingRunnable = new Runnable() {
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        hideLoading();
+
+                        loadingDialog = new Dialog(BaseActivity.this, R.style.CustomAlertDialog);
+                        loadingDialog.setContentView(R.layout.dialog_loading);
+                        loadingDialog.setCancelable(false);
+                        loadingDialog.show();
+                    }
+                });
+            }
+        };
+        loadingHandler.postDelayed(loadingRunnable, 500);
+    }
+
+    protected void hideLoading() {
+        if (loadingHandler != null) {
+            loadingHandler.removeCallbacks(loadingRunnable);
+            loadingHandler = null;
+        }
+
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
+            loadingDialog = null;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        if (loadingDialog != null) {
+            hideLoading();
+        }
+        super.onPause();
     }
 
 }
