@@ -6,7 +6,7 @@ package ar.com.fennoma.davipocket.model;
 public enum  ErrorMessages {
 
     LOGIN_ERROR("error.login_error"),
-    TOKEN_NEEDED_ERROR("error.login_error"),
+    TOKEN_REQUIRED_ERROR("error.token_required"),
     INVALID_TOKEN("error.login_error");
 
 

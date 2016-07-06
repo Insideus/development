@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Davipocket</string>
+    <string name="facebook_app_id">631326240376633</string>
+
     <string name="id_type_hint">TIPO DE DOCUMENTO</string>
     <string name="id_number_hint">NÚMERO DE DOCUMENTO</string>
     <string name="login_password_hint">CLAVE VIRTUAL O SEGUNDA CLAVE</string>
@@ -74,10 +76,13 @@
     <string name="activated_password_first_line_title">CLAVE VIRTUAL</string>
     <string name="activated_password_second_line_title">ACTIVADA</string>
     <string name="help_dialog_activity_text">la clave virtual le permitirá acceder a\nnuestros diferentes canales para realizar\ntransacciones, consultas, pagos y muchas\ncosas más\n\ndebe ser de 4 digitos.</string>
+
     <string name="person_id_type_error_text">Debe seleccionar un tipo de documento.</string>
     <string name="person_in_number_error_text">Debe ingresar su número de documento.</string>
     <string name="virtual_password_error_text">Debe ingresar su clave virtual o segunda clave.</string>
+    <string name="token_error_text">Debe ingresar su token.</string>
     <string name="generic_service_error">Se ha producido un error, por favor intentelo nuevamente mas tarde.</string>
+
     <string name="login_error_message_text">ACCESO DENEGADO, VERIFIQUE LOS DATOS INGRESADOS.</string>
 
 </resources>

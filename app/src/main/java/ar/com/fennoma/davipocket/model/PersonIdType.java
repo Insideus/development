@@ -116,4 +116,11 @@ public class PersonIdType implements Parcelable {
         return this.getName();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) {
+            return false;
+        }
+        return this.id == ((PersonIdType)o).id;
+    }
 }
