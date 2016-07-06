@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class BaseActivity extends AppCompatActivity {
@@ -73,6 +74,10 @@ public class BaseActivity extends AppCompatActivity {
             loadingDialog.dismiss();
             loadingDialog = null;
         }
+    }
+
+    public void showServiceGenericError() {
+        DialogUtil.toast(this, getString(R.string.generic_service_error));
     }
 
     @Override

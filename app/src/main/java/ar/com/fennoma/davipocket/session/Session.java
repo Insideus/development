@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import ar.com.fennoma.davipocket.model.Country;
 import ar.com.fennoma.davipocket.model.PersonIdType;
 
 /**
@@ -16,13 +17,16 @@ import ar.com.fennoma.davipocket.model.PersonIdType;
 public class Session {
 
     private static String PREFERENCES = "PreferencesFile";
+    private static String PERSON_ID_TYPES = "PersonIdTypes";
+    private static String COUNTRIES = "Countries";
     private static String PREF_SESSION_KEY = "SessionKey";
     private static String USER_INFORMATION = "UserInformation";
-    private static String PERSON_ID_TYPES = "PersonIdTypes";
 
     private static Session instance = null;
     private SharedPreferences sharedPreferences;
     private ArrayList<PersonIdType> personIdTypes;
+    private ArrayList<Country> countries;
+    private String sid;
 
     private Session() {
 
@@ -32,25 +36,35 @@ public class Session {
         if (instance == null) {
             instance = new Session();
             instance.sharedPreferences = context.getSharedPreferences(PREFERENCES, 0);
-            //instance.sid = instance.sharedPreferences.getString(PREF_SESSION_KEY, null);
+            instance.sid = instance.sharedPreferences.getString(PREF_SESSION_KEY, null);
             try {
                 String jsonIdTypes = instance.sharedPreferences.getString(PERSON_ID_TYPES, null);
                 if (jsonIdTypes != null) {
                     JSONObject jsonObject = new JSONObject(jsonIdTypes);
                     instance.personIdTypes = PersonIdType.fromJsonArray(jsonObject);
                 }
-                /*
-                String jsonUserSettings = instance.sharedPreferences.getString(USER_SETTINGS, null);
-                if (jsonUserSettings != null) {
-                    JSONObject jsonObject = new JSONObject(jsonUserSettings);
-                    instance.userSettings = UserSettings.fromJson(jsonObject);
+                String jsonCountries = instance.sharedPreferences.getString(COUNTRIES, null);
+                if (jsonCountries != null) {
+                    JSONObject jsonObject = new JSONObject(jsonCountries);
+                    instance.countries = Country.fromJsonArray(jsonObject);
                 }
-                */
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         return instance;
+    }
+
+    public String getSid() {
+        return instance.sid;
+    }
+
+    public void loginUser(String sid) {
+        this.sid = sid;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_SESSION_KEY, sid);
+        editor.commit();
+        this.sid = sid;
     }
 
     public void setPersonIdTypes(ArrayList<PersonIdType> types, String typesJson) {
@@ -60,12 +74,23 @@ public class Session {
         editor.commit();
     }
 
-    public boolean isValid() {
-        return false;
+    public ArrayList<Country> getCountries() {
+        return instance.countries;
+    }
+
+    public void setCountries(ArrayList<Country> countries, String countriesJson) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(COUNTRIES, countriesJson);
+        this.countries = countries;
+        editor.commit();
     }
 
     public ArrayList<PersonIdType> getPersonIdTypes() {
         return instance.personIdTypes;
+    }
+
+    public boolean isValid() {
+        return false;
     }
 
 }

@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import ar.com.fennoma.davipocket.model.Country;
 import ar.com.fennoma.davipocket.model.PersonIdType;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
@@ -14,12 +15,12 @@ import ar.com.fennoma.davipocket.session.Session;
 /**
  * Created by Julian Vega on 05/07/2016.
  */
-public class GetPersonalIdTypesTask extends AsyncTask<Void, Void, Boolean> {
+public class GetInitDataTask extends AsyncTask<Void, Void, Boolean> {
 
     private TaskCallback callback;
     private Activity act;
 
-    public GetPersonalIdTypesTask(Activity act, TaskCallback callback) {
+    public GetInitDataTask(Activity act, TaskCallback callback) {
         this.act = act;
         this.callback = callback;
     }
@@ -31,6 +32,10 @@ public class GetPersonalIdTypesTask extends AsyncTask<Void, Void, Boolean> {
             JSONObject typesJson = Service.getPersonIdTypes();
             ArrayList<PersonIdType> types = PersonIdType.fromJsonArray(typesJson);
             Session.getCurrentSession(act).setPersonIdTypes(types, typesJson.toString());
+
+            JSONObject countriesJson = Service.getCountries();
+            ArrayList<Country> countries = Country.fromJsonArray(countriesJson);
+            Session.getCurrentSession(act).setCountries(countries, countriesJson.toString());
         }  catch (Exception e) {
             e.printStackTrace();
             success = false;

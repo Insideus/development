@@ -29,6 +29,10 @@ public class DialogUtil {
         Toast.makeText(context, text, Toast.LENGTH_LONG).show();
     }
 
+    public static void toast(Context context, List<String> messages){
+        Toast.makeText(context, concatMessages(messages), Toast.LENGTH_LONG).show();
+    }
+
     public static String concatMessages(List<String> messages){
         String result = "";
         for(String message : messages){

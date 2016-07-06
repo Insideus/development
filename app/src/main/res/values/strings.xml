@@ -68,6 +68,11 @@
     <!-- Password Confirmation Activity -->
     <string name="password_confirmation_title">CONFIRMACIÓN</string>
     <string name="password_confirmation_subtitle_hint">INGRESE EL CÓDIGO DE CONFIRMACIÓN QUE HEMOS\nENVIADO A SU CELULAR VÍA SMS\n\nEN CASO DE NO RECIBIR CÓDIGO DE CONFIRMACIÓN,\nCOMUNIQUESE EN BOGOTÁ AL 388 3838\nO A NIVEL NACIONAL AL 018000 12838</string>
+    <string name="person_id_type_error_text">Debe seleccionar un tipo de documento.</string>
+    <string name="person_in_number_error_text">Debe ingresar su número de documento.</string>
+    <string name="virtual_password_error_text">Debe ingresar su clave virtual o segunda clave.</string>
+    <string name="generic_service_error">Se ha producido un error, por favor intentelo nuevamente mas tarde.</string>
+    <string name="login_error_message_text">ACCESO DENEGADO, VERIFIQUE LOS DATOS INGRESADOS.</string>
 
 
 </resources>

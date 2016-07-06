@@ -10,7 +10,7 @@ import android.view.animation.RotateAnimation;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.session.Session;
-import ar.com.fennoma.davipocket.tasks.GetPersonalIdTypesTask;
+import ar.com.fennoma.davipocket.tasks.GetInitDataTask;
 import ar.com.fennoma.davipocket.tasks.TaskCallback;
 
 public class SplashActivity extends AppCompatActivity {
@@ -32,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, 1500);
         */
-        GetPersonalIdTypesTask task = new GetPersonalIdTypesTask(this, new TaskCallback() {
+        GetInitDataTask task = new GetInitDataTask(this, new TaskCallback() {
             @Override
             public void execute(Object result) {
                 needsToLogin();
