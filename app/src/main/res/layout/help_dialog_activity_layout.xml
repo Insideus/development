@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/white_rounded_coreners_background"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_marginTop="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AYUDA"
+            android:textSize="28dp"
+            android:textStyle="bold"
+            android:textColor="@color/red_title_color"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/darkest_blue_title_color"
+            android:text="CLAVE VIRTUAL"
+            android:textSize="30dp"
+            android:layout_marginTop="-10dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:layout_marginTop="20dp"
+            android:textSize="@dimen/common_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_text_color"
+            android:text="@string/help_dialog_activity_text"/>
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

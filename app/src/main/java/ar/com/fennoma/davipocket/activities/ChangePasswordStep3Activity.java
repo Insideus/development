@@ -24,11 +24,22 @@ public class ChangePasswordStep3Activity extends BaseActivity{
         setContentView(R.layout.change_password_step_3_layout);
         setActionBar(getString(R.string.change_password_title), false);
         findFields();
+        setHelpIcons();
         setContinueButton();
     }
 
+    private void setHelpIcons() {
+        View helperIcon1 = findViewById(R.id.help_icon_1);
+        View helperIcon2 = findViewById(R.id.help_icon_2);
+        if(helperIcon1 == null || helperIcon2 == null){
+            return;
+        }
+        helperIcon1.setOnClickListener(new OnHelpIconClickListener());
+        helperIcon2.setOnClickListener(new OnHelpIconClickListener());
+    }
+
     private void setContinueButton() {
-        View continueButton = findViewById(R.id.continue_button);
+        View continueButton = findViewById(R.id.send_button);
         if(continueButton == null){
             return;
         }
@@ -60,5 +71,12 @@ public class ChangePasswordStep3Activity extends BaseActivity{
     private void findFields() {
         virtualPassword = (EditText) findViewById(R.id.virtual_password);
         repeatedPassword = (EditText) findViewById(R.id.repeated_password);
+    }
+
+    private class OnHelpIconClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(ChangePasswordStep3Activity.this, HelpDialogActivity.class));
+        }
     }
 }

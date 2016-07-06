@@ -17,7 +17,7 @@ public class LoginTokenActivity extends BaseActivity {
     }
 
     private void setLoginButton() {
-        View loginButton = findViewById(R.id.continue_button);
+        View loginButton = findViewById(R.id.send_button);
         if(loginButton == null){
             return;
         }

@@ -18,7 +18,7 @@ public class FacebookLoginActivity extends BaseActivity{
     }
 
     private void setLoginButtons() {
-        View login = findViewById(R.id.continue_button);
+        View login = findViewById(R.id.send_button);
         View loginWOConnection = findViewById(R.id.do_login_without_connection_button);
         if(login == null || loginWOConnection == null){
             return;

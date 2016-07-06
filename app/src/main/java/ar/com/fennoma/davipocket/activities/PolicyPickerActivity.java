@@ -29,7 +29,7 @@ public class PolicyPickerActivity extends BaseActivity{
     }
 
     private void setContinueButton() {
-        View continueButton = findViewById(R.id.continue_button);
+        View continueButton = findViewById(R.id.send_button);
         if(continueButton == null){
             return;
         }

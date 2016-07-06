@@ -36,4 +36,9 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
+    <style name="Theme.AppCompat.DayNight.NoActionBar.DarkTranslucent" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/dark_translucent</item>
+    </style>
+
 </resources>
