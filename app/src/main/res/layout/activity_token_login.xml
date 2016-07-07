@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/login_background"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.MainActivity"
+    tools:ignore="MissingPrefix">
 
     <include
         android:id="@+id/toolbar_layout"
@@ -148,34 +148,21 @@
             android:layout_marginTop="5dp"
             android:background="#b0b0b0" />
 
-        <android.support.v7.widget.CardView
+        <TextView
             android:id="@+id/send_button"
+            fontPath="fonts/MyriadPro-Semibold.otf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/login_button_side_padding"
-            android:layout_marginRight="@dimen/login_button_side_padding"
+            android:layout_gravity="start"
+            android:layout_marginLeft="@dimen/button_without_cardview_padding"
+            android:layout_marginRight="@dimen/button_without_cardview_padding"
             android:layout_marginTop="@dimen/login_input_margin_top"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="@color/login_button_color"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="0dp"
-            app:cardUseCompatPadding="true"
-            tools:targetApi="honeycomb">
-
-            <TextView
-                fontPath="fonts/MyriadPro-Semibold.otf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:gravity="center"
-                android:padding="15dp"
-                android:text="@string/login_validate_token_button_text"
-                android:textColor="@color/login_button_text_color"
-                android:textSize="@dimen/login_input_text_size"
-                tools:ignore="MissingPrefix" />
-
-        </android.support.v7.widget.CardView>
+            android:background="@drawable/red_button_background"
+            android:padding="15dp"
+            android:text="@string/login_validate_token_button_text"
+            android:textColor="@color/login_button_text_color"
+            android:textSize="@dimen/login_input_text_size"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

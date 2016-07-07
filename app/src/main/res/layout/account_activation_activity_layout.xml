@@ -113,35 +113,21 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/forgot_password_button"
+    <TextView
+        android:id="@+id/request_code"
+        fontPath="fonts/MyriadPro-Regular.otf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="start"
         android:layout_above="@+id/login_footer"
         android:layout_marginLeft="@dimen/login_button_side_padding"
         android:layout_marginRight="@dimen/login_button_side_padding"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="@color/login_background"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="0dp"
-        app:cardUseCompatPadding="true"
-        tools:targetApi="honeycomb">
-
-        <TextView
-            android:id="@+id/request_code"
-            fontPath="fonts/MyriadPro-Regular.otf"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="@drawable/forgot_password_button_border"
-            android:gravity="center_vertical|start"
-            android:padding="15dp"
-            android:text="@string/account_activation_request_code_button"
-            android:textColor="@color/login_button_color"
-            android:textSize="@dimen/login_input_text_size" />
-
-    </android.support.v7.widget.CardView>
+        android:background="@drawable/white_center_red_border_selector"
+        android:gravity="center_vertical|start"
+        android:padding="15dp"
+        android:text="@string/account_activation_request_code_button"
+        android:textColor="@color/login_button_color"
+        android:textSize="@dimen/login_input_text_size" />
 
     <ImageView
         android:id="@+id/login_footer"

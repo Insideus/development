@@ -29,7 +29,7 @@ public class LoginActivity extends LoginBaseActivity {
     }
 
     private void setActionToButtons() {
-        CardView loginButton = (CardView) findViewById(R.id.login_button);
+        View loginButton = findViewById(R.id.login_button);
         View forgotPassword = findViewById(R.id.forgot_password_button);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

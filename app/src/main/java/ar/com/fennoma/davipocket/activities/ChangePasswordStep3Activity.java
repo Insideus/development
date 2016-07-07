@@ -77,6 +77,7 @@ public class ChangePasswordStep3Activity extends BaseActivity{
         @Override
         public void onClick(View v) {
             startActivity(new Intent(ChangePasswordStep3Activity.this, HelpDialogActivity.class));
+            overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         }
     }
 }

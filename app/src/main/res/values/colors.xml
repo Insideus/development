@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimaryDark">#ed1c27</color>
+    <color name="colorAccent">#ed1c27</color>
 
     <color name="red_base_color">#ed1c27</color>
+    <color name="darker_red_color">#bd0f18</color>
 
     <color name="black_overlay">#66000000</color>
     <color name="login_background">#f0f3f5</color>
+    <color name="login_darker_background">#d1dae0</color>
     <color name="gray_text_color">#b0b0b0</color>
     <color name="login_input_text_color">#454444</color>
     <color name="login_button_color">#ed1c27</color>
     <color name="login_button_text_color">#ffffff</color>
     <color name="facebook_blue_color">#36609f</color>
+    <color name="facebook_darker_blue_color">#274572</color>
     <color name="darkest_blue_title_color">#1d2736</color>
     <color name="red_title_color">#ed1c27</color>
     <color name="dark_translucent">#66000000</color>
