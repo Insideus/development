@@ -16,10 +16,17 @@ public class HelpDialogActivity extends BaseActivity{
     }
 
     private void setLayouts() {
+        View cancelButton = findViewById(R.id.close_button);
         View container = findViewById(R.id.container);
-        if(container == null){
+        if(container == null || cancelButton == null){
             return;
         }
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

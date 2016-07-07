@@ -1,5 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -37,7 +38,7 @@ public class PolicyPickerActivity extends BaseActivity{
             @Override
             public void onClick(View v) {
                 if(validateRequirements()){
-                    DialogUtil.toast(PolicyPickerActivity.this, "Wiiii");
+                    startActivity(new Intent(PolicyPickerActivity.this, RateAppDialogActivity.class));
                 }
             }
         });

@@ -84,5 +84,13 @@
     <string name="generic_service_error">Se ha producido un error, por favor intentelo nuevamente mas tarde.</string>
 
     <string name="login_error_message_text">ACCESO DENEGADO, VERIFIQUE LOS DATOS INGRESADOS.</string>
+    <string name="help_dialog_title_1">AYUDA</string>
+    <string name="help_dialog_title_2">CLAVE VIRTUAL</string>
+    <string name="rate_app_dialog_title_1">VALORAR</string>
+    <string name="rate_app_dialog_title_2">DAVIPOCKET</string>
+    <string name="rate_app_dialog_text">!Gracias! Nos alegra saber que Su\nexperiencia con DaviPocket ha sido\nbuena. Sería muy útil contar con sus\ncomentarios y sugerencias.</string>
+    <string name="rate_app_dialog_cancel_button">NO, GRACIAS</string>
+    <string name="rate_app_dialog_remember_later_button">RECORDÁRMELO MÁS TARDE</string>
+    <string name="rate_app_dialog_rate_button">VALORAR DAVIPOCKET</string>
 
 </resources>
