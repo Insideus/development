@@ -88,6 +88,9 @@ public class LoginBaseActivity extends BaseActivity {
                     intent.putExtra(LoginTokenActivity.PASSWORD_KEY, virtualPasswordText.getText().toString());
                     startActivity(intent);
                     break;
+                case INVALID_SESSION:
+                    handleInvalidSessionError();
+                    break;
                 default:
                     showServiceGenericError();
             }
@@ -100,19 +103,29 @@ public class LoginBaseActivity extends BaseActivity {
         if(step != null) {
             switch(step) {
                 case FACEBOOK:
-                    startActivity(new Intent(LoginBaseActivity.this, FacebookLoginActivity.class));
+                    Intent facebookIntent = new Intent(LoginBaseActivity.this, FacebookLoginActivity.class);
+                    facebookIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(facebookIntent);
                     break;
                 case ADDITIONAL_INFO:
-                    startActivity(new Intent(LoginBaseActivity.this, LoginConfirmationActivity.class));
+                    Intent addtionalInfoIntent = new Intent(LoginBaseActivity.this, LoginConfirmationActivity.class);
+                    addtionalInfoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(addtionalInfoIntent);
                     break;
                 case ACCOUNT_VERIFICATION:
-                    startActivity(new Intent(LoginBaseActivity.this, AccountActivationActivity.class));
+                    Intent accountVerificationIntent = new Intent(LoginBaseActivity.this, AccountActivationActivity.class);
+                    accountVerificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(accountVerificationIntent);
                     break;
                 case COMMUNICATION_PERMISSIONS:
-                    startActivity(new Intent(LoginBaseActivity.this, PolicyPickerActivity.class));
+                    Intent communicationPermissionsActivity = new Intent(LoginBaseActivity.this, PolicyPickerActivity.class);
+                    communicationPermissionsActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(communicationPermissionsActivity);
                     break;
                 case REGISTRATION_COMPLETED:
-                    startActivity(new Intent(LoginBaseActivity.this, MainActivity.class));
+                    Intent mainActivityIntent = new Intent(LoginBaseActivity.this, MainActivity.class);
+                    mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(mainActivityIntent);
                     break;
                 default:
                     showServiceGenericError();

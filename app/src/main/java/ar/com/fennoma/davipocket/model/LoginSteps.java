@@ -6,7 +6,7 @@ package ar.com.fennoma.davipocket.model;
 public enum LoginSteps {
 
     FACEBOOK("registration_incomplete.facebook_connect", 1),
-    ADDITIONAL_INFO("registration_incomplete.user_additional_info", 2),
+    ADDITIONAL_INFO("registration_incomplete.user_info", 2),
     ACCOUNT_VERIFICATION("registration_incomplete.user_account_verification", 3),
     COMMUNICATION_PERMISSIONS("registration_incomplete.user_communication_permissions", 4),
     REGISTRATION_COMPLETED("registration_incomplete.registration_completed", 5);

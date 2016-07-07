@@ -80,6 +80,10 @@ public class BaseActivity extends AppCompatActivity {
         DialogUtil.toast(this, getString(R.string.generic_service_error));
     }
 
+    public void handleInvalidSessionError() {
+
+    }
+
     @Override
     protected void onPause() {
         if (loadingDialog != null) {
