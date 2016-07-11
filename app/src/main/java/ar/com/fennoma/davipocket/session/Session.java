@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import ar.com.fennoma.davipocket.model.BankProduct;
 import ar.com.fennoma.davipocket.model.Country;
 import ar.com.fennoma.davipocket.model.PersonIdType;
 
@@ -19,6 +20,7 @@ public class Session {
     private static String PREFERENCES = "PreferencesFile";
     private static String PERSON_ID_TYPES = "PersonIdTypes";
     private static String COUNTRIES = "Countries";
+    private static String BANK_PRODUCTS = "BankProducts";
     private static String PREF_SESSION_KEY = "SessionKey";
     private static String USER_INFORMATION = "UserInformation";
 
@@ -26,6 +28,7 @@ public class Session {
     private SharedPreferences sharedPreferences;
     private ArrayList<PersonIdType> personIdTypes;
     private ArrayList<Country> countries;
+    private ArrayList<BankProduct> bankProducts;
     private String sid;
 
     private Session() {
@@ -48,6 +51,11 @@ public class Session {
                     JSONObject jsonObject = new JSONObject(jsonCountries);
                     instance.countries = Country.fromJsonArray(jsonObject);
                 }
+                String jsonBankProducts = instance.sharedPreferences.getString(BANK_PRODUCTS, null);
+                if (jsonBankProducts != null) {
+                    JSONObject jsonObject = new JSONObject(jsonBankProducts);
+                    instance.bankProducts = BankProduct.fromJsonArray(jsonObject);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -65,6 +73,10 @@ public class Session {
         editor.putString(PREF_SESSION_KEY, sid);
         editor.commit();
         this.sid = sid;
+    }
+
+    public ArrayList<PersonIdType> getPersonIdTypes() {
+        return instance.personIdTypes;
     }
 
     public void setPersonIdTypes(ArrayList<PersonIdType> types, String typesJson) {
@@ -85,8 +97,15 @@ public class Session {
         editor.commit();
     }
 
-    public ArrayList<PersonIdType> getPersonIdTypes() {
-        return instance.personIdTypes;
+    public ArrayList<BankProduct> getBankProducts() {
+        return instance.bankProducts;
+    }
+
+    public void setBankProducts(ArrayList<BankProduct> bankProducts, String bankProductsJson) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(BANK_PRODUCTS, bankProductsJson);
+        this.bankProducts = bankProducts;
+        editor.commit();
     }
 
     public boolean isValid() {

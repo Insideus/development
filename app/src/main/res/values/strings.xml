@@ -19,6 +19,7 @@
     <string name="facebook_login_without_facebook_button">CONTINUAR SIN CONECTAR CON FACEBOOK</string>
 
     <!-- Login Confirm Activity -->
+    <string name="country_hint">PAÍS</string>
     <string name="confirmation_activity_subtitle">USAMOS SU E-MAIL Y CELULAR PARA ENVIARLE\nCONFIRMACIONES DE PEDIDOS Y RECIBOS</string>
     <string name="login_confirmation_error_message_empty_email">Debe ingresar un email</string>
     <string name="login_confirmation_error_message_invalid_email">El email ingresado debe ser válido</string>
@@ -38,6 +39,7 @@
     <string name="account_activation_incomplete_code_error">El código ingresado debe tener 4 dígitos</string>
     <string name="account_activation_request_code_button">SOLICITAR NUEVAMENTE EL CÓDIGO</string>
     <string name="account_activation_code_resend_text">Reenviando código</string>
+    <string name="resend_validation_code_text">INGRESE EL CÓDIGO DE ACTIVACIÓN QUE\nLE HEMOS ENVIADO VÍA SMS</string>
 
     <!-- Policy Picker Activity -->
     <string name="policy_picker_check_box_send_sms">ENVÍO DE SMS</string>
@@ -82,6 +84,7 @@
     <string name="virtual_password_error_text">Debe ingresar su clave virtual o segunda clave.</string>
     <string name="token_error_text">Debe ingresar su token.</string>
     <string name="generic_service_error">Se ha producido un error, por favor intentelo nuevamente mas tarde.</string>
+    <string name="confirmation_service_error">Código de verificación incorrecto.</string>
 
     <string name="login_error_message_text">ACCESO DENEGADO, VERIFIQUE LOS DATOS INGRESADOS.</string>
     <string name="help_dialog_title_1">AYUDA</string>

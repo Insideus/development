@@ -63,20 +63,61 @@
             android:layout_marginTop="5dp"
             android:background="#b0b0b0" />
 
-        <EditText
-            android:id="@+id/phone"
-            fontPath="fonts/MyriadPro-Regular.otf"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:weightSum="100"
             android:layout_marginTop="@dimen/login_input_margin_top"
-            android:background="@android:color/transparent"
-            android:hint="@string/celphone_hint"
-            android:inputType="phone"
             android:paddingLeft="@dimen/login_side_padding"
             android:paddingRight="@dimen/login_side_padding"
-            android:textColor="@color/login_input_text_color"
-            android:textColorHint="@color/gray_text_color"
-            android:textSize="@dimen/login_input_text_size" />
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="45"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/country_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/login_input_text_color"
+                    android:textColorHint="@color/gray_text_color"
+                    android:drawableEnd="@drawable/spinner_down_arrow"
+                    android:textSize="@dimen/login_input_text_size"
+                    android:singleLine="true"
+                    android:editable="false"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingRight="10dp"
+                    android:hint="@string/country_hint"/>
+
+                <Spinner
+                    android:id="@+id/country_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:spinnerMode="dropdown"/>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/phone"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="65"
+                android:background="@android:color/transparent"
+                android:hint="@string/celphone_hint"
+                android:inputType="phone"
+                android:textColor="@color/login_input_text_color"
+                android:textColorHint="@color/gray_text_color"
+                android:textSize="@dimen/login_input_text_size" />
+
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"

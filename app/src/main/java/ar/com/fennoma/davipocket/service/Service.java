@@ -38,8 +38,13 @@ public class Service {
 
     private static String GET_ID_TYPES = "/person_id_types";
     private static String GET_COUNTRIES = "/countries";
+    private static String GET_BANK_PRODUCTS = "/products";
     private static String LOGIN = "/user/login";
-    private static String CONNECT_FACEBOOK = "/user/connect_facebook";
+    private static String CONNECT_USER_FACEBOOK = "/user/connect_facebook";
+    private static String UPDATE_USER_INFO = "/user/update_info";
+    private static String USER_ACCOUNT_VALIDATION = "/user/confirm_account_validation";
+    private static String RESEND_USER_VALIDATION_CODE = "/user/validate_account";
+    private static String UPDATE_USER_COMMUNICATIONS_INFO = "/user/update_communications_info";
 
     public static JSONObject getPersonIdTypes() {
         HttpURLConnection urlConnection = null;
@@ -69,6 +74,29 @@ public class Service {
         JSONObject response = null;
         try {
             urlConnection = getHttpURLConnection(GET_COUNTRIES);
+            urlConnection.connect();
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = json.getJSONObject(DATA_TAG);
+                }
+            }
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static JSONObject getBankProducts() {
+        HttpURLConnection urlConnection = null;
+        JSONObject response = null;
+        try {
+            urlConnection = getHttpURLConnection(GET_BANK_PRODUCTS);
             urlConnection.connect();
             if(isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -122,13 +150,12 @@ public class Service {
             if(isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
-                JSONObject responseJson = null;
+                JSONObject responseJson;
                 responseJson = json.getJSONObject(DATA_TAG);
                 if(json.has("error") && !json.getBoolean("error")) {
                     loginResponse = LoginResponse.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
-                    //errorCode = "error.token_required";
                     throw new ServiceException(errorCode);
                 }
             }
@@ -146,7 +173,7 @@ public class Service {
         HttpURLConnection urlConnection = null;
         Boolean response = null;
         try {
-            urlConnection = getHttpURLConnectionWithHeader(CONNECT_FACEBOOK, sid);
+            urlConnection = getHttpURLConnectionWithHeader(CONNECT_USER_FACEBOOK, sid);
             urlConnection.setReadTimeout(10000);
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
@@ -168,13 +195,144 @@ public class Service {
             if(isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
-                JSONObject responseJson = null;
+                JSONObject responseJson;
                 if(json.has("error") && !json.getBoolean("error")) {
                     response = true;
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
-                    //errorCode = "error.token_required";
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static Boolean updateUserInfo(String sid, String email, String phone,
+                                         String countryId,  String birthDate) throws ServiceException {
+        //Parámetros: email, phone, country_id, birth_date (formato dd/MM/yyyy)
+        HttpURLConnection urlConnection = null;
+        Boolean response = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(UPDATE_USER_INFO, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> emailParam = new Pair("email", email);
+            params.add(emailParam);
+            Pair<String, String> phoneParam = new Pair("phone", phone);
+            params.add(phoneParam);
+            Pair<String, String> countryParam = new Pair("country_id", countryId);
+            params.add(countryParam);
+            Pair<String, String> birthDateParam = new Pair("birth_date", birthDate);
+            params.add(birthDateParam);
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static Boolean accountValidation(String sid, String activationCode) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        Boolean response = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(USER_ACCOUNT_VALIDATION, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> activationCodeParam = new Pair("activation_code", activationCode);
+            params.add(activationCodeParam);
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static Boolean resendValidationCode(String sid) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        Boolean response = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(RESEND_USER_VALIDATION_CODE, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     throw new ServiceException(errorCode);
                 }
             }
@@ -216,8 +374,7 @@ public class Service {
             strBuilder.append(line);
         }
         String value = strBuilder.toString();
-        JSONObject jso = new JSONObject(value);
-        return jso;
+        return new JSONObject(value);
     }
 
     @NonNull

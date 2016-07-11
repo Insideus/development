@@ -1,6 +1,7 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -15,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.ServiceException;
+import ar.com.fennoma.davipocket.service.Service;
+import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class AccountActivationActivity extends BaseActivity{
@@ -40,7 +45,7 @@ public class AccountActivationActivity extends BaseActivity{
         requestCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogUtil.toast(AccountActivationActivity.this, getString(R.string.account_activation_code_resend_text));
+                new ResendValidationCodeTask().execute();
             }
         });
     }
@@ -120,7 +125,7 @@ public class AccountActivationActivity extends BaseActivity{
             DialogUtil.toast(this, getString(R.string.account_activation_incomplete_code_error));
             return;
         }
-        startActivity(new Intent(this, PolicyPickerActivity.class));
+        new AccountValidationTask().execute(getCode());
     }
 
     private class OnSoftKeyboardDoneButtonPressed implements TextView.OnEditorActionListener {
@@ -132,4 +137,106 @@ public class AccountActivationActivity extends BaseActivity{
             return false;
         }
     }
+
+    public class AccountValidationTask extends AsyncTask<String, Void, Boolean> {
+
+        String errorCode;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            Boolean response = null;
+            try {
+                String sid = Session.getCurrentSession(getApplicationContext()).getSid();
+                response = Service.accountValidation(sid, params[0]);
+            }  catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean response) {
+            super.onPostExecute(response);
+            hideLoading();
+            if(response == null) {
+                //Hancdle invalid session error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if(error != null && error == ErrorMessages.INVALID_SESSION) {
+                    handleInvalidSessionError();
+                } else if(error != null && error == ErrorMessages.CONFIMATION_ERROR) {
+                    showConfirmationError();
+                } else {
+                    showServiceGenericError();
+                }
+            } else if(!response) {
+                //Service error.
+                showServiceGenericError();
+            } else {
+                goToConfirmationActivity();
+            }
+        }
+    }
+
+    public class ResendValidationCodeTask extends AsyncTask<String, Void, Boolean> {
+
+        String errorCode;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            Boolean response = null;
+            try {
+                String sid = Session.getCurrentSession(getApplicationContext()).getSid();
+                response = Service.resendValidationCode(sid);
+            }  catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean response) {
+            super.onPostExecute(response);
+            hideLoading();
+            if(response == null) {
+                //Hancdle invalid session error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if(error != null && error == ErrorMessages.INVALID_SESSION) {
+                    handleInvalidSessionError();
+                } else {
+                    showServiceGenericError();
+                }
+            } else if(!response) {
+                //Service error.
+                showServiceGenericError();
+            } else {
+               showResendMessage();
+            }
+        }
+    }
+
+    private void showResendMessage() {
+        DialogUtil.toast(this, getString(R.string.resend_validation_code_text));
+    }
+
+    public void showConfirmationError() {
+        DialogUtil.toast(this, getString(R.string.confirmation_service_error));
+    }
+
+    private void goToConfirmationActivity() {
+        startActivity(new Intent(AccountActivationActivity.this, PolicyPickerActivity.class));
+        this.finish();
+    }
+
 }

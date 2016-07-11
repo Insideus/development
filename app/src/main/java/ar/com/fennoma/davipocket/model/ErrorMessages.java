@@ -8,7 +8,8 @@ public enum  ErrorMessages {
     INVALID_SESSION("error.invalid_session"),
     LOGIN_ERROR("error.login_error"),
     TOKEN_REQUIRED_ERROR("error.token_required"),
-    INVALID_TOKEN("error.login_error");
+    INVALID_TOKEN("error.login_error"),
+    CONFIMATION_ERROR("error.user_confirmation_error");
 
 
     ErrorMessages(String errorCode) {

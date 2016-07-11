@@ -2,13 +2,18 @@ package ar.com.fennoma.davipocket.activities;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,15 +22,24 @@ import java.util.List;
 import java.util.Locale;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.Country;
+import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.ServiceException;
+import ar.com.fennoma.davipocket.service.Service;
+import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class LoginConfirmationActivity extends BaseActivity {
 
-    private static final String DATE_FORMAT = "dd-MM-yyyy";
+    private static final String DATE_FORMAT = "dd/MM/yyyy";
 
     private EditText birthday;
     private EditText mail;
     private EditText phone;
+    private Spinner countrySpinner;
+    private TextView selectedCountryText;
+
+    private Country selectedCountry;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +49,7 @@ public class LoginConfirmationActivity extends BaseActivity {
         setInputLayouts();
         setBirthdayLayout();
         setContinueButton();
+        setIdTypesSpinner();
     }
 
     private void setInputLayouts() {
@@ -76,10 +91,15 @@ public class LoginConfirmationActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if(validateFields()) {
-                    startActivity(new Intent(LoginConfirmationActivity.this, AccountActivationActivity.class));
+                    submitData();
                 }
             }
         });
+    }
+
+    private void submitData() {
+        new ConfirmationTask().execute(mail.getText().toString(), phone.getText().toString(),
+                String.valueOf(selectedCountry.getId()), birthday.getText().toString());
     }
 
     private boolean validateFields() {
@@ -128,4 +148,86 @@ public class LoginConfirmationActivity extends BaseActivity {
             editText.setText(new SimpleDateFormat(DATE_FORMAT, new Locale("es", "ES")).format(calendar.getTime()));
         }
     }
+
+    private void setIdTypesSpinner() {
+        countrySpinner = (Spinner) findViewById(R.id.country_spinner);
+        selectedCountryText = (TextView) findViewById(R.id.country_text);
+
+        selectedCountryText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countrySpinner.performClick();
+            }
+        });
+        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedCountry = (Country) parent.getItemAtPosition(position);
+                if(selectedCountry != null)
+                    selectedCountryText.setText(selectedCountry.toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        ArrayAdapter<Country> adapter = new ArrayAdapter<Country>(this, android.R.layout.simple_spinner_item,
+                Session.getCurrentSession(this).getCountries());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        countrySpinner.setAdapter(adapter);
+        if(selectedCountry != null) {
+            int position = adapter.getPosition(selectedCountry);
+            countrySpinner.setSelection(position);
+        }
+    }
+
+    public class ConfirmationTask extends AsyncTask<String, Void, Boolean> {
+
+        String errorCode;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            Boolean response = null;
+            try {
+                String sid = Session.getCurrentSession(getApplicationContext()).getSid();
+                response = Service.updateUserInfo(sid, params[0], params[1], params[2], params[3]);
+            }  catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean response) {
+            super.onPostExecute(response);
+            hideLoading();
+            if(response == null) {
+                //Hancdle invalid session error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if(error != null && error == ErrorMessages.INVALID_SESSION) {
+                    handleInvalidSessionError();
+                } else {
+                    showServiceGenericError();
+                }
+            } else if(!response) {
+                //Service error.
+                showServiceGenericError();
+            } else {
+                goToAccountActivationActivity();
+            }
+        }
+    }
+
+    private void goToAccountActivationActivity() {
+        startActivity(new Intent(LoginConfirmationActivity.this, AccountActivationActivity.class));
+        this.finish();
+    }
+
 }

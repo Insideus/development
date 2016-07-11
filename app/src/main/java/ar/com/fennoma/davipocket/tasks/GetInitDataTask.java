@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import ar.com.fennoma.davipocket.model.BankProduct;
 import ar.com.fennoma.davipocket.model.Country;
 import ar.com.fennoma.davipocket.model.PersonIdType;
 import ar.com.fennoma.davipocket.service.Service;
@@ -36,6 +37,10 @@ public class GetInitDataTask extends AsyncTask<Void, Void, Boolean> {
             JSONObject countriesJson = Service.getCountries();
             ArrayList<Country> countries = Country.fromJsonArray(countriesJson);
             Session.getCurrentSession(act).setCountries(countries, countriesJson.toString());
+
+            JSONObject bankProductsJson = Service.getBankProducts();
+            ArrayList<BankProduct> products = BankProduct.fromJsonArray(bankProductsJson);
+            Session.getCurrentSession(act).setBankProducts(products, bankProductsJson.toString());
         }  catch (Exception e) {
             e.printStackTrace();
             success = false;

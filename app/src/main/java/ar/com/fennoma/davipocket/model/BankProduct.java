@@ -12,13 +12,13 @@ import java.util.ArrayList;
 /**
  * Created by Julian Vega on 04/07/2016.
  */
-public class Country implements Parcelable {
+public class BankProduct implements Parcelable {
 
     private long id;
     private String name;
-    private String prefix;
+    private String code;
 
-    public Country() {
+    public BankProduct() {
     }
 
     public long getId() {
@@ -37,12 +37,12 @@ public class Country implements Parcelable {
         this.name = name;
     }
 
-    public String getPrefix() {
-        return prefix;
+    public String getCode() {
+        return code;
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @Override
@@ -54,46 +54,46 @@ public class Country implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
         dest.writeString(this.name);
-        dest.writeString(this.prefix);
+        dest.writeString(this.code);
     }
 
-    protected Country(Parcel in) {
+    protected BankProduct(Parcel in) {
         this.id = in.readLong();
         this.name = in.readString();
-        this.prefix = in.readString();
+        this.code = in.readString();
     }
 
-    public static final Creator<Country> CREATOR = new Creator<Country>() {
+    public static final Creator<BankProduct> CREATOR = new Creator<BankProduct>() {
         @Override
-        public Country createFromParcel(Parcel source) {
-            return new Country(source);
+        public BankProduct createFromParcel(Parcel source) {
+            return new BankProduct(source);
         }
 
         @Override
-        public Country[] newArray(int size) {
-            return new Country[size];
+        public BankProduct[] newArray(int size) {
+            return new BankProduct[size];
         }
     };
 
-    public static ArrayList<Country> fromJsonArray(JSONObject json) {
-        ArrayList<Country> countries = new ArrayList<>();
-        if(json.has("countries")) {
-            JSONArray jsonArray = json.optJSONArray("countries");
+    public static ArrayList<BankProduct> fromJsonArray(JSONObject json) {
+        ArrayList<BankProduct> products = new ArrayList<>();
+        if(json.has("products")) {
+            JSONArray jsonArray = json.optJSONArray("products");
             for (int i = 0; i < jsonArray.length(); ++i) {
                 JSONObject obj = jsonArray.optJSONObject(i);
                 if (obj != null) {
-                    Country type = fromJson(obj);
+                    BankProduct type = fromJson(obj);
                     if(type != null) {
-                        countries.add(type);
+                        products.add(type);
                     }
                 }
             }
         }
-        return countries;
+        return products;
     }
 
-    public static Country fromJson(JSONObject json) {
-        Country country = new Country();
+    public static BankProduct fromJson(JSONObject json) {
+        BankProduct country = new BankProduct();
         try {
             if(json.has("id")) {
                 country.setId(json.getLong("id"));
@@ -101,8 +101,8 @@ public class Country implements Parcelable {
             if(json.has("name")) {
                 country.setName(json.getString("name"));
             }
-            if(json.has("prefix")) {
-                country.setPrefix(json.getString("prefix"));
+            if(json.has("code")) {
+                country.setCode(json.getString("code"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -113,7 +113,7 @@ public class Country implements Parcelable {
 
     @Override
     public String toString() {
-        return this.getName() + " (" + this.getPrefix() + ")";
+        return this.getName();
     }
 
 }
