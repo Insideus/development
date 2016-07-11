@@ -78,7 +78,7 @@ public class LoginActivity extends LoginBaseActivity {
         } else {
             new LoginTask().execute(personIdNumber.getText().toString(),
                     String.valueOf(selectedIdType.getId()),
-                    virtualPasswordText.getText().toString(), "");
+                    virtualPasswordText.getText().toString());
         }
     }
 

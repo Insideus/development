@@ -3,7 +3,6 @@ package ar.com.fennoma.davipocket.service;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
-import android.text.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,11 +34,14 @@ public class Service {
     private static int SUCCESS_CODE = 200;
     private static String DATA_TAG = "data";
     private static String ERROR_CODE_TAG = "error_code";
+    private static String NEXT_TOKEN_TAG = "next_token_session";
 
     private static String GET_ID_TYPES = "/person_id_types";
     private static String GET_COUNTRIES = "/countries";
     private static String GET_BANK_PRODUCTS = "/products";
     private static String LOGIN = "/user/login";
+    private static String LOGIN_WITH_TOKEN = "/user/login_token";
+    private static String LOGIN_WITH_NEXT_TOKEN = "/user/login_next_token";
     private static String CONNECT_USER_FACEBOOK = "/user/connect_facebook";
     private static String UPDATE_USER_INFO = "/user/update_info";
     private static String USER_ACCOUNT_VALIDATION = "/user/confirm_account_validation";
@@ -115,7 +117,7 @@ public class Service {
         return response;
     }
 
-    public static LoginResponse login(String personId, String personIdType, String password, String token) throws ServiceException {
+    public static LoginResponse login(String personId, String personIdType, String password) throws ServiceException {
         HttpURLConnection urlConnection = null;
         LoginResponse loginResponse = null;
         try {
@@ -136,10 +138,6 @@ public class Service {
             params.add(personIdTypeParam);
             Pair<String, String> passwordParam = new Pair("password", password);
             params.add(passwordParam);
-            if(!TextUtils.isEmpty(token)) {
-                Pair<String, String> tokenParam = new Pair("token", token);
-                params.add(tokenParam);
-            }
 
             writer.write(getQuery(params));
             writer.flush();
@@ -157,6 +155,121 @@ public class Service {
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return loginResponse;
+    }
+
+    public static LoginResponse loginWithToken(String personId, String personIdType, String password, String token) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        LoginResponse loginResponse = null;
+        try {
+            urlConnection = getHttpURLConnection(LOGIN_WITH_TOKEN);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> personIdParam = new Pair("person_id", personId);
+            params.add(personIdParam);
+            Pair<String, String> personIdTypeParam = new Pair("person_id_type_id", personIdType);
+            params.add(personIdTypeParam);
+            Pair<String, String> passwordParam = new Pair("password", password);
+            params.add(passwordParam);
+            Pair<String, String> tokenParam = new Pair("token", token);
+            params.add(tokenParam);
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                responseJson = json.getJSONObject(DATA_TAG);
+                if(json.has("error") && !json.getBoolean("error")) {
+                    loginResponse = LoginResponse.fromJson(responseJson);
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    String nextTokenSessionError = "";
+                    if(responseJson.has(NEXT_TOKEN_TAG)) {
+                        nextTokenSessionError = responseJson.getString(NEXT_TOKEN_TAG);
+                    }
+                    throw new ServiceException(errorCode, nextTokenSessionError);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return loginResponse;
+    }
+
+    public static LoginResponse loginWithNextToken(String personId, String personIdType, String password,
+                                                   String token, String nextTokenSession) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        LoginResponse loginResponse = null;
+        try {
+            urlConnection = getHttpURLConnection(LOGIN_WITH_NEXT_TOKEN);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> personIdParam = new Pair("person_id", personId);
+            params.add(personIdParam);
+            Pair<String, String> personIdTypeParam = new Pair("person_id_type_id", personIdType);
+            params.add(personIdTypeParam);
+            Pair<String, String> passwordParam = new Pair("password", password);
+            params.add(passwordParam);
+            Pair<String, String> tokenParam = new Pair("token", token);
+            params.add(tokenParam);
+            Pair<String, String> nextTokenSessionParam = new Pair("next_token_session", nextTokenSession);
+            params.add(nextTokenSessionParam);
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                responseJson = json.getJSONObject(DATA_TAG);
+                if(json.has("error") && !json.getBoolean("error")) {
+                    loginResponse = LoginResponse.fromJson(responseJson);
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    String nextTokenSessionError = "";
+                    if(responseJson.has(NEXT_TOKEN_TAG)) {
+                        nextTokenSessionError = responseJson.getString(NEXT_TOKEN_TAG);
+                    }
+                    throw new ServiceException(errorCode, nextTokenSessionError);
                 }
             }
         } catch (IOException | JSONException e) {
@@ -284,6 +397,60 @@ public class Service {
             List<Pair<String, String>> params = new ArrayList<>();
             Pair<String, String> activationCodeParam = new Pair("activation_code", activationCode);
             params.add(activationCodeParam);
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static Boolean acceptPolicy(String sid, Boolean sms, Boolean phone, Boolean email,
+                                       Boolean acceptTerms, Boolean acceptPrivacy) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        Boolean response = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(UPDATE_USER_COMMUNICATIONS_INFO, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> smsParam = new Pair("allow_sms", sms.toString());
+            params.add(smsParam);
+            Pair<String, String> phoneParam = new Pair("allow_phone", phone.toString());
+            params.add(phoneParam);
+            Pair<String, String> emailParam = new Pair("allow_email", email.toString());
+            params.add(emailParam);
+            Pair<String, String> termsParam = new Pair("accept_terms", acceptTerms.toString());
+            params.add(termsParam);
+            Pair<String, String> privacyParam = new Pair("accept_privacy", acceptPrivacy.toString());
+            params.add(privacyParam);
             writer.write(getQuery(params));
             writer.flush();
             writer.close();

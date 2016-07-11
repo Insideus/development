@@ -7,7 +7,8 @@ public enum  ErrorMessages {
 
     INVALID_SESSION("error.invalid_session"),
     LOGIN_ERROR("error.login_error"),
-    TOKEN_REQUIRED_ERROR("error.token_required"),
+    TOKEN_REQUIRED_ERROR("error.login_error.token_required"),
+    NEXT_TOKEN_ERROR("error.login_error.next_token"),
     INVALID_TOKEN("error.login_error"),
     CONFIMATION_ERROR("error.user_confirmation_error");
 

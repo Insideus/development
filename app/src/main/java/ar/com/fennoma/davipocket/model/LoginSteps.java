@@ -8,7 +8,7 @@ public enum LoginSteps {
     FACEBOOK("registration_incomplete.facebook_connect", 1),
     ADDITIONAL_INFO("registration_incomplete.user_info", 2),
     ACCOUNT_VERIFICATION("registration_incomplete.phone_validation", 3),
-    COMMUNICATION_PERMISSIONS("registration_incomplete.user_communication_permissions", 4),
+    COMMUNICATION_PERMISSIONS("registration_incomplete.accept_temrs", 4),
     REGISTRATION_COMPLETED("registration_incomplete.registration_completed", 5);
 
 

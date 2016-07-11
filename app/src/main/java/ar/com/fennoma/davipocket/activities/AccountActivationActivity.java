@@ -35,6 +35,7 @@ public class AccountActivationActivity extends BaseActivity{
         findCodeEditTexts();
         setListenersToEditTexts();
         setRequestCodeButton();
+        new ResendValidationCodeTask().execute();
     }
 
     private void setRequestCodeButton() {
@@ -227,7 +228,7 @@ public class AccountActivationActivity extends BaseActivity{
     }
 
     private void showResendMessage() {
-        DialogUtil.toast(this, getString(R.string.resend_validation_code_text));
+        //DialogUtil.toast(this, getString(R.string.resend_validation_code_text));
     }
 
     public void showConfirmationError() {
@@ -235,7 +236,7 @@ public class AccountActivationActivity extends BaseActivity{
     }
 
     private void goToConfirmationActivity() {
-        startActivity(new Intent(AccountActivationActivity.this, PolicyPickerActivity.class));
+        startActivity(new Intent(this, PolicyPickerActivity.class));
         this.finish();
     }
 

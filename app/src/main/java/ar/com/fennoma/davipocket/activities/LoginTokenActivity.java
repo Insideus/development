@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,10 +18,15 @@ public class LoginTokenActivity extends LoginBaseActivity {
     public static String ID_TYPE_KEY = "id_type_key";
     public static String ID_NUMBER_KEY = "id_number_key";
     public static String PASSWORD_KEY = "password_key";
+    public static String NEXT_REQUIRED_TOKEN_KEY = "next_required_token_key";
+    public static String NEXT_TOKEN_KEY = "next_token_key";
 
     private TextView token;
     private String idNumberStr;
     private String passwordStr;
+
+    private Boolean nextToken;
+    private String nextTokenSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +38,14 @@ public class LoginTokenActivity extends LoginBaseActivity {
             selectedIdType = savedInstanceState.getParcelable(ID_TYPE_KEY);
             idNumberStr = savedInstanceState.getString(ID_NUMBER_KEY, "");
             passwordStr = savedInstanceState.getString(PASSWORD_KEY, "");
+            nextToken = savedInstanceState.getBoolean(NEXT_REQUIRED_TOKEN_KEY, false);
+            nextTokenSession = savedInstanceState.getString(NEXT_TOKEN_KEY, "");
         } else {
             selectedIdType = getIntent().getParcelableExtra(ID_TYPE_KEY);
             idNumberStr = getIntent().getStringExtra(ID_NUMBER_KEY);
             passwordStr = getIntent().getStringExtra(PASSWORD_KEY);
+            nextToken = getIntent().getBooleanExtra(NEXT_REQUIRED_TOKEN_KEY, false);
+            nextTokenSession = getIntent().getStringExtra(NEXT_TOKEN_KEY);
         }
 
         setActionsToButtons();
@@ -47,7 +55,11 @@ public class LoginTokenActivity extends LoginBaseActivity {
         findViewById(R.id.send_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginTokenActivity.this, FacebookLoginActivity.class));
+                if(nextToken == null || !nextToken) {
+                    doLogin();
+                } else {
+                    doNextTokenLogin();
+                }
             }
         });
 
@@ -55,7 +67,7 @@ public class LoginTokenActivity extends LoginBaseActivity {
         selectedIdTypeText = (TextView) findViewById(R.id.login_id_type_text);
         virtualPasswordText = (TextView) findViewById(R.id.login_virtual_password);
         personIdNumber = (TextView) findViewById(R.id.login_person_id);
-        token = (TextView) findViewById(R.id.login_person_id);
+        token = (TextView) findViewById(R.id.login_token);
 
         virtualPasswordText.setText(passwordStr);
         personIdNumber.setText(idNumberStr);
@@ -87,9 +99,20 @@ public class LoginTokenActivity extends LoginBaseActivity {
         if(errors != null && errors.size() > 0) {
             DialogUtil.toast(this, errors);
         } else {
-            new LoginTask().execute(personIdNumber.getText().toString(),
+            new LoginWithTokenTask().execute(personIdNumber.getText().toString(),
                     String.valueOf(selectedIdType.getId()),
                     virtualPasswordText.getText().toString(), token.getText().toString());
+        }
+    }
+
+    private void doNextTokenLogin() {
+        ArrayList<String> errors = validate();
+        if(errors != null && errors.size() > 0) {
+            DialogUtil.toast(this, errors);
+        } else {
+            new LoginWithNextTokenTask().execute(personIdNumber.getText().toString(),
+                    String.valueOf(selectedIdType.getId()),
+                    virtualPasswordText.getText().toString(), token.getText().toString(), nextTokenSession);
         }
     }
 
