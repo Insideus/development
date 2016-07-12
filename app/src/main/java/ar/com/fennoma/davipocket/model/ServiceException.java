@@ -6,24 +6,24 @@ package ar.com.fennoma.davipocket.model;
 public class ServiceException extends Exception {
 
     String errorCode;
-    String nextTokenSession;
+    String additionalData;
 
     public ServiceException(String errorCode) {
         super();
         this.errorCode = errorCode;
     }
 
-    public ServiceException(String errorCode, String nextTokenSession) {
+    public ServiceException(String errorCode, String additionalData) {
         super();
         this.errorCode = errorCode;
-        this.nextTokenSession = nextTokenSession;
+        this.additionalData = additionalData;
     }
 
     public String getErrorCode() {
         return errorCode;
     }
 
-    public String getNextTokenSession() {
-        return nextTokenSession;
+    public String getAdditionalData() {
+        return additionalData;
     }
 }

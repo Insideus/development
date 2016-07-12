@@ -6,7 +6,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.LoginSteps;
@@ -14,7 +13,6 @@ import ar.com.fennoma.davipocket.model.PersonIdType;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
-import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 /**
  * Created by Julian Vega on 06/07/2016.
@@ -30,6 +28,7 @@ public class LoginBaseActivity extends BaseActivity {
     public class LoginTask extends AsyncTask<String, Void, LoginResponse> {
 
         String errorCode;
+        String additionalData;
 
         @Override
         protected void onPreExecute() {
@@ -44,6 +43,7 @@ public class LoginBaseActivity extends BaseActivity {
                 response = Service.login(params[0], params[1], params[2]);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
+                additionalData = e.getAdditionalData();
             }
             return response;
         }
@@ -54,7 +54,7 @@ public class LoginBaseActivity extends BaseActivity {
             if(response == null && errorCode != null) {
                 //Expected error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, "");
+                processErrorAndContinue(error, additionalData);
 
             } else if(response == null && errorCode == null) {
                 //Service error.
@@ -90,7 +90,7 @@ public class LoginBaseActivity extends BaseActivity {
                 response = Service.loginWithToken(params[0], params[1], params[2], params[3]);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
-                nextTokenSession = e.getNextTokenSession();
+                nextTokenSession = e.getAdditionalData();
             }
             return response;
         }
@@ -136,7 +136,7 @@ public class LoginBaseActivity extends BaseActivity {
                 response = Service.loginWithNextToken(params[0], params[1], params[2], params[3], params[4]);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
-                nextTokenSession = e.getNextTokenSession();
+                nextTokenSession = e.getAdditionalData();
             }
             return response;
         }
@@ -165,16 +165,13 @@ public class LoginBaseActivity extends BaseActivity {
         }
     }
 
-    private void processErrorAndContinue(ErrorMessages error, String nextTokenSession) {
+    void processErrorAndContinue(ErrorMessages error, String additionalParam) {
         if(error != null) {
             switch(error) {
                 case INVALID_TOKEN:
                     Intent loginTokenIntent = new Intent(this, LoginTokenActivity.class);
                     loginTokenIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(loginTokenIntent);
-                    break;
-                case LOGIN_ERROR:
-                    DialogUtil.toast(this, getString(R.string.login_error_message_text));
                     break;
                 case TOKEN_REQUIRED_ERROR:
                     Intent intent = new Intent(this, LoginTokenActivity.class);
@@ -191,14 +188,18 @@ public class LoginBaseActivity extends BaseActivity {
                     nextTokenIntent.putExtra(LoginTokenActivity.ID_NUMBER_KEY, personIdNumber.getText().toString());
                     nextTokenIntent.putExtra(LoginTokenActivity.PASSWORD_KEY, virtualPasswordText.getText().toString());
                     nextTokenIntent.putExtra(LoginTokenActivity.NEXT_REQUIRED_TOKEN_KEY, true);
-                    nextTokenIntent.putExtra(LoginTokenActivity.NEXT_TOKEN_KEY, nextTokenSession);
+                    nextTokenIntent.putExtra(LoginTokenActivity.NEXT_TOKEN_KEY, additionalParam);
                     startActivity(nextTokenIntent);
                     break;
-                case INVALID_SESSION:
-                    handleInvalidSessionError();
+               case SET_VIRTUAL_PASSWORD:
+                    Intent setVirtualPasswordIntent = new Intent(this, ChangePasswordStep2Activity.class);
+                    setVirtualPasswordIntent.putExtra(ChangePasswordStep2Activity.ID_TYPE_KEY, String.valueOf(selectedIdType.getId()));
+                    setVirtualPasswordIntent.putExtra(ChangePasswordStep2Activity.ID_NUMBER_KEY, personIdNumber.getText().toString());
+                    setVirtualPasswordIntent.putExtra(ChangePasswordStep2Activity.PRODUCT_CODE_KEY, additionalParam);
+                    startActivity(setVirtualPasswordIntent);
                     break;
                 default:
-                    showServiceGenericError();
+                    super.processErrorAndContinue(error, additionalParam);
             }
         } else {
             showServiceGenericError();

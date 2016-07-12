@@ -10,8 +10,9 @@ public enum  ErrorMessages {
     TOKEN_REQUIRED_ERROR("error.login_error.token_required"),
     NEXT_TOKEN_ERROR("error.login_error.next_token"),
     INVALID_TOKEN("error.login_error"),
-    CONFIMATION_ERROR("error.user_confirmation_error");
-
+    CONFIMATION_ERROR("error.user_confirmation_error"),
+    SET_VIRTUAL_PASSWORD("error.login_error.set_virtual_password"),
+    VALIDATE_PRODUCT_ERROR("error.validate_product_error");
 
     ErrorMessages(String errorCode) {
         this.errorCode = errorCode;

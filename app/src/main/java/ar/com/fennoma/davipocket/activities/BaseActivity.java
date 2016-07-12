@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -82,6 +83,26 @@ public class BaseActivity extends AppCompatActivity {
 
     public void handleInvalidSessionError() {
 
+    }
+
+    void processErrorAndContinue(ErrorMessages error, String additionalParam) {
+        if(error != null) {
+            switch(error) {
+                case LOGIN_ERROR:
+                    DialogUtil.toast(this, getString(R.string.login_error_message_text));
+                    break;
+                case VALIDATE_PRODUCT_ERROR:
+                    DialogUtil.toast(this, getString(R.string.login_error_message_text));
+                    break;
+                case INVALID_SESSION:
+                    handleInvalidSessionError();
+                    break;
+                default:
+                    showServiceGenericError();
+            }
+        } else {
+            showServiceGenericError();
+        }
     }
 
     @Override
