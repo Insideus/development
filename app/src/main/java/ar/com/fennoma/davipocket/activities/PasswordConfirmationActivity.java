@@ -17,9 +17,11 @@ public class PasswordConfirmationActivity extends BaseActivity {
 
     public static String ID_TYPE_KEY = "id_type_key";
     public static String ID_NUMBER_KEY = "id_number_key";
+    public static String EXPIRED_PASSWORD_KEY = "expired_password_key";
 
     private String personIdType;
     private String personId;
+    private Boolean expiredPassword;
 
     private EditText code;
 
@@ -31,9 +33,11 @@ public class PasswordConfirmationActivity extends BaseActivity {
         if (savedInstanceState != null) {
             personIdType = savedInstanceState.getString(ID_TYPE_KEY, "");
             personId = savedInstanceState.getString(ID_NUMBER_KEY, "");
+            expiredPassword = savedInstanceState.getBoolean(EXPIRED_PASSWORD_KEY, false);
         } else {
             personIdType = getIntent().getStringExtra(ID_TYPE_KEY);
             personId = getIntent().getStringExtra(ID_NUMBER_KEY);
+            expiredPassword = getIntent().getBooleanExtra(EXPIRED_PASSWORD_KEY, false);
         }
 
         setActionBar(getString(R.string.password_confirmation_title), false);
@@ -106,6 +110,7 @@ public class PasswordConfirmationActivity extends BaseActivity {
         intent.putExtra(ChangePasswordStep3Activity.PASSWORD_TOKEN_KEY, passwordToken);
         intent.putExtra(ChangePasswordStep3Activity.ID_NUMBER_KEY, personId);
         intent.putExtra(ChangePasswordStep3Activity.ID_TYPE_KEY, personIdType);
+        intent.putExtra(ChangePasswordStep3Activity.EXPIRED_PASSWORD_KEY, expiredPassword);
         startActivity(intent);
     }
 

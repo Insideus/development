@@ -65,10 +65,12 @@
     <string name="change_password_step_2_empty_bank_product_number_error">Debe ingresar el número de producto</string>
     <string name="change_password_step_2_incomplete_card_digits_error">Los números de su tarjeta debe ser de 4 dígitos</string>
     <string name="change_password_step_2_empty_atm_password_error">Debe ingresar la contraseña de su cajero automático</string>
+    <string name="change_password_step_3_old_virtual_password">CLAVE VIRTUAL</string>
     <string name="change_password_step_3_new_virtual_password">NUEVA CLAVE VIRTUAL</string>
     <string name="change_password_step_3_repeat_virtual_password">CONFIRME SU NUEVA CLAVE VIRTUAL</string>
     <string name="change_password_step_3_subtitle_hint">LE ENVIAREMOS UN CÓDIGO DE CONFIMACIÓN\nVÍA SMS A SU CELULAR REGISTRADO</string>
     <string name="change_password_step_3_help_icon_content_desc">Ícono a ayuda</string>
+    <string name="change_password_step_3_empty_old_virtual_password_error">Debe ingresar su clave virtual</string>
     <string name="change_password_step_3_empty_virtual_password_error">Debe ingresar una clave virtual nueva</string>
     <string name="change_password_step_3_empty_password_repeat_error">Debe volver a ingresar la nueva contraseña virtual</string>
 

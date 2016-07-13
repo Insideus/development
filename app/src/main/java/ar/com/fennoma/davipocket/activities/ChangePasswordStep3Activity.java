@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +24,14 @@ public class ChangePasswordStep3Activity extends BaseActivity{
     public static String ID_TYPE_KEY = "id_type_key";
     public static String ID_NUMBER_KEY = "id_number_key";
     public static String PASSWORD_TOKEN_KEY = "password_token_key";
+    public static String EXPIRED_PASSWORD_KEY = "expired_password_key";
 
     private String personIdType;
     private String personId;
     private String passwordToken;
+    private Boolean expiredPassword;
 
+    private EditText oldPassword;
     private EditText repeatedPassword;
     private EditText virtualPassword;
 
@@ -40,10 +44,12 @@ public class ChangePasswordStep3Activity extends BaseActivity{
             personIdType = savedInstanceState.getString(ID_TYPE_KEY, "");
             personId = savedInstanceState.getString(ID_NUMBER_KEY, "");
             passwordToken = savedInstanceState.getString(PASSWORD_TOKEN_KEY, "");
+            expiredPassword = savedInstanceState.getBoolean(EXPIRED_PASSWORD_KEY, false);
         } else {
             personIdType = getIntent().getStringExtra(ID_TYPE_KEY);
             personId = getIntent().getStringExtra(ID_NUMBER_KEY);
             passwordToken = getIntent().getStringExtra(PASSWORD_TOKEN_KEY);
+            expiredPassword = getIntent().getBooleanExtra(EXPIRED_PASSWORD_KEY, false);
         }
 
         setActionBar(getString(R.string.change_password_title), false);
@@ -71,9 +77,13 @@ public class ChangePasswordStep3Activity extends BaseActivity{
             @Override
             public void onClick(View v) {
                 if(validateFields()){
-                   //startActivity(new Intent(ChangePasswordStep3Activity.this, PasswordConfirmationActivity.class));
-                    new SetPasswordTask().execute(personId, personIdType,
-                            virtualPassword.getText().toString(), passwordToken);
+                    if(expiredPassword) {
+                        new SetExpiredPasswordTask().execute(personId, personIdType, oldPassword.getText().toString(),
+                                virtualPassword.getText().toString(), passwordToken);
+                    } else {
+                        new SetPasswordTask().execute(personId, personIdType,
+                                virtualPassword.getText().toString(), passwordToken);
+                    }
                 }
             }
         });
@@ -81,6 +91,11 @@ public class ChangePasswordStep3Activity extends BaseActivity{
 
     private boolean validateFields() {
         List<String> errorList = new ArrayList<>();
+        if(expiredPassword) {
+            if (TextUtils.isEmpty(oldPassword.getText())) {
+                errorList.add(getString(R.string.change_password_step_3_empty_old_virtual_password_error));
+            }
+        }
         if (TextUtils.isEmpty(virtualPassword.getText())) {
             errorList.add(getString(R.string.change_password_step_3_empty_virtual_password_error));
         }
@@ -97,6 +112,12 @@ public class ChangePasswordStep3Activity extends BaseActivity{
     private void findFields() {
         virtualPassword = (EditText) findViewById(R.id.virtual_password);
         repeatedPassword = (EditText) findViewById(R.id.repeated_password);
+        oldPassword = (EditText) findViewById(R.id.old_virtual_password);
+        if(expiredPassword) {
+            oldPassword.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            oldPassword.setVisibility(LinearLayout.GONE);
+        }
     }
 
     private class OnHelpIconClickListener implements View.OnClickListener{
@@ -122,6 +143,45 @@ public class ChangePasswordStep3Activity extends BaseActivity{
             LoginResponse response = null;
             try {
                 response = Service.setPassword(params[0], params[1], params[2], params[3]);
+            }  catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(LoginResponse response) {
+            super.onPostExecute(response);
+            if(response == null && errorCode != null) {
+                //Expected error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                processErrorAndContinue(error, "");
+            } else if(response == null && errorCode == null) {
+                //Service error.
+                showServiceGenericError();
+            } else {
+                //Success login.
+                goToActivatedPasswordActivity(response);
+            }
+            hideLoading();
+        }
+    }
+
+    public class SetExpiredPasswordTask extends AsyncTask<String, Void, LoginResponse> {
+
+        String errorCode;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected LoginResponse doInBackground(String... params) {
+            LoginResponse response = null;
+            try {
+                response = Service.setExpiredPassword(params[0], params[1], params[2], params[3], params[4]);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }

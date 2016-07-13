@@ -198,6 +198,20 @@ public class LoginBaseActivity extends BaseActivity {
                     setVirtualPasswordIntent.putExtra(ChangePasswordStep2Activity.PRODUCT_CODE_KEY, additionalParam);
                     startActivity(setVirtualPasswordIntent);
                     break;
+                case PASSWORD_EXPIRED:
+                    Intent expiredPasswordIntent = new Intent(this, ChangePasswordStep3Activity.class);
+                    expiredPasswordIntent.putExtra(ChangePasswordStep3Activity.ID_TYPE_KEY, String.valueOf(selectedIdType.getId()));
+                    expiredPasswordIntent.putExtra(ChangePasswordStep3Activity.ID_NUMBER_KEY, personIdNumber.getText().toString());
+                    expiredPasswordIntent.putExtra(ChangePasswordStep3Activity.EXPIRED_PASSWORD_KEY, true);
+                    startActivity(expiredPasswordIntent);
+                    break;
+                case PASSWORD_EXPIRED_OTP_VALIDATION_NEEDED:
+                    Intent expiredOtpPasswordIntent = new Intent(this, PasswordConfirmationActivity.class);
+                    expiredOtpPasswordIntent.putExtra(PasswordConfirmationActivity.ID_TYPE_KEY, String.valueOf(selectedIdType.getId()));
+                    expiredOtpPasswordIntent.putExtra(PasswordConfirmationActivity.ID_NUMBER_KEY, personIdNumber.getText().toString());
+                    expiredOtpPasswordIntent.putExtra(PasswordConfirmationActivity.EXPIRED_PASSWORD_KEY, true);
+                    startActivity(expiredOtpPasswordIntent);
+                    break;
                 default:
                     super.processErrorAndContinue(error, additionalParam);
             }
