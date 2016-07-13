@@ -2,6 +2,7 @@ package ar.com.fennoma.davipocket.activities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -96,6 +98,42 @@ public class BaseActivity extends AppCompatActivity {
                     break;
                 case INVALID_SESSION:
                     handleInvalidSessionError();
+                    break;
+                default:
+                    showServiceGenericError();
+            }
+        } else {
+            showServiceGenericError();
+        }
+    }
+
+    void goToRegistrationStep(LoginSteps step) {
+        if(step != null) {
+            switch(step) {
+                case FACEBOOK:
+                    Intent facebookIntent = new Intent(this, FacebookLoginActivity.class);
+                    facebookIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(facebookIntent);
+                    break;
+                case ADDITIONAL_INFO:
+                    Intent addtionalInfoIntent = new Intent(this, LoginConfirmationActivity.class);
+                    addtionalInfoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(addtionalInfoIntent);
+                    break;
+                case ACCOUNT_VERIFICATION:
+                    Intent accountVerificationIntent = new Intent(this, AccountActivationActivity.class);
+                    accountVerificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(accountVerificationIntent);
+                    break;
+                case COMMUNICATION_PERMISSIONS:
+                    Intent communicationPermissionsActivity = new Intent(this, PolicyPickerActivity.class);
+                    communicationPermissionsActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(communicationPermissionsActivity);
+                    break;
+                case REGISTRATION_COMPLETED:
+                    Intent mainActivityIntent = new Intent(this, MainActivity.class);
+                    mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(mainActivityIntent);
                     break;
                 default:
                     showServiceGenericError();

@@ -206,42 +206,6 @@ public class LoginBaseActivity extends BaseActivity {
         }
     }
 
-    void goToRegistrationStep(LoginSteps step) {
-        if(step != null) {
-            switch(step) {
-                case FACEBOOK:
-                    Intent facebookIntent = new Intent(LoginBaseActivity.this, FacebookLoginActivity.class);
-                    facebookIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(facebookIntent);
-                    break;
-                case ADDITIONAL_INFO:
-                    Intent addtionalInfoIntent = new Intent(LoginBaseActivity.this, LoginConfirmationActivity.class);
-                    addtionalInfoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(addtionalInfoIntent);
-                    break;
-                case ACCOUNT_VERIFICATION:
-                    Intent accountVerificationIntent = new Intent(LoginBaseActivity.this, AccountActivationActivity.class);
-                    accountVerificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(accountVerificationIntent);
-                    break;
-                case COMMUNICATION_PERMISSIONS:
-                    Intent communicationPermissionsActivity = new Intent(LoginBaseActivity.this, PolicyPickerActivity.class);
-                    communicationPermissionsActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(communicationPermissionsActivity);
-                    break;
-                case REGISTRATION_COMPLETED:
-                    Intent mainActivityIntent = new Intent(LoginBaseActivity.this, MainActivity.class);
-                    mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(mainActivityIntent);
-                    break;
-                default:
-                    showServiceGenericError();
-            }
-        } else {
-            showServiceGenericError();
-        }
-    }
-
     void setIdTypesSpinner() {
         ArrayAdapter<PersonIdType> adapter = new ArrayAdapter<PersonIdType>(this, android.R.layout.simple_spinner_item,
                 Session.getCurrentSession(this).getPersonIdTypes());

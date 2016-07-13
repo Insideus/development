@@ -1,6 +1,7 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -11,6 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.LoginResponse;
+import ar.com.fennoma.davipocket.model.ServiceException;
+import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class ChangePasswordStep3Activity extends BaseActivity{
@@ -66,7 +71,9 @@ public class ChangePasswordStep3Activity extends BaseActivity{
             @Override
             public void onClick(View v) {
                 if(validateFields()){
-                   startActivity(new Intent(ChangePasswordStep3Activity.this, PasswordConfirmationActivity.class));
+                   //startActivity(new Intent(ChangePasswordStep3Activity.this, PasswordConfirmationActivity.class));
+                    new SetPasswordTask().execute(personId, personIdType,
+                            virtualPassword.getText().toString(), passwordToken);
                 }
             }
         });
@@ -99,4 +106,52 @@ public class ChangePasswordStep3Activity extends BaseActivity{
             overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         }
     }
+
+    public class SetPasswordTask extends AsyncTask<String, Void, LoginResponse> {
+
+        String errorCode;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected LoginResponse doInBackground(String... params) {
+            LoginResponse response = null;
+            try {
+                response = Service.setPassword(params[0], params[1], params[2], params[3]);
+            }  catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(LoginResponse response) {
+            super.onPostExecute(response);
+            if(response == null && errorCode != null) {
+                //Expected error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                processErrorAndContinue(error, "");
+            } else if(response == null && errorCode == null) {
+                //Service error.
+                showServiceGenericError();
+            } else {
+                //Success login.
+                goToActivatedPasswordActivity(response);
+            }
+            hideLoading();
+        }
+    }
+
+    private void goToActivatedPasswordActivity(LoginResponse response) {
+        Intent accountVerificationIntent = new Intent(this, ActivatedPasswordActivity.class);
+        accountVerificationIntent.putExtra(ActivatedPasswordActivity.LOGIN_RESPONSE_KEY, response);
+        accountVerificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(accountVerificationIntent);
+    }
+
+
 }
