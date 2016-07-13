@@ -59,7 +59,6 @@ public class ChangePasswordStep2Activity extends BaseActivity {
             personId = getIntent().getStringExtra(ID_NUMBER_KEY);
             productCode = getIntent().getStringExtra(PRODUCT_CODE_KEY);
         }
-        productCode = "OTHER";
         setActionBar(getString(R.string.change_password_title), true);
         findFields();
         setContinueButton();
@@ -218,7 +217,10 @@ public class ChangePasswordStep2Activity extends BaseActivity {
     }
 
     private void goToPasswordConfirmationActivity() {
-        startActivity(new Intent(this, PasswordConfirmationActivity.class));
+        Intent intent = new Intent(this, PasswordConfirmationActivity.class);
+        intent.putExtra(PasswordConfirmationActivity.ID_NUMBER_KEY, personId);
+        intent.putExtra(PasswordConfirmationActivity.ID_TYPE_KEY, personIdType);
+        startActivity(intent);
     }
 
 

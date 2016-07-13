@@ -15,6 +15,14 @@ import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class ChangePasswordStep3Activity extends BaseActivity{
 
+    public static String ID_TYPE_KEY = "id_type_key";
+    public static String ID_NUMBER_KEY = "id_number_key";
+    public static String PASSWORD_TOKEN_KEY = "password_token_key";
+
+    private String personIdType;
+    private String personId;
+    private String passwordToken;
+
     private EditText repeatedPassword;
     private EditText virtualPassword;
 
@@ -22,6 +30,17 @@ public class ChangePasswordStep3Activity extends BaseActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_password_step_3_layout);
+
+        if (savedInstanceState != null) {
+            personIdType = savedInstanceState.getString(ID_TYPE_KEY, "");
+            personId = savedInstanceState.getString(ID_NUMBER_KEY, "");
+            passwordToken = savedInstanceState.getString(PASSWORD_TOKEN_KEY, "");
+        } else {
+            personIdType = getIntent().getStringExtra(ID_TYPE_KEY);
+            personId = getIntent().getStringExtra(ID_NUMBER_KEY);
+            passwordToken = getIntent().getStringExtra(PASSWORD_TOKEN_KEY);
+        }
+
         setActionBar(getString(R.string.change_password_title), false);
         findFields();
         setHelpIcons();
