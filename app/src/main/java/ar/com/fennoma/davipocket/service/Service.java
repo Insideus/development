@@ -51,6 +51,7 @@ public class Service {
     private static String VALIDATE_PRODUCT = "/user/validate_product";
     private static String VALIDATE_OTP = "/user/validate_otp_pin";
     private static String SET_PASSWORD = "/user/set_password";
+    private static String FORGOT_PASSWORD = "/user/forgot_password";
 
     public static JSONObject getPersonIdTypes() {
         HttpURLConnection urlConnection = null;
@@ -727,6 +728,54 @@ public class Service {
                         method = responseJson.getString(METHOD_TAG);
                     }
                     throw new ServiceException(errorCode, method);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static String forgotPassword(String personId, String personIdType) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        String response = null;
+        try {
+            urlConnection = getHttpURLConnection(FORGOT_PASSWORD);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> personIdParam = new Pair("person_id", personId);
+            params.add(personIdParam);
+            Pair<String, String> personTypeIdParam = new Pair("person_id_type_id", personIdType);
+            params.add(personTypeIdParam);
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                if(json.has("error") && !json.getBoolean("error")) {
+                    if(responseJson.has(METHOD_TAG)) {
+                        response = responseJson.getString(METHOD_TAG);
+                    }
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
                 }
             }
         } catch (IOException | JSONException e) {

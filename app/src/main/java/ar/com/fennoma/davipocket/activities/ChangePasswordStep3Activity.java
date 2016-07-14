@@ -117,8 +117,10 @@ public class ChangePasswordStep3Activity extends BaseActivity{
         repeatedPassword = (EditText) findViewById(R.id.repeated_password);
         oldPassword = (EditText) findViewById(R.id.old_virtual_password);
         if(expiredPassword) {
+            findViewById(R.id.old_virtual_password_underline).setVisibility(LinearLayout.VISIBLE);
             oldPassword.setVisibility(LinearLayout.VISIBLE);
         } else {
+            findViewById(R.id.old_virtual_password_underline).setVisibility(LinearLayout.GONE);
             oldPassword.setVisibility(LinearLayout.GONE);
         }
     }

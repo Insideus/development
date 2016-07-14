@@ -173,7 +173,7 @@ public class AccountActivationActivity extends BaseActivity{
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 if(error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
-                } else if(error != null && error == ErrorMessages.CONFIMATION_ERROR) {
+                } else if(error != null && error == ErrorMessages.CONFIRMATION_ERROR) {
                     showConfirmationError();
                 } else {
                     showServiceGenericError();

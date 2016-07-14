@@ -213,6 +213,7 @@ public class ChangePasswordStep2Activity extends BaseActivity {
                     goToPasswordConfirmationActivity();
                 } else {
                     //Change Password Session Token.
+                    goToSetNewPasswordActivity(response);
                 }
             }
             hideLoading();
@@ -223,6 +224,15 @@ public class ChangePasswordStep2Activity extends BaseActivity {
         Intent intent = new Intent(this, PasswordConfirmationActivity.class);
         intent.putExtra(PasswordConfirmationActivity.ID_NUMBER_KEY, personId);
         intent.putExtra(PasswordConfirmationActivity.ID_TYPE_KEY, personIdType);
+        startActivity(intent);
+    }
+
+    private void goToSetNewPasswordActivity(String passwordToken) {
+        Intent intent = new Intent(this, ChangePasswordStep3Activity.class);
+        intent.putExtra(ChangePasswordStep3Activity.PASSWORD_TOKEN_KEY, passwordToken);
+        intent.putExtra(ChangePasswordStep3Activity.ID_NUMBER_KEY, personId);
+        intent.putExtra(ChangePasswordStep3Activity.ID_TYPE_KEY, personIdType);
+        intent.putExtra(ChangePasswordStep3Activity.EXPIRED_PASSWORD_KEY, false);
         startActivity(intent);
     }
 
