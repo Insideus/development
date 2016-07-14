@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CodeBoxContainer">
+        <attr name="amount" format="integer" />
+        <attr name="box_margin" format="dimension" />
+        <attr name="box_margin_left" format="dimension" />
+        <attr name="box_margin_top" format="dimension" />
+        <attr name="box_margin_right" format="dimension" />
+        <attr name="box_margin_bottom" format="dimension" />
+        <attr name="margin_between_boxes" format="dimension" />
+        <attr name="box_background_drawable" format="integer" />
+        <attr name="box_inputType" format="integer" />
+        <attr name="box_textColor" format="integer" />
+    </declare-styleable>
+</resources>

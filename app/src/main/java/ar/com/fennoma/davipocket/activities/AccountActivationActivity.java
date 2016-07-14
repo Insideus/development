@@ -4,36 +4,26 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.ui.controls.CodeBoxContainer;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class AccountActivationActivity extends BaseActivity{
 
-    private List<EditText> codeEditTextList;
+    private CodeBoxContainer codeBoxContainer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_activation_activity_layout);
         setActionBar(getString(R.string.account_activation_activity_title), false);
-        codeEditTextList = new ArrayList<>();
-        findCodeEditTexts();
-        setListenersToEditTexts();
+        findCodeBoxContainer();
         setRequestCodeButton();
         new ResendValidationCodeTask().execute();
     }
@@ -51,95 +41,25 @@ public class AccountActivationActivity extends BaseActivity{
         });
     }
 
-    private void setListenersToEditTexts() {
-        for(EditText editText : codeEditTextList){
-            if(codeEditTextList.indexOf(editText) < codeEditTextList.size() - 1){
-                editText.addTextChangedListener(new OnTextChangedGoToNextSpot(codeEditTextList.indexOf(editText)));
-            }else{
-                editText.addTextChangedListener(new CodeValidator());
-                editText.setOnEditorActionListener(new OnSoftKeyboardDoneButtonPressed());
+    private void findCodeBoxContainer() {
+        codeBoxContainer = (CodeBoxContainer) findViewById(R.id.code_box_container);
+        codeBoxContainer.setRunnable(new Runnable() {
+            @Override
+            public void run() {
+                validateCode();
             }
-        }
-    }
-
-    private void findCodeEditTexts() {
-        codeEditTextList.add((EditText) findViewById(R.id.code_number_1));
-        codeEditTextList.add((EditText) findViewById(R.id.code_number_2));
-        codeEditTextList.add((EditText) findViewById(R.id.code_number_3));
-        codeEditTextList.add((EditText) findViewById(R.id.code_number_4));
-    }
-
-    private String getCode(){
-        String result = "";
-        for(EditText codePart : codeEditTextList){
-            result = result.concat(String.valueOf(codePart.getText()));
-        }
-        return result;
-    }
-
-
-    private class OnTextChangedGoToNextSpot implements TextWatcher {
-        private int position;
-
-        OnTextChangedGoToNextSpot(int position){
-            this.position = position;
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(count == 1){
-                codeEditTextList.get(position + 1).requestFocus();
-                return;
-            }
-            if(position == 0){
-                return;
-            }
-            codeEditTextList.get(position - 1).requestFocus();
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-        @Override
-        public void afterTextChanged(Editable s) {}
-    }
-
-    private class CodeValidator implements TextWatcher {
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(count == 0){
-                codeEditTextList.get(codeEditTextList.size() - 2).requestFocus();
-                return;
-            }
-            validateCode();
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-        @Override
-        public void afterTextChanged(Editable s) {}
+        });
     }
 
     private void validateCode() {
-        if(getCode().length() != codeEditTextList.size()){
+        if(codeBoxContainer.getCode().length() != codeBoxContainer.size()){
             DialogUtil.toast(this,
                     getString(R.string.input_data_error_generic_title),
                     getString(R.string.input_data_error_generic_subtitle),
                     getString(R.string.account_activation_incomplete_code_error));
             return;
         }
-        new AccountValidationTask().execute(getCode());
-    }
-
-    private class OnSoftKeyboardDoneButtonPressed implements TextView.OnEditorActionListener {
-        @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                validateCode();
-            }
-            return false;
-        }
+        new AccountValidationTask().execute(codeBoxContainer.getCode());
     }
 
     public class AccountValidationTask extends AsyncTask<String, Void, Boolean> {

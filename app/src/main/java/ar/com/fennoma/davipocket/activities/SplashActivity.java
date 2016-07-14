@@ -43,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void needsToLogin() {
         if(!Session.getCurrentSession(getApplicationContext()).isValid()) {
-            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            startActivity(new Intent(SplashActivity.this, AccountActivationActivity.class));
             finish();
         } else {
             startActivity(new Intent(SplashActivity.this, MainActivity.class));

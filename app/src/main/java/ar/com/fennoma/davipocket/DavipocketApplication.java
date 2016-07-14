@@ -10,10 +10,17 @@ import com.facebook.appevents.AppEventsLogger;
  */
 public class DavipocketApplication extends MultiDexApplication {
 
+    private static DavipocketApplication instance;
+
     @Override
     public void onCreate() {
         super.onCreate();
         initFacebookSdk();
+        instance = this;
+    }
+
+    public static DavipocketApplication getInstance(){
+        return instance;
     }
 
     private void initFacebookSdk() {
