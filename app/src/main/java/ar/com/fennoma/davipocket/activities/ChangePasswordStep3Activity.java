@@ -103,7 +103,10 @@ public class ChangePasswordStep3Activity extends BaseActivity{
             errorList.add(getString(R.string.change_password_step_3_empty_password_repeat_error));
         }
         if (!errorList.isEmpty()) {
-            DialogUtil.toast(this, DialogUtil.concatMessages(errorList));
+            DialogUtil.toast(this,
+                    getString(R.string.input_data_error_generic_title),
+                    getString(R.string.input_data_error_generic_subtitle),
+                    errorList);
             return false;
         }
         return true;
@@ -123,7 +126,11 @@ public class ChangePasswordStep3Activity extends BaseActivity{
     private class OnHelpIconClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(ChangePasswordStep3Activity.this, HelpDialogActivity.class));
+            Intent intent = new Intent(ChangePasswordStep3Activity.this, ToastDialogActivity.class);
+            intent.putExtra(ToastDialogActivity.TITLE_KEY, getString(R.string.help_dialog_title_1));
+            intent.putExtra(ToastDialogActivity.SUBTITLE_KEY, getString(R.string.help_dialog_title_2));
+            intent.putExtra(ToastDialogActivity.TEXT_KEY, getString(R.string.help_dialog_activity_text));
+            startActivity(intent);
             overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         }
     }

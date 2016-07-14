@@ -167,7 +167,10 @@ public class ChangePasswordStep2Activity extends BaseActivity {
             }
         }
         if (!errorList.isEmpty()) {
-            DialogUtil.toast(this, DialogUtil.concatMessages(errorList));
+            DialogUtil.toast(this,
+                    getString(R.string.input_data_error_generic_title),
+                    getString(R.string.input_data_error_generic_subtitle),
+                    errorList);
             return false;
         }
         return true;

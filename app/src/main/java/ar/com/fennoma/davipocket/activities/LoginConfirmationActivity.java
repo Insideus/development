@@ -122,7 +122,10 @@ public class LoginConfirmationActivity extends BaseActivity {
             errorList.add(getString(R.string.registration_error_message_empty_birthday));
         }
         if (!errorList.isEmpty()) {
-            DialogUtil.toast(this, DialogUtil.concatMessages(errorList));
+            DialogUtil.toast(this,
+                    getString(R.string.input_data_error_generic_title),
+                    getString(R.string.input_data_error_generic_subtitle),
+                    errorList);
             return false;
         }
 

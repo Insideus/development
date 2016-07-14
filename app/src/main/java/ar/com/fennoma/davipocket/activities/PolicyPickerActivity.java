@@ -102,7 +102,10 @@ public class PolicyPickerActivity extends BaseActivity{
             errorList.add(getString(R.string.policy_picker_privacy_policy_not_checked_error));
         }
         if (!errorList.isEmpty()) {
-            DialogUtil.toast(this, DialogUtil.concatMessages(errorList));
+            DialogUtil.toast(this,
+                    getString(R.string.input_data_error_generic_title),
+                    getString(R.string.input_data_error_generic_subtitle),
+                    errorList);
             return false;
         }
         return true;

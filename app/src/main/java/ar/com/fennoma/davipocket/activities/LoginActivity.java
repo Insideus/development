@@ -2,7 +2,6 @@ package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -74,7 +73,8 @@ public class LoginActivity extends LoginBaseActivity {
     private void doLogin() {
         ArrayList<String> errors = validate();
         if(errors != null && errors.size() > 0) {
-            DialogUtil.toast(this, errors);
+            DialogUtil.toast(this, getString(R.string.input_data_error_generic_title),
+                    getString(R.string.input_data_error_generic_subtitle), errors);
         } else {
             new LoginTask().execute(personIdNumber.getText().toString(),
                     String.valueOf(selectedIdType.getId()),

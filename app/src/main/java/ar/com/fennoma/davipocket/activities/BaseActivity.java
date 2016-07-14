@@ -80,7 +80,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showServiceGenericError() {
-        DialogUtil.toast(this, getString(R.string.generic_service_error));
+        DialogUtil.toast(this, getString(R.string.generic_service_error_title), "",
+                getString(R.string.generic_service_error));
     }
 
     public void handleInvalidSessionError() {
@@ -91,10 +92,14 @@ public class BaseActivity extends AppCompatActivity {
         if(error != null) {
             switch(error) {
                 case LOGIN_ERROR:
-                    DialogUtil.toast(this, getString(R.string.login_error_message_text));
+                    DialogUtil.toast(this,
+                            getString(R.string.login_error_message_title),
+                            getString(R.string.login_error_message_text), "");
                     break;
                 case VALIDATE_PRODUCT_ERROR:
-                    DialogUtil.toast(this, getString(R.string.login_error_message_text));
+                    DialogUtil.toast(this,
+                            getString(R.string.login_error_message_title),
+                            getString(R.string.login_error_message_text), "");
                     break;
                 case INVALID_SESSION:
                     handleInvalidSessionError();

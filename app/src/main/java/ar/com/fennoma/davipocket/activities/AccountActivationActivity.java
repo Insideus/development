@@ -123,7 +123,10 @@ public class AccountActivationActivity extends BaseActivity{
 
     private void validateCode() {
         if(getCode().length() != codeEditTextList.size()){
-            DialogUtil.toast(this, getString(R.string.account_activation_incomplete_code_error));
+            DialogUtil.toast(this,
+                    getString(R.string.input_data_error_generic_title),
+                    getString(R.string.input_data_error_generic_subtitle),
+                    getString(R.string.account_activation_incomplete_code_error));
             return;
         }
         new AccountValidationTask().execute(getCode());
@@ -232,7 +235,10 @@ public class AccountActivationActivity extends BaseActivity{
     }
 
     public void showConfirmationError() {
-        DialogUtil.toast(this, getString(R.string.confirmation_service_error));
+        DialogUtil.toast(this,
+                getString(R.string.input_data_error_generic_title),
+                getString(R.string.input_data_error_generic_subtitle),
+                getString(R.string.confirmation_service_error));
     }
 
     private void goToConfirmationActivity() {

@@ -38,7 +38,10 @@ public class ChangePasswordStep1Activity extends BaseActivity{
             @Override
             public void onClick(View v) {
                 if(TextUtils.isEmpty(idNumber.getText())){
-                    DialogUtil.toast(ChangePasswordStep1Activity.this, getString(R.string.change_password_step_1_empty_id_number_error));
+                    DialogUtil.toast(ChangePasswordStep1Activity.this,
+                            getString(R.string.input_data_error_generic_title),
+                            getString(R.string.input_data_error_generic_subtitle),
+                            getString(R.string.change_password_step_1_empty_id_number_error));
                     return;
                 }
                 startActivity(new Intent(ChangePasswordStep1Activity.this, ChangePasswordStep2Activity.class));

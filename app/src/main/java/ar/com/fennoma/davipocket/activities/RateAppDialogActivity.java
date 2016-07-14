@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class RateAppDialogActivity extends BaseActivity {
 
@@ -49,14 +48,15 @@ public class RateAppDialogActivity extends BaseActivity {
         rememberLater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogUtil.toast(RateAppDialogActivity.this, "Davipocket le recordará más tarde");
+                //
+                // DialogUtil.toast(RateAppDialogActivity.this, "Davipocket le recordará más tarde");
                 finish();
             }
         });
         rateApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogUtil.toast(RateAppDialogActivity.this, "Aún no implementado");
+                //DialogUtil.toast(RateAppDialogActivity.this, "Aún no implementado");
                 finish();
             }
         });

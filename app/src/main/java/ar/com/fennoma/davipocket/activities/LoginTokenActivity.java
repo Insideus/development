@@ -97,7 +97,10 @@ public class LoginTokenActivity extends LoginBaseActivity {
     private void doLogin() {
         ArrayList<String> errors = validate();
         if(errors != null && errors.size() > 0) {
-            DialogUtil.toast(this, errors);
+            DialogUtil.toast(this,
+                    getString(R.string.input_data_error_generic_title),
+                    getString(R.string.input_data_error_generic_subtitle),
+                    errors);
         } else {
             new LoginWithTokenTask().execute(personIdNumber.getText().toString(),
                     String.valueOf(selectedIdType.getId()),
@@ -108,7 +111,10 @@ public class LoginTokenActivity extends LoginBaseActivity {
     private void doNextTokenLogin() {
         ArrayList<String> errors = validate();
         if(errors != null && errors.size() > 0) {
-            DialogUtil.toast(this, errors);
+            DialogUtil.toast(this,
+                    getString(R.string.input_data_error_generic_title),
+                    getString(R.string.input_data_error_generic_subtitle),
+                    errors);
         } else {
             new LoginWithNextTokenTask().execute(personIdNumber.getText().toString(),
                     String.valueOf(selectedIdType.getId()),
