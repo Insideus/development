@@ -3,6 +3,7 @@ package ar.com.fennoma.davipocket.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -56,6 +57,24 @@ public class ChangePasswordStep3Activity extends BaseActivity{
         findFields();
         setHelpIcons();
         setContinueButton();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putString(ID_TYPE_KEY, personIdType);
+        outState.putString(ID_NUMBER_KEY, personId);
+        outState.putString(PASSWORD_TOKEN_KEY, passwordToken);
+        outState.putBoolean(EXPIRED_PASSWORD_KEY, expiredPassword);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        personId = savedInstanceState.getString(ID_NUMBER_KEY);
+        personIdType = savedInstanceState.getString(ID_TYPE_KEY);
+        passwordToken = savedInstanceState.getString(PASSWORD_TOKEN_KEY);
+        expiredPassword = savedInstanceState.getBoolean(EXPIRED_PASSWORD_KEY, false);
     }
 
     private void setHelpIcons() {

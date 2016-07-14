@@ -80,7 +80,7 @@ public class FacebookLoginActivity extends BaseActivity {
     private class WithoutFacebookOnClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            new FacebookLoginTask().execute("-1");
+            new FacebookLoginTask().execute(CONTINUE_WITHOUT_LOGIN_TOKEN);
         }
     }
 

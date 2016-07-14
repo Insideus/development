@@ -85,7 +85,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void handleInvalidSessionError() {
-
+        DialogUtil.invalidSessionToast(this);
     }
 
     void processErrorAndContinue(ErrorMessages error, String additionalParam) {
@@ -94,12 +94,12 @@ public class BaseActivity extends AppCompatActivity {
                 case LOGIN_ERROR:
                     DialogUtil.toast(this,
                             getString(R.string.login_error_message_title),
-                            getString(R.string.login_error_message_text), "");
+                            "", getString(R.string.login_error_message_text));
                     break;
                 case VALIDATE_PRODUCT_ERROR:
                     DialogUtil.toast(this,
-                            getString(R.string.login_error_message_title),
-                            getString(R.string.login_error_message_text), "");
+                            getString(R.string.login_error_message_title), "",
+                            getString(R.string.login_error_message_text));
                     break;
                 case INVALID_SESSION:
                     handleInvalidSessionError();

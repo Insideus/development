@@ -1,6 +1,7 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
@@ -28,6 +29,18 @@ public class ActivatedPasswordActivity extends BaseActivity {
 
         setActionBar(getString(R.string.activated_password_activity_title), false);
         setButton();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putParcelable(LOGIN_RESPONSE_KEY, loginResponse);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        loginResponse = savedInstanceState.getParcelable(LOGIN_RESPONSE_KEY);
     }
 
     private void setButton() {

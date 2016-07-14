@@ -29,7 +29,6 @@ public class DialogUtil {
     }
 
     public static void toast(Activity activity, String title, String subtitle, String text){
-        //Toast.makeText(context, text, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(activity, ToastDialogActivity.class);
         intent.putExtra(ToastDialogActivity.TITLE_KEY, title);
         intent.putExtra(ToastDialogActivity.SUBTITLE_KEY, subtitle);
@@ -39,11 +38,20 @@ public class DialogUtil {
     }
 
     public static void toast(Activity activity, String title, String subtitle, List<String> messages){
-        //Toast.makeText(context, concatMessages(messages), Toast.LENGTH_LONG).show();
         Intent intent = new Intent(activity, ToastDialogActivity.class);
         intent.putExtra(ToastDialogActivity.TITLE_KEY, title);
         intent.putExtra(ToastDialogActivity.SUBTITLE_KEY, subtitle);
         intent.putExtra(ToastDialogActivity.TEXT_KEY, concatMessages(messages));
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
+
+    public static void invalidSessionToast(Activity activity){
+        Intent intent = new Intent(activity, ToastDialogActivity.class);
+        intent.putExtra(ToastDialogActivity.TITLE_KEY, activity.getString(R.string.invalid_session_title));
+        intent.putExtra(ToastDialogActivity.SUBTITLE_KEY, activity.getString(R.string.invalid_session_subtitle));
+        intent.putExtra(ToastDialogActivity.TEXT_KEY, activity.getString(R.string.invalid_session_text));
+        intent.putExtra(ToastDialogActivity.INVALID_SESSION_KEY, true);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }

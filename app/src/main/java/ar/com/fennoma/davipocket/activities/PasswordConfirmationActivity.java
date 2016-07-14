@@ -3,6 +3,7 @@ package ar.com.fennoma.davipocket.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -43,6 +44,22 @@ public class PasswordConfirmationActivity extends BaseActivity {
         setActionBar(getString(R.string.password_confirmation_title), false);
         findCodeField();
         setSendButton();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putString(ID_TYPE_KEY, personIdType);
+        outState.putString(ID_NUMBER_KEY, personId);
+        outState.putBoolean(EXPIRED_PASSWORD_KEY, expiredPassword);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        personIdType = savedInstanceState.getParcelable(ID_TYPE_KEY);
+        personId = savedInstanceState.getString(ID_NUMBER_KEY);
+        expiredPassword = savedInstanceState.getBoolean(EXPIRED_PASSWORD_KEY, false);
     }
 
     private void findCodeField() {

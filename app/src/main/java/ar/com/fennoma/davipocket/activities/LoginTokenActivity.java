@@ -1,6 +1,7 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -49,6 +50,26 @@ public class LoginTokenActivity extends LoginBaseActivity {
         }
 
         setActionsToButtons();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putParcelable(ID_TYPE_KEY, selectedIdType);
+        outState.putString(ID_NUMBER_KEY, idNumberStr);
+        outState.putString(PASSWORD_KEY, passwordStr);
+        outState.putBoolean(NEXT_REQUIRED_TOKEN_KEY, nextToken);
+        outState.putString(NEXT_TOKEN_KEY, nextTokenSession);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        selectedIdType = savedInstanceState.getParcelable(ID_TYPE_KEY);
+        idNumberStr = savedInstanceState.getString(ID_NUMBER_KEY);
+        passwordStr = savedInstanceState.getString(PASSWORD_KEY);
+        nextToken = savedInstanceState.getBoolean(NEXT_REQUIRED_TOKEN_KEY, false);
+        nextTokenSession = savedInstanceState.getString(NEXT_TOKEN_KEY);
     }
 
     private void setActionsToButtons() {

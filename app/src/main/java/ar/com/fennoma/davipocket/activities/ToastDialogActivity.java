@@ -1,5 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -14,10 +15,12 @@ public class ToastDialogActivity extends BaseActivity{
     public static String TITLE_KEY = "toast_title_key";
     public static String SUBTITLE_KEY = "toast_subtitle_key";
     public static String TEXT_KEY = "toast_text_key";
+    public static String INVALID_SESSION_KEY = "invalid_session_key";
 
     private String title;
     private String subtitle;
     private String text;
+    private Boolean invalidSessionToast;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,10 +30,12 @@ public class ToastDialogActivity extends BaseActivity{
             title = savedInstanceState.getString(TITLE_KEY, "");
             subtitle = savedInstanceState.getString(SUBTITLE_KEY, "");
             text = savedInstanceState.getString(TEXT_KEY, "");
+            invalidSessionToast = savedInstanceState.getBoolean(INVALID_SESSION_KEY, false);
         } else {
             title = getIntent().getStringExtra(TITLE_KEY);
             subtitle = getIntent().getStringExtra(SUBTITLE_KEY);
             text = getIntent().getStringExtra(TEXT_KEY);
+            invalidSessionToast = getIntent().getBooleanExtra(INVALID_SESSION_KEY, false);
         }
         setLayouts();
         animateOpening();
@@ -53,13 +58,21 @@ public class ToastDialogActivity extends BaseActivity{
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if(invalidSessionToast) {
+                    goToLoginActivity();
+                } else {
+                    finish();
+                }
             }
         });
         container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if(invalidSessionToast) {
+                    goToLoginActivity();
+                } else {
+                    finish();
+                }
             }
         });
 
@@ -81,5 +94,11 @@ public class ToastDialogActivity extends BaseActivity{
         } else {
             textTv.setVisibility(LinearLayout.GONE);
         }
+    }
+
+    private void goToLoginActivity() {
+        Intent facebookIntent = new Intent(this, LoginActivity.class);
+        facebookIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(facebookIntent);
     }
 }

@@ -12,6 +12,10 @@
     <string name="login_token_activity_title">TOKEN</string>
     <string name="token_login_header">Header</string>
 
+    <!-- Main Activity -->
+    <string name="main_activity_title">DAVIPOCKET</string>
+    <string name="logout_button_text">LOGOUT</string>
+
     <!-- Facebook Login -->
     <string name="facebook_login_token_activity_title">CONECTAR</string>
     <string name="facebook_login_teaser">QUEREMOS ESTAR MÁS CERCA DE USTED</string>
@@ -106,5 +110,10 @@
     <string name="rate_app_dialog_cancel_button">NO, GRACIAS</string>
     <string name="rate_app_dialog_remember_later_button">RECORDÁRMELO MÁS TARDE</string>
     <string name="rate_app_dialog_rate_button">VALORAR DAVIPOCKET</string>
+
+    <string name="invalid_session_title">ERROR</string>
+    <string name="invalid_session_subtitle">Su sesión es inválida.</string>
+    <string name="invalid_session_text">Por favor ingrese sus credenciales para continuar operando.</string>
+
 
 </resources>
