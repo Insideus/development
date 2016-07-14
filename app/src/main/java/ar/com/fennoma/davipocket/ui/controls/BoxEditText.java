@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.EditText;
 
@@ -22,8 +20,8 @@ public class BoxEditText extends EditText {
     private void setDefaultValues() {
         setInputType();
         setMaxLenght(1);
-        setGravity(Gravity.CENTER);
         setTextSize(calculateTextSize());
+        setGravity(Gravity.CENTER);
     }
 
     private float calculateTextSize() {

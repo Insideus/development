@@ -9,7 +9,6 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.tasks.GetInitDataTask;
 import ar.com.fennoma.davipocket.tasks.TaskCallback;
 
@@ -35,20 +34,14 @@ public class SplashActivity extends AppCompatActivity {
         GetInitDataTask task = new GetInitDataTask(this, new TaskCallback() {
             @Override
             public void execute(Object result) {
-                needsToLogin();
+                goToLogin();
             }
         });
         task.execute();
     }
 
-    private void needsToLogin() {
-        if(!Session.getCurrentSession(getApplicationContext()).isValid()) {
-            startActivity(new Intent(SplashActivity.this, AccountActivationActivity.class));
-            finish();
-        } else {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
-            finish();
-        }
+    private void goToLogin() {
+        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
     }
 
     private void startAnimating() {
