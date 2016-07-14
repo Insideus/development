@@ -109,7 +109,7 @@ public class AccountActivationActivity extends BaseActivity{
 
     public class ResendValidationCodeTask extends AsyncTask<String, Void, Boolean> {
 
-        String errorCode;
+        private String errorCode;
 
         @Override
         protected void onPreExecute() {

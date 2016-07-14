@@ -40,6 +40,8 @@ public class CodeBoxContainer extends LinearLayout {
     private int box_textColor;
     private Runnable runnable;
 
+    private boolean handledNumber = false;
+
     public CodeBoxContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
@@ -110,8 +112,12 @@ public class CodeBoxContainer extends LinearLayout {
         return windowsWidth / 4 - margins;
     }
 
+    public interface IInputConnector{
+        void onBackSpacePressed();
+        void onKeyPressed(char key);
+    }
 
-    private EditText createSingleBox(int size, int position) {
+    private EditText createSingleBox(int size, final int position) {
         BoxEditText result = new BoxEditText(getContext(), size);
         result.setBackground(box_background_drawable);
         result.setBoxTextColor(box_textColor);
@@ -128,6 +134,26 @@ public class CodeBoxContainer extends LinearLayout {
             }
         }
         result.setLayoutParams(params);
+        result.setListener(new IInputConnector() {
+            @Override
+            public void onBackSpacePressed() {
+                if(position == 0){
+                    return;
+                }
+                editTexts.get(position - 1).requestFocus();
+            }
+
+            @Override
+            public void onKeyPressed(char key) {
+                if(position >= amount - 1){
+                    return;
+                }
+                handledNumber = true;
+                EditText editText = editTexts.get(position + 1);
+                editText.setText(String.valueOf(key));
+                editText.requestFocus();
+            }
+        });
         return result;
     }
 
@@ -201,6 +227,10 @@ public class CodeBoxContainer extends LinearLayout {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if(count == 0){
                 editTexts.get(editTexts.size() - 2).requestFocus();
+                return;
+            }
+            if(before == 1){
+                editTexts.get(editTexts.size() - 1).setSelection(1);
                 return;
             }
             if(runnable != null){
