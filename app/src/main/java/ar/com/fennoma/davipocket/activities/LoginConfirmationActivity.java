@@ -156,9 +156,20 @@ public class LoginConfirmationActivity extends BaseActivity {
         countrySpinner = (Spinner) findViewById(R.id.country_spinner);
         selectedCountryText = (TextView) findViewById(R.id.country_text);
 
+        selectedCountryText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    DialogUtil.hideKeyboard(LoginConfirmationActivity.this);
+                    //selectedCountryText.performClick();
+                    //countrySpinner.performClick();
+                }
+            }
+        });
         selectedCountryText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //DialogUtil.hideKeyboard(LoginConfirmationActivity.this);
                 countrySpinner.performClick();
             }
         });
@@ -172,7 +183,7 @@ public class LoginConfirmationActivity extends BaseActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                DialogUtil.hideKeyboard(LoginConfirmationActivity.this);
             }
         });
         ArrayAdapter<Country> adapter = new ArrayAdapter<Country>(this, android.R.layout.simple_spinner_item,

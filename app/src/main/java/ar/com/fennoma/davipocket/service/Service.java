@@ -52,6 +52,7 @@ public class Service {
     private static String VALIDATE_OTP = "/user/validate_otp_pin";
     private static String SET_PASSWORD = "/user/set_password";
     private static String FORGOT_PASSWORD = "/user/forgot_password";
+    private static String SET_EXPIRED_PASSWORD = "/user/set_expired_password";
     private static String LOGOUT = "/user/logout";
 
     public static JSONObject getPersonIdTypes() {
@@ -689,7 +690,7 @@ public class Service {
         HttpURLConnection urlConnection = null;
         LoginResponse response = null;
         try {
-            urlConnection = getHttpURLConnection(SET_PASSWORD);
+            urlConnection = getHttpURLConnection(SET_EXPIRED_PASSWORD);
             urlConnection.setReadTimeout(10000);
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");

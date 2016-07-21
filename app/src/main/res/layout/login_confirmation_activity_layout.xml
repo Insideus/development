@@ -55,6 +55,7 @@
             android:paddingRight="@dimen/login_side_padding"
             android:textColor="@color/login_input_text_color"
             android:textColorHint="@color/gray_text_color"
+            android:nextFocusDown="@+id/country_text"
             android:textSize="@dimen/login_input_text_size" />
 
         <View
