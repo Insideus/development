@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.LoginSteps;
@@ -19,11 +20,17 @@ import ar.com.fennoma.davipocket.session.Session;
  */
 public class LoginBaseActivity extends BaseActivity {
 
+    private static int EXPIRED_PASSWORD_TOAST = 101;
+    private static int EXPIRED_OTP_PASSWORD_TOAST = 102;
+    private static int SET_PASSWORD_TOAST = 103;
+
     Spinner idTypeSpinner;
     TextView selectedIdTypeText;
     TextView virtualPasswordText;
     TextView personIdNumber;
     PersonIdType selectedIdType;
+
+    private String additionalParam;
 
     public class LoginTask extends AsyncTask<String, Void, LoginResponse> {
 
@@ -192,25 +199,26 @@ public class LoginBaseActivity extends BaseActivity {
                     startActivity(nextTokenIntent);
                     break;
                case SET_VIRTUAL_PASSWORD:
-                    Intent setVirtualPasswordIntent = new Intent(this, ChangePasswordStep2Activity.class);
-                    setVirtualPasswordIntent.putExtra(ChangePasswordStep2Activity.ID_TYPE_KEY, String.valueOf(selectedIdType.getId()));
-                    setVirtualPasswordIntent.putExtra(ChangePasswordStep2Activity.ID_NUMBER_KEY, personIdNumber.getText().toString());
-                    setVirtualPasswordIntent.putExtra(ChangePasswordStep2Activity.PRODUCT_CODE_KEY, additionalParam);
-                    startActivity(setVirtualPasswordIntent);
+                    this.additionalParam = additionalParam;
+                    Intent toastSetPasswordIntent = new Intent(this, ToastDialogActivity.class);
+                    toastSetPasswordIntent.putExtra(ToastDialogActivity.TITLE_KEY, getString(R.string.generic_service_error_title));
+                    toastSetPasswordIntent.putExtra(ToastDialogActivity.SUBTITLE_KEY, "");
+                    toastSetPasswordIntent.putExtra(ToastDialogActivity.TEXT_KEY, getString(R.string.set_virtual_password_error_text));
+                    startActivityForResult(toastSetPasswordIntent, SET_PASSWORD_TOAST);
                     break;
                 case PASSWORD_EXPIRED:
-                    Intent expiredPasswordIntent = new Intent(this, ChangePasswordStep3Activity.class);
-                    expiredPasswordIntent.putExtra(ChangePasswordStep3Activity.ID_TYPE_KEY, String.valueOf(selectedIdType.getId()));
-                    expiredPasswordIntent.putExtra(ChangePasswordStep3Activity.ID_NUMBER_KEY, personIdNumber.getText().toString());
-                    expiredPasswordIntent.putExtra(ChangePasswordStep3Activity.EXPIRED_PASSWORD_KEY, true);
-                    startActivity(expiredPasswordIntent);
+                    Intent toastExpiredIntent = new Intent(this, ToastDialogActivity.class);
+                    toastExpiredIntent.putExtra(ToastDialogActivity.TITLE_KEY, getString(R.string.generic_service_error_title));
+                    toastExpiredIntent.putExtra(ToastDialogActivity.SUBTITLE_KEY, "");
+                    toastExpiredIntent.putExtra(ToastDialogActivity.TEXT_KEY, getString(R.string.expired_password_error_message));
+                    startActivityForResult(toastExpiredIntent, EXPIRED_PASSWORD_TOAST);
                     break;
                 case PASSWORD_EXPIRED_OTP_VALIDATION_NEEDED:
-                    Intent expiredOtpPasswordIntent = new Intent(this, PasswordConfirmationActivity.class);
-                    expiredOtpPasswordIntent.putExtra(PasswordConfirmationActivity.ID_TYPE_KEY, String.valueOf(selectedIdType.getId()));
-                    expiredOtpPasswordIntent.putExtra(PasswordConfirmationActivity.ID_NUMBER_KEY, personIdNumber.getText().toString());
-                    expiredOtpPasswordIntent.putExtra(PasswordConfirmationActivity.EXPIRED_PASSWORD_KEY, true);
-                    startActivity(expiredOtpPasswordIntent);
+                    Intent toastOtpExpiredIntent = new Intent(this, ToastDialogActivity.class);
+                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.TITLE_KEY, getString(R.string.generic_service_error_title));
+                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.SUBTITLE_KEY, "");
+                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.TEXT_KEY, getString(R.string.expired_password_error_message));
+                    startActivityForResult(toastOtpExpiredIntent, EXPIRED_OTP_PASSWORD_TOAST);
                     break;
                 default:
                     super.processErrorAndContinue(error, additionalParam);
@@ -231,4 +239,31 @@ public class LoginBaseActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == SET_PASSWORD_TOAST) {
+            Intent setVirtualPasswordIntent = new Intent(this, ChangePasswordStep2Activity.class);
+            setVirtualPasswordIntent.putExtra(ChangePasswordStep2Activity.ID_TYPE_KEY, String.valueOf(selectedIdType.getId()));
+            setVirtualPasswordIntent.putExtra(ChangePasswordStep2Activity.ID_NUMBER_KEY, personIdNumber.getText().toString());
+            setVirtualPasswordIntent.putExtra(ChangePasswordStep2Activity.PRODUCT_CODE_KEY, additionalParam);
+            this.additionalParam = null;
+            startActivity(setVirtualPasswordIntent);
+
+        }
+        if(requestCode == EXPIRED_PASSWORD_TOAST) {
+            Intent expiredPasswordIntent = new Intent(this, ChangePasswordStep3Activity.class);
+            expiredPasswordIntent.putExtra(ChangePasswordStep3Activity.ID_TYPE_KEY, String.valueOf(selectedIdType.getId()));
+            expiredPasswordIntent.putExtra(ChangePasswordStep3Activity.ID_NUMBER_KEY, personIdNumber.getText().toString());
+            expiredPasswordIntent.putExtra(ChangePasswordStep3Activity.EXPIRED_PASSWORD_KEY, true);
+            startActivity(expiredPasswordIntent);
+        }
+        if(requestCode == EXPIRED_OTP_PASSWORD_TOAST) {
+            Intent expiredOtpPasswordIntent = new Intent(this, PasswordConfirmationActivity.class);
+            expiredOtpPasswordIntent.putExtra(PasswordConfirmationActivity.ID_TYPE_KEY, String.valueOf(selectedIdType.getId()));
+            expiredOtpPasswordIntent.putExtra(PasswordConfirmationActivity.ID_NUMBER_KEY, personIdNumber.getText().toString());
+            expiredOtpPasswordIntent.putExtra(PasswordConfirmationActivity.EXPIRED_PASSWORD_KEY, true);
+            startActivity(expiredOtpPasswordIntent);
+        }
+    }
 }

@@ -9,12 +9,14 @@ public enum  ErrorMessages {
     LOGIN_ERROR("error.login_error"),
     TOKEN_REQUIRED_ERROR("error.login_error.token_required"),
     NEXT_TOKEN_ERROR("error.login_error.next_token"),
+    WEB_PASSWORD_ERROR("error.login_error.web_password"),
     INVALID_TOKEN("error.login_error"),
     CONFIRMATION_ERROR("error.user_confirmation_error"),
     SET_VIRTUAL_PASSWORD("error.login_error.set_virtual_password"),
     VALIDATE_PRODUCT_ERROR("error.validate_product_error"),
     PASSWORD_EXPIRED("error.login_error.virtual_password_expired"),
-    PASSWORD_EXPIRED_OTP_VALIDATION_NEEDED("error.login_error.virtual_password_expired.otp_validation_needed");
+    PASSWORD_EXPIRED_OTP_VALIDATION_NEEDED("error.login_error.virtual_password_expired.otp_validation_needed"),
+    VIRTUAL_PASSWORD_VALIDATION_ERROR("error.virtual_password_validation");
 
     ErrorMessages(String errorCode) {
         this.errorCode = errorCode;

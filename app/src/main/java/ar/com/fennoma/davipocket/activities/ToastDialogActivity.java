@@ -101,4 +101,6 @@ public class ToastDialogActivity extends BaseActivity{
         facebookIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(facebookIntent);
     }
+
+
 }

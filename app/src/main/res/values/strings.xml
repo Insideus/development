@@ -4,7 +4,8 @@
 
     <string name="id_type_hint">TIPO DE DOCUMENTO</string>
     <string name="id_number_hint">NÚMERO DE DOCUMENTO</string>
-    <string name="login_password_hint">CLAVE VIRTUAL O SEGUNDA CLAVE</string>
+    <string name="login_password_hint">CLAVE VIRTUAL O CLAVE PERSONAL</string>
+    <string name="login_token_password_hint">CLAVE PERSONAL</string>
     <string name="login_button_text">INGRESAR</string>
     <string name="login_forgot_password_button_text">¿OLVIDÓ O BLOQUEÓ SU CLAVE?</string>
     <string name="login_validate_token_button_text">VALIDAR TOKEN</string>
@@ -77,6 +78,7 @@
     <string name="change_password_step_3_empty_old_virtual_password_error">Debe ingresar su clave virtual</string>
     <string name="change_password_step_3_empty_virtual_password_error">Debe ingresar una clave virtual nueva</string>
     <string name="change_password_step_3_empty_password_repeat_error">Debe volver a ingresar la nueva contraseña virtual</string>
+    <string name="change_password_step_3_password_repeat_error">Las contraseñas ingresadas deben ser iguales</string>
 
     <string name="change_password_bank_product">SELECCIONE PRODUCTO</string>
 
@@ -102,6 +104,8 @@
 
     <string name="login_error_message_title">ERROR</string>
     <string name="login_error_message_text">ACCESO DENEGADO, VERIFIQUE LOS DATOS INGRESADOS.</string>
+    <string name="login_web_password_error_message_title">CLAVE WEB</string>
+    <string name="login_web_password_error_message_text">Comuníquese con el callcenter para poder ingresar al sistema.</string>
     <string name="help_dialog_title_1">AYUDA</string>
     <string name="help_dialog_title_2">CLAVE VIRTUAL</string>
     <string name="rate_app_dialog_title_1">VALORAR</string>
@@ -114,6 +118,8 @@
     <string name="invalid_session_title">ERROR</string>
     <string name="invalid_session_subtitle">Su sesión es inválida.</string>
     <string name="invalid_session_text">Por favor ingrese sus credenciales para continuar operando.</string>
+    <string name="set_virtual_password_error_text">Debe asignar una clave virtual para acceder.</string>
+    <string name="expired_password_error_message">Su clave virtual ha expirado.</string>
 
 
 </resources>

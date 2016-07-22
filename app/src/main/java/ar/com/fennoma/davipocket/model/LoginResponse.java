@@ -45,7 +45,9 @@ public class LoginResponse implements Parcelable {
     public static LoginResponse fromJson(JSONObject json) {
         LoginResponse response = new LoginResponse();
         try {
-            response.setSid(json.getString("sid"));
+            if(json.has("sid")) {
+                response.setSid(json.getString("sid"));
+            }
             if(json.has("pending_step")) {
                 response.setPendingStep(json.getString("pending_step"));
             }

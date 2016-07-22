@@ -34,6 +34,7 @@ public class Service {
     private static int SUCCESS_CODE = 200;
     private static String DATA_TAG = "data";
     private static String ERROR_CODE_TAG = "error_code";
+    private static String ERROR_MESSAGE_TAG = "error_message";
     private static String METHOD_TAG = "method";
     private static String NEXT_TOKEN_TAG = "next_token_session";
 
@@ -668,11 +669,11 @@ public class Service {
                     response = LoginResponse.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
-                    String method = null;
-                    if(responseJson.has(METHOD_TAG)) {
-                        method = responseJson.getString(METHOD_TAG);
+                    String errorMessage = null;
+                    if(responseJson.has(ERROR_MESSAGE_TAG)) {
+                        errorMessage = responseJson.getString(ERROR_MESSAGE_TAG);
                     }
-                    throw new ServiceException(errorCode, method);
+                    throw new ServiceException(errorCode, errorMessage);
                 }
             }
         } catch (IOException | JSONException e) {
@@ -725,11 +726,11 @@ public class Service {
                     response = LoginResponse.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
-                    String method = null;
-                    if(responseJson.has(METHOD_TAG)) {
-                        method = responseJson.getString(METHOD_TAG);
+                    String errorMessage = null;
+                    if(responseJson.has(ERROR_MESSAGE_TAG)) {
+                        errorMessage = responseJson.getString(ERROR_MESSAGE_TAG);
                     }
-                    throw new ServiceException(errorCode, method);
+                    throw new ServiceException(errorCode, errorMessage);
                 }
             }
         } catch (IOException | JSONException e) {

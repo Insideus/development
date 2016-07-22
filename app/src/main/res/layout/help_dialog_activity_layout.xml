@@ -11,11 +11,20 @@
         android:layout_centerInParent="true"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:paddingTop="40dp"
+        android:paddingTop="25dp"
         android:paddingBottom="20dp"
         android:background="@drawable/white_rounded_coreners_background"
         android:orientation="vertical"
         android:gravity="center">
+
+        <ImageView
+            android:id="@+id/close_button"
+            android:layout_marginBottom="10dp"
+            android:paddingRight="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:src="@drawable/cancel_ex" />
 
         <TextView
             android:id="@+id/toast_title"
@@ -54,14 +63,6 @@
             android:paddingRight="10dp"
             android:textColor="@color/gray_text_color"
             android:text="@string/help_dialog_activity_text"/>
-
-        <ImageView
-            android:id="@+id/close_button"
-            android:padding="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cancel_ex" />
 
     </LinearLayout>
 

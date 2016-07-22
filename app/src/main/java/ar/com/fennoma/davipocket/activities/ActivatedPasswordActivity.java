@@ -1,5 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -51,14 +52,25 @@ public class ActivatedPasswordActivity extends BaseActivity {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginSteps step = LoginSteps.getStep(loginResponse.getAccountStatus());
-                Session.getCurrentSession(getApplicationContext()).loginUser(loginResponse.getSid());
-                if(step == null) {
-                    step = LoginSteps.REGISTRATION_COMPLETED;
+                if(loginResponse.getSid() != null && loginResponse.getSid().length() > 0) {
+                    LoginSteps step = LoginSteps.getStep(loginResponse.getAccountStatus());
+                    Session.getCurrentSession(getApplicationContext()).loginUser(loginResponse.getSid());
+                    if (step == null) {
+                        step = LoginSteps.REGISTRATION_COMPLETED;
+                    }
+                    goToRegistrationStep(step);
+                } else {
+                    Intent intent = new Intent(ActivatedPasswordActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finishActivity();
                 }
-                goToRegistrationStep(step);
             }
         });
+    }
+
+    private void finishActivity() {
+        this.finish();
     }
 
 }

@@ -96,10 +96,20 @@ public class BaseActivity extends AppCompatActivity {
                             getString(R.string.login_error_message_title),
                             "", getString(R.string.login_error_message_text));
                     break;
+                case WEB_PASSWORD_ERROR:
+                    DialogUtil.toast(this,
+                            getString(R.string.login_web_password_error_message_title),
+                            "", getString(R.string.login_web_password_error_message_text));
+                    break;
                 case VALIDATE_PRODUCT_ERROR:
                     DialogUtil.toast(this,
                             getString(R.string.login_error_message_title), "",
                             getString(R.string.login_error_message_text));
+                    break;
+                case VIRTUAL_PASSWORD_VALIDATION_ERROR:
+                    DialogUtil.toast(this,
+                            getString(R.string.login_error_message_title), "",
+                            additionalParam);
                     break;
                 case INVALID_SESSION:
                     handleInvalidSessionError();

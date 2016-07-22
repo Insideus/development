@@ -100,7 +100,7 @@
             android:layout_marginTop="@dimen/login_input_margin_top"
             android:background="@android:color/transparent"
             android:hint="@string/login_password_hint"
-            android:inputType="textPassword"
+            android:inputType="numberPassword"
             android:paddingLeft="@dimen/login_side_padding"
             android:paddingRight="@dimen/login_side_padding"
             android:singleLine="true"

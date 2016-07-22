@@ -121,6 +121,12 @@ public class ChangePasswordStep3Activity extends BaseActivity{
         if (TextUtils.isEmpty(repeatedPassword.getText())) {
             errorList.add(getString(R.string.change_password_step_3_empty_password_repeat_error));
         }
+        if(!TextUtils.isEmpty(virtualPassword.getText()) && !TextUtils.isEmpty(repeatedPassword.getText())) {
+            if(!TextUtils.equals(virtualPassword.getText(), repeatedPassword.getText())) {
+                errorList.add(getString(R.string.change_password_step_3_password_repeat_error));
+            }
+        }
+
         if (!errorList.isEmpty()) {
             DialogUtil.toast(this,
                     getString(R.string.input_data_error_generic_title),
@@ -159,6 +165,7 @@ public class ChangePasswordStep3Activity extends BaseActivity{
     public class SetPasswordTask extends AsyncTask<String, Void, LoginResponse> {
 
         String errorCode;
+        String errorMessage;
 
         @Override
         protected void onPreExecute() {
@@ -173,6 +180,7 @@ public class ChangePasswordStep3Activity extends BaseActivity{
                 response = Service.setPassword(params[0], params[1], params[2], params[3]);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
+                errorMessage = e.getAdditionalData();
             }
             return response;
         }
@@ -183,7 +191,7 @@ public class ChangePasswordStep3Activity extends BaseActivity{
             if(response == null && errorCode != null) {
                 //Expected error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, "");
+                processErrorAndContinue(error, errorMessage);
             } else if(response == null && errorCode == null) {
                 //Service error.
                 showServiceGenericError();
@@ -198,6 +206,7 @@ public class ChangePasswordStep3Activity extends BaseActivity{
     public class SetExpiredPasswordTask extends AsyncTask<String, Void, LoginResponse> {
 
         String errorCode;
+        String errorMessage;
 
         @Override
         protected void onPreExecute() {
@@ -212,6 +221,7 @@ public class ChangePasswordStep3Activity extends BaseActivity{
                 response = Service.setExpiredPassword(params[0], params[1], params[2], params[3], params[4]);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
+                errorMessage = e.getAdditionalData();
             }
             return response;
         }
@@ -222,7 +232,7 @@ public class ChangePasswordStep3Activity extends BaseActivity{
             if(response == null && errorCode != null) {
                 //Expected error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, "");
+                processErrorAndContinue(error, errorMessage);
             } else if(response == null && errorCode == null) {
                 //Service error.
                 showServiceGenericError();
