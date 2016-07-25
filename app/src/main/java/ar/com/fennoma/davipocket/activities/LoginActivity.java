@@ -3,6 +3,7 @@ package ar.com.fennoma.davipocket.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.PersonIdType;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
+import ar.com.fennoma.davipocket.utils.EncryptationUtils;
 
 public class LoginActivity extends LoginBaseActivity {
 
@@ -25,6 +27,8 @@ public class LoginActivity extends LoginBaseActivity {
             getSupportActionBar().hide();
         }
         setActionToButtons();
+        String paswordEncripted = EncryptationUtils.encryptPin(this, "2589");
+        Log.d("Encriptation", paswordEncripted);
     }
 
     private void setActionToButtons() {
