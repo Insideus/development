@@ -28,7 +28,7 @@ public class LoginActivity extends LoginBaseActivity {
         }
         setActionToButtons();
         String paswordEncripted = EncryptationUtils.encryptPin(this, "2589");
-        Log.d("Encriptation", paswordEncripted);
+        Log.d("Encryptation", paswordEncripted);
     }
 
     private void setActionToButtons() {

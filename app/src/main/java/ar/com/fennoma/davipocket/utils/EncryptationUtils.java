@@ -41,7 +41,7 @@ public class EncryptationUtils {
     public static String encryptPassword(Activity act, String password) {
         try {
             Cipher c = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-            Certificate cert = getCertificate(act, "certs/CERCCV.cer");
+            Certificate cert = getCertificate(act, "certs/RQPINCANALSCN.cer");
             c.init(Cipher.ENCRYPT_MODE, cert.getPublicKey());
             return Base64.encodeToString(c.doFinal(password.getBytes("UTF-8")), Base64.DEFAULT);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException
