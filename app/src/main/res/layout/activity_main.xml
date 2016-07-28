@@ -1,31 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:ignore="MissingPrefix"
-    tools:context=".activities.MainActivity">
+    android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/toolbar_layout"
-        layout="@layout/login_toolbar"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
+        android:layout_height="match_parent"
+        tools:context=".activities.MainActivity"
+        tools:ignore="MissingPrefix">
 
-    <TextView
-        android:id="@+id/logout_button"
-        fontPath="fonts/MyriadPro-Semibold.otf"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_margin="@dimen/button_without_cardview_padding"
-        android:background="@drawable/red_button_background"
-        android:padding="15dp"
-        android:text="@string/logout_button_text"
-        android:textColor="@color/login_button_text_color"
-        android:textSize="@dimen/login_input_text_size"
-        android:layout_alignParentBottom="true"
-        android:textStyle="bold" />
+        <include
+            android:id="@+id/toolbar_layout"
+            layout="@layout/main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/logout_button"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="start"
+            android:layout_margin="@dimen/button_without_cardview_padding"
+            android:background="@drawable/red_button_background"
+            android:padding="15dp"
+            android:text="@string/logout_button_text"
+            android:textColor="@color/login_button_text_color"
+            android:textSize="@dimen/login_input_text_size"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <include layout="@layout/navigation_drawer_layout" />
+</android.support.v4.widget.DrawerLayout>

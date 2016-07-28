@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/left_drawer"
+    android:layout_width="320dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@android:color/white"
+    android:choiceMode="singleChoice"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="0dp"
+    tools:ignore="MissingPrefix">
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <!-- The navigation drawer -->
+
+
+    <LinearLayout
+        android:id="@+id/title_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/red_base_color"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="10dp"
+            android:text="@string/navigation_drawer_title"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_bar"
+        android:layout_below="@id/title_container"
+        android:background="@color/navigation_drawer_item_background"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/home_shortcut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/navigation_drawer_item_background">
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="15dp"
+                android:drawablePadding="25dp"
+                android:drawableStart="@drawable/home_shortcut_icon"
+                android:gravity="center_vertical"
+                android:text="@string/navigation_drawer_home_title"
+                android:textAllCaps="true"
+                android:textColor="@color/navigation_drawer_text_color"
+                android:textSize="16dp" />
+        </FrameLayout>
+
+        <View
+            android:id="@+id/home_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/home_shortcut"
+            android:background="@android:color/white" />
+
+        <FrameLayout
+            android:id="@+id/my_cards_shortcut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/home_separator"
+            android:background="@color/navigation_drawer_item_background">
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="15dp"
+                android:drawablePadding="25dp"
+                android:drawableStart="@drawable/my_cards_shortcut_icon"
+                android:gravity="center_vertical"
+                android:text="@string/navigation_drawer_my_cards_title"
+                android:textAllCaps="true"
+                android:textColor="@color/navigation_drawer_text_color"
+                android:textSize="16dp" />
+        </FrameLayout>
+
+        <View
+            android:id="@+id/my_cards_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/my_cards_shortcut"
+            android:background="@android:color/white" />
+
+        <FrameLayout
+            android:id="@+id/my_shopping_shortcut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/my_cards_separator"
+            android:background="@color/navigation_drawer_item_background">
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="15dp"
+                android:drawablePadding="25dp"
+                android:drawableStart="@drawable/my_shopping_shortcut_icon"
+                android:gravity="center_vertical"
+                android:text="@string/navigation_drawer_my_shopping_title"
+                android:textAllCaps="true"
+                android:textColor="@color/navigation_drawer_text_color"
+                android:textSize="16dp" />
+        </FrameLayout>
+
+        <View
+            android:id="@+id/my_shopping_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/my_shopping_shortcut"
+            android:background="@android:color/white" />
+
+        <FrameLayout
+            android:id="@+id/my_addresses_shortcut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/my_shopping_separator"
+            android:background="@color/navigation_drawer_item_background">
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="15dp"
+                android:drawablePadding="25dp"
+                android:drawableStart="@drawable/my_addresses__shortcut_icon"
+                android:gravity="center_vertical"
+                android:text="@string/navigation_drawer_my_addresses_title"
+                android:textAllCaps="true"
+                android:textColor="@color/navigation_drawer_text_color"
+                android:textSize="16dp" />
+        </FrameLayout>
+
+        <View
+            android:id="@+id/my_addresses_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/my_addresses_shortcut"
+            android:background="@android:color/white" />
+
+        <FrameLayout
+            android:id="@+id/preferences_shortcut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/my_addresses_separator"
+            android:background="@color/navigation_drawer_item_background">
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="15dp"
+                android:drawablePadding="25dp"
+                android:drawableStart="@drawable/preferences_shortcut_icon"
+                android:gravity="center_vertical"
+                android:text="@string/navigation_drawer_preferences_title"
+                android:textAllCaps="true"
+                android:textColor="@color/navigation_drawer_text_color"
+                android:textSize="16dp" />
+        </FrameLayout>
+
+        <View
+            android:id="@+id/preferences_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/preferences_shortcut"
+            android:background="@android:color/white" />
+
+        <FrameLayout
+            android:id="@+id/help_shortcut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/preferences_separator"
+            android:background="@color/navigation_drawer_item_background">
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="15dp"
+                android:drawablePadding="25dp"
+                android:drawableStart="@drawable/help_shortcut_icon"
+                android:gravity="center_vertical"
+                android:text="@string/navigation_drawer_help_title"
+                android:textAllCaps="true"
+                android:textColor="@color/navigation_drawer_text_color"
+                android:textSize="16dp" />
+        </FrameLayout>
+
+        <View
+            android:id="@+id/help_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/help_shortcut"
+            android:background="@android:color/white" />
+
+        <FrameLayout
+            android:id="@+id/logout_shortcut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/help_separator"
+            android:background="@color/navigation_drawer_item_background">
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginStart="85dp"
+                android:layout_marginTop="15dp"
+                android:drawablePadding="25dp"
+                android:gravity="center_vertical"
+                android:text="@string/navigation_drawer_logout_title"
+                android:textAllCaps="true"
+                android:textColor="@color/red_base_color"
+                android:textSize="16dp" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/upper_corners_rounded_shape"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/last_uthenticating"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:text="Última autenticación 24 · jun · 2016 / 9:23 AM"
+                android:textColor="@android:color/white"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white">
+
+        <TextView
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/bottom_bar_davi_logo"
+            android:text="@string/navigation_drawer_bottom_bar_first_text"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="12dp" />
+
+        <ImageView
+            android:id="@+id/bottom_bar_davi_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="10dp"
+            android:src="@drawable/nav_davi_logo_bottom_bar" />
+
+        <TextView
+            android:id="@+id/davi_points_amount"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/bottom_bar_davi_logo"
+            android:text="1.600"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+        <TextView
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/davi_points_amount"
+            android:text="@string/navigation_drawer_bottom_bar_second_text"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="12dp" />
+    </RelativeLayout>
+</RelativeLayout>

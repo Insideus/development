@@ -120,6 +120,16 @@
     <string name="invalid_session_text">Por favor ingrese sus credenciales para continuar operando.</string>
     <string name="set_virtual_password_error_text">Debe asignar una clave virtual para acceder.</string>
     <string name="expired_password_error_message">Su clave virtual ha expirado.</string>
+    <string name="navigation_drawer_title">Menú</string>
+    <string name="navigation_drawer_home_title">Ir al home</string>
+    <string name="navigation_drawer_my_cards_title">Mis tarjetas</string>
+    <string name="navigation_drawer_my_shopping_title">Mis compras</string>
+    <string name="navigation_drawer_my_addresses_title">Mis direcciones</string>
+    <string name="navigation_drawer_preferences_title">Preferencias</string>
+    <string name="navigation_drawer_help_title">Ayuda</string>
+    <string name="navigation_drawer_logout_title">Cerrar Sesión</string>
+    <string name="navigation_drawer_bottom_bar_first_text">Ud. dispone de</string>
+    <string name="navigation_drawer_bottom_bar_second_text">Davipuntos</string>
 
 
 </resources>
