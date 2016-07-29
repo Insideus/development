@@ -22,7 +22,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setActionBar(getString(R.string.main_activity_title), false);
+        setToolbar(R.id.toolbar_layout, false);
+        //setActionBar(getString(R.string.main_activity_title), false);
         tasInit();
         setButtons();
     }

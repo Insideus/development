@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/item_background"
+    android:orientation="vertical"
+    tools:context=".activities.CardPayDetailActivity"
+    tools:ignore="MissingPrefix">
+
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/main_toolbar" />
+
+    <FrameLayout
+        android:id="@+id/title_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_layout"
+        android:background="@color/red_base_color">
+
+        <TextView
+            android:id="@+id/card_title"
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/underlined_title_background"
+            android:paddingBottom="@dimen/navigation_drawer_basic_padding"
+            android:paddingTop="@dimen/navigation_drawer_basic_padding"
+            android:text="oooo oooo oooo 1234"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/subtitle_text_size" />
+
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_container"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/login_id_type_text"
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:clickable="true"
+            android:drawableEnd="@drawable/spinner_down_arrow"
+            android:editable="false"
+            android:focusable="true"
+            android:hint="@string/card_pay_detail_mocked_spinner"
+            android:paddingBottom="@dimen/card_pay_detail_spacing_between_items"
+            android:paddingLeft="@dimen/card_pay_detail_items_margin_start"
+            android:paddingRight="@dimen/card_pay_detail_items_margin_start"
+            android:paddingTop="@dimen/card_pay_detail_spacing_between_items"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:textSize="@dimen/login_input_text_size" />
+
+        <Spinner
+            android:id="@+id/account_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:spinnerMode="dropdown" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/total_payment"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:drawablePadding="15dp"
+                android:drawableStart="@drawable/checkbox_selector"
+                android:paddingBottom="@dimen/card_pay_detail_spacing_between_items"
+                android:paddingEnd="20dp"
+                android:paddingStart="@dimen/card_pay_detail_items_margin_start"
+                android:paddingTop="@dimen/card_pay_detail_spacing_between_items"
+                android:text="@string/card_pay_detail_total_payment_title"
+                android:textAllCaps="true"
+                android:textColor="@color/input_text_color"
+                android:textSize="@dimen/common_text_size" />
+
+            <TextView
+                android:id="@+id/total_payment_label"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/card_pay_detail_items_margin_start"
+                android:text="@string/card_pay_detail_mocked_total_payment"
+                android:textColor="@color/input_text_color"
+                android:textSize="@dimen/common_text_size" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/minimum_payment"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@android:color/transparent"
+                android:drawablePadding="15dp"
+                android:drawableStart="@drawable/checkbox_selector"
+                android:paddingBottom="@dimen/card_pay_detail_spacing_between_items"
+                android:paddingEnd="20dp"
+                android:paddingStart="@dimen/card_pay_detail_items_margin_start"
+                android:paddingTop="@dimen/card_pay_detail_spacing_between_items"
+                android:text="@string/card_pay_detail_minimum_payment_title"
+                android:textAllCaps="true"
+                android:textColor="@color/input_text_color"
+                android:textSize="@dimen/common_text_size" />
+
+            <TextView
+                android:id="@+id/minimum_payment_label"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/card_pay_detail_items_margin_start"
+                android:text="@string/card_pay_detail_mocked_minimum_payment"
+                android:textColor="@color/input_text_color"
+                android:textSize="@dimen/common_text_size" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white" />
+
+        <CheckBox
+            android:id="@+id/other_payment"
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@android:color/transparent"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/checkbox_selector"
+            android:paddingBottom="@dimen/card_pay_detail_spacing_between_items"
+            android:paddingEnd="20dp"
+            android:paddingStart="@dimen/card_pay_detail_items_margin_start"
+            android:paddingTop="@dimen/card_pay_detail_spacing_between_items"
+            android:text="@string/card_pay_detail_other_payment_title"
+            android:textAllCaps="true"
+            android:textColor="@color/input_text_color"
+            android:textSize="@dimen/common_text_size" />
+
+        <LinearLayout
+            android:id="@+id/other_payment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/card_pay_detail_spacing_between_items"
+            android:paddingTop="@dimen/card_pay_detail_spacing_between_items">
+
+            <EditText
+                android:id="@+id/other_payment_value"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:textColor="@color/input_text_color"
+                android:textSize="@dimen/common_text_size" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/pay_button"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_marginBottom="@dimen/card_pay_detail_pay_button_bottom_margin"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/card_payment_pay_button"/>
+
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/navigation_drawer_basic_padding"
+        android:paddingTop="@dimen/navigation_drawer_basic_padding">
+
+        <TextView
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_pay_detail_balance_title"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
+
+        <TextView
+            android:id="@+id/balance"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
+            android:text="$ 5.947.300"
+            android:textStyle="bold"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_pay_detail_payment_date_title"
+            android:layout_marginStart="40dp"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
+
+        <TextView
+            android:id="@+id/payment_date"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
+            android:text="20 · 03 · 16"
+            android:textStyle="bold"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/portfolio_card" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/my_cards_items_spacing_bar"
+        android:paddingEnd="@dimen/my_cards_items_bar_lateral_spacing"
+        android:paddingStart="@dimen/my_cards_items_bar_lateral_spacing"
+        android:paddingTop="@dimen/my_cards_items_spacing_bar">
+
+        <ImageView
+            android:id="@+id/first_card_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/my_cards_first_card_indicator" />
+
+        <ImageView
+            android:id="@+id/disable_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/my_cards_disable_card_button" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/my_cards_items_spacing_between_buttons"
+            android:layout_toStartOf="@id/disable_card"
+            android:src="@drawable/my_cards_avalaible_card_indicator" />
+
+    </RelativeLayout>
+
+</LinearLayout>

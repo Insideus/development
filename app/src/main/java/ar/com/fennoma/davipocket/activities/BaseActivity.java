@@ -3,7 +3,12 @@ package ar.com.fennoma.davipocket.activities;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -20,6 +25,8 @@ public class BaseActivity extends AppCompatActivity {
     private Dialog loadingDialog = null;
     private Handler loadingHandler = null;
     private Runnable loadingRunnable = null;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -47,6 +54,12 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    protected void setToolbar(int toolbarId, boolean backButton) {
+        setSupportActionBar((Toolbar) findViewById(toolbarId));
+        hideTitle();
+        setNavigationDrawer(R.id.drawer_layout, toolbarId, !backButton);
+    }
+
     protected void showLoading() {
         loadingHandler = new Handler();
         loadingRunnable = new Runnable() {
@@ -55,7 +68,6 @@ public class BaseActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         hideLoading();
-
                         loadingDialog = new Dialog(BaseActivity.this, R.style.CustomAlertDialog);
                         loadingDialog.setContentView(R.layout.dialog_loading);
                         loadingDialog.setCancelable(false);
@@ -164,6 +176,105 @@ public class BaseActivity extends AppCompatActivity {
             hideLoading();
         }
         super.onPause();
+    }
+
+    protected void hideTitle() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+    }
+
+    protected void setNavigationDrawer(int drawerLayoutId, int toolbarId, boolean homeButton) {
+        drawerLayout = (DrawerLayout) findViewById(drawerLayoutId);
+        Toolbar toolbar = (Toolbar) findViewById(toolbarId);
+        if (drawerLayout == null || getSupportActionBar() == null || toolbar == null) {
+            return;
+        }
+        if (homeButton) {
+            mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                    R.string.drawer_open, R.string.drawer_close) {
+
+                public void onDrawerClosed(View view) {
+                    super.onDrawerClosed(view);
+                    invalidateOptionsMenu();
+                }
+
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    invalidateOptionsMenu();
+                }
+            };
+            drawerLayout.addDrawerListener(mDrawerToggle);
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+            mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                    }else{
+                        drawerLayout.openDrawer(GravityCompat.START);
+                    }
+                }
+            });
+        } else {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
+        setButtonListeners();
+    }
+
+    private void setButtonListeners() {
+        View home = findViewById(R.id.home_shortcut);
+        View logout = findViewById(R.id.logout_shortcut);
+        View myCards = findViewById(R.id.my_cards_shortcut);
+        if (home == null || logout == null || myCards == null) {
+            return;
+        }
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeDrawer();
+            }
+        });
+        myCards.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(BaseActivity.this, MyCardsActivity.class));
+                startActivity(new Intent(BaseActivity.this, NewCardActivity.class));
+                closeDrawer();
+            }
+        });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void closeDrawer() {
+        if (drawerLayout == null) {
+            return;
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (mDrawerToggle == null) {
+            return;
+        }
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (mDrawerToggle == null) {
+            return;
+        }
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
 }

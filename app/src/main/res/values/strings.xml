@@ -130,6 +130,18 @@
     <string name="navigation_drawer_logout_title">Cerrar Sesión</string>
     <string name="navigation_drawer_bottom_bar_first_text">Ud. dispone de</string>
     <string name="navigation_drawer_bottom_bar_second_text">Davipuntos</string>
+    <string name="drawer_open">Nav Open</string>
+    <string name="drawer_close">Nav Close</string>
+    <string name="last_authenticating_title">Última autenticación</string>
+    <string name="card_not_visible_content">oooo</string>
+    <string name="card_pay_detail_mocked_spinner">AHORROS · 002200165529</string>
+    <string name="card_pay_detail_mocked_total_payment">$ 2.314.200</string>
+    <string name="card_pay_detail_total_payment_title">Valor Total</string>
+    <string name="card_pay_detail_minimum_payment_title">Pago mínimo</string>
+    <string name="card_pay_detail_mocked_minimum_payment">$ 843.000</string>
+    <string name="card_pay_detail_other_payment_title">Otro valor</string>
+    <string name="card_pay_detail_payment_date_title">Fecha pago</string>
+    <string name="card_pay_detail_balance_title">Cupo disponible</string>
 
 
 </resources>
