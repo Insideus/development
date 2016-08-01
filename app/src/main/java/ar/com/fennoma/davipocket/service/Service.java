@@ -925,22 +925,42 @@ public class Service {
         Card card = new Card(R.drawable.portfolio_card);
         card.setEnabled(true);
         card.setFavouriteCard(true);
+        card.setCardNumber("1234 1234 1234 1234");
+        card.setOwnerName("Pedro Pérez");
+        card.setMonth("11");
+        card.setYear("18");
+        card.setCvv("123");
         cards.add(card);
 
         card = new Card(R.drawable.blue_mocked_card);
         card.setEnabled(true);
         card.setFavouriteCard(false);
+        card.setCardNumber("4321 1234 1234 1234");
+        card.setOwnerName("Pedro Pérez");
+        card.setMonth("11");
+        card.setYear("18");
+        card.setCvv("123");
         cards.add(card);
 
         card = new Card(R.drawable.portfolio_card);
         card.setEnabled(false);
         card.setFavouriteCard(false);
+        card.setCardNumber("3421 1234 1234 1234");
+        card.setOwnerName("Pedro Pérez");
+        card.setMonth("11");
+        card.setYear("18");
+        card.setCvv("123");
         cards.add(card);
 
         card = new Card(R.drawable.mocked_inactive_card);
         card.setEnabled(false);
         card.setInactive(true);
         card.setFavouriteCard(false);
+        card.setCardNumber("1243 1234 1234 1234");
+        card.setOwnerName("Pedro Pérez");
+        card.setMonth("11");
+        card.setYear("18");
+        card.setCvv("123");
         cards.add(card);
 
         return cards;

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +102,11 @@ public class MyCardsActivity extends BaseActivity {
                 final Card card = (Card) cards.get(position);
                 ActualCardHolder holder = (ActualCardHolder) genericHolder;
                 holder.card.setImageResource(card.getImageResource());
+                holder.number.setText(card.getCardNumber());
+                holder.month.setText(card.getMonth());
+                holder.year.setText(card.getYear());
+                holder.cvv.setText(card.getCvv());
+                holder.name.setText(card.getOwnerName());
                 holder.card.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -162,6 +168,11 @@ public class MyCardsActivity extends BaseActivity {
         private ImageView firstCard;
         private View checkCardData;
         private View disableCard;
+        private TextView name;
+        private TextView number;
+        private TextView cvv;
+        private TextView month;
+        private TextView year;
 
         public ActualCardHolder(View itemView) {
             super(itemView);
@@ -170,6 +181,11 @@ public class MyCardsActivity extends BaseActivity {
             firstCard = (ImageView) itemView.findViewById(R.id.first_card_indicator);
             checkCardData = itemView.findViewById(R.id.check_card_data);
             disableCard = itemView.findViewById(R.id.disable_card);
+            name = (TextView) itemView.findViewById(R.id.credit_card_name);
+            number = (TextView) itemView.findViewById(R.id.credit_card_number);
+            cvv = (TextView) itemView.findViewById(R.id.cvv);
+            month = (TextView) itemView.findViewById(R.id.expiration_month);
+            year = (TextView) itemView.findViewById(R.id.expiration_year);
         }
     }
 }
