@@ -142,6 +142,13 @@
     <string name="card_pay_detail_other_payment_title">Otro valor</string>
     <string name="card_pay_detail_payment_date_title">Fecha pago</string>
     <string name="card_pay_detail_balance_title">Cupo disponible</string>
+    <string name="new_card_detail_number_hint">NÚMERO</string>
+    <string name="new_card_detail_month_hint">MM</string>
+    <string name="new_card_detail_year_hint">YY</string>
+    <string name="new_card_detail_cvv_hint">CVV</string>
+    <string name="new_card_detail_card_name_hint">NOMBRE DE LA TARJETA</string>
+    <string name="card_detail_item_transaction_product_title">Productos</string>
+    <string name="card_detail_item_transaction_price_indicator">$</string>
 
 
 </resources>

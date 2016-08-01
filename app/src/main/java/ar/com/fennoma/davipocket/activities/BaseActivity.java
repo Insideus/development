@@ -239,8 +239,8 @@ public class BaseActivity extends AppCompatActivity {
         myCards.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(BaseActivity.this, MyCardsActivity.class));
-                startActivity(new Intent(BaseActivity.this, NewCardActivity.class));
+                startActivity(new Intent(BaseActivity.this, MyCardsActivity.class));
+                //startActivity(new Intent(BaseActivity.this, NewCardActivity.class));
                 closeDrawer();
             }
         });

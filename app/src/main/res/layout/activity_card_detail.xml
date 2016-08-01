@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_background"
+    android:orientation="vertical"
+    tools:context=".activities.CardPayDetailActivity"
+    tools:ignore="MissingPrefix">
+
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/main_toolbar" />
+
+    <FrameLayout
+        android:id="@+id/title_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_layout"
+        android:background="@color/red_base_color">
+
+        <TextView
+            android:id="@+id/card_title"
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/underlined_title_background"
+            android:paddingBottom="@dimen/navigation_drawer_basic_padding"
+            android:paddingTop="@dimen/navigation_drawer_basic_padding"
+            android:text="oooo oooo oooo 1234"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/subtitle_text_size" />
+
+    </FrameLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_below="@id/title_container"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/navigation_drawer_basic_padding"
+        android:paddingTop="@dimen/navigation_drawer_basic_padding">
+
+        <TextView
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_pay_detail_balance_title"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
+
+        <TextView
+            android:id="@+id/balance"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
+            android:text="$ 5.947.300"
+            android:textStyle="bold"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_pay_detail_payment_date_title"
+            android:layout_marginStart="40dp"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
+
+        <TextView
+            android:id="@+id/payment_date"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
+            android:text="20 · 03 · 16"
+            android:textStyle="bold"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+</RelativeLayout>

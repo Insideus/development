@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.List;
@@ -26,6 +27,10 @@ public class DialogUtil {
             return;
         }
         ((InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+    }
+
+    public static void toast(Activity activity, String text){
+        Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
     }
 
     public static void toast(Activity activity, String title, String subtitle, String text){

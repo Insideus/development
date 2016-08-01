@@ -69,14 +69,14 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_bar"
         android:layout_below="@id/title_container"
-        android:background="@color/item_background"
+        android:background="@color/activity_background"
         android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/home_shortcut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/item_background">
+            android:background="@color/activity_background">
 
             <TextView
                 fontPath="fonts/MyriadPro-Regular.otf"
@@ -106,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/home_separator"
-            android:background="@color/item_background">
+            android:background="@color/activity_background">
 
             <TextView
                 fontPath="fonts/MyriadPro-Regular.otf"
@@ -136,7 +136,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/my_cards_separator"
-            android:background="@color/item_background">
+            android:background="@color/activity_background">
 
             <TextView
                 fontPath="fonts/MyriadPro-Regular.otf"
@@ -166,7 +166,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/my_shopping_separator"
-            android:background="@color/item_background">
+            android:background="@color/activity_background">
 
             <TextView
                 fontPath="fonts/MyriadPro-Regular.otf"
@@ -196,7 +196,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/my_addresses_separator"
-            android:background="@color/item_background">
+            android:background="@color/activity_background">
 
             <TextView
                 fontPath="fonts/MyriadPro-Regular.otf"
@@ -226,7 +226,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/preferences_separator"
-            android:background="@color/item_background">
+            android:background="@color/activity_background">
 
             <TextView
                 fontPath="fonts/MyriadPro-Regular.otf"
@@ -256,7 +256,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/help_separator"
-            android:background="@color/item_background">
+            android:background="@color/activity_background">
 
             <TextView
                 fontPath="fonts/MyriadPro-Regular.otf"

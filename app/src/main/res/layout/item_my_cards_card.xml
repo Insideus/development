@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:padding="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/portfolio_card" />
 
+    <View
+        android:id="@+id/translucent_covering"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@color/translucent_white" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-10dp"
+        android:layout_below="@id/card"
+        android:layout_marginTop="-20dp"
         android:background="@android:color/white"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/my_cards_items_spacing_bar"
@@ -27,7 +34,7 @@
             android:id="@+id/first_card_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/my_cards_first_card_indicator" />
+            android:src="@drawable/my_cards_not_first_card" />
 
         <ImageView
             android:id="@+id/disable_card"
@@ -38,6 +45,7 @@
             android:src="@drawable/my_cards_disable_card_button" />
 
         <ImageView
+            android:id="@+id/check_card_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -47,4 +55,4 @@
 
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

@@ -24,6 +24,7 @@ import java.util.List;
 
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.ServiceException;
+import ar.com.fennoma.davipocket.model.Transaction;
 
 /**
  * Created by Julian Vega on 04/07/2016.
@@ -874,4 +875,44 @@ public class Service {
         return urlConnection;
     }
 
+    public static List<Transaction> getMockedTransactions() {
+        List<Transaction> transactions = new ArrayList<>();
+        Transaction transaction = new Transaction();
+        transaction.setName("Juan Valdéz");
+        transaction.setProductAmount(2);
+        transaction.setPrice("41.200");
+        transaction.setDavipoints(190);
+        transaction.setDate("27/06/16");
+        transactions.add(transaction);
+
+        transaction = new Transaction();
+        transaction.setName("Crepes y Wafles");
+        transaction.setDate("27/06/16");
+        transaction.setPrice("11.800");
+        transaction.setProductAmount(5);
+        transactions.add(transaction);
+
+        transaction = new Transaction();
+        transaction.setName("Crepes y Wafles");
+        transaction.setProductAmount(5);
+        transaction.setDate("27/06/16");
+        transaction.setPrice("11.800");
+        transactions.add(transaction);
+
+        transaction = new Transaction();
+        transaction.setPrice("128.900");
+        transaction.setProductAmount(11);
+        transaction.setDate("08/06/16");
+        transaction.setName("Farmatodo");
+        transactions.add(transaction);
+
+        transaction = new Transaction();
+        transaction.setPrice("6.300");
+        transaction.setDate("09/05/16");
+        transaction.setProductAmount(1);
+        transaction.setName("Carulla Express");
+        transactions.add(transaction);
+
+        return transactions;
+    }
 }
