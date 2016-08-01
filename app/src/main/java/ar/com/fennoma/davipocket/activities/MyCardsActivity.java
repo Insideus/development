@@ -13,9 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.mocked.ButtonCard;
-import ar.com.fennoma.davipocket.model.mocked.Card;
-import ar.com.fennoma.davipocket.model.mocked.CardToShowOnList;
+import ar.com.fennoma.davipocket.model.ButtonCard;
+import ar.com.fennoma.davipocket.model.Card;
+import ar.com.fennoma.davipocket.model.CardToShowOnList;
+import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class MyCardsActivity extends BaseActivity {
@@ -26,33 +27,12 @@ public class MyCardsActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_cards);
-        setToolbar(R.id.toolbar_layout, false);
+        setToolbar(R.id.toolbar_layout, false, getString(R.string.my_cards_activity_title));
         setRecycler();
-        cardsAdapter.setList(getMockedUpData());
+        cardsAdapter.setList(addButtons(Service.getMockedCardList()));
     }
 
-    private List<CardToShowOnList> getMockedUpData() {
-        List<CardToShowOnList> cards = new ArrayList<>();
-        Card card = new Card(R.drawable.portfolio_card);
-        card.setEnabled(true);
-        card.setFirstCard(true);
-        cards.add(card);
-
-        card = new Card(R.drawable.blue_mocked_card);
-        card.setEnabled(true);
-        card.setFirstCard(false);
-        cards.add(card);
-
-        card = new Card(R.drawable.portfolio_card);
-        card.setEnabled(false);
-        card.setFirstCard(false);
-        cards.add(card);
-
-        card = new Card(R.drawable.blue_mocked_card);
-        card.setEnabled(false);
-        card.setFirstCard(false);
-        cards.add(card);
-
+    private List<CardToShowOnList> addButtons(List<CardToShowOnList> cards){
         ButtonCard buttonCard = new ButtonCard(R.drawable.add_e_card_button);
         buttonCard.setType(ButtonCard.eCard);
         cards.add(buttonCard);
@@ -60,9 +40,9 @@ public class MyCardsActivity extends BaseActivity {
         buttonCard = new ButtonCard(R.drawable.add_portfolio_card_button);
         buttonCard.setType(ButtonCard.portfolioCard);
         cards.add(buttonCard);
-
         return cards;
     }
+
 
     private void setRecycler() {
         RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler);
@@ -131,7 +111,7 @@ public class MyCardsActivity extends BaseActivity {
                     holder.translucentCovering.setVisibility(View.INVISIBLE);
                     holder.checkCardData.setVisibility(View.VISIBLE);
                     holder.firstCard.setVisibility(View.VISIBLE);
-                    holder.firstCard.setImageResource(card.isFirstCard() ? R.drawable.my_cards_first_card_indicator : R.drawable.my_cards_not_first_card);
+                    holder.firstCard.setImageResource(card.isFavouriteCard() ? R.drawable.my_cards_favourite_card_indicator : R.drawable.my_cards_not_favourite_card);
                     holder.disableCard.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

@@ -120,6 +120,8 @@
     <string name="invalid_session_text">Por favor ingrese sus credenciales para continuar operando.</string>
     <string name="set_virtual_password_error_text">Debe asignar una clave virtual para acceder.</string>
     <string name="expired_password_error_message">Su clave virtual ha expirado.</string>
+
+    <!-- Navigation Drawer -->
     <string name="navigation_drawer_title">Menú</string>
     <string name="navigation_drawer_home_title">Ir al home</string>
     <string name="navigation_drawer_my_cards_title">Mis tarjetas</string>
@@ -133,7 +135,8 @@
     <string name="drawer_open">Nav Open</string>
     <string name="drawer_close">Nav Close</string>
     <string name="last_authenticating_title">Última autenticación</string>
-    <string name="card_not_visible_content">oooo</string>
+
+    <!-- Card Pay Detail -->
     <string name="card_pay_detail_mocked_spinner">AHORROS · 002200165529</string>
     <string name="card_pay_detail_mocked_total_payment">$ 2.314.200</string>
     <string name="card_pay_detail_total_payment_title">Valor Total</string>
@@ -142,13 +145,23 @@
     <string name="card_pay_detail_other_payment_title">Otro valor</string>
     <string name="card_pay_detail_payment_date_title">Fecha pago</string>
     <string name="card_pay_detail_balance_title">Cupo disponible</string>
+
+    <!-- New Card -->
     <string name="new_card_detail_number_hint">NÚMERO</string>
     <string name="new_card_detail_month_hint">MM</string>
     <string name="new_card_detail_year_hint">YY</string>
     <string name="new_card_detail_cvv_hint">CVV</string>
     <string name="new_card_detail_card_name_hint">NOMBRE DE LA TARJETA</string>
+    <string name="new_card_activity_title">NUEVA TARJETA</string>
+
+    <!-- Card Detail -->
     <string name="card_detail_item_transaction_product_title">Productos</string>
     <string name="card_detail_item_transaction_price_indicator">$</string>
+    <string name="mocked_master_card_title">MASTERCARD BLACK</string>
+    <string name="card_detail_search_bar_hint">BUSCAR MOVIMIENTO</string>
+
+    <!-- My Cards -->
+    <string name="my_cards_activity_title">MIS TARJETAS</string>
 
 
 </resources>

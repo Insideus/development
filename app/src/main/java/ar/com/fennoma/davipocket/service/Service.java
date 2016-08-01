@@ -22,6 +22,10 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.ButtonCard;
+import ar.com.fennoma.davipocket.model.Card;
+import ar.com.fennoma.davipocket.model.CardToShowOnList;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.Transaction;
@@ -915,4 +919,31 @@ public class Service {
 
         return transactions;
     }
+
+    public static List<CardToShowOnList> getMockedCardList() {
+        List<CardToShowOnList> cards = new ArrayList<>();
+        Card card = new Card(R.drawable.portfolio_card);
+        card.setEnabled(true);
+        card.setFavouriteCard(true);
+        cards.add(card);
+
+        card = new Card(R.drawable.blue_mocked_card);
+        card.setEnabled(true);
+        card.setFavouriteCard(false);
+        cards.add(card);
+
+        card = new Card(R.drawable.portfolio_card);
+        card.setEnabled(false);
+        card.setFavouriteCard(false);
+        cards.add(card);
+
+        card = new Card(R.drawable.mocked_inactive_card);
+        card.setEnabled(false);
+        card.setInactive(true);
+        card.setFavouriteCard(false);
+        cards.add(card);
+
+        return cards;
+    }
+
 }

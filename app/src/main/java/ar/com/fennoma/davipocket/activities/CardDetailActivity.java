@@ -1,12 +1,15 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Transaction;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.utils.DateUtils;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class CardDetailActivity extends BaseActivity {
 
@@ -26,8 +30,32 @@ public class CardDetailActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_detail);
+        setToolbar(R.id.toolbar_layout, true, getString(R.string.mocked_master_card_title));
         setRecycler();
+        setSearcher();
         getDataToShow();
+    }
+
+    private void setSearcher() {
+        final EditText query = (EditText) findViewById(R.id.query);
+        View searchButton = findViewById(R.id.search_button);
+        if(query == null || searchButton == null){
+            return;
+        }
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(TextUtils.isEmpty(query.getText())){
+                    return;
+                }
+                doQuery(query.getText().toString());
+            }
+        });
+        query.clearFocus();
+    }
+
+    private void doQuery(String query) {
+        DialogUtil.toast(this, "Haciendo búsqueda");
     }
 
     private void getDataToShow() {
@@ -149,7 +177,7 @@ public class CardDetailActivity extends BaseActivity {
                     holder.button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            finish();
+                            startActivity(new Intent(CardDetailActivity.this, CardPayDetailActivity.class));
                         }
                     });
                 }
@@ -212,4 +240,5 @@ public class CardDetailActivity extends BaseActivity {
             button = itemView.findViewById(R.id.pay_button);
         }
     }
+
 }

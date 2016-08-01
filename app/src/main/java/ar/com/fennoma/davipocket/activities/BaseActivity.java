@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -58,6 +59,22 @@ public class BaseActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(toolbarId));
         hideTitle();
         setNavigationDrawer(R.id.drawer_layout, toolbarId, !backButton);
+    }
+
+    protected void setToolbar(int toolbarId, boolean backButton, String title) {
+        Toolbar toolbar = (Toolbar) findViewById(toolbarId);
+        setSupportActionBar(toolbar);
+        hideTitle();
+        setTitle(toolbar, title);
+        setNavigationDrawer(R.id.drawer_layout, toolbarId, !backButton);
+    }
+
+    private void setTitle(Toolbar toolbar, String title) {
+        TextView titleTextView = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        if(titleTextView == null){
+            return;
+        }
+        titleTextView.setText(title);
     }
 
     protected void showLoading() {
@@ -184,13 +201,23 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void setNavigationDrawer(int drawerLayoutId, int toolbarId, boolean homeButton) {
-        drawerLayout = (DrawerLayout) findViewById(drawerLayoutId);
+    protected void setNavigationDrawer(int drawerLayoutId, int toolbarId, boolean homeButton){
         Toolbar toolbar = (Toolbar) findViewById(toolbarId);
-        if (drawerLayout == null || getSupportActionBar() == null || toolbar == null) {
+        if(toolbar == null){
+            return;
+        }
+        setNavigationDrawer(drawerLayoutId, toolbar, homeButton);
+    }
+
+    protected void setNavigationDrawer(int drawerLayoutId, Toolbar toolbar, boolean homeButton) {
+        if (getSupportActionBar() == null || toolbar == null) {
             return;
         }
         if (homeButton) {
+            drawerLayout = (DrawerLayout) findViewById(drawerLayoutId);
+            if(drawerLayout == null){
+                return;
+            }
             mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                     R.string.drawer_open, R.string.drawer_close) {
 
@@ -205,7 +232,8 @@ public class BaseActivity extends AppCompatActivity {
                 }
             };
             drawerLayout.addDrawerListener(mDrawerToggle);
-            mDrawerToggle.setDrawerIndicatorEnabled(true);
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+            mDrawerToggle.setHomeAsUpIndicator(R.drawable.navigation_drawer_icon);
             mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -216,11 +244,11 @@ public class BaseActivity extends AppCompatActivity {
                     }
                 }
             });
+            setButtonListeners();
         } else {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
-        setButtonListeners();
     }
 
     private void setButtonListeners() {
@@ -240,7 +268,6 @@ public class BaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(BaseActivity.this, MyCardsActivity.class));
-                //startActivity(new Intent(BaseActivity.this, NewCardActivity.class));
                 closeDrawer();
             }
         });
@@ -275,6 +302,18 @@ public class BaseActivity extends AppCompatActivity {
             return;
         }
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle == null) {
+            if (item.getItemId() == android.R.id.home) {
+                onBackPressed();
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
 }

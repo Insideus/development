@@ -34,7 +34,7 @@
             android:id="@+id/first_card_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/my_cards_not_first_card" />
+            android:src="@drawable/my_cards_not_favourite_card" />
 
         <ImageView
             android:id="@+id/disable_card"
