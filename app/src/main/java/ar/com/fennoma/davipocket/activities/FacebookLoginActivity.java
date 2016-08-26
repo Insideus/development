@@ -15,6 +15,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
 import java.util.Arrays;
+import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
@@ -34,6 +35,7 @@ public class FacebookLoginActivity extends BaseActivity {
         setContentView(R.layout.facebook_activity_layout);
         setActionBar(getString(R.string.facebook_login_token_activity_title), false);
         setLoginButtons();
+        LoginManager.getInstance().logOut();
     }
 
     private void setLoginButtons() {
@@ -133,7 +135,8 @@ public class FacebookLoginActivity extends BaseActivity {
     }
 
     private void performFacebookLogin() {
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
+        List<String> permissionNeeds= Arrays.asList("email", "user_birthday");
+        LoginManager.getInstance().logInWithReadPermissions(this, permissionNeeds);
     }
 
     @Override

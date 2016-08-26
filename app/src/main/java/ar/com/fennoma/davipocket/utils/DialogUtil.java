@@ -61,6 +61,27 @@ public class DialogUtil {
         activity.overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
+    public static void showErrorAndGoToLoginActivityToast(Activity activity){
+        Intent intent = new Intent(activity, ToastDialogActivity.class);
+        intent.putExtra(ToastDialogActivity.TITLE_KEY, activity.getString(R.string.login_error_message_title));
+        intent.putExtra(ToastDialogActivity.SUBTITLE_KEY, "");
+        intent.putExtra(ToastDialogActivity.TEXT_KEY, activity.getString(R.string.login_error_message_text));
+        intent.putExtra(ToastDialogActivity.INVALID_SESSION_KEY, true);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
+
+    public static void toastWithCallButton(Activity activity, String title, String subtitle, String text, String phone){
+        Intent intent = new Intent(activity, ToastDialogActivity.class);
+        intent.putExtra(ToastDialogActivity.TITLE_KEY, title);
+        intent.putExtra(ToastDialogActivity.SUBTITLE_KEY, subtitle);
+        intent.putExtra(ToastDialogActivity.TEXT_KEY, text);
+        intent.putExtra(ToastDialogActivity.SHOW_CALL_BUTTON_KEY, true);
+        intent.putExtra(ToastDialogActivity.CALL_BUTTON_NUMBER_KEY, phone);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
+
     public static String concatMessages(List<String> messages){
         String result = "";
         for(String message : messages){

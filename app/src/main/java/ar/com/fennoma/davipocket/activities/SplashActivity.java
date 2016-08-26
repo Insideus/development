@@ -23,14 +23,6 @@ public class SplashActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
         startAnimating();
-        /*
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                needsToLogin();
-            }
-        }, 1500);
-        */
         GetInitDataTask task = new GetInitDataTask(this, new TaskCallback() {
             @Override
             public void execute(Object result) {
@@ -41,8 +33,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void goToLogin() {
-        //Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        //Intent intent = new Intent(SplashActivity.this, LoginTokenActivity.class);
+        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

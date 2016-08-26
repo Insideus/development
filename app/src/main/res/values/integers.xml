@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="id_number_max_length">11</integer>
+    <integer name="passwords_token_max_length">8</integer>
+
+</resources>

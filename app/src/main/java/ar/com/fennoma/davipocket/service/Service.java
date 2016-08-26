@@ -35,6 +35,7 @@ import ar.com.fennoma.davipocket.model.Transaction;
  */
 public class Service {
 
+    //private static String BASE_URL = "http://davipocket-stg.paymentez.com/api";
     private static String BASE_URL = "http://davivienda.fennoma.com.ar/api";
     private static int SUCCESS_CODE = 200;
     private static String DATA_TAG = "data";
@@ -42,6 +43,7 @@ public class Service {
     private static String ERROR_MESSAGE_TAG = "error_message";
     private static String METHOD_TAG = "method";
     private static String NEXT_TOKEN_TAG = "next_token_session";
+    private static String PASSWORD_TOKEN_TAG = "password_token";
 
     private static String GET_ID_TYPES = "/person_id_types";
     private static String GET_COUNTRIES = "/countries";
@@ -166,11 +168,14 @@ public class Service {
                     loginResponse = LoginResponse.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
-                    String method = null;
+                    String additionalData = null;
                     if(responseJson.has(METHOD_TAG)) {
-                        method = responseJson.getString(METHOD_TAG);
+                        additionalData = responseJson.getString(METHOD_TAG);
                     }
-                    throw new ServiceException(errorCode, method);
+                    if (responseJson.has(PASSWORD_TOKEN_TAG)) {
+                        additionalData = responseJson.getString(PASSWORD_TOKEN_TAG);
+                    }
+                    throw new ServiceException(errorCode, additionalData);
                 }
             }
         } catch (IOException | JSONException e) {
@@ -568,8 +573,10 @@ public class Service {
                 if(json.has("error") && !json.getBoolean("error")) {
                     if(responseJson.has("result")) {
                         response = responseJson.getString("result");
-                    } else if (responseJson.has("password_token")) {
-                        response = responseJson.getString("password_token");
+                    } else {
+                        if (responseJson.has(PASSWORD_TOKEN_TAG)) {
+                            response = responseJson.getString(PASSWORD_TOKEN_TAG);
+                        }
                     }
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
@@ -669,7 +676,10 @@ public class Service {
             if(isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
-                JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                JSONObject responseJson = new JSONObject("{}");
+                if(json.has(DATA_TAG)) {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                }
                 if(json.has("error") && !json.getBoolean("error")) {
                     response = LoginResponse.fromJson(responseJson);
                 } else {
@@ -726,7 +736,10 @@ public class Service {
             if(isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
-                JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                JSONObject responseJson = new JSONObject("{}");
+                if(json.has(DATA_TAG)) {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                }
                 if(json.has("error") && !json.getBoolean("error")) {
                     response = LoginResponse.fromJson(responseJson);
                 } else {

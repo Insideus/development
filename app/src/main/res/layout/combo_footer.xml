@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".activities.MainActivity"
+    tools:ignore="MissingPrefix">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/combo_button_divider_color" />
+
+    <TextView
+        android:id="@+id/accept_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/combo_button_selector"
+        android:padding="@dimen/combo_button_text_padding"
+        android:gravity="center"
+        android:clickable="true"
+        android:text="@string/accept_button_text"
+        android:textColor="@color/combo_button_text_color"
+        android:textSize="@dimen/combo_button_text_size"
+        fontPath="fonts/MyriadPro-Regular.otf"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/combo_button_divider_color" />
+
+    <TextView
+        android:id="@+id/cancel_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/combo_button_selector"
+        android:padding="@dimen/combo_button_text_padding"
+        android:gravity="center"
+        android:clickable="true"
+        android:text="@string/cancel_button_text"
+        android:textColor="@color/combo_button_text_color"
+        android:textSize="@dimen/combo_button_text_size"
+        fontPath="fonts/MyriadPro-Regular.otf" />
+
+</LinearLayout>

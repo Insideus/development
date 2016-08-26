@@ -70,6 +70,9 @@
             android:id="@+id/login_id_type_spinner"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
+            android:paddingLeft="@dimen/login_side_padding"
+            android:paddingRight="@dimen/login_side_padding"
+            android:layout_gravity="center_horizontal"
             android:spinnerMode="dropdown"/>
 
         <View
@@ -86,12 +89,13 @@
             android:layout_marginTop="@dimen/login_input_margin_top"
             android:background="@android:color/transparent"
             android:hint="@string/id_number_hint"
+            android:maxLength="@integer/id_number_max_length"
             android:paddingLeft="@dimen/login_side_padding"
             android:paddingRight="@dimen/login_side_padding"
             android:textColor="@color/login_input_text_color"
             android:textColorHint="@color/gray_text_color"
             android:textSize="@dimen/login_input_text_size"
-            android:inputType="number"
+            android:inputType="text"
             android:singleLine="true"
             android:imeOptions="actionNext"
             tools:ignore="MissingPrefix" />
@@ -115,7 +119,8 @@
             android:textColor="@color/login_input_text_color"
             android:textColorHint="@color/gray_text_color"
             android:textSize="@dimen/login_input_text_size"
-            android:inputType="numberPassword"
+            android:maxLength="@integer/passwords_token_max_length"
+            android:inputType="textPassword"
             android:singleLine="true"
             android:imeOptions="actionNext"
             tools:ignore="MissingPrefix" />
@@ -138,6 +143,8 @@
             android:paddingRight="@dimen/login_side_padding"
             android:textColor="@color/login_input_text_color"
             android:textColorHint="@color/gray_text_color"
+            android:maxLength="@integer/passwords_token_max_length"
+            android:inputType="number"
             android:textSize="@dimen/login_input_text_size"
             android:singleLine="true"
             tools:ignore="MissingPrefix" />

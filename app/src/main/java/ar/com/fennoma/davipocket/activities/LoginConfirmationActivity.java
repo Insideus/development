@@ -5,18 +5,30 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnBackPressListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -27,19 +39,25 @@ import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.ui.controls.ComboHolder;
+import ar.com.fennoma.davipocket.utils.DateUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class LoginConfirmationActivity extends BaseActivity {
 
     private static final String DATE_FORMAT = "dd/MM/yyyy";
+    private static final int AGE_LIMIT = 14;
+    private static final String COLOMBIA_CHECKER = "Colombia";
+    private static final String[] validNumbers = {"300", "301", "302", "303", "304", "305", "310",
+            "311", "312", "313", "314", "315", "316", "317", "318", "319", "320", "321", "350"};
 
     private EditText birthday;
     private EditText mail;
     private EditText phone;
-    private Spinner countrySpinner;
     private TextView selectedCountryText;
 
     private Country selectedCountry;
+    DialogPlus dialogPlus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,12 +67,24 @@ public class LoginConfirmationActivity extends BaseActivity {
         setInputLayouts();
         setBirthdayLayout();
         setContinueButton();
-        setIdTypesSpinner();
+        setCountriesCombo();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(dialogPlus != null && dialogPlus.isShowing()) {
+
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void setInputLayouts() {
         mail = (EditText) findViewById(R.id.mail);
         phone = (EditText) findViewById(R.id.phone);
+        if(isFacebookLoggedIn()) {
+            getUserDataFromFacebook();
+        }
     }
 
     private void setBirthdayLayout() {
@@ -117,9 +147,14 @@ public class LoginConfirmationActivity extends BaseActivity {
             if(!Patterns.PHONE.matcher(phone.getText()).matches()){
                 errorList.add(getString(R.string.login_confirmation_error_message_wrong_phone));
             }
+            if(selectedCountryText.getText().toString().contains(COLOMBIA_CHECKER) && !validateColombianPhone(phone.getText().toString())){
+                errorList.add(getString(R.string.login_confirmation_error_message_wrong_colombian_phone));
+            }
         }
         if (TextUtils.isEmpty(birthday.getText())) {
             errorList.add(getString(R.string.registration_error_message_empty_birthday));
+        } else if (DateUtils.getYearsFromDate(DateUtils.getDate(birthday.getText().toString(), DATE_FORMAT)) < AGE_LIMIT){
+            errorList.add(getString(R.string.registration_error_message_underage));
         }
         if (!errorList.isEmpty()) {
             DialogUtil.toast(this,
@@ -129,6 +164,22 @@ public class LoginConfirmationActivity extends BaseActivity {
             return false;
         }
 
+        return true;
+    }
+
+    private boolean validateColombianPhone(String phone) {
+        if(phone.length() != 10) {
+            return false;
+        }
+        String first3Digits = phone.substring(0, 3);
+        ArrayList<String> validDigits = new ArrayList<>(Arrays.asList(validNumbers));
+        if(!validDigits.contains(first3Digits)) {
+            return false;
+        }
+        String fourthDigit = String.valueOf(phone.charAt(3));
+        if(fourthDigit.equals("1") || fourthDigit.equals("0")) {
+            return false;
+        }
         return true;
     }
 
@@ -152,48 +203,114 @@ public class LoginConfirmationActivity extends BaseActivity {
         }
     }
 
-    private void setIdTypesSpinner() {
-        countrySpinner = (Spinner) findViewById(R.id.country_spinner);
+    private void setCountriesCombo() {
         selectedCountryText = (TextView) findViewById(R.id.country_text);
-
-        selectedCountryText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        selectedCountryText.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    DialogUtil.hideKeyboard(LoginConfirmationActivity.this);
-                    //selectedCountryText.performClick();
-                    //countrySpinner.performClick();
-                }
+            public boolean onTouch(View v, MotionEvent event) {
+                DialogUtil.hideKeyboard(LoginConfirmationActivity.this);
+                showCombo();
+                return false;
             }
         });
-        selectedCountryText.setOnClickListener(new View.OnClickListener() {
+        ArrayList<Country> countries = Session.getCurrentSession(this).getCountries();
+        if(countries != null && countries.size() > 0) {
+            selectedCountry = countries.get(0);
+            setSelectedCountryName();
+        }
+    }
+
+    public void showCombo() {
+        ArrayList<Country> countries = Session.getCurrentSession(this).getCountries();
+        final ComboAdapter adapter = new ComboAdapter(countries, selectedCountry);
+        final DialogPlus dialog = DialogPlus.newDialog(this)
+                .setContentHolder(new ComboHolder())
+                .setAdapter(adapter)
+                .setFooter(R.layout.combo_footer)
+                .setExpanded(false)  // This will enable the expand feature, (similar to android L share dialog)
+                .setOnBackPressListener(new OnBackPressListener() {
+                    @Override
+                    public void onBackPressed(DialogPlus dialogPlus) {
+                        dialogPlus.dismiss();
+                    }
+                })
+                .create();
+        View footerView = dialog.getFooterView();
+        footerView.findViewById(R.id.accept_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //DialogUtil.hideKeyboard(LoginConfirmationActivity.this);
-                countrySpinner.performClick();
+                selectedCountry = adapter.selectedType;
+                setSelectedCountryName();
+                dialog.dismiss();
             }
         });
-        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        footerView.findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedCountry = (Country) parent.getItemAtPosition(position);
-                if(selectedCountry != null)
-                    selectedCountryText.setText(selectedCountry.toString());
+            public void onClick(View v) {
+                dialog.dismiss();
             }
+        });
+        dialog.show();
+        dialogPlus = dialog;
+    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                DialogUtil.hideKeyboard(LoginConfirmationActivity.this);
-            }
-        });
-        ArrayAdapter<Country> adapter = new ArrayAdapter<Country>(this, android.R.layout.simple_spinner_item,
-                Session.getCurrentSession(this).getCountries());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        countrySpinner.setAdapter(adapter);
-        if(selectedCountry != null) {
-            int position = adapter.getPosition(selectedCountry);
-            countrySpinner.setSelection(position);
+    private void setSelectedCountryName() {
+        if (selectedCountryText != null) {
+            selectedCountryText.setText(selectedCountry.toString());
         }
+    }
+
+    private class ComboAdapter extends BaseAdapter {
+
+        ArrayList<Country> types;
+        Country selectedType;
+
+        public ComboAdapter(ArrayList<Country> types, Country selectedType) {
+            this.types = types;
+            this.selectedType = selectedType;
+        }
+
+        @Override
+        public int getCount() {
+            return types.size();
+        }
+
+        @Override
+        public Country getItem(int position) {
+            return types.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return types.get(position).getId();
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            TextView row;
+            if(convertView == null) {
+                row = (TextView) inflater.inflate(R.layout.combo_item, parent, false);
+            } else {
+                row = (TextView) convertView;
+            }
+            final Country type = getItem(position);
+            row.setText(type.toString());
+            if (selectedType != null && selectedType.getId() == type.getId()) {
+                row.setTextColor(ContextCompat.getColor(LoginConfirmationActivity.this, R.color.combo_item_text_color_selected));
+            } else {
+                row.setTextColor(ContextCompat.getColor(LoginConfirmationActivity.this, R.color.combo_item_text_color));
+            }
+            row.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectedType = type;
+                    notifyDataSetChanged();
+                }
+            });
+            return row;
+        }
+
     }
 
     public class ConfirmationTask extends AsyncTask<String, Void, Boolean> {
@@ -237,6 +354,37 @@ public class LoginConfirmationActivity extends BaseActivity {
                 goToAccountActivationActivity();
             }
         }
+    }
+
+    private void getUserDataFromFacebook(){
+        showLoading();
+        GraphRequest graphRequestAsyncTask = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject me, GraphResponse response) {
+                        String email = "";
+                        if (response.getError() != null) {
+                            // handle error
+                        } else {
+                            try {
+                                email = response.getJSONObject().get("email").toString();
+                                mail.setText(email);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            hideLoading();
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "email");
+        graphRequestAsyncTask.setParameters(parameters);
+        graphRequestAsyncTask.executeAsync();
+    }
+
+    public boolean isFacebookLoggedIn() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null;
     }
 
     private void goToAccountActivationActivity() {

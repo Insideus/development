@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -57,12 +56,6 @@
             android:textColorHint="@color/gray_text_color"
             android:textSize="@dimen/login_input_text_size" />
 
-        <Spinner
-            android:id="@+id/login_id_type_spinner"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:spinnerMode="dropdown" />
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -77,8 +70,9 @@
             android:layout_marginTop="@dimen/login_input_margin_top"
             android:background="@android:color/transparent"
             android:hint="@string/id_number_hint"
+            android:maxLength="@integer/id_number_max_length"
             android:imeOptions="actionNext"
-            android:inputType="number"
+            android:inputType="text"
             android:paddingLeft="@dimen/login_side_padding"
             android:paddingRight="@dimen/login_side_padding"
             android:singleLine="true"
@@ -92,21 +86,40 @@
             android:layout_marginTop="5dp"
             android:background="#b0b0b0" />
 
-        <EditText
-            android:id="@+id/login_virtual_password"
-            fontPath="fonts/MyriadPro-Regular.otf"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/login_input_margin_top"
-            android:background="@android:color/transparent"
-            android:hint="@string/login_password_hint"
-            android:inputType="numberPassword"
-            android:paddingLeft="@dimen/login_side_padding"
-            android:paddingRight="@dimen/login_side_padding"
-            android:singleLine="true"
-            android:textColor="@color/login_input_text_color"
-            android:textColorHint="@color/gray_text_color"
-            android:textSize="@dimen/login_input_text_size" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/login_virtual_password"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/login_input_margin_top"
+                android:background="@android:color/transparent"
+                android:hint="@string/login_password_hint"
+                android:maxLength="@integer/passwords_token_max_length"
+                android:inputType="textPassword"
+                android:paddingLeft="@dimen/login_side_padding"
+                android:paddingRight="@dimen/login_side_padding"
+                android:singleLine="true"
+                android:textColor="@color/login_input_text_color"
+                android:textColorHint="@color/gray_text_color"
+                android:textSize="@dimen/login_input_text_size" />
+
+            <ImageView
+                android:id="@+id/virtual_help_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="@dimen/login_side_padding"
+                android:contentDescription="@string/change_password_step_3_help_icon_content_desc"
+                android:scaleType="centerInside"
+                android:src="@drawable/new_password_icon" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"

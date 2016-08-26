@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/combo_button_selector"
+    android:padding="@dimen/combo_button_text_padding"
+    android:gravity="center"
+    android:clickable="true"
+    android:textColor="@drawable/combo_item_text_color_selector"
+    android:textSize="@dimen/combo_button_text_size"
+    tools:ignore="MissingPrefix"
+    fontPath="fonts/MyriadPro-Regular.otf"/>

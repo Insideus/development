@@ -3,15 +3,15 @@ package ar.com.fennoma.davipocket.activities;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.PersonIdType;
+import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class LoginTokenActivity extends LoginBaseActivity {
@@ -48,7 +48,6 @@ public class LoginTokenActivity extends LoginBaseActivity {
             nextToken = getIntent().getBooleanExtra(NEXT_REQUIRED_TOKEN_KEY, false);
             nextTokenSession = getIntent().getStringExtra(NEXT_TOKEN_KEY);
         }
-
         setActionsToButtons();
     }
 
@@ -84,8 +83,12 @@ public class LoginTokenActivity extends LoginBaseActivity {
             }
         });
 
-        idTypeSpinner = (Spinner) findViewById(R.id.login_id_type_spinner);
         selectedIdTypeText = (TextView) findViewById(R.id.login_id_type_text);
+        ArrayList<PersonIdType> personIdTypes = Session.getCurrentSession(this).getPersonIdTypes();
+        if(personIdTypes != null && personIdTypes.size() > 0) {
+            selectedIdType = personIdTypes.get(0);
+            setSelectedIdTypeName();
+        }
         virtualPasswordText = (TextView) findViewById(R.id.login_virtual_password);
         personIdNumber = (TextView) findViewById(R.id.login_person_id);
         token = (TextView) findViewById(R.id.login_token);
@@ -93,26 +96,14 @@ public class LoginTokenActivity extends LoginBaseActivity {
         virtualPasswordText.setText(passwordStr);
         personIdNumber.setText(idNumberStr);
 
-        selectedIdTypeText.setOnClickListener(new View.OnClickListener() {
+        selectedIdTypeText.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                idTypeSpinner.performClick();
+            public boolean onTouch(View v, MotionEvent event) {
+                DialogUtil.hideKeyboard(LoginTokenActivity.this);
+                showCombo();
+                return false;
             }
         });
-        idTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedIdType = (PersonIdType) parent.getItemAtPosition(position);
-                if(selectedIdType != null)
-                    selectedIdTypeText.setText(selectedIdType.getName());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        setIdTypesSpinner();
     }
 
     private void doLogin() {

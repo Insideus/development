@@ -19,6 +19,7 @@ import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
+import ar.com.fennoma.davipocket.utils.EncryptionUtils;
 
 public class ChangePasswordStep3Activity extends BaseActivity{
 
@@ -26,6 +27,10 @@ public class ChangePasswordStep3Activity extends BaseActivity{
     public static String ID_NUMBER_KEY = "id_number_key";
     public static String PASSWORD_TOKEN_KEY = "password_token_key";
     public static String EXPIRED_PASSWORD_KEY = "expired_password_key";
+
+    private static final int NOT_HAPPENING = 0;
+    private static final int GOING_DOWN = 1;
+    private static final int GOING_UP = 2;
 
     private String personIdType;
     private String personId;
@@ -121,12 +126,17 @@ public class ChangePasswordStep3Activity extends BaseActivity{
         if (TextUtils.isEmpty(repeatedPassword.getText())) {
             errorList.add(getString(R.string.change_password_step_3_empty_password_repeat_error));
         }
-        if(!TextUtils.isEmpty(virtualPassword.getText()) && !TextUtils.isEmpty(repeatedPassword.getText())) {
-            if(!TextUtils.equals(virtualPassword.getText(), repeatedPassword.getText())) {
+        if(errorList.size() < 1) {
+            if (virtualPassword.getText().length() < 4 || virtualPassword.getText().length() > 8) {
+                errorList.add(getString(R.string.change_password_step_3_invalid_amount_of_digits));
+            } else if (!validatePasswordAscending(virtualPassword.getText().toString())) {
+                errorList.add(getString(R.string.change_password_step_3_invalid_password));
+            } else if (!validatePasswordEqualsNumbers(virtualPassword.getText().toString())) {
+                errorList.add(getString(R.string.change_password_step_3_invalid_password_equals_numbers));
+            } else if (!TextUtils.equals(virtualPassword.getText(), repeatedPassword.getText())) {
                 errorList.add(getString(R.string.change_password_step_3_password_repeat_error));
             }
         }
-
         if (!errorList.isEmpty()) {
             DialogUtil.toast(this,
                     getString(R.string.input_data_error_generic_title),
@@ -135,6 +145,64 @@ public class ChangePasswordStep3Activity extends BaseActivity{
             return false;
         }
         return true;
+    }
+
+    private boolean validatePasswordAscending(String virtualPassword) {
+        return !sequenceIsHigherThan(4, virtualPassword);
+    }
+
+    private boolean validatePasswordEqualsNumbers(String virtualPassword) {
+        return !frequencyIsHigherThan(4, virtualPassword);
+    }
+
+    private boolean sequenceIsHigherThan(int max, String word) {
+        for(int i = 0; i <= word.length() - max; i++){
+            int starter = Integer.valueOf(String.valueOf(word.charAt(i)));
+            int next = Integer.valueOf(String.valueOf(word.charAt(i + 1)));
+            int sequenceMode;
+            if(starter + 1 == next){
+                sequenceMode = GOING_UP;
+            } else if(starter - 1 == next ){
+                sequenceMode = GOING_DOWN;
+            } else {
+                sequenceMode = NOT_HAPPENING;
+            }
+            if(sequenceMode != NOT_HAPPENING){
+                for(int j = i + 2; j < max + i; j++) {
+                    starter = next;
+                    next = Integer.valueOf(String.valueOf(word.charAt(j)));
+                    if(sequenceMode == GOING_UP){
+                        if(starter + 1 != next){
+                            break;
+                        } else if(j == max + i - 1){
+                            return true;
+                        }
+                    } else {
+                        if(starter - 1 != next){
+                            break;
+                        } else if(j == max + i -1){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean frequencyIsHigherThan(int max, String word) {
+        for(int i = 0; i <= word.length() - max; i++){
+            int comparator = Integer.valueOf(String.valueOf(word.charAt(i)));
+            for(int j = i + 1; j < max + i; j++) {
+                int integer = Integer.valueOf(String.valueOf(word.charAt(j)));
+                if(comparator != integer){
+                    break;
+                }else if(j == max + i - 1){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void findFields() {
@@ -177,7 +245,8 @@ public class ChangePasswordStep3Activity extends BaseActivity{
         protected LoginResponse doInBackground(String... params) {
             LoginResponse response = null;
             try {
-                response = Service.setPassword(params[0], params[1], params[2], params[3]);
+                String encryptedPassword = EncryptionUtils.encryptPassword(ChangePasswordStep3Activity.this, params[2]);
+                response = Service.setPassword(params[0], params[1], encryptedPassword, params[3]);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 errorMessage = e.getAdditionalData();
@@ -218,7 +287,9 @@ public class ChangePasswordStep3Activity extends BaseActivity{
         protected LoginResponse doInBackground(String... params) {
             LoginResponse response = null;
             try {
-                response = Service.setExpiredPassword(params[0], params[1], params[2], params[3], params[4]);
+                String encryptedOldPassword = EncryptionUtils.encryptPassword(ChangePasswordStep3Activity.this, params[2]);
+                String encryptedPassword = EncryptionUtils.encryptPassword(ChangePasswordStep3Activity.this, params[3]);
+                response = Service.setExpiredPassword(params[0], params[1], encryptedOldPassword, encryptedPassword, params[4]);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 errorMessage = e.getAdditionalData();

@@ -43,15 +43,19 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ar.com.fennoma.davipocket.ui.controls.CodeBoxContainer
-            android:id="@+id/code_box_container"
+        <EditText
+            android:id="@+id/code"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
             android:gravity="center"
-            app:amount="4"
-            app:box_background_drawable="@drawable/code_number_background"
-            app:box_textColor="@color/red_base_color"
-            app:margin_between_boxes="10dp"/>
+            android:padding="10dp"
+            android:background="@drawable/code_number_background"
+            android:inputType="number"
+            android:singleLine="true"
+            android:textColor="@color/red_base_color"
+            android:textSize="@dimen/number_code_text_size" />
 
         <TextView
             fontPath="fonts/MyriadPro-Regular.otf"

@@ -1,8 +1,11 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -10,17 +13,21 @@ import android.widget.TextView;
 
 import ar.com.fennoma.davipocket.R;
 
-public class ToastDialogActivity extends BaseActivity{
+public class ToastDialogActivity extends BaseActivity {
 
     public static String TITLE_KEY = "toast_title_key";
     public static String SUBTITLE_KEY = "toast_subtitle_key";
     public static String TEXT_KEY = "toast_text_key";
     public static String INVALID_SESSION_KEY = "invalid_session_key";
+    public static String SHOW_CALL_BUTTON_KEY = "show_call_button_key";
+    public static String CALL_BUTTON_NUMBER_KEY = "call_button_number_key";
 
     private String title;
     private String subtitle;
     private String text;
     private Boolean invalidSessionToast;
+    private Boolean showCallButton;
+    private String callNumber;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,11 +38,15 @@ public class ToastDialogActivity extends BaseActivity{
             subtitle = savedInstanceState.getString(SUBTITLE_KEY, "");
             text = savedInstanceState.getString(TEXT_KEY, "");
             invalidSessionToast = savedInstanceState.getBoolean(INVALID_SESSION_KEY, false);
+            showCallButton = savedInstanceState.getBoolean(SHOW_CALL_BUTTON_KEY, false);
+            callNumber = savedInstanceState.getString(CALL_BUTTON_NUMBER_KEY, "");
         } else {
             title = getIntent().getStringExtra(TITLE_KEY);
             subtitle = getIntent().getStringExtra(SUBTITLE_KEY);
             text = getIntent().getStringExtra(TEXT_KEY);
             invalidSessionToast = getIntent().getBooleanExtra(INVALID_SESSION_KEY, false);
+            showCallButton = getIntent().getBooleanExtra(SHOW_CALL_BUTTON_KEY, false);
+            callNumber = getIntent().getStringExtra(CALL_BUTTON_NUMBER_KEY);
         }
         setLayouts();
         animateOpening();
@@ -76,6 +87,24 @@ public class ToastDialogActivity extends BaseActivity{
             }
         });
 
+        TextView callButton = (TextView) findViewById(R.id.call_button);
+        if(showCallButton) {
+            checkCallPermissions();
+            callButton.setVisibility(LinearLayout.VISIBLE);
+            callButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (ActivityCompat.checkSelfPermission(ToastDialogActivity.this,
+                            android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel: " + callNumber)));
+                }
+            });
+        } else {
+            callButton.setVisibility(LinearLayout.GONE);
+        }
+
         TextView titleTv = (TextView) findViewById(R.id.toast_title);
         if(title != null && title.length() > 0) {
             titleTv.setText(title);
@@ -93,6 +122,12 @@ public class ToastDialogActivity extends BaseActivity{
             textTv.setText(text);
         } else {
             textTv.setVisibility(LinearLayout.GONE);
+        }
+    }
+
+    public void checkCallPermissions() {
+        if (!checkPermission(android.Manifest.permission.CALL_PHONE, getApplicationContext(), this)) {
+            requestPermission(android.Manifest.permission.CALL_PHONE, 101, getApplicationContext(), this);
         }
     }
 

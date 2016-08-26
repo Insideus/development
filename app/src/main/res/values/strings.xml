@@ -7,7 +7,7 @@
     <string name="login_password_hint">CLAVE VIRTUAL O CLAVE PERSONAL</string>
     <string name="login_token_password_hint">CLAVE PERSONAL</string>
     <string name="login_button_text">INGRESAR</string>
-    <string name="login_forgot_password_button_text">¿OLVIDÓ O BLOQUEÓ SU CLAVE?</string>
+    <string name="login_forgot_password_button_text">RECUPERAR O CAMBIAR CLAVE</string>
     <string name="login_validate_token_button_text">VALIDAR TOKEN</string>
     <string name="login_token_hint">INGRESAR TOKEN</string>
     <string name="login_token_activity_title">TOKEN</string>
@@ -19,28 +19,34 @@
 
     <!-- Facebook Login -->
     <string name="facebook_login_token_activity_title">CONECTAR</string>
-    <string name="facebook_login_teaser">QUEREMOS ESTAR MÁS CERCA DE USTED</string>
+    <string name="facebook_login_teaser">Queremos estar más cerca de usted.</string>
     <string name="facebook_login_button_text">CONECTAR CON FACEBOOK</string>
     <string name="facebook_login_without_facebook_button">CONTINUAR SIN CONECTAR CON FACEBOOK</string>
 
     <!-- Login Confirm Activity -->
     <string name="country_hint">PAÍS</string>
-    <string name="confirmation_activity_subtitle">USAMOS SU E-MAIL Y CELULAR PARA ENVIARLE\nCONFIRMACIONES DE PEDIDOS Y RECIBOS</string>
+    <string name="confirmation_activity_subtitle">Queremos ratificar con usted sus datos de contacto para mantenerlo informado de todos sus movimientos en la APP.</string>
     <string name="login_confirmation_error_message_empty_email">Debe ingresar un email</string>
     <string name="login_confirmation_error_message_invalid_email">El email ingresado debe ser válido</string>
     <string name="login_confirmation_error_message_empty_phone">Debe ingresar un número de celular</string>
     <string name="login_confirmation_error_message_wrong_phone">El celular ingresado debe ser válido</string>
     <string name="login_confirmation_activity_title">CONFIRMACIONES</string>
 
-    <string name="birthday_hint">FECHA DE CUMPLEAÑOS</string>
+    <string name="birthday_hint">FECHA DE NACIMIENTO</string>
     <string name="celphone_hint">CELULAR</string>
     <string name="email_hint">E-MAIL</string>
     <string name="continue_button_text">CONTINUAR</string>
     <string name="registration_error_message_empty_birthday">Debe ingresar su fecha de cumpleaños</string>
 
+    <string name="accept_button_text">ACEPTAR</string>
+    <string name="cancel_button_text">CANCELAR</string>
+
+    <string name="login_help_dialog_title">CLAVE VIRTUAL</string>
+    <string name="login_help_dialog_text">Si no tiene clave asignada, deje el campo clave virtual o clave personal en blanco.</string>
+
     <!-- Account Activation Activity -->
     <string name="account_activation_activity_title">ACTIVACIÓN</string>
-    <string name="account_activation_explanation_text">INGRESE EL CÓDIGO DE ACTIVACIÓN QUE\nLE HEMOS ENVIADO VÍA SMS</string>
+    <string name="account_activation_explanation_text">Ingrese el código de activación que\nle hemos enviado vía SMS</string>
     <string name="account_activation_incomplete_code_error">El código ingresado debe tener 4 dígitos</string>
     <string name="account_activation_request_code_button">SOLICITAR NUEVAMENTE EL CÓDIGO</string>
     <string name="account_activation_code_resend_text">Reenviando código</string>
@@ -52,10 +58,12 @@
     <string name="policy_picker_check_box_phone_contact">CONTACTO TELEFÓNICO</string>
     <string name="policy_picker_check_box_terms_and_conditions">ACEPTO TÉRMINOS Y CONDICIONES</string>
     <string name="policy_picker_check_box_privacy_policy">ACEPTO POLÍTICA DE PRIVACIDAD</string>
-    <string name="policy_picker_subtitle">PARA MEJORAR LA EXPERIENCIA,\nAUTORICE EL ENVÍO DE COMUNICACIONES\nPOR LOS DIFERENTES MEDIOS.\n\nPARA HACER USO DE LA APP, DEBE\nACEPTAR LOS TÉRMINOS Y CONDICIONES, Y\nLA POLÍTICA DE PRIVACIDAD.</string>
+    <string name="policy_picker_subtitle">Confírmenos por cuáles medios desea recibir comunicaciones de la APP.\n\nAcepte los términos y condiciones y las políticas de privacidad.</string>
     <string name="policy_picker_title">POLÍTICAS</string>
     <string name="policy_picker_terms_and_conditions_not_checked_error">Debe aceptar los términos y condiciones</string>
     <string name="policy_picker_privacy_policy_not_checked_error">Debe aceptar la política de privacidad</string>
+
+    <string name="assign_password_title">ASIGNAR CONTRASEÑA</string>
 
     <!-- Change Password Activities -->
     <string name="change_password_title">CAMBIO DE CONTRASEÑA</string>
@@ -64,7 +72,7 @@
     <string name="change_password_step_1_empty_id_number_error">Debe ingresar su número de identificación</string>
     <string name="change_password_step_2_debit_card_last_numbers">4 ÚLTIMOS DÍGITOS DE SU TARJETA DE DÉBITO</string>
     <string name="change_password_step_2_atm_password">CLAVE DE CAJERO AUTOMÁTICO</string>
-    <string name="change_password_step_2_bank_product_number">NÚMERO DE PRODUCTO</string>
+    <string name="change_password_step_2_bank_product_number">4 ÚLTIMOS DIGITOS DE SU PRODUCTO</string>
     <string name="change_password_step_2_empty_card_digits_error">Debe ingresar los 4 últimos dígitos de su tarjeta</string>
     <string name="change_password_step_2_empty_bank_product_error">Debe seleccionar un producto</string>
     <string name="change_password_step_2_empty_bank_product_number_error">Debe ingresar el número de producto</string>
@@ -73,24 +81,31 @@
     <string name="change_password_step_3_old_virtual_password">CLAVE VIRTUAL</string>
     <string name="change_password_step_3_new_virtual_password">NUEVA CLAVE VIRTUAL</string>
     <string name="change_password_step_3_repeat_virtual_password">CONFIRME SU NUEVA CLAVE VIRTUAL</string>
-    <string name="change_password_step_3_subtitle_hint">LE ENVIAREMOS UN CÓDIGO DE CONFIMACIÓN\nVÍA SMS A SU CELULAR REGISTRADO</string>
+    <string name="change_password_step_3_subtitle_hint">Al hacer clic en Continuar, le enviaremos un Código de Confirmación a su celular registrado con nosotros.</string>
     <string name="change_password_step_3_help_icon_content_desc">Ícono a ayuda</string>
     <string name="change_password_step_3_empty_old_virtual_password_error">Debe ingresar su clave virtual</string>
     <string name="change_password_step_3_empty_virtual_password_error">Debe ingresar una clave virtual nueva</string>
     <string name="change_password_step_3_empty_password_repeat_error">Debe volver a ingresar la nueva contraseña virtual</string>
     <string name="change_password_step_3_password_repeat_error">Las contraseñas ingresadas deben ser iguales</string>
 
+    <string name="change_password_step_2_product_help_text">Son los 4 últimos números del producto seleccionado.</string>
+    <string name="change_password_step_2_last_card_digits_help_text">Son los 4 últimos números que aparecen en la parte frontal de su Tarjeta Débito.</string>
+    <string name="change_password_step_atm_password_help_text">Es la clave para realizar retiros en cajeros automáticos y compras en establecimientos.</string>
+
     <string name="change_password_bank_product">SELECCIONE PRODUCTO</string>
 
     <!-- Password Confirmation Activity -->
     <string name="password_confirmation_title">CONFIRMACIÓN</string>
-    <string name="password_confirmation_subtitle_hint">INGRESE EL CÓDIGO DE CONFIRMACIÓN QUE HEMOS\nENVIADO A SU CELULAR VÍA SMS\n\nEN CASO DE NO RECIBIR CÓDIGO DE CONFIRMACIÓN,\nCOMUNIQUESE EN BOGOTÁ AL 388 3838\nO A NIVEL NACIONAL AL 018000 12838</string>
+    <string name="password_confirmation_subtitle_hint">Ingrese el código de confirmación que hemos\nenviado a su celular vía SMS\n\nEn caso de no recibir código de confirmación,\ncomuniquese en Bogotá al 388 3838\no a nivel nacional al 018000 12838</string>
     <string name="password_confirmation_send_button">ENVIAR</string>
+    <string name="password_confirmation_incomplete_code_error">Debe ingresar el código de confirmación.</string>
+
+
     <string name="activated_password_activity_title">ACTIVADA</string>
-    <string name="activated_password_activity_text">con esta podrá ingresar a\nwww.davvivienda.com, davivienda móvil,\ndavipocket y teléfono rojo.\n\npor su seguridad para algunas\ntransacciones en estos canales, le\nenviaremos un código de confirmación a su\ncelular registrado con nosotros.\n\nrecuerde que a partir de este momento\núnicamente podrá ingresar a nuestros\ncanales virtuales con su nueva clave virtual\nasignada.</string>
+    <string name="activated_password_activity_text">Con esta podrá ingresar a\nwww.davvivienda.com, davivienda móvil,\ndavipocket y teléfono rojo.\n\nPor su seguridad para algunas\ntransacciones en estos canales, le\nenviaremos un código de confirmación a su\ncelular registrado con nosotros.\n\nRecuerde que a partir de este momento\núnicamente podrá ingresar a nuestros\ncanales virtuales con su nueva clave virtual\nasignada.</string>
     <string name="activated_password_first_line_title">CLAVE VIRTUAL</string>
     <string name="activated_password_second_line_title">ACTIVADA</string>
-    <string name="help_dialog_activity_text">la clave virtual le permitirá acceder a\nnuestros diferentes canales para realizar\ntransacciones, consultas, pagos y muchas\ncosas más\n\ndebe ser de 4 digitos.</string>
+    <string name="help_dialog_activity_text">Usted debe asignar una nueva clave de 4 a 8 dígitos numéricos, que no sean repetidos ni consecutivos.</string>
 
     <string name="input_data_error_generic_title">ERROR</string>
     <string name="input_data_error_generic_subtitle">Por favor, verifique los datos ingresados.</string>
@@ -103,14 +118,16 @@
     <string name="confirmation_service_error">Código de verificación incorrecto.</string>
 
     <string name="login_error_message_title">ERROR</string>
-    <string name="login_error_message_text">ACCESO DENEGADO, VERIFIQUE LOS DATOS INGRESADOS.</string>
+    <string name="login_error_message_text">Acceso denegado, verifique los datos ingresados.</string>
     <string name="login_web_password_error_message_title">CLAVE WEB</string>
-    <string name="login_web_password_error_message_text">Comuníquese con el callcenter para poder ingresar al sistema.</string>
+    <string name="login_web_password_error_message_text">Para poder acceder a la APP usted debe activar su clave virtual a través del Call Center. Puede comunicarse seleccionando la siguiente opción:</string>
+    <string name="login_web_password_phone">+5713383838</string>
+    <string name="help_dialog_generic_title">AYUDA</string>
     <string name="help_dialog_title_1">AYUDA</string>
     <string name="help_dialog_title_2">CLAVE VIRTUAL</string>
     <string name="rate_app_dialog_title_1">VALORAR</string>
     <string name="rate_app_dialog_title_2">DAVIPOCKET</string>
-    <string name="rate_app_dialog_text">!Gracias! Nos alegra saber que Su\nexperiencia con DaviPocket ha sido\nbuena. Sería muy útil contar con sus\ncomentarios y sugerencias.</string>
+    <string name="rate_app_dialog_text">!Gracias! Nos alegra saber que su\nexperiencia con DaviPocket ha sido\nbuena. Sería muy útil contar con sus\ncomentarios y sugerencias.</string>
     <string name="rate_app_dialog_cancel_button">NO, GRACIAS</string>
     <string name="rate_app_dialog_remember_later_button">RECORDÁRMELO MÁS TARDE</string>
     <string name="rate_app_dialog_rate_button">VALORAR DAVIPOCKET</string>
@@ -120,6 +137,15 @@
     <string name="invalid_session_text">Por favor ingrese sus credenciales para continuar operando.</string>
     <string name="set_virtual_password_error_text">Debe asignar una clave virtual para acceder.</string>
     <string name="expired_password_error_message">Su clave virtual ha expirado.</string>
+    <string name="change_password_step_3_invalid_password">La Clave Virtual no puede contener más de 3 dígitos consecutivos ascendentes</string>
+    <string name="change_password_step_3_invalid_password_equals_numbers">La Clave Virtual no puede contener más de 3 dígitos consecutivos iguales</string>
+    <string name="change_password_step_3_invalid_amount_of_digits">La clave debe tener entre 4 y 8 dígitos</string>
+    <string name="assign_password_recommendation">Bienvenido a davipocket, para continuar\ndebe confirmar su clave</string>
+    <string name="assign_password_recommendation_terms_and_conditions">Debe aceptar los términos y condiciones</string>
+    <string name="assign_password_recommendation_terms_and_conditions_title">Error de autorizaciones</string>
+    <string name="registration_error_message_underage">Debe ser mayor de 14 años</string>
+    <string name="login_confirmation_error_message_wrong_colombian_phone">El teléfono ingresado no es válido</string>
+    <string name="call_button_text">LLAMAR AL CALL CENTER</string>
 
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_title">Menú</string>

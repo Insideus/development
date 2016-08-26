@@ -2,9 +2,17 @@ package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnBackPressListener;
+
+import java.util.ArrayList;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
@@ -14,6 +22,9 @@ import ar.com.fennoma.davipocket.model.PersonIdType;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.ui.controls.ComboHolder;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
+import ar.com.fennoma.davipocket.utils.EncryptionUtils;
 
 /**
  * Created by Julian Vega on 06/07/2016.
@@ -24,13 +35,22 @@ public class LoginBaseActivity extends BaseActivity {
     private static int EXPIRED_OTP_PASSWORD_TOAST = 102;
     private static int SET_PASSWORD_TOAST = 103;
 
-    Spinner idTypeSpinner;
     TextView selectedIdTypeText;
     TextView virtualPasswordText;
     TextView personIdNumber;
     PersonIdType selectedIdType;
+    DialogPlus dialogPlus;
 
     private String additionalParam;
+
+    @Override
+    public void onBackPressed() {
+        if(dialogPlus != null && dialogPlus.isShowing()) {
+
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     public class LoginTask extends AsyncTask<String, Void, LoginResponse> {
 
@@ -47,7 +67,8 @@ public class LoginBaseActivity extends BaseActivity {
         protected LoginResponse doInBackground(String... params) {
             LoginResponse response = null;
             try {
-                response = Service.login(params[0], params[1], params[2]);
+                String encryptedPassword = EncryptionUtils.encryptPassword(LoginBaseActivity.this, params[2]);
+                response = Service.login(params[0], params[1], encryptedPassword);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 additionalData = e.getAdditionalData();
@@ -153,9 +174,9 @@ public class LoginBaseActivity extends BaseActivity {
             super.onPostExecute(response);
             if(response == null && errorCode != null) {
                 //Expected error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, nextTokenSession);
-
+                //ErrorMessages error = ErrorMessages.getError(errorCode);
+                //processErrorAndContinue(error, nextTokenSession);
+                showErrorAndGoToLoginActivity();
             } else if(response == null && errorCode == null) {
                 //Service error.
                 showServiceGenericError();
@@ -170,6 +191,99 @@ public class LoginBaseActivity extends BaseActivity {
             }
             hideLoading();
         }
+    }
+
+    public void showCombo() {
+        final ComboAdapter adapter = new ComboAdapter(Session.getCurrentSession(this).getPersonIdTypes(), selectedIdType);
+        final DialogPlus dialog = DialogPlus.newDialog(this)
+                .setAdapter(adapter)
+                .setContentHolder(new ComboHolder())
+                .setFooter(R.layout.combo_footer)
+                .setExpanded(false)  // This will enable the expand feature, (similar to android L share dialog)
+                .setOnBackPressListener(new OnBackPressListener() {
+                    @Override
+                    public void onBackPressed(DialogPlus dialogPlus) {
+                        dialogPlus.dismiss();
+                    }
+                })
+                .create();
+        View footerView = dialog.getFooterView();
+        footerView.findViewById(R.id.accept_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedIdType = adapter.selectedType;
+                setSelectedIdTypeName();
+                dialog.dismiss();
+            }
+        });
+        footerView.findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        setSelectedIdTypeName();
+        dialog.show();
+        dialogPlus = dialog;
+    }
+
+    public void setSelectedIdTypeName() {
+        if (selectedIdType != null) {
+            selectedIdTypeText.setText(selectedIdType.getName());
+        }
+    }
+
+    private class ComboAdapter extends BaseAdapter {
+
+        ArrayList<PersonIdType> types;
+        PersonIdType selectedType;
+
+        public ComboAdapter(ArrayList<PersonIdType> types, PersonIdType selectedType) {
+            this.types = types;
+            this.selectedType = selectedType;
+        }
+
+        @Override
+        public int getCount() {
+            return types.size();
+        }
+
+        @Override
+        public PersonIdType getItem(int position) {
+            return types.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return types.get(position).getId();
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            TextView row;
+            if(convertView == null) {
+                row = (TextView) inflater.inflate(R.layout.combo_item, parent, false);
+            } else {
+                row = (TextView) convertView;
+            }
+            final PersonIdType type = getItem(position);
+            row.setText(type.getName());
+            if (selectedType != null && selectedType.getId() == type.getId()) {
+                row.setTextColor(ContextCompat.getColor(LoginBaseActivity.this, R.color.combo_item_text_color_selected));
+            } else {
+                row.setTextColor(ContextCompat.getColor(LoginBaseActivity.this, R.color.combo_item_text_color));
+            }
+            row.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectedType = type;
+                    notifyDataSetChanged();
+                }
+            });
+            return row;
+        }
+
     }
 
     void processErrorAndContinue(ErrorMessages error, String additionalParam) {
@@ -200,13 +314,15 @@ public class LoginBaseActivity extends BaseActivity {
                     break;
                case SET_VIRTUAL_PASSWORD:
                     this.additionalParam = additionalParam;
-                    Intent toastSetPasswordIntent = new Intent(this, ToastDialogActivity.class);
-                    toastSetPasswordIntent.putExtra(ToastDialogActivity.TITLE_KEY, getString(R.string.generic_service_error_title));
-                    toastSetPasswordIntent.putExtra(ToastDialogActivity.SUBTITLE_KEY, "");
-                    toastSetPasswordIntent.putExtra(ToastDialogActivity.TEXT_KEY, getString(R.string.set_virtual_password_error_text));
-                    startActivityForResult(toastSetPasswordIntent, SET_PASSWORD_TOAST);
+                    Intent setVirtualPasswordIntent = new Intent(this, AssignPasswordRecommendationActivity.class);
+                    setVirtualPasswordIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    setVirtualPasswordIntent.putExtra(AssignPasswordRecommendationActivity.ID_TYPE_KEY, String.valueOf(selectedIdType.getId()));
+                    setVirtualPasswordIntent.putExtra(AssignPasswordRecommendationActivity.ID_NUMBER_KEY, personIdNumber.getText().toString());
+                    setVirtualPasswordIntent.putExtra(AssignPasswordRecommendationActivity.PRODUCT_CODE_KEY, additionalParam);
+                    startActivity(setVirtualPasswordIntent);
                     break;
                 case PASSWORD_EXPIRED:
+                    this.additionalParam = additionalParam;
                     Intent toastExpiredIntent = new Intent(this, ToastDialogActivity.class);
                     toastExpiredIntent.putExtra(ToastDialogActivity.TITLE_KEY, getString(R.string.generic_service_error_title));
                     toastExpiredIntent.putExtra(ToastDialogActivity.SUBTITLE_KEY, "");
@@ -228,17 +344,6 @@ public class LoginBaseActivity extends BaseActivity {
         }
     }
 
-    void setIdTypesSpinner() {
-        ArrayAdapter<PersonIdType> adapter = new ArrayAdapter<PersonIdType>(this, android.R.layout.simple_spinner_item,
-                Session.getCurrentSession(this).getPersonIdTypes());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        idTypeSpinner.setAdapter(adapter);
-        if(selectedIdType != null) {
-            int position = adapter.getPosition(selectedIdType);
-            idTypeSpinner.setSelection(position);
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -255,6 +360,9 @@ public class LoginBaseActivity extends BaseActivity {
             Intent expiredPasswordIntent = new Intent(this, ChangePasswordStep3Activity.class);
             expiredPasswordIntent.putExtra(ChangePasswordStep3Activity.ID_TYPE_KEY, String.valueOf(selectedIdType.getId()));
             expiredPasswordIntent.putExtra(ChangePasswordStep3Activity.ID_NUMBER_KEY, personIdNumber.getText().toString());
+            if(additionalParam != null) {
+                expiredPasswordIntent.putExtra(ChangePasswordStep3Activity.PASSWORD_TOKEN_KEY, additionalParam);
+            }
             expiredPasswordIntent.putExtra(ChangePasswordStep3Activity.EXPIRED_PASSWORD_KEY, true);
             startActivity(expiredPasswordIntent);
         }
@@ -266,4 +374,9 @@ public class LoginBaseActivity extends BaseActivity {
             startActivity(expiredOtpPasswordIntent);
         }
     }
+
+    private void showErrorAndGoToLoginActivity() {
+        DialogUtil.showErrorAndGoToLoginActivityToast(this);
+    }
+
 }

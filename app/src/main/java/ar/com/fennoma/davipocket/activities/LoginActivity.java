@@ -3,18 +3,27 @@ package ar.com.fennoma.davipocket.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.PersonIdType;
+import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class LoginActivity extends LoginBaseActivity {
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +34,9 @@ public class LoginActivity extends LoginBaseActivity {
             getSupportActionBar().hide();
         }
         setActionToButtons();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void setActionToButtons() {
@@ -42,37 +54,35 @@ public class LoginActivity extends LoginBaseActivity {
                 startActivity(new Intent(LoginActivity.this, ChangePasswordStep1Activity.class));
             }
         });
-
-        idTypeSpinner = (Spinner) findViewById(R.id.login_id_type_spinner);
         selectedIdTypeText = (TextView) findViewById(R.id.login_id_type_text);
+        ArrayList<PersonIdType> personIdTypes = Session.getCurrentSession(this).getPersonIdTypes();
+        if(personIdTypes != null && personIdTypes.size() > 0) {
+            selectedIdType = personIdTypes.get(0);
+            setSelectedIdTypeName();
+        }
         virtualPasswordText = (TextView) findViewById(R.id.login_virtual_password);
         personIdNumber = (TextView) findViewById(R.id.login_person_id);
-
-        selectedIdTypeText.setOnClickListener(new View.OnClickListener() {
+        selectedIdTypeText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                DialogUtil.hideKeyboard(LoginActivity.this);
+                showCombo();
+                return false;
+            }
+        });
+        findViewById(R.id.virtual_help_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                idTypeSpinner.performClick();
+                showHelpDialog(getString(R.string.login_help_dialog_title),
+                        "",
+                        getString(R.string.login_help_dialog_text));
             }
         });
-        idTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedIdType = (PersonIdType) parent.getItemAtPosition(position);
-                if(selectedIdType != null)
-                selectedIdTypeText.setText(selectedIdType.getName());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        setIdTypesSpinner();
     }
 
     private void doLogin() {
         ArrayList<String> errors = validate();
-        if(errors != null && errors.size() > 0) {
+        if (errors != null && errors.size() > 0) {
             DialogUtil.toast(this, getString(R.string.input_data_error_generic_title),
                     getString(R.string.input_data_error_generic_subtitle), errors);
         } else {
@@ -83,15 +93,12 @@ public class LoginActivity extends LoginBaseActivity {
     }
 
     private ArrayList<String> validate() {
-        ArrayList<String> errors =  new ArrayList<>();
-        if(selectedIdType == null) {
+        ArrayList<String> errors = new ArrayList<>();
+        if (selectedIdType == null) {
             errors.add(getString(R.string.person_id_type_error_text));
         }
-        if(TextUtils.isEmpty(personIdNumber.getText())) {
+        if (TextUtils.isEmpty(personIdNumber.getText())) {
             errors.add(getString(R.string.person_in_number_error_text));
-        }
-        if(TextUtils.isEmpty(virtualPasswordText.getText())) {
-            errors.add(getString(R.string.virtual_password_error_text));
         }
         return errors;
     }

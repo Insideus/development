@@ -5,14 +5,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.orhanobut.dialogplus.DialogPlus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +27,9 @@ import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.ui.controls.ComboHolder;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
+import ar.com.fennoma.davipocket.utils.EncryptionUtils;
 
 public class ChangePasswordStep2Activity extends BaseActivity {
 
@@ -42,10 +48,11 @@ public class ChangePasswordStep2Activity extends BaseActivity {
     private EditText lastCardDigits;
     private EditText atmPassword;
     //OTHER PRODUCT
-    Spinner bankProductSpinner;
+    //Spinner bankProductSpinner;
     TextView bankProductNumberText;
     BankProduct selectedBankProduct;
     TextView bankProductText;
+    DialogPlus dialogPlus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,37 +88,143 @@ public class ChangePasswordStep2Activity extends BaseActivity {
         productCode = savedInstanceState.getString(PRODUCT_CODE_KEY);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(dialogPlus != null && dialogPlus.isShowing()) {
+
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private void findFields() {
         if(isTdBankProduct()) {
             showTdFields(true);
             lastCardDigits = (EditText) findViewById(R.id.last_card_digits);
             atmPassword = (EditText) findViewById(R.id.atm_password);
-        } else {
-            showTdFields(false);
-            bankProductSpinner = (Spinner) findViewById(R.id.product_type_spinner);
-            bankProductText = (TextView) findViewById(R.id.product_type_text);
-            bankProductNumberText = (TextView) findViewById(R.id.product_number);
-            bankProductText.setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.last_card_digits_help_icon).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    bankProductSpinner.performClick();
+                    showHelpDialog("", getString(R.string.change_password_step_2_last_card_digits_help_text));
                 }
             });
-            bankProductSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            findViewById(R.id.atm_password_help_icon).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    selectedBankProduct = (BankProduct) parent.getItemAtPosition(position);
-                    if(selectedBankProduct != null)
-                        bankProductText.setText(selectedBankProduct.getName());
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
+                public void onClick(View v) {
+                    showHelpDialog("", getString(R.string.change_password_step_atm_password_help_text));
                 }
             });
-            setIdTypesSpinner();
+        } else {
+            showTdFields(false);
+            bankProductText = (TextView) findViewById(R.id.product_type_text);
+            bankProductNumberText = (TextView) findViewById(R.id.product_number);
+            bankProductText.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    DialogUtil.hideKeyboard(ChangePasswordStep2Activity.this);
+                    showCombo();
+                    return false;
+                }
+            });
+            findViewById(R.id.product_number_help_icon).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showHelpDialog("", getString(R.string.change_password_step_2_product_help_text));
+                }
+            });
         }
+        ArrayList<BankProduct> bankProducts = Session.getCurrentSession(this).getBankProducts();
+        if(bankProducts != null && bankProducts.size() > 0) {
+            selectedBankProduct = bankProducts.get(0);
+        }
+        setSelectedBankProductName();
+    }
+
+    public void showCombo() {
+        ArrayList<BankProduct> bankProducts = Session.getCurrentSession(this).getBankProducts();
+        final ComboAdapter adapter = new ComboAdapter(bankProducts, selectedBankProduct);
+        final DialogPlus dialog = DialogPlus.newDialog(this)
+                .setAdapter(adapter)
+                .setContentHolder(new ComboHolder())
+                .setFooter(R.layout.combo_footer)
+                .setExpanded(false)
+                .create();
+        View footerView = dialog.getFooterView();
+        footerView.findViewById(R.id.accept_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedBankProduct = adapter.selectedType;
+                setSelectedBankProductName();
+                dialog.dismiss();
+            }
+        });
+        footerView.findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        dialogPlus = dialog;
+    }
+
+    private void setSelectedBankProductName() {
+        if (bankProductText != null) {
+            bankProductText.setText(selectedBankProduct.getName());
+        }
+    }
+
+    private class ComboAdapter extends BaseAdapter {
+
+        ArrayList<BankProduct> types;
+        BankProduct selectedType;
+
+        public ComboAdapter(ArrayList<BankProduct> types, BankProduct selectedType) {
+            this.types = types;
+            this.selectedType = selectedType;
+        }
+
+        @Override
+        public int getCount() {
+            return types.size();
+        }
+
+        @Override
+        public BankProduct getItem(int position) {
+            return types.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return types.get(position).getId();
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            TextView row;
+            if(convertView == null) {
+                row = (TextView) inflater.inflate(R.layout.combo_item, parent, false);
+            } else {
+                row = (TextView) convertView;
+            }
+            final BankProduct type = getItem(position);
+            row.setText(type.getName());
+            if (selectedType != null && selectedType.getId() == type.getId()) {
+                row.setTextColor(ContextCompat.getColor(ChangePasswordStep2Activity.this, R.color.combo_item_text_color_selected));
+            } else {
+                row.setTextColor(ContextCompat.getColor(ChangePasswordStep2Activity.this, R.color.combo_item_text_color));
+            }
+            row.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectedType = type;
+                    notifyDataSetChanged();
+                }
+            });
+            return row;
+        }
+
     }
 
     private boolean isTdBankProduct() {
@@ -130,6 +243,7 @@ public class ChangePasswordStep2Activity extends BaseActivity {
         }
     }
 
+    /*
     void setIdTypesSpinner() {
         ArrayAdapter<BankProduct> adapter = new ArrayAdapter<BankProduct>(this, android.R.layout.simple_spinner_item,
                 Session.getCurrentSession(this).getBankProducts());
@@ -140,6 +254,7 @@ public class ChangePasswordStep2Activity extends BaseActivity {
             bankProductSpinner.setSelection(position);
         }
     }
+    */
 
     private void setContinueButton() {
         View continueButton = findViewById(R.id.send_button);
@@ -207,7 +322,8 @@ public class ChangePasswordStep2Activity extends BaseActivity {
         protected String doInBackground(String... params) {
             String response = null;
             try {
-                response = Service.validateProduct(params[0], params[1], params[2], params[3], params[4]);
+                String encryptedPin = EncryptionUtils.encryptPin(ChangePasswordStep2Activity.this, params[2]);
+                response = Service.validateProduct(params[0], params[1], encryptedPin, params[3], params[4]);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }

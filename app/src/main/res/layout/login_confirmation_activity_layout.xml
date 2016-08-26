@@ -100,6 +100,7 @@
                     android:id="@+id/country_spinner"
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
                     android:spinnerMode="dropdown"/>
 
             </LinearLayout>
@@ -156,6 +157,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginTop="@dimen/subtitle_margin"
+            android:layout_marginLeft="@dimen/button_without_cardview_padding"
+            android:layout_marginRight="@dimen/button_without_cardview_padding"
             android:text="@string/confirmation_activity_subtitle"
             android:textColor="@color/gray_text_color"
             android:textSize="@dimen/common_text_size" />

@@ -1,14 +1,18 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -126,9 +130,11 @@ public class BaseActivity extends AppCompatActivity {
                             "", getString(R.string.login_error_message_text));
                     break;
                 case WEB_PASSWORD_ERROR:
-                    DialogUtil.toast(this,
+                    DialogUtil.toastWithCallButton(this,
                             getString(R.string.login_web_password_error_message_title),
-                            "", getString(R.string.login_web_password_error_message_text));
+                            "",
+                            getString(R.string.login_web_password_error_message_text),
+                            getString(R.string.login_web_password_phone));
                     break;
                 case VALIDATE_PRODUCT_ERROR:
                     DialogUtil.toast(this,
@@ -185,6 +191,42 @@ public class BaseActivity extends AppCompatActivity {
         } else {
             showServiceGenericError();
         }
+    }
+
+    public void requestPermission(String strPermission, int perCode, Context _c, Activity _a){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(_a,strPermission)){
+
+        } else {
+            ActivityCompat.requestPermissions(_a,new String[]{strPermission},perCode);
+        }
+    }
+
+    public static boolean checkPermission(String strPermission,Context _c,Activity _a){
+        int result = ContextCompat.checkSelfPermission(_c, strPermission);
+        if (result == PackageManager.PERMISSION_GRANTED){
+            return true;
+        } else {
+            return false;
+
+        }
+    }
+
+    public void showHelpDialog(String title, String subtitle, String text) {
+        Intent intent = new Intent(this, ToastDialogActivity.class);
+        intent.putExtra(ToastDialogActivity.TITLE_KEY, title);
+        intent.putExtra(ToastDialogActivity.SUBTITLE_KEY, subtitle);
+        intent.putExtra(ToastDialogActivity.TEXT_KEY, text);
+        startActivity(intent);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
+
+    public void showHelpDialog(String subtitle, String text) {
+        Intent intent = new Intent(this, ToastDialogActivity.class);
+        intent.putExtra(ToastDialogActivity.TITLE_KEY, getString(R.string.help_dialog_generic_title));
+        intent.putExtra(ToastDialogActivity.SUBTITLE_KEY, subtitle);
+        intent.putExtra(ToastDialogActivity.TEXT_KEY, text);
+        startActivity(intent);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
     @Override

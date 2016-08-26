@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/outside"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix">
 
     <LinearLayout
         android:id="@+id/container"
@@ -34,8 +37,9 @@
             android:paddingRight="10dp"
             android:gravity="center"
             android:text="@string/help_dialog_title_1"
-            android:textSize="28dp"
+            android:textSize="26dp"
             android:textStyle="bold"
+            android:textAllCaps="true"
             android:textColor="@color/red_title_color"/>
 
         <TextView
@@ -47,7 +51,8 @@
             android:text="@string/help_dialog_title_2"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:textSize="20dp"
+            android:textSize="18dp"
+            android:textAllCaps="true"
             android:layout_marginTop="-5dp"
             android:textStyle="bold"/>
 
@@ -56,13 +61,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textAllCaps="true"
             android:layout_marginTop="20dp"
             android:textSize="@dimen/common_text_size"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@color/gray_text_color"
             android:text="@string/help_dialog_activity_text"/>
+
+        <TextView
+            android:id="@+id/call_button"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="@dimen/button_without_cardview_padding"
+            android:layout_marginRight="@dimen/button_without_cardview_padding"
+            android:layout_marginTop="@dimen/login_input_margin_top"
+            android:background="@drawable/red_button_background"
+            android:padding="15dp"
+            android:text="@string/call_button_text"
+            android:textColor="@color/login_button_text_color"
+            android:textSize="@dimen/login_input_text_size"
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

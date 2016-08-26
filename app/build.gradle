@@ -13,8 +13,8 @@ android {
         applicationId "ar.com.fennoma.davipocket"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 10
+        versionName "1.0.9"
         multiDexEnabled true
     }
 
@@ -44,4 +44,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.orhanobut:dialogplus:1.11@aar'
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/combo_button_divider_color">
+    <item android:drawable="@drawable/combo_button_border" />
+</ripple>

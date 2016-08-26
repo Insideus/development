@@ -17,6 +17,9 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission
+        android:name="android.permission.CALL_PHONE" />
+
     <application
         android:name=".DavipocketApplication"
         android:allowBackup="true"
@@ -28,6 +31,10 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name=".activities.SplashActivity"
@@ -183,11 +190,15 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar.DarkTranslucent">
-        </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+        </activity>
+
+        <activity
+            android:name=".activities.AssignPasswordRecommendationActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
     </application>
 

@@ -13,6 +13,7 @@ import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class PasswordConfirmationActivity extends BaseActivity {
 
@@ -77,6 +78,11 @@ public class PasswordConfirmationActivity extends BaseActivity {
                 if(code != null && !TextUtils.isEmpty(code.getText())) {
                     //startActivity(new Intent(PasswordConfirmationActivity.this, ActivatedPasswordActivity.class));
                     new ValidateOtpTask().execute(personId, personIdType, code.getText().toString());
+                } else {
+                    DialogUtil.toast(PasswordConfirmationActivity.this,
+                            getString(R.string.input_data_error_generic_title),
+                            getString(R.string.input_data_error_generic_subtitle),
+                            getString(R.string.password_confirmation_incomplete_code_error));
                 }
             }
         });
