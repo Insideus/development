@@ -1,6 +1,7 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,8 +18,12 @@ import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ButtonCard;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.CardToShowOnList;
+import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
+import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
+import ar.com.fennoma.davipocket.utils.ImageUtils;
 
 public class MyCardsActivity extends BaseActivity {
 
@@ -30,7 +35,8 @@ public class MyCardsActivity extends BaseActivity {
         setContentView(R.layout.activity_my_cards);
         setToolbar(R.id.toolbar_layout, false, getString(R.string.my_cards_activity_title));
         setRecycler();
-        cardsAdapter.setList(addButtons(Service.getMockedCardList()));
+        //cardsAdapter.setList(addButtons(Service.getMockedCardList()));
+        new GetUserCardsTask().execute();
     }
 
     private List<CardToShowOnList> addButtons(List<CardToShowOnList> cards){
@@ -43,7 +49,6 @@ public class MyCardsActivity extends BaseActivity {
         cards.add(buttonCard);
         return cards;
     }
-
 
     private void setRecycler() {
         RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler);
@@ -65,12 +70,16 @@ public class MyCardsActivity extends BaseActivity {
 
         @Override
         public int getItemViewType(int position) {
-            return cards.get(position).getKindOfCard();
+            if(cards.get(position) instanceof Card) {
+                return 0;
+            } else {
+                return 1;
+            }
         }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if(viewType == CardToShowOnList.ACTUAL_CARD){
+            if(viewType == 0){
                 return new ActualCardHolder(getLayoutInflater().inflate(R.layout.item_my_cards_card, parent, false));
             } else {
                 return new ButtonCardHolder(getLayoutInflater().inflate(R.layout.item_new_card_to_list, parent, false));
@@ -79,7 +88,7 @@ public class MyCardsActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder genericHolder, int position) {
-            if(getItemViewType(position) == CardToShowOnList.BUTTON_CARD){
+            if(getItemViewType(position) == 1){
                 ButtonCard buttonCard = (ButtonCard) cards.get(position);
                 ButtonCardHolder holder = (ButtonCardHolder) genericHolder;
                 holder.cardButton.setImageResource(buttonCard.getImageResource());
@@ -98,14 +107,17 @@ public class MyCardsActivity extends BaseActivity {
                         }
                     });
                 }
-            } else if(getItemViewType(position) == CardToShowOnList.ACTUAL_CARD){
+            } else if(getItemViewType(position) == 0){
                 final Card card = (Card) cards.get(position);
                 ActualCardHolder holder = (ActualCardHolder) genericHolder;
-                holder.card.setImageResource(card.getImageResource());
-                holder.number.setText(card.getCardNumber());
-                holder.month.setText(card.getMonth());
-                holder.year.setText(card.getYear());
-                holder.cvv.setText(card.getCvv());
+                //holder.card.setImageResource(card.getImageResource());
+                if(card.getBin() != null) {
+                    ImageUtils.loadCardImage(MyCardsActivity.this, holder.card, card.getBin().getImage());
+                }
+                holder.number.setText(card.getLastDigits());
+                //holder.month.setText(card.getMonth());
+                //holder.year.setText(card.getYear());
+                //holder.cvv.setText(card.getCvv());
                 holder.name.setText(card.getOwnerName());
                 holder.card.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -113,15 +125,15 @@ public class MyCardsActivity extends BaseActivity {
                         startActivity(new Intent(MyCardsActivity.this, CardDetailActivity.class));
                     }
                 });
-                if(card.isEnabled()){
+                if(card.getActivate()){
                     holder.translucentCovering.setVisibility(View.INVISIBLE);
                     holder.checkCardData.setVisibility(View.VISIBLE);
                     holder.firstCard.setVisibility(View.VISIBLE);
-                    holder.firstCard.setImageResource(card.isFavouriteCard() ? R.drawable.my_cards_favourite_card_indicator : R.drawable.my_cards_not_favourite_card);
+                    holder.firstCard.setImageResource(card.getDefaultCard() ? R.drawable.my_cards_favourite_card_indicator : R.drawable.my_cards_not_favourite_card);
                     holder.disableCard.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            card.setEnabled(false);
+                            card.setActivate(false);
                             notifyDataSetChanged();
                         }
                     });
@@ -132,7 +144,7 @@ public class MyCardsActivity extends BaseActivity {
                     holder.disableCard.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            card.setEnabled(true);
+                            card.setActivate(true);
                             notifyDataSetChanged();
                         }
                     });
@@ -188,4 +200,45 @@ public class MyCardsActivity extends BaseActivity {
             year = (TextView) itemView.findViewById(R.id.expiration_year);
         }
     }
+
+    public class GetUserCardsTask extends AsyncTask<Void, Void, ArrayList<Card>> {
+
+        String errorCode;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected ArrayList<Card> doInBackground(Void... params) {
+            ArrayList<Card> response = null;
+            try {
+                String sid = Session.getCurrentSession(getApplicationContext()).getSid();
+                response = Service.getUserCards(sid);
+            }  catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Card> response) {
+            super.onPostExecute(response);
+            hideLoading();
+            if(response == null) {
+                //Hancdle invalid session error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if(error != null && error == ErrorMessages.INVALID_SESSION) {
+                    handleInvalidSessionError();
+                } else {
+                    showServiceGenericError();
+                }
+            } else {
+                //cardsAdapter.setList(addButtons(response));
+            }
+        }
+    }
+
 }

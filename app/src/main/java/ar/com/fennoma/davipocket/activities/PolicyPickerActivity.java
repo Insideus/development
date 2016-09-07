@@ -88,7 +88,7 @@ public class PolicyPickerActivity extends BaseActivity{
                 //Service error.
                 showServiceGenericError();
             } else {
-                goToMainActivity();
+                goToInterestsActivity();
             }
         }
     }
@@ -119,8 +119,8 @@ public class PolicyPickerActivity extends BaseActivity{
         privacyPolicy = (CheckBox) findViewById(R.id.privacy_policy);
     }
 
-    private void goToMainActivity() {
-        startActivity(new Intent(this, MainActivity.class));
+    private void goToInterestsActivity() {
+        startActivity(new Intent(this, InterestsPickerActivity.class));
         this.finish();
     }
 

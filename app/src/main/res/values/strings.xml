@@ -62,7 +62,7 @@
     <string name="policy_picker_title">POLÍTICAS</string>
     <string name="policy_picker_terms_and_conditions_not_checked_error">Debe aceptar los términos y condiciones</string>
     <string name="policy_picker_privacy_policy_not_checked_error">Debe aceptar la política de privacidad</string>
-
+    <string name="interests_picker_title">INTERESES</string>
     <string name="assign_password_title">ASIGNAR CONTRASEÑA</string>
 
     <!-- Change Password Activities -->
@@ -146,6 +146,10 @@
     <string name="registration_error_message_underage">Debe ser mayor de 14 años</string>
     <string name="login_confirmation_error_message_wrong_colombian_phone">El teléfono ingresado no es válido</string>
     <string name="call_button_text">LLAMAR AL CALL CENTER</string>
+
+    <!-- Interests Picker Activity -->
+    <string name="interests_picker_subtitle_1">Queremos conocerlo mejor</string>
+    <string name="interests_picker_subtitle_2">Cuáles son sus categorías preferidas</string>
 
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_title">Menú</string>

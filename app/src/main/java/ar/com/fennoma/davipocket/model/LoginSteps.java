@@ -9,7 +9,8 @@ public enum LoginSteps {
     ADDITIONAL_INFO("registration_incomplete.user_info", 2),
     ACCOUNT_VERIFICATION("registration_incomplete.phone_validation", 3),
     COMMUNICATION_PERMISSIONS("registration_incomplete.accept_terms", 4),
-    REGISTRATION_COMPLETED("registration_incomplete.registration_completed", 5);
+    CATEGORIES_OF_INTEREST("registration_incomplete.categories_of_interest", 5),
+    REGISTRATION_COMPLETED("registration_incomplete.registration_completed", 6);
 
 
     LoginSteps(String step, int stepNumber) {

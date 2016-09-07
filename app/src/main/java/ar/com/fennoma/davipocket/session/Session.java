@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import ar.com.fennoma.davipocket.model.BankProduct;
 import ar.com.fennoma.davipocket.model.Country;
 import ar.com.fennoma.davipocket.model.PersonIdType;
+import ar.com.fennoma.davipocket.model.UserInterest;
 
 /**
  * Created by Julian Vega on 14/06/2016.
@@ -21,6 +22,7 @@ public class Session {
     private static String PERSON_ID_TYPES = "PersonIdTypes";
     private static String COUNTRIES = "Countries";
     private static String BANK_PRODUCTS = "BankProducts";
+    private static String USER_INTERESTS = "UserInterests";
     private static String PREF_SESSION_KEY = "SessionKey";
     private static String USER_INFORMATION = "UserInformation";
 
@@ -29,6 +31,7 @@ public class Session {
     private ArrayList<PersonIdType> personIdTypes;
     private ArrayList<Country> countries;
     private ArrayList<BankProduct> bankProducts;
+    private ArrayList<UserInterest> userInterests;
     private String sid;
 
     private Session() {
@@ -55,6 +58,11 @@ public class Session {
                 if (jsonBankProducts != null) {
                     JSONObject jsonObject = new JSONObject(jsonBankProducts);
                     instance.bankProducts = BankProduct.fromJsonArray(jsonObject);
+                }
+                String jsonUserInterests = instance.sharedPreferences.getString(USER_INTERESTS, null);
+                if (jsonUserInterests != null) {
+                    JSONObject jsonObject = new JSONObject(jsonUserInterests);
+                    instance.userInterests = UserInterest.fromJsonArray(jsonObject);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -105,6 +113,17 @@ public class Session {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(BANK_PRODUCTS, bankProductsJson);
         this.bankProducts = bankProducts;
+        editor.commit();
+    }
+
+    public ArrayList<UserInterest> getUserInterests() {
+        return instance.userInterests;
+    }
+
+    public void setUserInterests(ArrayList<UserInterest> userInterests, String userInterestsJson) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_INTERESTS, userInterestsJson);
+        this.userInterests = userInterests;
         editor.commit();
     }
 

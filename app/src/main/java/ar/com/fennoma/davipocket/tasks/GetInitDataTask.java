@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import ar.com.fennoma.davipocket.model.BankProduct;
 import ar.com.fennoma.davipocket.model.Country;
 import ar.com.fennoma.davipocket.model.PersonIdType;
+import ar.com.fennoma.davipocket.model.UserInterest;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 
@@ -41,6 +42,10 @@ public class GetInitDataTask extends AsyncTask<Void, Void, Boolean> {
             JSONObject bankProductsJson = Service.getBankProducts();
             ArrayList<BankProduct> products = BankProduct.fromJsonArray(bankProductsJson);
             Session.getCurrentSession(act).setBankProducts(products, bankProductsJson.toString());
+
+            JSONObject userInterestsJson = Service.getUserInterests();
+            ArrayList<UserInterest> userInterests = UserInterest.fromJsonArray(userInterestsJson);
+            Session.getCurrentSession(act).setUserInterests(userInterests, userInterestsJson.toString());
         }  catch (Exception e) {
             e.printStackTrace();
             success = false;

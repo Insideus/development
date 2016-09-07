@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix">
+
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/login_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <RelativeLayout
+        android:id="@+id/login_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_layout"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/login_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/token_login_header"
+            android:scaleType="fitXY"
+            android:src="@drawable/login_header" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/button_without_cardview_padding"
+                android:layout_marginRight="@dimen/button_without_cardview_padding"
+                android:gravity="center"
+                android:text="@string/interests_picker_subtitle_1"
+                android:textColor="@color/red_base_color"
+                android:textSize="@dimen/common_text_size" />
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/interets_subtitle_1"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="@dimen/button_without_cardview_padding"
+                android:layout_marginRight="@dimen/button_without_cardview_padding"
+                android:gravity="center"
+                android:text="@string/interests_picker_subtitle_2"
+                android:textColor="@color/login_input_text_color"
+                android:textSize="@dimen/common_text_size" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/interests_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/login_header_layout"
+        android:layout_above="@+id/send_button"/>
+
+    <TextView
+        android:id="@+id/send_button"
+        fontPath="fonts/MyriadPro-Semibold.otf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_margin="@dimen/button_without_cardview_padding"
+        android:background="@drawable/red_button_background"
+        android:padding="15dp"
+        android:text="@string/continue_button_text"
+        android:textColor="@color/login_button_text_color"
+        android:textSize="@dimen/login_input_text_size"
+        android:layout_above="@+id/login_footer"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/login_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/login_footer" />
+
+</RelativeLayout>

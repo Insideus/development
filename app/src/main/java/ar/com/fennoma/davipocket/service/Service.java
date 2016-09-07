@@ -22,10 +22,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.ButtonCard;
 import ar.com.fennoma.davipocket.model.Card;
-import ar.com.fennoma.davipocket.model.CardToShowOnList;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.Transaction;
@@ -36,7 +33,9 @@ import ar.com.fennoma.davipocket.model.Transaction;
 public class Service {
 
     //private static String BASE_URL = "http://davipocket-stg.paymentez.com/api";
-    private static String BASE_URL = "http://davivienda.fennoma.com.ar/api";
+    private static String BASE_URL = "http://davipocket-dev.paymentez.com/api";
+    public static String IMAGE_BASE_URL = "http://davipocket-dev.paymentez.com";
+    //private static String BASE_URL = "http://davivienda.fennoma.com.ar/api";
     private static int SUCCESS_CODE = 200;
     private static String DATA_TAG = "data";
     private static String ERROR_CODE_TAG = "error_code";
@@ -45,9 +44,13 @@ public class Service {
     private static String NEXT_TOKEN_TAG = "next_token_session";
     private static String PASSWORD_TOKEN_TAG = "password_token";
 
+    //Init data services
     private static String GET_ID_TYPES = "/person_id_types";
     private static String GET_COUNTRIES = "/countries";
     private static String GET_BANK_PRODUCTS = "/products";
+    private static String GET_USER_INTERESTS = "/categories_of_interest";
+
+    //User services
     private static String LOGIN = "/user/login";
     private static String LOGIN_WITH_TOKEN = "/user/login_token";
     private static String LOGIN_WITH_NEXT_TOKEN = "/user/login_next_token";
@@ -62,6 +65,8 @@ public class Service {
     private static String FORGOT_PASSWORD = "/user/forgot_password";
     private static String SET_EXPIRED_PASSWORD = "/user/set_expired_password";
     private static String LOGOUT = "/user/logout";
+    private static String SET_USER_INTERESTS = "/user/categories_of_interest";
+    private static String GET_USER_CARDS = "/user/cards";
 
     public static JSONObject getPersonIdTypes() {
         HttpURLConnection urlConnection = null;
@@ -120,6 +125,30 @@ public class Service {
                 JSONObject json = getJsonFromResponse(in);
                 if(json.has("error") && !json.getBoolean("error")) {
                     response = json.getJSONObject(DATA_TAG);
+                }
+            }
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static JSONObject getUserInterests() {
+        HttpURLConnection urlConnection = null;
+        JSONObject response = null;
+        try {
+            urlConnection = getHttpURLConnection(GET_USER_INTERESTS);
+            urlConnection.connect();
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = json.getJSONObject(DATA_TAG);
+                    response = response;
                 }
             }
         } catch (JSONException | IOException e) {
@@ -809,6 +838,84 @@ public class Service {
         return response;
     }
 
+    public static Boolean setUserInterests(String sid, String interestArray) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        Boolean response = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(SET_USER_INTERESTS, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> smsParam = new Pair("categories", interestArray);
+            params.add(smsParam);
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static ArrayList<Card> getUserCards(String sid) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        ArrayList<Card> response = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(GET_USER_CARDS, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = Card.fromJsonArray(responseJson);
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
     public static Boolean logout(String sid) throws ServiceException {
         HttpURLConnection urlConnection = null;
         Boolean response = null;
@@ -931,52 +1038,6 @@ public class Service {
         transactions.add(transaction);
 
         return transactions;
-    }
-
-    public static List<CardToShowOnList> getMockedCardList() {
-        List<CardToShowOnList> cards = new ArrayList<>();
-        Card card = new Card(R.drawable.portfolio_card);
-        card.setEnabled(true);
-        card.setFavouriteCard(true);
-        card.setCardNumber("1234 1234 1234 1234");
-        card.setOwnerName("Pedro Pérez");
-        card.setMonth("11");
-        card.setYear("18");
-        card.setCvv("123");
-        cards.add(card);
-
-        card = new Card(R.drawable.blue_mocked_card);
-        card.setEnabled(true);
-        card.setFavouriteCard(false);
-        card.setCardNumber("4321 1234 1234 1234");
-        card.setOwnerName("Pedro Pérez");
-        card.setMonth("11");
-        card.setYear("18");
-        card.setCvv("123");
-        cards.add(card);
-
-        card = new Card(R.drawable.portfolio_card);
-        card.setEnabled(false);
-        card.setFavouriteCard(false);
-        card.setCardNumber("3421 1234 1234 1234");
-        card.setOwnerName("Pedro Pérez");
-        card.setMonth("11");
-        card.setYear("18");
-        card.setCvv("123");
-        cards.add(card);
-
-        card = new Card(R.drawable.mocked_inactive_card);
-        card.setEnabled(false);
-        card.setInactive(true);
-        card.setFavouriteCard(false);
-        card.setCardNumber("1243 1234 1234 1234");
-        card.setOwnerName("Pedro Pérez");
-        card.setMonth("11");
-        card.setYear("18");
-        card.setCvv("123");
-        cards.add(card);
-
-        return cards;
     }
 
 }

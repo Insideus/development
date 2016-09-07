@@ -33,8 +33,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void goToLogin() {
-        //Intent intent = new Intent(SplashActivity.this, LoginTokenActivity.class);
-        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+        Intent intent = new Intent(SplashActivity.this, MyCardsActivity.class);
+        //Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

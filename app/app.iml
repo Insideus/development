@@ -188,6 +188,7 @@
     <orderEntry type="library" exported="" name="play-services-gass-9.2.1" level="project" />
     <orderEntry type="library" exported="" name="facebook-android-sdk-4.15.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-tasks-9.2.1" level="project" />
+    <orderEntry type="library" exported="" name="universal-image-loader-1.9.5" level="project" />
     <orderEntry type="library" exported="" name="taz" level="project" />
     <orderEntry type="library" exported="" name="play-services-cast-framework-9.2.1" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-23.4.0" level="project" />
@@ -202,6 +203,7 @@
     <orderEntry type="library" exported="" name="play-services-ads-9.2.1" level="project" />
     <orderEntry type="library" exported="" name="bolts-applinks-1.4.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-analytics-impl-9.2.1" level="project" />
+    <orderEntry type="library" exported="" name="mint-5.0.0" level="project" />
     <orderEntry type="library" exported="" name="customtabs-23.4.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-ads-lite-9.2.1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.4.0" level="project" />

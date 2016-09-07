@@ -180,6 +180,11 @@ public class BaseActivity extends AppCompatActivity {
                     communicationPermissionsActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(communicationPermissionsActivity);
                     break;
+                case CATEGORIES_OF_INTEREST:
+                    Intent interestActivity = new Intent(this, InterestsPickerActivity.class);
+                    interestActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(interestActivity);
+                    break;
                 case REGISTRATION_COMPLETED:
                     Intent mainActivityIntent = new Intent(this, MainActivity.class);
                     mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
