@@ -22,6 +22,7 @@ import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 
@@ -114,10 +115,8 @@ public class MyCardsActivity extends BaseActivity {
                 if(card.getBin() != null) {
                     ImageUtils.loadCardImage(MyCardsActivity.this, holder.card, card.getBin().getImage());
                 }
-                holder.number.setText(card.getLastDigits());
-                //holder.month.setText(card.getMonth());
-                //holder.year.setText(card.getYear());
-                //holder.cvv.setText(card.getCvv());
+                holder.number.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
+                holder.date.setText("●● / ●●");
                 holder.name.setText(card.getOwnerName());
                 holder.card.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -182,9 +181,7 @@ public class MyCardsActivity extends BaseActivity {
         private View disableCard;
         private TextView name;
         private TextView number;
-        private TextView cvv;
-        private TextView month;
-        private TextView year;
+        private TextView date;
 
         public ActualCardHolder(View itemView) {
             super(itemView);
@@ -195,13 +192,11 @@ public class MyCardsActivity extends BaseActivity {
             disableCard = itemView.findViewById(R.id.disable_card);
             name = (TextView) itemView.findViewById(R.id.credit_card_name);
             number = (TextView) itemView.findViewById(R.id.credit_card_number);
-            cvv = (TextView) itemView.findViewById(R.id.cvv);
-            month = (TextView) itemView.findViewById(R.id.expiration_month);
-            year = (TextView) itemView.findViewById(R.id.expiration_year);
+            date = (TextView) itemView.findViewById(R.id.expiration_date);
         }
     }
 
-    public class GetUserCardsTask extends AsyncTask<Void, Void, ArrayList<Card>> {
+    public class GetUserCardsTask extends AsyncTask<Void, Void, ArrayList<CardToShowOnList>> {
 
         String errorCode;
 
@@ -212,11 +207,15 @@ public class MyCardsActivity extends BaseActivity {
         }
 
         @Override
-        protected ArrayList<Card> doInBackground(Void... params) {
-            ArrayList<Card> response = null;
+        protected ArrayList<CardToShowOnList> doInBackground(Void... params) {
+            ArrayList<CardToShowOnList> response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.getUserCards(sid);
+                ArrayList<Card> userCards = Service.getUserCards(sid);
+                if(userCards != null) {
+                    response = new ArrayList<CardToShowOnList>();
+                    response.addAll(userCards);
+                }
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -224,7 +223,7 @@ public class MyCardsActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Card> response) {
+        protected void onPostExecute(ArrayList<CardToShowOnList> response) {
             super.onPostExecute(response);
             hideLoading();
             if(response == null) {
@@ -236,7 +235,7 @@ public class MyCardsActivity extends BaseActivity {
                     showServiceGenericError();
                 }
             } else {
-                //cardsAdapter.setList(addButtons(response));
+                cardsAdapter.setList(addButtons(response));
             }
         }
     }

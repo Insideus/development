@@ -39,13 +39,12 @@
                 android:layout_marginEnd="@dimen/card_pay_detail_items_margin_end"
                 android:layout_marginStart="@dimen/card_pay_detail_items_horizonal_margin"
                 android:layout_weight="0.13"
-                android:background="@drawable/new_card_input_background"
                 android:nextFocusDown="@+id/expiration_month"
                 android:nextFocusLeft="@+id/expiration_month"
                 android:nextFocusRight="@+id/expiration_month"
                 android:singleLine="true"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/common_text_size" />
+                android:textSize="@dimen/my_cards_items_card_number_text_size" />
 
             <View
                 android:layout_width="wrap_content"
@@ -62,39 +61,17 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/expiration_month"
+                    android:id="@+id/expiration_date"
                     fontPath="fonts/MyriadPro-Regular.otf"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
-                    android:layout_weight="0.16"
-                    android:background="@drawable/new_card_input_background"
-                    android:gravity="center"
+                    android:layout_weight="0.37"
                     android:nextFocusDown="@+id/expiration_year"
                     android:nextFocusLeft="@+id/expiration_year"
                     android:nextFocusRight="@+id/expiration_year"
                     android:singleLine="true"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/common_text_size" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.05" />
-
-                <TextView
-                    android:id="@+id/expiration_year"
-                    fontPath="fonts/MyriadPro-Regular.otf"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="0.16"
-                    android:background="@drawable/new_card_input_background"
-                    android:gravity="center"
-                    android:nextFocusDown="@+id/cvv"
-                    android:nextFocusLeft="@+id/cvv"
-                    android:nextFocusRight="@+id/cvv"
-                    android:singleLine="true"
+                    android:drawablePadding="0dp"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/common_text_size" />
 
@@ -113,9 +90,11 @@
                         android:background="@drawable/new_card_input_background"
                         android:gravity="center"
                         android:singleLine="true"
+                        android:visibility="gone"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/common_text_size" />
                 </FrameLayout>
+
             </LinearLayout>
 
             <View
@@ -132,8 +111,6 @@
                 android:layout_marginStart="@dimen/card_pay_detail_items_horizonal_margin"
                 android:layout_weight="0.13"
                 android:gravity="center_vertical"
-                android:background="@drawable/new_card_input_background"
-                android:inputType="textNoSuggestions|none"
                 android:singleLine="true"
                 android:textAllCaps="true"
                 android:textColor="@android:color/white"
