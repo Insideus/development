@@ -124,7 +124,9 @@ public class Card implements Parcelable, CardToShowOnList {
             card.setEnrolling(json.getBoolean("enrolling"));
             card.setPay(json.getBoolean("pay"));
             card.setActivate(json.getBoolean("activate"));
-            card.setMessage(json.getString("message"));
+            if(json.has("message")) {
+                card.setMessage(json.getString("message"));
+            }
             JSONObject jsonBin = json.getJSONObject("bin");
             CardBin bin = CardBin.fromJson(jsonBin);
             card.setBin(bin);

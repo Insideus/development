@@ -5,10 +5,15 @@ package ar.com.fennoma.davipocket.utils;
  */
 public class CardsUtils {
 
-    private static String MASK = "○○○○    ○○○○    ○○○○    ";
+    private static String NUMBER_MASK = "○○○○    ○○○○    ○○○○    ";
+    private static String DATE_MASK = "●● / ●●";
 
     public static String getMaskedCardNumber(String number) {
-        return MASK.concat(number);
+        return NUMBER_MASK.concat(number);
+    }
+
+    public static String getMaskedExpirationDate() {
+        return DATE_MASK;
     }
 
 }

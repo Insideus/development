@@ -145,7 +145,7 @@
         android:paddingTop="@dimen/my_cards_items_spacing_bar">
 
         <ImageView
-            android:id="@+id/first_card_indicator"
+            android:id="@+id/favourite_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/my_cards_not_favourite_card" />
