@@ -192,6 +192,32 @@
 
     <!-- My Cards -->
     <string name="my_cards_activity_title">MIS TARJETAS</string>
+    <string name="my_cards_continue_button_text">CONTINUAR</string>
+    <string name="my_cards_cancel_button_text">CANCELAR</string>
 
+    <string name="my_cards_enrole_card_title">ENRROLAR TARJETA</string>
+    <string name="my_cards_enrole_card_subtitle">Ingrese el CCV</string>
+    <string name="my_cards_enrole_card_text">Es el número de 3 dígitos que está al reverso de su tarjeta.</string>
+
+    <string name="my_cards_block_card_title">BLOQUEAR TARJETA</string>
+    <string name="my_cards_block_card_subtitle">Ingrese el CCV</string>
+    <string name="my_cards_block_card_text">Es el número de 3 dígitos que está al reverso de su tarjeta.</string>
+
+    <string name="my_cards_activate_card_title">ACTIVAR TARJETA</string>
+    <string name="my_cards_activate_card_subtitle">Ingrese el número de su tarjeta</string>
+    <string name="my_cards_activate_card_text">Ingrese el número completo de su tarjeta tal como figura en el plástico.</string>
+
+    <string name="my_cards_blocked_call_card_title">TARJETA BLOQUEADA</string>
+    <string name="my_cards_blocked_call__card_subtitle">Su tarjeta se encuentra bloqueada</string>
+    <string name="my_cards_blocked_call__card_text">Para desbloquearla por favor comuníquese con el call center del banco.</string>
+    <string name="my_cards_blocked_call__phone">+5713383838</string>
+
+    <string name="my_cards_pay_button_text">PAGAR</string>
+    <string name="my_cards_pay_continue_button_text">CONTINUAR</string>
+
+    <string name="my_cards_pay_card_title">PAGAR TARJETA</string>
+    <string name="my_cards_pay_card_subtitle">Debe pagar su tarjeta para seguir operando</string>
+    <string name="my_cards_pay_card_text_1">Su tarjeta tiene sobrecupo.\n ¿Desea pagarla ahora para poder utilizarla en su billetera?</string>
+    <string name="my_cards_pay_card_text_2">Su tarjeta presenta bloqueo de rediferido.\n ¿Desea pagarla ahora para poder utilizarla en su billetera?</string>
 
 </resources>

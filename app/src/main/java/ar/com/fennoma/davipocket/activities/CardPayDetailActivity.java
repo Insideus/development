@@ -11,9 +11,13 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.Card;
 
 public class CardPayDetailActivity extends BaseActivity {
 
+    public static String CARD_KEY = "card_key";
+
+    private Card card;
     private String priceIndicator;
     private CheckBox totalPayment;
     private CheckBox minimumPayment;
@@ -23,6 +27,11 @@ public class CardPayDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            card = savedInstanceState.getParcelable(CARD_KEY);
+        } else {
+            card = getIntent().getParcelableExtra(CARD_KEY);
+        }
         priceIndicator = getString(R.string.card_detail_item_transaction_price_indicator);
         setContentView(R.layout.activity_card_pay_detail);
         setToolbar(R.id.toolbar_layout, false, getString(R.string.mocked_master_card_title));

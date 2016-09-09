@@ -26,15 +26,25 @@ public class SplashActivity extends AppCompatActivity {
         GetInitDataTask task = new GetInitDataTask(this, new TaskCallback() {
             @Override
             public void execute(Object result) {
-                goToLogin();
+                goToLoginOrHome();
             }
         });
         task.execute();
     }
 
-    private void goToLogin() {
+    private void goToLoginOrHome() {
+        /*
+        if(Session.getCurrentSession(this).isValid()) {
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+        */
         Intent intent = new Intent(SplashActivity.this, MyCardsActivity.class);
-        //Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

@@ -40,8 +40,6 @@ public class MyCardsActivity extends BaseActivity {
         setContentView(R.layout.activity_my_cards);
         setToolbar(R.id.toolbar_layout, false, getString(R.string.my_cards_activity_title));
         setRecycler();
-        //cardsAdapter.setList(addButtons(Service.getMockedCardList()));
-        new GetUserCardsTask().execute();
     }
 
     private List<CardToShowOnList> addButtons(List<CardToShowOnList> cards){
@@ -161,40 +159,14 @@ public class MyCardsActivity extends BaseActivity {
                 makeAlphaImage(holder, CardState.blurredImage(cardState));
                 makeBlackAndWhiteImage(holder, CardState.blackAndWhiteImage(cardState));
 
-                setButtonsState(holder, card, buttonsState);
-                /*
-                if(card.getActivate()){
-                    makeAlphaImage(holder, false);
-                    holder.checkCardData.setVisibility(View.VISIBLE);
-                    holder.favouriteCard.setVisibility(View.VISIBLE);
-                    holder.favouriteCard.setImageResource(card.getDefaultCard() ? R.drawable.my_cards_favourite_card_indicator : R.drawable.my_cards_not_favourite_card);
-                    holder.disableCard.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            card.setActivate(false);
-                            notifyDataSetChanged();
-                        }
-                    });
-                } else {
-                    makeAlphaImage(holder, true);
-                    holder.favouriteCard.setVisibility(View.GONE);
-                    holder.checkCardData.setVisibility(View.GONE);
-                    holder.disableCard.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            card.setActivate(true);
-                            notifyDataSetChanged();
-                        }
-                    });
-                }
-                */
+                setButtonsState(holder, card, cardState, buttonsState);
             }
         }
 
-        private void setButtonsState(ActualCardHolder holder, Card card, CardState.CardButtonsState cardButtonsState) {
+        private void setButtonsState(ActualCardHolder holder, Card card, CardState cardState, CardState.CardButtonsState cardButtonsState) {
             setFavouriteButtonState(holder, card, cardButtonsState);
-            setActivateButtonState(holder, card, cardButtonsState);
-            setBlockButtonState(holder, card, cardButtonsState);
+            setActivateButtonState(holder, card, cardState, cardButtonsState);
+            setBlockButtonState(holder, card,  cardState,cardButtonsState);
         }
 
         private void setFavouriteButtonState(ActualCardHolder holder, Card card, CardState.CardButtonsState cardButtonsState) {
@@ -203,35 +175,113 @@ public class MyCardsActivity extends BaseActivity {
             } else {
                 holder.favouriteCard.setVisibility(View.VISIBLE);
                 holder.favouriteCard.setImageResource(card.getDefaultCard() ? R.drawable.my_cards_favourite_card_indicator : R.drawable.my_cards_not_favourite_card);
+                holder.favouriteCard.setOnClickListener(getFavouriteOnclickListener(card));
+                if(card.getDefaultCard()) {
+                    holder.favouriteCard.setOnClickListener(null);
+                } else {
+                    holder.favouriteCard.setOnClickListener(getFavouriteOnclickListener(card));
+                }
             }
         }
 
-        private void setActivateButtonState(ActualCardHolder holder, Card card, CardState.CardButtonsState cardButtonsState) {
+        private View.OnClickListener getFavouriteOnclickListener(final Card card) {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new SetFavouriteCardTask().execute(card.getLastDigits());
+                }
+            };
+        }
+
+        private void setActivateButtonState(ActualCardHolder holder, Card card, CardState cardState, CardState.CardButtonsState cardButtonsState) {
             if(cardButtonsState.activateButton == null) {
                 holder.checkCardData.setVisibility(View.INVISIBLE);
             } else {
                 holder.checkCardData.setVisibility(View.VISIBLE);
                 holder.checkCardData.setImageResource(cardButtonsState.activateButton ? R.drawable.my_cards_avalaible_card_indicator : R.drawable.my_cards_avalaible_card_indicator_disabled);
                 if(cardButtonsState.activateButton) {
-
+                    holder.checkCardData.setOnClickListener(getCheckCardOnClickListener(card, cardState));
                 } else {
-
+                    holder.checkCardData.setOnClickListener(null);
                 }
             }
         }
 
-        private void setBlockButtonState(ActualCardHolder holder, Card card, CardState.CardButtonsState cardButtonsState) {
+        private void setBlockButtonState(ActualCardHolder holder, Card card, CardState cardState, CardState.CardButtonsState cardButtonsState) {
             if(cardButtonsState.blockButton == null) {
                 holder.disableCard.setVisibility(View.INVISIBLE);
             } else {
                 holder.disableCard.setVisibility(View.VISIBLE);
                 holder.disableCard.setImageResource(cardButtonsState.blockButton ? R.drawable.my_cards_block_card_button : R.drawable.my_cards_disable_card_button);
                 if(cardButtonsState.blockButton) {
-
+                    holder.disableCard.setOnClickListener(getBlockCardOnClickListener(card));
                 } else {
-
+                    holder.disableCard.setOnClickListener(null);
                 }
             }
+        }
+
+        private View.OnClickListener getBlockCardOnClickListener(final Card card) {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showBlockCardPopup(card);
+                }
+            };
+        }
+
+        private View.OnClickListener getCheckCardOnClickListener(final Card card, final CardState cardState) {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(cardState == CardState.ACTIVE_NOT_ENROLED) {
+                        //Popup para enrolar tarjeta
+                        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
+                        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_enrole_card_title));
+                        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_enrole_card_subtitle));
+                        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_enrole_card_text));
+                        intent.putExtra(CardActionDialogActivity.IS_CCV_DIALOG, true);
+                        intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+                    }
+                    if(cardState == CardState.BLOCKED_ACTIVABLE) {
+                        //Popup para activar tarjeta
+                        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
+                        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_activate_card_title));
+                        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_activate_card_subtitle));
+                        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_activate_card_text));
+                        intent.putExtra(CardActionDialogActivity.IS_CARD_NUMBER_DIALOG, true);
+                        intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+                    }
+                    if(cardState == CardState.BLOCKED) {
+                        //Si lo indica el mensaje, popup para llamar al call center.
+                        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
+                        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_blocked_call_card_title));
+                        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_blocked_call__card_subtitle));
+                        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_blocked_call__card_text));
+                        intent.putExtra(CardActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
+                        intent.putExtra(CardActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.login_web_password_phone));
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+                    }
+                }
+            };
+        }
+
+        private void showBlockCardPopup(Card card) {
+            //Popup para enrolar tarjeta
+            Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
+            intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_block_card_title));
+            intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_block_card_subtitle));
+            intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_block_card_text));
+            intent.putExtra(CardActionDialogActivity.IS_CCV_DIALOG, true);
+            intent.putExtra(CardActionDialogActivity.IS_BLOCK_CARD_DIALOG, true);
+            intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
+            startActivity(intent);
+            overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         }
 
         @NonNull
@@ -239,10 +289,25 @@ public class MyCardsActivity extends BaseActivity {
             return new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(card.getPay()) {
-
+                    if(card.getPay() && card.getMessage() != null) {
+                        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
+                        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_pay_card_title));
+                        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_pay_card_subtitle));
+                        if(card.getMessage().equalsIgnoreCase("card_status.blocked_sobrecupo")) {
+                            intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_pay_card_text_1));
+                        }
+                        if(card.getMessage().equalsIgnoreCase("card_status.blocked_rediferido")) {
+                            intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_pay_card_text_2));
+                        }
+                        intent.putExtra(CardActionDialogActivity.SHOW_PAY_BUTTON_KEY, true);
+                        intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+                    } else {
+                        Intent intent = new Intent(MyCardsActivity.this, CardDetailActivity.class);
+                        intent.putExtra(CardDetailActivity.CARD_KEY, card);
+                        startActivity(intent);
                     }
-                    startActivity(new Intent(MyCardsActivity.this, CardDetailActivity.class));
                 }
             };
         }
@@ -274,6 +339,47 @@ public class MyCardsActivity extends BaseActivity {
         public void setList(List<CardToShowOnList> cards) {
             this.cards = cards;
             notifyDataSetChanged();
+        }
+    }
+
+    public class SetFavouriteCardTask extends AsyncTask<String, Void, Boolean> {
+
+        String errorCode;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            Boolean response = null;
+            try {
+                String sid = Session.getCurrentSession(getApplicationContext()).getSid();
+                response = Service.setFavouriteCard(sid, params[0]);
+            }  catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean response) {
+            super.onPostExecute(response);
+            hideLoading();
+            if(response == null || !response) {
+                //Hancdle invalid session error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if(error != null && error == ErrorMessages.INVALID_SESSION) {
+                    handleInvalidSessionError();
+                } else {
+                    showServiceGenericError();
+                }
+            } else {
+                refreshCardList();
+            }
+
         }
     }
 
@@ -319,6 +425,16 @@ public class MyCardsActivity extends BaseActivity {
                 cardsAdapter.setList(addButtons(response));
             }
         }
+    }
+
+    private void refreshCardList() {
+        new GetUserCardsTask().execute();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshCardList();
     }
 
 }

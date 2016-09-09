@@ -208,6 +208,14 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".activities.CardActionDialogActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar.DarkTranslucent">
+        </activity>
+
     </application>
 
 </manifest>

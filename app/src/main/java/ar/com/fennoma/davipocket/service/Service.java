@@ -68,6 +68,12 @@ public class Service {
     private static String SET_USER_INTERESTS = "/user/categories_of_interest";
     private static String GET_USER_CARDS = "/user/cards";
 
+    //Card services
+    private static String ACTIVATE_CARD = "/card/activate";
+    private static String ADD_CARD = "/card/add";
+    private static String BLOCK_CARD = "/card/block";
+    private static String SET_FAVOURITE_CARD = "/card/favourite";
+
     public static JSONObject getPersonIdTypes() {
         HttpURLConnection urlConnection = null;
         JSONObject response = null;
@@ -379,7 +385,6 @@ public class Service {
 
     public static Boolean updateUserInfo(String sid, String email, String phone,
                                          String countryId,  String birthDate) throws ServiceException {
-        //Parámetros: email, phone, country_id, birth_date (formato dd/MM/yyyy)
         HttpURLConnection urlConnection = null;
         Boolean response = null;
         try {
@@ -950,6 +955,193 @@ public class Service {
         return response;
     }
 
+    public static Boolean activateCard(String sid, String cardNumber) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        Boolean response = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(ACTIVATE_CARD, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> cardNumberParam = new Pair("card_digits", cardNumber);
+            params.add(cardNumberParam);
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static Boolean addCard(String sid, String lastDigits, String ccv) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        Boolean response = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(ADD_CARD, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> lastDigitsParam = new Pair("last_digits", lastDigits);
+            params.add(lastDigitsParam);
+            Pair<String, String> ccvParam = new Pair("csv", ccv);
+            params.add(ccvParam);
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static Boolean blockCard(String sid, String lastDigits, String ccv) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        Boolean response = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(BLOCK_CARD, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> lastDigitsParam = new Pair("last_digits", lastDigits);
+            params.add(lastDigitsParam);
+            Pair<String, String> ccvParam = new Pair("csv", ccv);
+            params.add(ccvParam);
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static Boolean setFavouriteCard(String sid, String cardNumber) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        /*
+        Boolean response = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(SET_FAVOURITE_CARD, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> cardNumberParam = new Pair("card_digits", cardNumber);
+            params.add(cardNumberParam);
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+        */
+        return true;
+    }
+
     private static boolean isValidStatusLineCode(int statusCode) {
         return statusCode == SUCCESS_CODE;
     }
@@ -965,6 +1157,9 @@ public class Service {
             }
             result.append(URLEncoder.encode(pair.first, "UTF-8"));
             result.append("=");
+            if(pair.second == null) {
+                result.append(URLEncoder.encode("", "UTF-8"));
+            }
             result.append(URLEncoder.encode(pair.second, "UTF-8"));
         }
         return result.toString();

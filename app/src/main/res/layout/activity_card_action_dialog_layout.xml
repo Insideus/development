@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/outside"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:paddingTop="25dp"
+        android:paddingBottom="20dp"
+        android:background="@drawable/white_rounded_coreners_background"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/close_button"
+            android:layout_marginBottom="10dp"
+            android:paddingRight="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:src="@drawable/cancel_ex" />
+
+        <TextView
+            android:id="@+id/toast_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="center"
+            android:text="@string/help_dialog_title_1"
+            android:textSize="26dp"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:textColor="@color/red_title_color"/>
+
+        <TextView
+            android:id="@+id/toast_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/darkest_blue_title_color"
+            android:text="@string/help_dialog_title_2"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="18dp"
+            android:textAllCaps="true"
+            android:layout_marginTop="-5dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/toast_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:textSize="@dimen/common_text_size"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/gray_text_color"
+            android:text="@string/help_dialog_activity_text"/>
+
+        <EditText
+            android:id="@+id/ccv_code"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:padding="10dp"
+            android:background="@drawable/code_number_background"
+            android:inputType="numberPassword"
+            android:singleLine="true"
+            android:gravity="center"
+            android:maxLength="4"
+            android:textColor="@color/red_base_color"
+            android:textSize="@dimen/number_code_text_size" />
+
+        <EditText
+            android:id="@+id/card_number"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:padding="10dp"
+            android:background="@drawable/code_number_background"
+            android:inputType="number"
+            android:singleLine="true"
+            android:maxLength="16"
+            android:gravity="center"
+            android:textColor="@color/red_base_color"
+            android:textSize="@dimen/card_number_text_size" />
+
+        <TextView
+            android:id="@+id/accept_button"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="@dimen/button_without_cardview_padding"
+            android:layout_marginRight="@dimen/button_without_cardview_padding"
+            android:layout_marginTop="@dimen/login_input_margin_top"
+            android:background="@drawable/red_button_background"
+            android:padding="15dp"
+            android:text="@string/my_cards_pay_button_text"
+            android:textColor="@color/login_button_text_color"
+            android:textSize="@dimen/login_input_text_size"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/call_button"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="@dimen/button_without_cardview_padding"
+            android:layout_marginRight="@dimen/button_without_cardview_padding"
+            android:layout_marginTop="@dimen/login_input_margin_top"
+            android:background="@drawable/red_button_background"
+            android:padding="15dp"
+            android:text="@string/call_button_text"
+            android:textColor="@color/login_button_text_color"
+            android:textSize="@dimen/login_input_text_size"
+            android:visibility="gone"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/ignore_button"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="@dimen/button_without_cardview_padding"
+            android:layout_marginRight="@dimen/button_without_cardview_padding"
+            android:layout_marginTop="@dimen/login_input_margin_top"
+            android:background="@drawable/white_center_white_button_red_border"
+            android:padding="15dp"
+            android:text="@string/my_cards_cancel_button_text"
+            android:textColor="@color/login_button_color"
+            android:textSize="@dimen/login_input_text_size"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

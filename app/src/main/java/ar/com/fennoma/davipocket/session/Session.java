@@ -3,6 +3,8 @@ package ar.com.fennoma.davipocket.session;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.facebook.login.LoginManager;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -83,6 +85,14 @@ public class Session {
         this.sid = sid;
     }
 
+    public void logout() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(PREF_SESSION_KEY);
+        editor.commit();
+        this.sid = null;
+        LoginManager.getInstance().logOut();
+    }
+
     public ArrayList<PersonIdType> getPersonIdTypes() {
         return instance.personIdTypes;
     }
@@ -128,7 +138,7 @@ public class Session {
     }
 
     public boolean isValid() {
-        return false;
+        return this.sid != null;
     }
 
 }

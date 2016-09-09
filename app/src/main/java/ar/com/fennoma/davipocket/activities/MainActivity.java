@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.facebook.login.LoginManager;
 import com.trusteer.tas.TAS_CLIENT_INFO;
 import com.trusteer.tas.atas;
 import com.trusteer.tas.tas;
@@ -96,10 +95,11 @@ public class MainActivity extends BaseActivity {
     }
 
     private void goLoginActivity() {
-        LoginManager.getInstance().logOut();
+        Session.getCurrentSession(this).logout();
         Intent loginIntent = new Intent(this, LoginActivity.class);
         loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
+
         finish();
     }
 

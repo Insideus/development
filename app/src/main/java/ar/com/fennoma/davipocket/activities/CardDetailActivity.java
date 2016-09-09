@@ -17,6 +17,7 @@ import java.util.List;
 
 import ar.com.fennoma.davipocket.DavipocketApplication;
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.Transaction;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.utils.DateUtils;
@@ -24,12 +25,20 @@ import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class CardDetailActivity extends BaseActivity {
 
+    public static String CARD_KEY = "card_key";
+
     private CardDetailAdapter adapter;
+    private Card card;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_detail);
+        if (savedInstanceState != null) {
+            card = savedInstanceState.getParcelable(CARD_KEY);
+        } else {
+            card = getIntent().getParcelableExtra(CARD_KEY);
+        }
         setToolbar(R.id.toolbar_layout, true, getString(R.string.mocked_master_card_title));
         setRecycler();
         setSearcher();
