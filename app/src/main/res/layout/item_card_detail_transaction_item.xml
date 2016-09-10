@@ -30,31 +30,6 @@
             android:textSize="@dimen/common_text_size"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/product_amount"
-                fontPath="fonts/MyriadPro-Regular.otf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2"
-                android:textColor="@color/red_base_color"
-                android:textSize="@dimen/common_text_size" />
-
-            <TextView
-                fontPath="fonts/MyriadPro-Regular.otf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/navigation_drawer_basic_padding"
-                android:text="@string/card_detail_item_transaction_product_title"
-                android:textAllCaps="true"
-                android:textColor="@color/text_light_gray_color"
-                android:textSize="@dimen/common_text_size" />
-        </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -86,17 +61,6 @@
                 android:textColor="@color/input_text_color" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/davipoints"
-            fontPath="fonts/MyriadPro-Regular.otf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/davipoints_tiny_logo"
-            android:text="0"
-            android:textColor="@color/text_light_gray_color" />
 
     </LinearLayout>
 

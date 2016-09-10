@@ -27,7 +27,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/underlined_title_background"
             android:paddingBottom="@dimen/navigation_drawer_basic_padding"
             android:paddingTop="@dimen/navigation_drawer_basic_padding"
             android:text="oooo oooo oooo 1234"

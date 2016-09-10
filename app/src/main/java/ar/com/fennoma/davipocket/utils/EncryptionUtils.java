@@ -23,7 +23,7 @@ import javax.security.cert.X509Certificate;
  */
 public class EncryptionUtils {
 
-    private static Boolean encrypted = Boolean.FALSE;
+    private static Boolean encrypted = Boolean.TRUE;
 
     @SuppressLint("GetInstance")
     public static String encryptPassword(Activity act, String password) {

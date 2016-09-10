@@ -1,6 +1,7 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -18,8 +19,13 @@ import java.util.List;
 import ar.com.fennoma.davipocket.DavipocketApplication;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Card;
+import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.Transaction;
+import ar.com.fennoma.davipocket.model.TransactionDetails;
 import ar.com.fennoma.davipocket.service.Service;
+import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
@@ -29,6 +35,9 @@ public class CardDetailActivity extends BaseActivity {
 
     private CardDetailAdapter adapter;
     private Card card;
+    private Integer offset;
+    private Integer limit = 10;
+    private Boolean loadMore;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,10 +48,14 @@ public class CardDetailActivity extends BaseActivity {
         } else {
             card = getIntent().getParcelableExtra(CARD_KEY);
         }
-        setToolbar(R.id.toolbar_layout, true, getString(R.string.mocked_master_card_title));
+        offset = 0;
+        loadMore = true;
+        setToolbar(R.id.toolbar_layout, true, card.getBin().getFranchise().toUpperCase());
+        TextView cardTitle = (TextView) findViewById(R.id.card_title);
+        cardTitle.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
         setRecycler();
         setSearcher();
-        getDataToShow();
+        new GetCardTransactionDetailsTask().execute();
     }
 
     private void setSearcher() {
@@ -67,8 +80,12 @@ public class CardDetailActivity extends BaseActivity {
         DialogUtil.toast(this, "Haciendo búsqueda");
     }
 
-    private void getDataToShow() {
-        adapter.setList(addManagableData(Service.getMockedTransactions()));
+    private void setDataToShow(TransactionDetails transactionDetails) {
+        adapter.setList(addManagableData(transactionDetails.getTransactions()));
+        TextView balance = (TextView) findViewById(R.id.balance);
+        balance.setText("$" + transactionDetails.getAvailableAmount());
+        TextView paymentDate = (TextView) findViewById(R.id.payment_date);
+        paymentDate.setText(DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate()));
     }
 
     private List<Transaction> addManagableData(List<Transaction> transactions) {
@@ -117,7 +134,7 @@ public class CardDetailActivity extends BaseActivity {
         }
 
         public void setList(List<Transaction> transactions) {
-            this.transactions = transactions;
+            this.transactions.addAll(transactions);
             notifyDataSetChanged();
         }
 
@@ -151,9 +168,9 @@ public class CardDetailActivity extends BaseActivity {
                 case ITEM : {
                     Transaction transaction = transactions.get(position);
                     TransactionHolder holder = (TransactionHolder) genericHolder;
-                    holder.daviPoints.setText(String.valueOf(transaction.getDavipoints()));
+                    //holder.daviPoints.setText(String.valueOf(transaction.getDavipoints()));
                     holder.price.setText(String.valueOf(transaction.getPrice()));
-                    holder.productAmount.setText(String.valueOf(transaction.getProductAmount()));
+                    //holder.productAmount.setText(String.valueOf(transaction.getProductAmount()));
                     holder.name.setText(transaction.getName());
                     switch (getProperBackground(position)){
                         case LONELY_ITEM :{
@@ -183,12 +200,23 @@ public class CardDetailActivity extends BaseActivity {
                 }
                 case BUTTON : {
                     PayButtonHolder holder = (PayButtonHolder) genericHolder;
-                    holder.button.setOnClickListener(new View.OnClickListener() {
+                    holder.payButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             startActivity(new Intent(CardDetailActivity.this, CardPayDetailActivity.class));
                         }
                     });
+                    if(!loadMore) {
+                        holder.loadMore.setVisibility(View.GONE);
+                    } else {
+                        holder.loadMore.setVisibility(View.VISIBLE);
+                        holder.loadMore.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                new GetCardTransactionDetailsTask().execute();
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -218,17 +246,17 @@ public class CardDetailActivity extends BaseActivity {
 
         protected View container;
         protected TextView name;
-        protected TextView productAmount;
+        //protected TextView productAmount;
         protected TextView price;
-        protected TextView daviPoints;
+        //protected TextView daviPoints;
 
         public TransactionHolder(View itemView) {
             super(itemView);
             container = itemView.findViewById(R.id.container);
             name = (TextView) itemView.findViewById(R.id.name);
-            productAmount = (TextView) itemView.findViewById(R.id.product_amount);
+            //productAmount = (TextView) itemView.findViewById(R.id.product_amount);
             price = (TextView) itemView.findViewById(R.id.price);
-            daviPoints = (TextView) itemView.findViewById(R.id.davipoints);
+            //daviPoints = (TextView) itemView.findViewById(R.id.davipoints);
         }
     }
 
@@ -243,10 +271,63 @@ public class CardDetailActivity extends BaseActivity {
 
     private class PayButtonHolder extends RecyclerView.ViewHolder{
 
-        protected View button;
+        protected View loadMore;
+        protected View payButton;
+
         public PayButtonHolder(View itemView) {
             super(itemView);
-            button = itemView.findViewById(R.id.pay_button);
+            payButton = itemView.findViewById(R.id.pay_button);
+            loadMore = itemView.findViewById(R.id.load_more_button);
+        }
+    }
+
+    public class GetCardTransactionDetailsTask extends AsyncTask<Void, Void, TransactionDetails> {
+
+        String errorCode;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected TransactionDetails doInBackground(Void... params) {
+            TransactionDetails response = null;
+            try {
+                String sid = Session.getCurrentSession(getApplicationContext()).getSid();
+                response = Service.getCardMovementsDetails(sid, card.getLastDigits(),limit, offset, "", "");
+            }  catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(TransactionDetails response) {
+            super.onPostExecute(response);
+            hideLoading();
+            if(response == null) {
+                //Hancdle invalid session error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if(error != null && error == ErrorMessages.INVALID_SESSION) {
+                    handleInvalidSessionError();
+                } else {
+                    showServiceGenericError();
+                }
+            } else {
+                if(response.getTransactions() != null) {
+                    offset = offset + limit;
+                    if(response.getTransactions().size() < limit) {
+                        loadMore = false;
+                    } else {
+                        loadMore = true;
+                    }
+                } else {
+                    loadMore = false;
+                }
+                setDataToShow(response);
+            }
         }
     }
 

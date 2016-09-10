@@ -9,6 +9,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.tasks.GetInitDataTask;
 import ar.com.fennoma.davipocket.tasks.TaskCallback;
 
@@ -33,7 +34,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void goToLoginOrHome() {
-        /*
         if(Session.getCurrentSession(this).isValid()) {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -43,10 +43,11 @@ public class SplashActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
-        */
-        Intent intent = new Intent(SplashActivity.this, MyCardsActivity.class);
+        /*[p
+        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        */
     }
 
     private void startAnimating() {

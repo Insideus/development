@@ -25,7 +25,7 @@ import java.util.List;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.ServiceException;
-import ar.com.fennoma.davipocket.model.Transaction;
+import ar.com.fennoma.davipocket.model.TransactionDetails;
 
 /**
  * Created by Julian Vega on 04/07/2016.
@@ -73,6 +73,7 @@ public class Service {
     private static String ADD_CARD = "/card/add";
     private static String BLOCK_CARD = "/card/block";
     private static String SET_FAVOURITE_CARD = "/card/favourite";
+    private static String GET_CARD_MOVEMENTS = "/card/movements";
 
     public static JSONObject getPersonIdTypes() {
         HttpURLConnection urlConnection = null;
@@ -1142,6 +1143,63 @@ public class Service {
         return true;
     }
 
+    public static TransactionDetails getCardMovementsDetails(String sid, String lastDigits, Integer limit,
+                                                             Integer offset, String dateFrom, String dateTo) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        TransactionDetails response = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(GET_CARD_MOVEMENTS, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> lastDigitParam = new Pair("last_digits", lastDigits);
+            params.add(lastDigitParam);
+            Pair<String, String> limitParam = new Pair("limit", String.valueOf(limit));
+            params.add(limitParam);
+            Pair<String, String> offsetParam = new Pair("offset", String.valueOf(offset));
+            params.add(offsetParam);
+            if(dateFrom != null && dateFrom.length() > 0) {
+                Pair<String, String> dateFromParam = new Pair("date_from", dateFrom);
+                params.add(dateFromParam);
+            }
+            if(dateTo != null && dateTo.length() > 0) {
+                Pair<String, String> dateToParam = new Pair("date_to", dateTo);
+                params.add(dateToParam);
+            }
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = TransactionDetails.fromJson(responseJson);
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
     private static boolean isValidStatusLineCode(int statusCode) {
         return statusCode == SUCCESS_CODE;
     }
@@ -1192,47 +1250,6 @@ public class Service {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestProperty("sid", token);
         return urlConnection;
-    }
-
-    public static List<Transaction> getMockedTransactions() {
-        List<Transaction> transactions = new ArrayList<>();
-        Transaction transaction = new Transaction();
-        transaction.setName("Juan Valdéz");
-        transaction.setProductAmount(2);
-        transaction.setPrice("41.200");
-        transaction.setDavipoints(190);
-        transaction.setDate("27/06/16");
-        transactions.add(transaction);
-
-        transaction = new Transaction();
-        transaction.setName("Crepes y Wafles");
-        transaction.setDate("27/06/16");
-        transaction.setPrice("11.800");
-        transaction.setProductAmount(5);
-        transactions.add(transaction);
-
-        transaction = new Transaction();
-        transaction.setName("Crepes y Wafles");
-        transaction.setProductAmount(5);
-        transaction.setDate("27/06/16");
-        transaction.setPrice("11.800");
-        transactions.add(transaction);
-
-        transaction = new Transaction();
-        transaction.setPrice("128.900");
-        transaction.setProductAmount(11);
-        transaction.setDate("08/06/16");
-        transaction.setName("Farmatodo");
-        transactions.add(transaction);
-
-        transaction = new Transaction();
-        transaction.setPrice("6.300");
-        transaction.setDate("09/05/16");
-        transaction.setProductAmount(1);
-        transaction.setName("Carulla Express");
-        transactions.add(transaction);
-
-        return transactions;
     }
 
 }

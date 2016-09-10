@@ -1,11 +1,23 @@
 package ar.com.fennoma.davipocket.model;
 
-public class Transaction {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+public class Transaction implements Parcelable {
+
     private String date;
     private String name;
     private String price;
-    private long davipoints = 0;
-    private int productAmount = 0;
+
+    public Transaction() {
+
+    }
 
     public String getDate() {
         return date;
@@ -23,14 +35,6 @@ public class Transaction {
         this.name = name;
     }
 
-    public int getProductAmount() {
-        return productAmount;
-    }
-
-    public void setProductAmount(int productAmount) {
-        this.productAmount = productAmount;
-    }
-
     public String getPrice() {
         return price;
     }
@@ -39,11 +43,64 @@ public class Transaction {
         this.price = price;
     }
 
-    public long getDavipoints() {
-        return davipoints;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setDavipoints(long davipoints) {
-        this.davipoints = davipoints;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.date);
+        dest.writeString(this.name);
+        dest.writeString(this.price);
     }
+
+    protected Transaction(Parcel in) {
+        this.date = in.readString();
+        this.name = in.readString();
+        this.price = in.readString();
+    }
+
+    public static final Parcelable.Creator<Transaction> CREATOR = new Parcelable.Creator<Transaction>() {
+        @Override
+        public Transaction createFromParcel(Parcel source) {
+            return new Transaction(source);
+        }
+
+        @Override
+        public Transaction[] newArray(int size) {
+            return new Transaction[size];
+        }
+    };
+
+    public static ArrayList<Transaction> fromJsonArray(JSONObject json) {
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        if(json.has("movements")) {
+            JSONArray jsonArray = json.optJSONArray("movements");
+            for (int i = 0; i < jsonArray.length(); ++i) {
+                JSONObject obj = jsonArray.optJSONObject(i);
+                if (obj != null) {
+                    Transaction transaction = fromJson(obj);
+                    if(transaction != null) {
+                        transactions.add(transaction);
+                    }
+                }
+            }
+        }
+        return transactions;
+    }
+
+    public static Transaction fromJson(JSONObject json) {
+        Transaction transaction = new Transaction();
+        try {
+            transaction.setDate(json.getString("date"));
+            transaction.setName(json.getString("name"));
+            transaction.setPrice(json.getString("amount"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return transaction;
+    }
+
 }
