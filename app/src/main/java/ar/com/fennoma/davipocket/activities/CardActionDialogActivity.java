@@ -86,6 +86,12 @@ public class CardActionDialogActivity extends BaseActivity {
         container.startAnimation(AnimationUtils.loadAnimation(this, R.anim.from_dot_to_full_size));
     }
 
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCELED);
+        super.onBackPressed();
+    }
+
     private void setLayouts() {
         View cancelButton = findViewById(R.id.close_button);
         if(cancelButton == null){
@@ -112,6 +118,7 @@ public class CardActionDialogActivity extends BaseActivity {
                         return;
                     }
                     startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel: " + callNumber)));
+                    setResult(RESULT_OK);
                 }
             });
             ignoreButton.setOnClickListener(getCloseListener());
@@ -194,6 +201,7 @@ public class CardActionDialogActivity extends BaseActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setResult(RESULT_CANCELED);
                 finish();
             }
         };
@@ -212,6 +220,7 @@ public class CardActionDialogActivity extends BaseActivity {
                 Intent intent = new Intent(CardActionDialogActivity.this, CardDetailActivity.class);
                 intent.putExtra(CardDetailActivity.CARD_KEY, card);
                 startActivity(intent);
+                setResult(RESULT_OK);
                 finish();
             }
         };
@@ -224,6 +233,7 @@ public class CardActionDialogActivity extends BaseActivity {
                 Intent intent = new Intent(CardActionDialogActivity.this, CardPayDetailActivity.class);
                 intent.putExtra(CardPayDetailActivity.CARD_KEY, card);
                 startActivity(intent);
+                setResult(RESULT_OK);
                 finish();
             }
         };
@@ -264,6 +274,7 @@ public class CardActionDialogActivity extends BaseActivity {
                     showServiceGenericError();
                 }
             } else {
+                setResult(RESULT_CANCELED);
                 finish();
             }
         }
@@ -304,6 +315,7 @@ public class CardActionDialogActivity extends BaseActivity {
                     showServiceGenericError();
                 }
             } else {
+                setResult(RESULT_CANCELED);
                 finish();
             }
         }
@@ -344,6 +356,7 @@ public class CardActionDialogActivity extends BaseActivity {
                     showServiceGenericError();
                 }
             } else {
+                setResult(RESULT_CANCELED);
                 finish();
             }
         }

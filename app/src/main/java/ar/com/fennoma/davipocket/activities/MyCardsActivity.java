@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -31,7 +32,9 @@ import ar.com.fennoma.davipocket.utils.ImageUtils;
 
 public class MyCardsActivity extends BaseActivity {
 
+    private static final int OPEN_ANOTHER_ACTIVITY = 11;
     private CardsAdapter cardsAdapter;
+    private boolean refresh = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -135,13 +138,7 @@ public class MyCardsActivity extends BaseActivity {
                     holder.cardButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-                            intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_activate_card_title));
-                            intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_activate_card_subtitle));
-                            intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_activate_card_text));
-                            intent.putExtra(CardActionDialogActivity.IS_CARD_NUMBER_DIALOG, true);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+                            blockedActivableCardDialog();
                         }
                     });
                 }
@@ -238,36 +235,15 @@ public class MyCardsActivity extends BaseActivity {
                 public void onClick(View v) {
                     if(cardState == CardState.ACTIVE_NOT_ENROLED) {
                         //Popup para enrolar tarjeta
-                        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-                        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_enrole_card_title));
-                        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_enrole_card_subtitle));
-                        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_enrole_card_text));
-                        intent.putExtra(CardActionDialogActivity.IS_CCV_DIALOG, true);
-                        intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+                        enrollCardDialog(card);
                     }
                     if(cardState == CardState.BLOCKED_ACTIVABLE) {
                         //Popup para activar tarjeta
-                        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-                        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_activate_card_title));
-                        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_activate_card_subtitle));
-                        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_activate_card_text));
-                        intent.putExtra(CardActionDialogActivity.IS_CARD_NUMBER_DIALOG, true);
-                        intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+                        blockedActivableCardDialog();
                     }
                     if(cardState == CardState.BLOCKED) {
                         //Si lo indica el mensaje, popup para llamar al call center.
-                        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-                        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_blocked_call_card_title));
-                        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_blocked_call__card_subtitle));
-                        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_blocked_call__card_text));
-                        intent.putExtra(CardActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
-                        intent.putExtra(CardActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.login_web_password_phone));
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+                        blockedCardDialog();
                     }
                 }
             };
@@ -282,7 +258,7 @@ public class MyCardsActivity extends BaseActivity {
             intent.putExtra(CardActionDialogActivity.IS_CCV_DIALOG, true);
             intent.putExtra(CardActionDialogActivity.IS_BLOCK_CARD_DIALOG, true);
             intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
-            startActivity(intent);
+            startActivityForResult(intent, OPEN_ANOTHER_ACTIVITY);
             overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         }
 
@@ -303,9 +279,30 @@ public class MyCardsActivity extends BaseActivity {
                         }
                         intent.putExtra(CardActionDialogActivity.SHOW_PAY_BUTTON_KEY, true);
                         intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
-                        startActivity(intent);
+                        startActivityForResult(intent, OPEN_ANOTHER_ACTIVITY);
                         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
-                    } else {
+                        return;
+                    }
+                    if(!TextUtils.isEmpty(card.getMessage()) && card.getMessage().equals("card_status.blocked_call_center")){
+                        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
+                        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_blocked_call_card_title));
+                        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_blocked_call__card_subtitle));
+                        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_blocked_call__card_text));
+                        intent.putExtra(CardActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
+                        intent.putExtra(CardActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.my_cards_blocked_call__phone));
+                        startActivityForResult(intent, OPEN_ANOTHER_ACTIVITY);
+                        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+                        return;
+                    }
+                    if(card.getActivate()){
+                        blockedActivableCardDialog();
+                        return;
+                    }
+                    if(card.getEnrolling() && !card.getEnrolled()){
+                        enrollCardDialog(card);
+                        return;
+                    }
+                    if(card.getEnrolled() && !card.getActivate()){
                         Intent intent = new Intent(MyCardsActivity.this, CardDetailActivity.class);
                         intent.putExtra(CardDetailActivity.CARD_KEY, card);
                         startActivity(intent);
@@ -342,6 +339,41 @@ public class MyCardsActivity extends BaseActivity {
             this.cards = cards;
             notifyDataSetChanged();
         }
+    }
+
+    private void blockedActivableCardDialog() {
+        refresh = false;
+        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
+        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_activate_card_title));
+        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_activate_card_subtitle));
+        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_activate_card_text));
+        intent.putExtra(CardActionDialogActivity.IS_CARD_NUMBER_DIALOG, true);
+        startActivityForResult(intent, OPEN_ANOTHER_ACTIVITY);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
+
+    private void enrollCardDialog(Card card) {
+        refresh = false;
+        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
+        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_enrole_card_title));
+        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_enrole_card_subtitle));
+        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_enrole_card_text));
+        intent.putExtra(CardActionDialogActivity.IS_CCV_DIALOG, true);
+        intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
+        startActivityForResult(intent, OPEN_ANOTHER_ACTIVITY);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
+
+    private void blockedCardDialog() {
+        refresh = false;
+        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
+        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_blocked_call_card_title));
+        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_blocked_call__card_subtitle));
+        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_blocked_call__card_text));
+        intent.putExtra(CardActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
+        intent.putExtra(CardActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.login_web_password_phone));
+        startActivityForResult(intent, OPEN_ANOTHER_ACTIVITY);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
     public class SetFavouriteCardTask extends AsyncTask<String, Void, Boolean> {
@@ -434,8 +466,20 @@ public class MyCardsActivity extends BaseActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == OPEN_ANOTHER_ACTIVITY && resultCode == RESULT_CANCELED){
+            refresh = false;
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        if(!refresh){
+            refresh = true;
+            return;
+        }
         refreshCardList();
     }
 

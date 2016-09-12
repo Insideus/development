@@ -1,8 +1,5 @@
 package ar.com.fennoma.davipocket.model;
 
-/**
- * Created by Julian Vega on 06/07/2016.
- */
 public enum CardState {
 
     ACTIVATED_ENROLED,
@@ -67,7 +64,7 @@ public enum CardState {
                 buttonsStates.favouritetButton = null;
                 return buttonsStates;
             case BLOCKED:
-                buttonsStates.activateButton = true;
+                buttonsStates.activateButton = false;
                 buttonsStates.blockButton = false;
                 buttonsStates.favouritetButton = null;
                 return buttonsStates;
