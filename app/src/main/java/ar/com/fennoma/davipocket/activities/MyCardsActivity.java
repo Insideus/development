@@ -27,7 +27,6 @@ import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
-import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 
 public class MyCardsActivity extends BaseActivity {
@@ -43,11 +42,7 @@ public class MyCardsActivity extends BaseActivity {
     }
 
     private List<CardToShowOnList> addButtons(List<CardToShowOnList> cards){
-        ButtonCard buttonCard = new ButtonCard(R.drawable.add_e_card_button);
-        buttonCard.setType(ButtonCard.eCard);
-        cards.add(buttonCard);
-
-        buttonCard = new ButtonCard(R.drawable.add_portfolio_card_button);
+        ButtonCard buttonCard = new ButtonCard(R.drawable.add_portfolio_card_button);
         buttonCard.setType(ButtonCard.portfolioCard);
         cards.add(buttonCard);
         return cards;
@@ -128,18 +123,25 @@ public class MyCardsActivity extends BaseActivity {
                 ButtonCard buttonCard = (ButtonCard) cards.get(position);
                 ButtonCardHolder holder = (ButtonCardHolder) genericHolder;
                 holder.cardButton.setImageResource(buttonCard.getImageResource());
-                if(buttonCard.getType() == ButtonCard.eCard){
+                /*if(buttonCard.getType() == ButtonCard.eCard){
                     holder.cardButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             DialogUtil.toast(MyCardsActivity.this, "No implementado aún");
                         }
                     });
-                } else {
+                }*/
+                if(buttonCard.getType() == ButtonCard.portfolioCard){
                     holder.cardButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(new Intent(MyCardsActivity.this, NewCardActivity.class));
+                            Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
+                            intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_activate_card_title));
+                            intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_activate_card_subtitle));
+                            intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_activate_card_text));
+                            intent.putExtra(CardActionDialogActivity.IS_CARD_NUMBER_DIALOG, true);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
                         }
                     });
                 }
