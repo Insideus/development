@@ -221,5 +221,7 @@
     <string name="my_cards_pay_card_text_2">Su tarjeta presenta bloqueo de rediferido.\n ¿Desea pagarla ahora para poder utilizarla en su billetera?</string>
 
     <string name="load_more_button_text">CARGAR MAS MOVIMIENTOS</string>
+    <string name="close_button_text">cerrar</string>
+    <string name="tour_title">TOUR</string>
 
 </resources>

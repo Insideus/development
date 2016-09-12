@@ -308,6 +308,7 @@ public class BaseActivity extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                goToHome();
                 closeDrawer();
             }
         });
@@ -324,6 +325,14 @@ public class BaseActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    protected void goToHome() {
+        Intent intent = new Intent(BaseActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(MainActivity.OPEN_TOUR, true);
+        startActivity(intent.putExtras(bundle));
     }
 
     private void closeDrawer() {

@@ -3,6 +3,7 @@ package ar.com.fennoma.davipocket.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -15,8 +16,11 @@ import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 
 public class MainActivity extends BaseActivity {
+
+    public static final String OPEN_TOUR = "tour open";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,22 @@ public class MainActivity extends BaseActivity {
         setToolbar(R.id.toolbar_layout, false);
         tasInit();
         setButtons();
+        checkForTour();
+    }
+
+    private void checkForTour() {
+        if (getIntent() != null && getIntent().getBooleanExtra(OPEN_TOUR, false)) {
+            startTour();
+            return;
+        }
+        if (TextUtils.isEmpty(SharedPreferencesUtils.getData(OPEN_TOUR))) {
+            startTour();
+            SharedPreferencesUtils.saveData(OPEN_TOUR, SharedPreferencesUtils.FALSE);
+        }
+    }
+
+    private void startTour() {
+        startActivity(new Intent(this, TourActivity.class));
     }
 
     private boolean tasInit() {
@@ -41,9 +61,19 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
+    @Override
+    protected void goToHome() {
+        startTour();
+    }
+
     private void setButtons() {
         View logoutButton = findViewById(R.id.logout_button);
-        if(logoutButton == null){
+        if (logoutButton == null) {
             return;
         }
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +100,7 @@ public class MainActivity extends BaseActivity {
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
                 response = Service.logout(sid);
-            }  catch (ServiceException e) {
+            } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
             return response;
@@ -79,11 +109,11 @@ public class MainActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
-            if(response == null && errorCode != null) {
+            if (response == null && errorCode != null) {
                 //Expected error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 processErrorAndContinue(error, "");
-            } else if(response == null && errorCode == null) {
+            } else if (response == null && errorCode == null) {
                 //Service error.
                 showServiceGenericError();
             } else {

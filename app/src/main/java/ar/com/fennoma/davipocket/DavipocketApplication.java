@@ -21,9 +21,9 @@ public class DavipocketApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         initFacebookSdk();
-        instance = this;
         Mint.initAndStartSession(this, "3cef664b");
         initImageLoader();
+        instance = this;
     }
 
     public static DavipocketApplication getInstance(){
