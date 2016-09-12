@@ -26,6 +26,7 @@ import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
+import ar.com.fennoma.davipocket.model.User;
 
 /**
  * Created by Julian Vega on 04/07/2016.
@@ -67,6 +68,7 @@ public class Service {
     private static String LOGOUT = "/user/logout";
     private static String SET_USER_INTERESTS = "/user/categories_of_interest";
     private static String GET_USER_CARDS = "/user/cards";
+    private static String GET_USER = "/user";
 
     //Card services
     private static String ACTIVATE_CARD = "/card/activate";
@@ -1148,13 +1150,7 @@ public class Service {
         HttpURLConnection urlConnection = null;
         TransactionDetails response = null;
         try {
-            urlConnection = getHttpURLConnectionWithHeader(GET_CARD_MOVEMENTS, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setDoInput(true);
-            urlConnection.setDoOutput(true);
-
+            urlConnection = getHttpURLConnection(sid, GET_CARD_MOVEMENTS);
             OutputStream os = urlConnection.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 
@@ -1198,6 +1194,41 @@ public class Service {
             }
         }
         return response;
+    }
+
+    public static User getUser(String sid) throws ServiceException {
+        HttpURLConnection urlConnection;
+        try {
+            urlConnection = getHttpURLConnection(sid, GET_USER);
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                if(json.has("error") && !json.getBoolean("error")) {
+                    return User.fromJson(responseJson.getJSONObject("user"));
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new User();
+    }
+
+    @NonNull
+    private static HttpURLConnection getHttpURLConnection(String sid, String getCardMovements) throws IOException {
+        HttpURLConnection urlConnection = getHttpURLConnectionWithHeader(getCardMovements, sid);
+        urlConnection.setReadTimeout(10000);
+        urlConnection.setConnectTimeout(15000);
+        urlConnection.setRequestMethod("POST");
+        urlConnection.setDoInput(true);
+        urlConnection.setDoOutput(true);
+        return urlConnection;
     }
 
     private static boolean isValidStatusLineCode(int statusCode) {

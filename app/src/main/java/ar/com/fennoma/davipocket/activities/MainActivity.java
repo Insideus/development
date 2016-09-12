@@ -37,9 +37,9 @@ public class MainActivity extends BaseActivity {
             startTour();
             return;
         }
-        if (TextUtils.isEmpty(SharedPreferencesUtils.getData(OPEN_TOUR))) {
+        if (TextUtils.isEmpty(SharedPreferencesUtils.getString(OPEN_TOUR))) {
             startTour();
-            SharedPreferencesUtils.saveData(OPEN_TOUR, SharedPreferencesUtils.FALSE);
+            SharedPreferencesUtils.setString(OPEN_TOUR, SharedPreferencesUtils.FALSE);
         }
     }
 

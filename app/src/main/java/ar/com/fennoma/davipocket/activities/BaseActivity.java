@@ -4,15 +4,15 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.content.pm.PackageManager;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -22,7 +22,9 @@ import android.widget.TextView;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginSteps;
+import ar.com.fennoma.davipocket.model.User;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
+import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class BaseActivity extends AppCompatActivity {
@@ -33,6 +35,16 @@ public class BaseActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    public static boolean checkPermission(String strPermission, Context _c, Activity _a) {
+        int result = ContextCompat.checkSelfPermission(_c, strPermission);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+
+        }
+    }
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -40,7 +52,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void setActionBar(String title, boolean backButton) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(toolbar == null){
+        if (toolbar == null) {
             return;
         }
         toolbar.setTitle("");
@@ -48,7 +60,7 @@ public class BaseActivity extends AppCompatActivity {
         TextView titleTv = (TextView) toolbar.findViewById(R.id.toolbar_title);
         titleTv.setText(title);
         setSupportActionBar(toolbar);
-        if(backButton) {
+        if (backButton) {
             toolbar.setNavigationIcon(R.drawable.ab_back_icon);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,7 +87,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private void setTitle(Toolbar toolbar, String title) {
         TextView titleTextView = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        if(titleTextView == null){
+        if (titleTextView == null) {
             return;
         }
         titleTextView.setText(title);
@@ -122,8 +134,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     void processErrorAndContinue(ErrorMessages error, String additionalParam) {
-        if(error != null) {
-            switch(error) {
+        if (error != null) {
+            switch (error) {
                 case LOGIN_ERROR:
                     DialogUtil.toast(this,
                             getString(R.string.login_error_message_title),
@@ -158,8 +170,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     void goToRegistrationStep(LoginSteps step) {
-        if(step != null) {
-            switch(step) {
+        if (step != null) {
+            switch (step) {
                 case FACEBOOK:
                     Intent facebookIntent = new Intent(this, FacebookLoginActivity.class);
                     facebookIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -198,21 +210,11 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void requestPermission(String strPermission, int perCode, Context _c, Activity _a){
-        if (ActivityCompat.shouldShowRequestPermissionRationale(_a,strPermission)){
+    public void requestPermission(String strPermission, int perCode, Context _c, Activity _a) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(_a, strPermission)) {
 
         } else {
-            ActivityCompat.requestPermissions(_a,new String[]{strPermission},perCode);
-        }
-    }
-
-    public static boolean checkPermission(String strPermission,Context _c,Activity _a){
-        int result = ContextCompat.checkSelfPermission(_c, strPermission);
-        if (result == PackageManager.PERMISSION_GRANTED){
-            return true;
-        } else {
-            return false;
-
+            ActivityCompat.requestPermissions(_a, new String[]{strPermission}, perCode);
         }
     }
 
@@ -248,9 +250,9 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void setNavigationDrawer(int drawerLayoutId, int toolbarId, boolean homeButton){
+    protected void setNavigationDrawer(int drawerLayoutId, int toolbarId, boolean homeButton) {
         Toolbar toolbar = (Toolbar) findViewById(toolbarId);
-        if(toolbar == null){
+        if (toolbar == null) {
             return;
         }
         setNavigationDrawer(drawerLayoutId, toolbar, homeButton);
@@ -262,7 +264,7 @@ public class BaseActivity extends AppCompatActivity {
         }
         if (homeButton) {
             drawerLayout = (DrawerLayout) findViewById(drawerLayoutId);
-            if(drawerLayout == null){
+            if (drawerLayout == null) {
                 return;
             }
             mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
@@ -284,18 +286,29 @@ public class BaseActivity extends AppCompatActivity {
             mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+                    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                         drawerLayout.closeDrawer(GravityCompat.START);
-                    }else{
+                    } else {
+                        updateUserData();
                         drawerLayout.openDrawer(GravityCompat.START);
                     }
                 }
             });
             setButtonListeners();
+            updateUserData();
         } else {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
+    }
+
+    protected void updateUserData() {
+        User user = SharedPreferencesUtils.getUser();
+        //TODO: formatear la fecha
+        ((TextView) findViewById(R.id.drawer_last_login)).setText(user.getLastLogin());
+        //TODO: agregar el puntito separamiles
+        ((TextView) findViewById(R.id.drawer_davi_points_amount)).setText(String.format("%s", user.getPoints()));
+        ((TextView) findViewById(R.id.drawer_name)).setText(user.getName());
     }
 
     private void setButtonListeners() {

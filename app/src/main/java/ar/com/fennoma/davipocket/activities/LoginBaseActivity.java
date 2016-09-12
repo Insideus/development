@@ -20,11 +20,13 @@ import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.PersonIdType;
 import ar.com.fennoma.davipocket.model.ServiceException;
+import ar.com.fennoma.davipocket.model.User;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.controls.ComboHolder;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.EncryptionUtils;
+import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 
 /**
  * Created by Julian Vega on 06/07/2016.
@@ -94,6 +96,7 @@ public class LoginBaseActivity extends BaseActivity {
                 if(step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
+                new GetUserTask(response.getSid()).execute();
                 goToRegistrationStep(step);
             }
             hideLoading();
@@ -130,7 +133,7 @@ public class LoginBaseActivity extends BaseActivity {
                 //Expected error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 processErrorAndContinue(error, nextTokenSession);
-            } else if(response == null && errorCode == null) {
+            } else if(response == null) {
                 //Service error.
                 showServiceGenericError();
             } else {
@@ -190,6 +193,29 @@ public class LoginBaseActivity extends BaseActivity {
                 goToRegistrationStep(step);
             }
             hideLoading();
+        }
+    }
+
+    public class GetUserTask extends AsyncTask<String, Void, User> {
+        private String sid;
+
+        GetUserTask(String sid) {
+            this.sid = sid;
+        }
+
+        @Override
+        protected User doInBackground(String... params) {
+            try {
+                return Service.getUser(sid);
+            }  catch (ServiceException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(User resultingUser) {
+            SharedPreferencesUtils.setUser(resultingUser);
         }
     }
 
