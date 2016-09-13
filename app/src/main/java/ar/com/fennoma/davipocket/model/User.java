@@ -1,12 +1,16 @@
 package ar.com.fennoma.davipocket.model;
 
+import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import ar.com.fennoma.davipocket.DavipocketApplication;
 
@@ -37,6 +41,12 @@ public class User implements Parcelable {
     }
 
     public User() {}
+
+    public User(int points, String lastLogin, String name) {
+        this.points = points;
+        this.lastLogin = lastLogin;
+        this.name = name;
+    }
 
     public static User fromJson(JSONObject object) {
         User user = new User();
@@ -86,8 +96,20 @@ public class User implements Parcelable {
         return lastLogin;
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void setLastLogin(String lastLogin) {
-        this.lastLogin = lastLogin;
+        DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
+        fromFormat.setLenient(false);
+        DateFormat toFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        toFormat.setLenient(false);
+        try {
+            final Date fromDate = fromFormat.parse(lastLogin);
+            final String toDate = toFormat.format(fromDate);
+            this.lastLogin = toDate;
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.lastLogin = "N/A";
+        }
     }
 
     public String getPoints() {

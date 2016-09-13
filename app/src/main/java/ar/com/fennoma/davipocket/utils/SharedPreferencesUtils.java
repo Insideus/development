@@ -39,10 +39,9 @@ public class SharedPreferencesUtils {
     }
 
     public static User getUser() {
-        User user = new User();
-        user.setPoints(getInt(SP_USER_DAVI_POINTS));
-        user.setLastLogin(getString(SP_USER_LAST_LOGIN));
-        user.setName(getString(SP_USER_NAME));
+        User user = new User(getInt(SP_USER_DAVI_POINTS),
+                getString(SP_USER_LAST_LOGIN),
+                getString(SP_USER_NAME));
         return user;
     }
 }
