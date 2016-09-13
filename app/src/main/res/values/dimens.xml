@@ -5,37 +5,37 @@
 
     <dimen name="loading_dialog_width">50dp</dimen>
 
-    <dimen name="login_title_text_size">60dp</dimen>
+    <dimen name="login_title_text_size">60sp</dimen>
     <dimen name="login_side_padding">25dp</dimen>
-    <dimen name="login_input_text_size">16dp</dimen>
+    <dimen name="login_input_text_size">16sp</dimen>
     <dimen name="login_input_margin_top">20dp</dimen>
     <dimen name="login_button_side_padding">5dp</dimen>
     <dimen name="button_without_cardview_padding">10dp</dimen>
-    <dimen name="action_bar_title_text_size">18dp</dimen>
+    <dimen name="action_bar_title_text_size">18sp</dimen>
     <dimen name="login_input_data_margin_bottom">50dp</dimen>
     <dimen name="login_input_data_margin_top">40dp</dimen>
     <dimen name="subtitle_margin">30dp</dimen>
-    <dimen name="number_code_text_size">50dp</dimen>
-    <dimen name="card_number_text_size">25dp</dimen>
-    <dimen name="common_text_size">14dp</dimen>
+    <dimen name="number_code_text_size">50sp</dimen>
+    <dimen name="card_number_text_size">25sp</dimen>
+    <dimen name="common_text_size">14sp</dimen>
     <dimen name="check_box_padding_top_and_bottom">10dp</dimen>
     <dimen name="title_fixed_margin_top">60dp</dimen>
 
-    <dimen name="subtitle_text_size">16dp</dimen>
+    <dimen name="subtitle_text_size">16sp</dimen>
     <dimen name="combo_button_text_padding">15dp</dimen>
-    <dimen name="combo_button_text_size">16dp</dimen>
+    <dimen name="combo_button_text_size">16sp</dimen>
 
     <dimen name="navigation_drawer_width">320dp</dimen>
     <dimen name="navigation_drawer_basic_padding">10dp</dimen>
     <dimen name="navigation_drawer_spacing_between_text">5dp</dimen>
-    <dimen name="navigation_drawer_items_text_size">16dp</dimen>
+    <dimen name="navigation_drawer_items_text_size">16sp</dimen>
     <dimen name="navigation_drawer_spacing_between_items">15dp</dimen>
     <dimen name="navigation_drawer_item_drawable_padding">25dp</dimen>
     <dimen name="navigation_drawer_item_start_margin">30dp</dimen>
-    <dimen name="navigation_drawer_bottom_bar_text_size">12dp</dimen>
+    <dimen name="navigation_drawer_bottom_bar_text_size">12sp</dimen>
 
     <dimen name="my_cards_items_spacing_bar">20dp</dimen>
-    <dimen name="my_cards_items_card_number_text_size">15dp</dimen>
+    <dimen name="my_cards_items_card_number_text_size">15sp</dimen>
     <dimen name="my_cards_items_bar_lateral_spacing">25dp</dimen>
     <dimen name="my_cards_items_spacing_between_buttons">25dp</dimen>
     <dimen name="new_card_padding_between_option_buttons">10dp</dimen>
