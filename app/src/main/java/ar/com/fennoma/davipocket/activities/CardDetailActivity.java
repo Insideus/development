@@ -35,9 +35,8 @@ public class CardDetailActivity extends BaseActivity {
 
     private CardDetailAdapter adapter;
     private Card card;
-    private Integer offset;
-    private Integer limit = 10;
     private Boolean loadMore;
+    private int curPage = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +47,6 @@ public class CardDetailActivity extends BaseActivity {
         } else {
             card = getIntent().getParcelableExtra(CARD_KEY);
         }
-        offset = 0;
         loadMore = true;
         setToolbar(R.id.toolbar_layout, true, card.getBin().getFranchise().toUpperCase());
         TextView cardTitle = (TextView) findViewById(R.id.card_title);
@@ -97,6 +95,7 @@ public class CardDetailActivity extends BaseActivity {
         if (transactions == null || transactions.size() <= 1) {
             return null;
         }
+
         transactions.add(0, null);
         Transaction comparator = transactions.get(1);
         for (int i = 2; i < transactions.size(); i++) {
@@ -139,6 +138,12 @@ public class CardDetailActivity extends BaseActivity {
         }
 
         public void setList(List<Transaction> transactions) {
+            if (this.transactions.size() > 0) {
+                this.transactions.remove(this.transactions.size() - 1);
+                if(this.transactions.get(this.transactions.size() - 1).getDate().equals(transactions.get(1).getDate())) {
+                    transactions.remove(0);
+                }
+            }
             this.transactions.addAll(transactions);
             notifyDataSetChanged();
         }
@@ -199,8 +204,10 @@ public class CardDetailActivity extends BaseActivity {
                 }
                 case TITLE : {
                     Transaction transaction = transactions.get(position + 1);
-                    DateTitleHolder holder = (DateTitleHolder) genericHolder;
-                    holder.title.setText(DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transaction.getDate()));
+                    if (transaction != null) {
+                        DateTitleHolder holder = (DateTitleHolder) genericHolder;
+                        holder.title.setText(DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transaction.getDate()));
+                    }
                     break;
                 }
                 case BUTTON : {
@@ -212,12 +219,13 @@ public class CardDetailActivity extends BaseActivity {
                         }
                     });
                     if(!loadMore) {
-                        holder.loadMore.setVisibility(View.GONE);
+                        holder.loadMoreButton.setVisibility(View.GONE);
                     } else {
-                        holder.loadMore.setVisibility(View.VISIBLE);
-                        holder.loadMore.setOnClickListener(new View.OnClickListener() {
+                        holder.loadMoreButton.setVisibility(View.VISIBLE);
+                        holder.loadMoreButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                curPage++;
                                 new GetCardTransactionDetailsTask().execute();
                             }
                         });
@@ -276,13 +284,13 @@ public class CardDetailActivity extends BaseActivity {
 
     private class PayButtonHolder extends RecyclerView.ViewHolder{
 
-        protected View loadMore;
+        protected View loadMoreButton;
         protected View payButton;
 
         public PayButtonHolder(View itemView) {
             super(itemView);
             payButton = itemView.findViewById(R.id.pay_button);
-            loadMore = itemView.findViewById(R.id.load_more_button);
+            loadMoreButton = itemView.findViewById(R.id.load_more_button);
         }
     }
 
@@ -301,7 +309,7 @@ public class CardDetailActivity extends BaseActivity {
             TransactionDetails response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.getCardMovementsDetails(sid, card.getLastDigits(),limit, offset, "", "");
+                response = Service.getCardMovementsDetails(sid, card.getLastDigits(), curPage, "", "");
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -322,12 +330,7 @@ public class CardDetailActivity extends BaseActivity {
                 }
             } else {
                 if(response.getTransactions() != null) {
-                    offset = offset + limit;
-                    if(response.getTransactions().size() < limit) {
-                        loadMore = false;
-                    } else {
-                        loadMore = true;
-                    }
+                    loadMore = response.isLoadMore();
                 } else {
                     loadMore = false;
                 }

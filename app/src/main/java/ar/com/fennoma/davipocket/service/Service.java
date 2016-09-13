@@ -1145,8 +1145,8 @@ public class Service {
         return true;
     }
 
-    public static TransactionDetails getCardMovementsDetails(String sid, String lastDigits, Integer limit,
-                                                             Integer offset, String dateFrom, String dateTo) throws ServiceException {
+    public static TransactionDetails getCardMovementsDetails(String sid, String lastDigits,
+                                                             int page, String dateFrom, String dateTo) throws ServiceException {
         HttpURLConnection urlConnection = null;
         TransactionDetails response = null;
         try {
@@ -1157,10 +1157,8 @@ public class Service {
             List<Pair<String, String>> params = new ArrayList<>();
             Pair<String, String> lastDigitParam = new Pair("last_digits", lastDigits);
             params.add(lastDigitParam);
-            Pair<String, String> limitParam = new Pair("limit", String.valueOf(limit));
-            params.add(limitParam);
-            Pair<String, String> offsetParam = new Pair("offset", String.valueOf(offset));
-            params.add(offsetParam);
+            Pair<String, String> pageParam = new Pair("page_number", String.valueOf(page));
+            params.add(pageParam);
             if(dateFrom != null && dateFrom.length() > 0) {
                 Pair<String, String> dateFromParam = new Pair("date_from", dateFrom);
                 params.add(dateFromParam);

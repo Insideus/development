@@ -15,6 +15,7 @@ public class TransactionDetails implements Parcelable {
 
     private String availableAmount;
     private String paymentDate;
+    private boolean loadMore;
     private ArrayList<Transaction> transactions = new ArrayList<>();
 
     public TransactionDetails() {
@@ -48,6 +49,7 @@ public class TransactionDetails implements Parcelable {
     public static TransactionDetails fromJson(JSONObject json) {
         TransactionDetails transactionDetails = new TransactionDetails();
         try {
+            transactionDetails.setLoadMore(json.getBoolean("next_page"));
             json = json.getJSONObject("movements");
             if (json.has("payment_date")) {
                 transactionDetails.setPaymentDate(json.getString("payment_date"));
@@ -91,4 +93,12 @@ public class TransactionDetails implements Parcelable {
             return new TransactionDetails[size];
         }
     };
+
+    public boolean isLoadMore() {
+        return loadMore;
+    }
+
+    public void setLoadMore(boolean loadMore) {
+        this.loadMore = loadMore;
+    }
 }
