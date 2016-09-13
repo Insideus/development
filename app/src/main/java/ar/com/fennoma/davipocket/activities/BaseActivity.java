@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -22,7 +23,10 @@ import android.widget.TextView;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginSteps;
+import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.User;
+import ar.com.fennoma.davipocket.service.Service;
+import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -335,7 +339,7 @@ public class BaseActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                new LogoutTask().execute();
             }
         });
     }
@@ -383,6 +387,55 @@ public class BaseActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
         }
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
+
+    public class LogoutTask extends AsyncTask<Void, Void, Boolean> {
+
+        String errorCode;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Boolean response = null;
+            try {
+                String sid = Session.getCurrentSession(getApplicationContext()).getSid();
+                response = Service.logout(sid);
+            } catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean response) {
+            super.onPostExecute(response);
+            if (response == null && errorCode != null) {
+                //Expected error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                processErrorAndContinue(error, "");
+            } else if (response == null && errorCode == null) {
+                //Service error.
+                showServiceGenericError();
+            } else {
+                //Success login.
+                goLoginActivity();
+            }
+            hideLoading();
+        }
+    }
+
+    private void goLoginActivity() {
+        Session.getCurrentSession(this).logout();
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loginIntent);
+
+        finish();
     }
 
 }

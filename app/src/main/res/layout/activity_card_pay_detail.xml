@@ -47,7 +47,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/login_id_type_text"
+                android:id="@+id/account_spinner"
                 fontPath="fonts/MyriadPro-Regular.otf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,7 +56,6 @@
                 android:drawableEnd="@drawable/spinner_down_arrow"
                 android:editable="false"
                 android:focusable="true"
-                android:hint="@string/card_pay_detail_mocked_spinner"
                 android:paddingBottom="@dimen/card_pay_detail_spacing_between_items"
                 android:paddingLeft="@dimen/card_pay_detail_items_horizonal_margin"
                 android:paddingRight="@dimen/card_pay_detail_items_horizonal_margin"
@@ -65,12 +64,6 @@
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"
                 android:textSize="@dimen/login_input_text_size" />
-
-            <Spinner
-                android:id="@+id/account_spinner"
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:spinnerMode="dropdown" />
 
             <View
                 android:layout_width="match_parent"
@@ -106,7 +99,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/card_pay_detail_items_horizonal_margin"
-                    android:text="@string/card_pay_detail_mocked_total_payment"
                     android:textColor="@color/input_text_color"
                     android:textSize="@dimen/common_text_size" />
 
@@ -146,7 +138,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/card_pay_detail_items_horizonal_margin"
-                    android:text="@string/card_pay_detail_mocked_minimum_payment"
                     android:textColor="@color/input_text_color"
                     android:textSize="@dimen/common_text_size" />
 
@@ -234,7 +225,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
-                android:text="$ 5.947.300"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"
                 android:textStyle="bold" />
@@ -255,7 +245,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
-                android:text="20 · 03 · 16"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"
                 android:textStyle="bold" />

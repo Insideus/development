@@ -111,7 +111,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
-            android:text="$ 5.947.300"
             android:textColor="@android:color/black"
             android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"
             android:textStyle="bold" />
@@ -132,7 +131,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
-            android:text="20 · 03 · 16"
             android:textColor="@android:color/black"
             android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"
             android:textStyle="bold" />

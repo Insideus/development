@@ -22,60 +22,61 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.com.fennoma.davipocket.model.Account;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.LoginResponse;
+import ar.com.fennoma.davipocket.model.PaymentDetail;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
 import ar.com.fennoma.davipocket.model.User;
 
-/**
- * Created by Julian Vega on 04/07/2016.
- */
 public class Service {
 
     //private static String BASE_URL = "http://davipocket-stg.paymentez.com/api";
-    private static String BASE_URL = "http://davipocket-dev.paymentez.com/api";
-    public static String IMAGE_BASE_URL = "http://davipocket-dev.paymentez.com";
+    private final static String BASE_URL = "http://davipocket-dev.paymentez.com/api";
+    public final static String IMAGE_BASE_URL = "http://davipocket-dev.paymentez.com";
     //private static String BASE_URL = "http://davivienda.fennoma.com.ar/api";
-    private static int SUCCESS_CODE = 200;
-    private static String DATA_TAG = "data";
-    private static String ERROR_CODE_TAG = "error_code";
-    private static String ERROR_MESSAGE_TAG = "error_message";
-    private static String METHOD_TAG = "method";
-    private static String NEXT_TOKEN_TAG = "next_token_session";
-    private static String PASSWORD_TOKEN_TAG = "password_token";
+    private final static int SUCCESS_CODE = 200;
+    private final static String DATA_TAG = "data";
+    private final static String ERROR_CODE_TAG = "error_code";
+    private final static String ERROR_MESSAGE_TAG = "error_message";
+    private final static String METHOD_TAG = "method";
+    private final static String NEXT_TOKEN_TAG = "next_token_session";
+    private final static String PASSWORD_TOKEN_TAG = "password_token";
 
     //Init data services
-    private static String GET_ID_TYPES = "/person_id_types";
-    private static String GET_COUNTRIES = "/countries";
-    private static String GET_BANK_PRODUCTS = "/products";
-    private static String GET_USER_INTERESTS = "/categories_of_interest";
+    private final static String GET_ID_TYPES = "/person_id_types";
+    private final static String GET_COUNTRIES = "/countries";
+    private final static String GET_BANK_PRODUCTS = "/products";
+    private final static String GET_USER_INTERESTS = "/categories_of_interest";
 
     //User services
-    private static String LOGIN = "/user/login";
-    private static String LOGIN_WITH_TOKEN = "/user/login_token";
-    private static String LOGIN_WITH_NEXT_TOKEN = "/user/login_next_token";
-    private static String CONNECT_USER_FACEBOOK = "/user/connect_facebook";
-    private static String UPDATE_USER_INFO = "/user/update_info";
-    private static String USER_ACCOUNT_VALIDATION = "/user/confirm_account_validation";
-    private static String RESEND_USER_VALIDATION_CODE = "/user/validate_account";
-    private static String UPDATE_USER_COMMUNICATIONS_INFO = "/user/update_communications_info";
-    private static String VALIDATE_PRODUCT = "/user/validate_product";
-    private static String VALIDATE_OTP = "/user/validate_otp_pin";
-    private static String SET_PASSWORD = "/user/set_password";
-    private static String FORGOT_PASSWORD = "/user/forgot_password";
-    private static String SET_EXPIRED_PASSWORD = "/user/set_expired_password";
-    private static String LOGOUT = "/user/logout";
-    private static String SET_USER_INTERESTS = "/user/categories_of_interest";
-    private static String GET_USER_CARDS = "/user/cards";
-    private static String GET_USER = "/user";
+    private final static String LOGIN = "/user/login";
+    private final static String LOGIN_WITH_TOKEN = "/user/login_token";
+    private final static String LOGIN_WITH_NEXT_TOKEN = "/user/login_next_token";
+    private final static String CONNECT_USER_FACEBOOK = "/user/connect_facebook";
+    private final static String UPDATE_USER_INFO = "/user/update_info";
+    private final static String USER_ACCOUNT_VALIDATION = "/user/confirm_account_validation";
+    private final static String RESEND_USER_VALIDATION_CODE = "/user/validate_account";
+    private final static String UPDATE_USER_COMMUNICATIONS_INFO = "/user/update_communications_info";
+    private final static String VALIDATE_PRODUCT = "/user/validate_product";
+    private final static String VALIDATE_OTP = "/user/validate_otp_pin";
+    private final static String SET_PASSWORD = "/user/set_password";
+    private final static String FORGOT_PASSWORD = "/user/forgot_password";
+    private final static String SET_EXPIRED_PASSWORD = "/user/set_expired_password";
+    private final static String LOGOUT = "/user/logout";
+    private final static String SET_USER_INTERESTS = "/user/categories_of_interest";
+    private final static String GET_USER_CARDS = "/user/cards";
+    private final static String GET_USER = "/user";
 
     //Card services
-    private static String ACTIVATE_CARD = "/card/activate";
-    private static String ADD_CARD = "/card/add";
-    private static String BLOCK_CARD = "/card/block";
-    private static String SET_FAVOURITE_CARD = "/card/favourite";
-    private static String GET_CARD_MOVEMENTS = "/card/movements";
+    private final static String ACTIVATE_CARD = "/card/activate";
+    private final static String ADD_CARD = "/card/add";
+    private final static String BLOCK_CARD = "/card/block";
+    private final static String SET_FAVOURITE_CARD = "/card/favourite";
+    private final static String GET_CARD_MOVEMENTS = "/card/movements";
+    private final static String GET_CARD_BALANCE = "/card/balance";
+    private static final String PAY_CARD = "/card/pay";
 
     public static JSONObject getPersonIdTypes() {
         HttpURLConnection urlConnection = null;
@@ -224,6 +225,56 @@ public class Service {
             }
         }
         return loginResponse;
+    }
+
+    public static PaymentDetail balanceDetail(String sid, String fourLastDigits) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        PaymentDetail detail = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(GET_CARD_BALANCE, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> lastDigitsParam = new Pair("last_digits", fourLastDigits);
+            params.add(lastDigitsParam);
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                responseJson = json.getJSONObject(DATA_TAG);
+                if(json.has("error") && !json.getBoolean("error")) {
+                    detail = PaymentDetail.fromJsonObject(responseJson);
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    String nextTokenSessionError = "";
+                    if(responseJson.has(NEXT_TOKEN_TAG)) {
+                        nextTokenSessionError = responseJson.getString(NEXT_TOKEN_TAG);
+                    }
+                    throw new ServiceException(errorCode, nextTokenSessionError);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return detail;
     }
 
     public static LoginResponse loginWithToken(String personId, String personIdType, String password, String token) throws ServiceException {
@@ -1218,6 +1269,56 @@ public class Service {
         return new User();
     }
 
+    public static boolean payCard(String sid, String cardLastDigits, String accountLastDigits, String amount) throws ServiceException{
+        boolean response = false;
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(PAY_CARD, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> lastDigitsParam = new Pair("last_digits", cardLastDigits);
+            params.add(lastDigitsParam);
+            Pair<String, String> accountNumberParam = new Pair("account_number", accountLastDigits);
+            params.add(accountNumberParam);
+            Pair<String, String> amountParam = new Pair("amount", amount);
+            params.add(amountParam);
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if(json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
     @NonNull
     private static HttpURLConnection getHttpURLConnection(String sid, String getCardMovements) throws IOException {
         HttpURLConnection urlConnection = getHttpURLConnectionWithHeader(getCardMovements, sid);
@@ -1280,5 +1381,4 @@ public class Service {
         urlConnection.setRequestProperty("sid", token);
         return urlConnection;
     }
-
 }

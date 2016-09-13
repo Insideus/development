@@ -36,6 +36,7 @@ public class CardDetailActivity extends BaseActivity {
     private CardDetailAdapter adapter;
     private Card card;
     private Boolean loadMore;
+    private TransactionDetails transactionDetails;
     private int curPage = 1;
 
     @Override
@@ -78,7 +79,7 @@ public class CardDetailActivity extends BaseActivity {
         DialogUtil.toast(this, "Haciendo búsqueda");
     }
 
-    private void setDataToShow(TransactionDetails transactionDetails) {
+    private void setDataToShow() {
         adapter.setList(addManagableData(transactionDetails.getTransactions()));
         TextView balance = (TextView) findViewById(R.id.balance);
         balance.setText("$" + transactionDetails.getAvailableAmount());
@@ -118,6 +119,15 @@ public class CardDetailActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CardDetailAdapter();
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == CardPayDetailActivity.PAY_REQUEST && resultCode == RESULT_OK){
+            //new GetCardTransactionDetailsTask().
+            //TODO: Acá tenés que hacer refresh a la data del recycler (volvela a pedir, porque cambió :D)
+        }
     }
 
     private class CardDetailAdapter extends RecyclerView.Adapter {
@@ -215,7 +225,11 @@ public class CardDetailActivity extends BaseActivity {
                     holder.payButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(new Intent(CardDetailActivity.this, CardPayDetailActivity.class));
+                            Intent intent = new Intent(CardDetailActivity.this, CardPayDetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable(CARD_KEY, card);
+                            bundle.putParcelable(CardPayDetailActivity.TRANSACTION_DETAILS, transactionDetails);
+                            startActivityForResult(intent.putExtras(bundle), CardPayDetailActivity.PAY_REQUEST);
                         }
                     });
                     if(!loadMore) {
@@ -334,7 +348,8 @@ public class CardDetailActivity extends BaseActivity {
                 } else {
                     loadMore = false;
                 }
-                setDataToShow(response);
+                transactionDetails = response;
+                setDataToShow();
             }
         }
     }
