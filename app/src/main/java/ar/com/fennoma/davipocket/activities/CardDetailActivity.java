@@ -85,7 +85,12 @@ public class CardDetailActivity extends BaseActivity {
         TextView balance = (TextView) findViewById(R.id.balance);
         balance.setText("$" + transactionDetails.getAvailableAmount());
         TextView paymentDate = (TextView) findViewById(R.id.payment_date);
-        paymentDate.setText(DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate()));
+        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate());
+        if (date.length() > 0) {
+            paymentDate.setText(date);
+        } else {
+            paymentDate.setText(transactionDetails.getPaymentDate());
+        }
     }
 
     private List<Transaction> addManagableData(List<Transaction> transactions) {

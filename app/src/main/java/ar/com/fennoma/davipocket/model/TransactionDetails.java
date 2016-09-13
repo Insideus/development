@@ -49,7 +49,11 @@ public class TransactionDetails implements Parcelable {
         TransactionDetails transactionDetails = new TransactionDetails();
         try {
             json = json.getJSONObject("movements");
-            transactionDetails.setPaymentDate(json.getString("payment_date"));
+            if (json.has("payment_date")) {
+                transactionDetails.setPaymentDate(json.getString("payment_date"));
+            } else {
+                transactionDetails.setPaymentDate("No disponible");
+            }
             transactionDetails.setAvailableAmount(json.getString("available_amount"));
             transactionDetails.setTransactions(Transaction.fromJsonArray(json));
         } catch (JSONException e) {
