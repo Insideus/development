@@ -29,6 +29,7 @@ import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
+import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 
 public class MyCardsActivity extends BaseActivity {
 
@@ -476,11 +477,17 @@ public class MyCardsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        updateDaviPoints();
         if(!refresh){
             refresh = true;
             return;
         }
+        updateDaviPoints();
         refreshCardList();
+    }
+
+    private void updateDaviPoints() {
+        ((TextView)findViewById(R.id.davi_points_amount)).setText(SharedPreferencesUtils.getUser().getPoints());
     }
 
 }

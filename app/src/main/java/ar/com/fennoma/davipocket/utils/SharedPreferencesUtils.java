@@ -33,7 +33,7 @@ public class SharedPreferencesUtils {
     }
 
     public static void setUser(User user) {
-        setInt(SP_USER_DAVI_POINTS, user.getPoints());
+        setInt(SP_USER_DAVI_POINTS, user.getPointsInt());
         setString(SP_USER_LAST_LOGIN, user.getLastLogin());
         setString(SP_USER_NAME, user.getName());
     }

@@ -6,6 +6,10 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
+
+import ar.com.fennoma.davipocket.DavipocketApplication;
+
 public class User implements Parcelable {
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
@@ -86,7 +90,15 @@ public class User implements Parcelable {
         this.lastLogin = lastLogin;
     }
 
-    public int getPoints() {
+    public String getPoints() {
+        if (points == -1) {
+            return "N/A";
+        } else {
+            return NumberFormat.getNumberInstance(DavipocketApplication.getInstance().getResources().getConfiguration().locale).format(points);
+        }
+    }
+
+    public int getPointsInt() {
         return points;
     }
 
