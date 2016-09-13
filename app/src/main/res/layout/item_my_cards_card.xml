@@ -36,7 +36,7 @@
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginEnd="@dimen/card_pay_detail_items_margin_end"
+                android:layout_marginEnd="@dimen/card_pay_detail_items_horizonal_margin"
                 android:layout_marginStart="@dimen/card_pay_detail_items_horizonal_margin"
                 android:layout_weight="0.13"
                 android:nextFocusDown="@+id/expiration_month"
@@ -51,51 +51,22 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.04" />
 
-            <LinearLayout
-                android:id="@+id/expiration_container"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginEnd="@dimen/card_pay_detail_items_margin_end"
-                android:layout_marginStart="@dimen/card_pay_detail_items_horizonal_margin"
-                android:layout_weight="0.13"
-                android:orientation="horizontal">
-
                 <TextView
                     android:id="@+id/expiration_date"
                     fontPath="fonts/MyriadPro-Regular.otf"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="0.37"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.13"
                     android:nextFocusDown="@+id/expiration_year"
                     android:nextFocusLeft="@+id/expiration_year"
                     android:nextFocusRight="@+id/expiration_year"
                     android:singleLine="true"
+                    android:gravity="center_vertical"
                     android:drawablePadding="0dp"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/common_text_size" />
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="0.63">
-
-                    <TextView
-                        android:id="@+id/cvv"
-                        fontPath="fonts/MyriadPro-Regular.otf"
-                        android:layout_width="50dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical|end"
-                        android:background="@drawable/new_card_input_background"
-                        android:gravity="center"
-                        android:singleLine="true"
-                        android:visibility="gone"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/common_text_size" />
-                </FrameLayout>
-
-            </LinearLayout>
+                    android:layout_marginEnd="@dimen/card_pay_detail_items_margin_end"
+                    android:layout_marginStart="@dimen/card_pay_detail_items_horizonal_margin"
+                    android:textSize="@dimen/my_cards_items_card_common_text_size" />
 
             <View
                 android:layout_width="wrap_content"
@@ -114,7 +85,7 @@
                 android:singleLine="true"
                 android:textAllCaps="true"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/common_text_size" />
+                android:textSize="@dimen/my_cards_items_card_common_text_size" />
 
             <View
                 android:layout_width="wrap_content"
@@ -139,15 +110,18 @@
         android:layout_marginTop="-25dp"
         android:background="@android:color/white"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/my_cards_items_spacing_bar"
         android:paddingEnd="@dimen/my_cards_items_bar_lateral_spacing"
         android:paddingStart="@dimen/my_cards_items_bar_lateral_spacing"
-        android:paddingTop="@dimen/my_cards_items_spacing_bar">
+        >
 
         <ImageView
             android:id="@+id/favourite_card"
             android:layout_width="wrap_content"
+            android:paddingBottom="@dimen/my_cards_items_spacing_bar"
             android:layout_height="wrap_content"
+            android:paddingRight="@dimen/my_cards_items_spacing_between_buttons"
+            android:paddingLeft="@dimen/my_cards_items_spacing_between_buttons"
+            android:paddingTop="@dimen/my_cards_items_spacing_bar"
             android:src="@drawable/my_cards_not_favourite_card" />
 
         <ImageView
@@ -155,7 +129,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:paddingRight="@dimen/my_cards_items_spacing_between_buttons"
+            android:paddingLeft="@dimen/my_cards_items_spacing_between_buttons"
             android:layout_centerVertical="true"
+            android:paddingBottom="@dimen/my_cards_items_spacing_bar"
+            android:paddingTop="@dimen/my_cards_items_spacing_bar"
             android:src="@drawable/my_cards_disable_card_button" />
 
         <ImageView
@@ -163,8 +141,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/my_cards_items_spacing_between_buttons"
+            android:paddingLeft="@dimen/my_cards_items_spacing_between_buttons"
+            android:paddingRight="@dimen/my_cards_items_spacing_between_buttons"
+            android:paddingTop="@dimen/my_cards_items_spacing_bar"
             android:layout_toStartOf="@id/disable_card"
+            android:paddingBottom="@dimen/my_cards_items_spacing_bar"
             android:src="@drawable/my_cards_avalaible_card_indicator" />
 
     </RelativeLayout>

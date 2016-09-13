@@ -17,7 +17,7 @@
     <dimen name="subtitle_margin">30dp</dimen>
     <dimen name="number_code_text_size">50sp</dimen>
     <dimen name="card_number_text_size">25sp</dimen>
-    <dimen name="common_text_size">14sp</dimen>
+    <dimen name="common_text_size">14dp</dimen>
     <dimen name="check_box_padding_top_and_bottom">10dp</dimen>
     <dimen name="title_fixed_margin_top">60dp</dimen>
 
@@ -35,9 +35,10 @@
     <dimen name="navigation_drawer_bottom_bar_text_size">12sp</dimen>
 
     <dimen name="my_cards_items_spacing_bar">20dp</dimen>
-    <dimen name="my_cards_items_card_number_text_size">15sp</dimen>
-    <dimen name="my_cards_items_bar_lateral_spacing">25dp</dimen>
-    <dimen name="my_cards_items_spacing_between_buttons">25dp</dimen>
+    <dimen name="my_cards_items_card_number_text_size">15dp</dimen>
+    <dimen name="my_cards_items_card_common_text_size">14dp</dimen>
+    <dimen name="my_cards_items_bar_lateral_spacing">12dp</dimen>
+    <dimen name="my_cards_items_spacing_between_buttons">12dp</dimen>
     <dimen name="new_card_padding_between_option_buttons">10dp</dimen>
 
     <dimen name="card_pay_detail_spacing_between_items">18dp</dimen>
