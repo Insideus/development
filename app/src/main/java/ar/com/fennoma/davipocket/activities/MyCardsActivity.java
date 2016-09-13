@@ -66,14 +66,14 @@ public class MyCardsActivity extends BaseActivity {
 
         private List<CardToShowOnList> cards;
 
-        public CardsAdapter(){
+        CardsAdapter(){
             cards = new ArrayList<>();
         }
 
         private class ButtonCardHolder extends RecyclerView.ViewHolder{
 
             private ImageView cardButton;
-            public ButtonCardHolder(View itemView) {
+            ButtonCardHolder(View itemView) {
                 super(itemView);
                 cardButton = (ImageView) itemView.findViewById(R.id.card_image);
             }
@@ -90,7 +90,7 @@ public class MyCardsActivity extends BaseActivity {
             private TextView number;
             private TextView date;
 
-            public ActualCardHolder(View itemView) {
+            ActualCardHolder(View itemView) {
                 super(itemView);
                 card = (ImageView) itemView.findViewById(R.id.card);
                 translucentCovering = itemView.findViewById(R.id.translucent_covering);
@@ -343,7 +343,6 @@ public class MyCardsActivity extends BaseActivity {
     }
 
     private void blockedActivableCardDialog() {
-        refresh = false;
         Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
         intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_activate_card_title));
         intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_activate_card_subtitle));
@@ -354,7 +353,6 @@ public class MyCardsActivity extends BaseActivity {
     }
 
     private void enrollCardDialog(Card card) {
-        refresh = false;
         Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
         intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_enrole_card_title));
         intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_enrole_card_subtitle));
@@ -366,7 +364,6 @@ public class MyCardsActivity extends BaseActivity {
     }
 
     private void blockedCardDialog() {
-        refresh = false;
         Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
         intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_blocked_call_card_title));
         intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_blocked_call__card_subtitle));
@@ -435,7 +432,7 @@ public class MyCardsActivity extends BaseActivity {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
                 ArrayList<Card> userCards = Service.getUserCards(sid);
                 if(userCards != null) {
-                    response = new ArrayList<CardToShowOnList>();
+                    response = new ArrayList<>();
                     response.addAll(userCards);
                 }
             }  catch (ServiceException e) {
@@ -478,12 +475,11 @@ public class MyCardsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         updateDaviPoints();
-        if(!refresh){
+        if(refresh){
+            refreshCardList();
+        } else {
             refresh = true;
-            return;
         }
-        updateDaviPoints();
-        refreshCardList();
     }
 
     private void updateDaviPoints() {
