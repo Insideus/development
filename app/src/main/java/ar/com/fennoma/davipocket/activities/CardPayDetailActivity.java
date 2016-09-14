@@ -79,7 +79,7 @@ public class CardPayDetailActivity extends BaseActivity {
         }
         setContentView(R.layout.activity_card_pay_detail);
         priceIndicator = getString(R.string.card_detail_item_transaction_price_indicator);
-        setToolbar(R.id.toolbar_layout, false, card.getBin().getFranchise().toUpperCase());
+        setToolbar(R.id.toolbar_layout, true, card.getBin().getFranchise().toUpperCase());
         setLayouts();
         new GetCardPayDetail().execute();
     }
