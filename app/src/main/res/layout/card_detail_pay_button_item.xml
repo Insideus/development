@@ -30,6 +30,6 @@
         android:layout_marginBottom="@dimen/subtitle_margin"
         android:layout_marginTop="@dimen/subtitle_margin"
         android:scaleType="center"
-        android:src="@drawable/card_detail_pay_button" />
+        android:src="@drawable/card_detail_pay_button_selector" />
 
 </LinearLayout>

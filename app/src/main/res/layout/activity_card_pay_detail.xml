@@ -198,7 +198,7 @@
             android:layout_above="@+id/bottom_bar"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/card_pay_detail_pay_button_bottom_margin"
-            android:src="@drawable/card_payment_pay_button" />
+            android:src="@drawable/card_payment_pay_button_selector" />
 
         <LinearLayout
             android:id="@+id/bottom_bar"

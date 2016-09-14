@@ -1101,7 +1101,7 @@ public class Service {
         return response;
     }
 
-    public static Boolean blockCard(String sid, String lastDigits, String ccv) throws ServiceException {
+    public static Boolean blockCard(String sid, String lastDigits) throws ServiceException {
         HttpURLConnection urlConnection = null;
         Boolean response = null;
         try {
@@ -1118,8 +1118,6 @@ public class Service {
             List<Pair<String, String>> params = new ArrayList<>();
             Pair<String, String> lastDigitsParam = new Pair("last_digits", lastDigits);
             params.add(lastDigitsParam);
-            Pair<String, String> ccvParam = new Pair("csv", ccv);
-            params.add(ccvParam);
             writer.write(getQuery(params));
             writer.flush();
             writer.close();

@@ -201,7 +201,7 @@
 
     <string name="my_cards_block_card_title">BLOQUEAR TARJETA</string>
     <string name="my_cards_block_card_subtitle">Ingrese el CCV</string>
-    <string name="my_cards_block_card_text">Es el número de 3 dígitos que está al reverso de su tarjeta.</string>
+    <string name="my_cards_block_card_text">¿Está seguro que desea bloquear esta tarjeta?</string>
 
     <string name="my_cards_activate_card_title">ACTIVAR TARJETA</string>
     <string name="my_cards_activate_card_subtitle">Ingrese el número de su tarjeta</string>
@@ -233,5 +233,7 @@
     <string name="tour_title">TOUR</string>
     <string name="card_pay_success_title">PAGO REALIZADO</string>
     <string name="card_pay_success_text">Su pago fue realizado con éxito el día</string>
+    <string name="my_cards_block_card_accept">ACEPTAR</string>
+    <string name="my_cards_block_card_cancel">CANCELAR</string>
 
 </resources>

@@ -86,7 +86,7 @@ public class CardActionDialogActivity extends BaseActivity {
 
     private void animateOpening() {
         View container = findViewById(R.id.container);
-        if(container == null){
+        if (container == null) {
             return;
         }
         container.startAnimation(AnimationUtils.loadAnimation(this, R.anim.from_dot_to_full_size));
@@ -100,7 +100,7 @@ public class CardActionDialogActivity extends BaseActivity {
 
     private void setLayouts() {
         View cancelButton = findViewById(R.id.close_button);
-        if(cancelButton == null){
+        if (cancelButton == null) {
             return;
         }
         cancelButton.setOnClickListener(getCloseListener());
@@ -112,50 +112,72 @@ public class CardActionDialogActivity extends BaseActivity {
         EditText ccvInput = (EditText) findViewById(R.id.ccv_code);
         EditText cardNumberInput = (EditText) findViewById(R.id.card_number);
 
-        if(showCallButton) {
+        if (showCallButton) {
             showCallLayouts(callButton, acceptButton, ignoreButton);
         } else {
             callButton.setVisibility(LinearLayout.GONE);
         }
 
-        if(isCardNumberDialog) {
+        if (isCardNumberDialog) {
             showCardLayouts(acceptButton, ignoreButton, cardNumberInput);
         } else {
             cardNumberInput.setVisibility(LinearLayout.GONE);
         }
 
-        if(isCcvDialog) {
+        if (isBlockCardDialog) {
+            showBlockLayouts(acceptButton, ignoreButton);
+        }
+
+        if (isCcvDialog) {
             showCvvLayouts(acceptButton, ignoreButton, ccvInput);
         } else {
             ccvInput.setVisibility(LinearLayout.GONE);
         }
 
-        if(showPayButton) {
+        if (showPayButton) {
             showPayButtonLayouts(acceptButton, ignoreButton);
         }
 
-        if(isCardPay){
+        if (isCardPay) {
             showCardPayLayouts(acceptButton, ignoreButton);
         }
 
         TextView titleTv = (TextView) findViewById(R.id.toast_title);
-        if(title != null && title.length() > 0) {
+        if (title != null && title.length() > 0) {
             titleTv.setText(title);
         } else {
             titleTv.setVisibility(LinearLayout.GONE);
         }
         TextView subtitleTv = (TextView) findViewById(R.id.toast_subtitle);
-        if(subtitle != null && subtitle.length() > 0) {
+        if (subtitle != null && subtitle.length() > 0) {
             subtitleTv.setText(subtitle);
         } else {
             subtitleTv.setVisibility(LinearLayout.GONE);
         }
         TextView textTv = (TextView) findViewById(R.id.toast_text);
-        if(text != null && text.length() > 0) {
+        if (text != null && text.length() > 0) {
             textTv.setText(text);
         } else {
             textTv.setVisibility(LinearLayout.GONE);
         }
+    }
+
+    private void showBlockLayouts(TextView acceptButton, TextView ignoreButton) {
+        acceptButton.setText(getString(R.string.my_cards_block_card_accept));
+        ignoreButton.setText(getString(R.string.my_cards_block_card_cancel));
+        ignoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new BlockCardTask().execute();
+            }
+        });
     }
 
     private void showCardPayLayouts(TextView acceptButton, TextView ignoreButton) {
@@ -233,11 +255,7 @@ public class CardActionDialogActivity extends BaseActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isBlockCardDialog) {
-                    new BlockCardTask().execute(ccvInput.getText().toString());
-                } else {
-                    new AddCardTask().execute(ccvInput.getText().toString());
-                }
+                new AddCardTask().execute(ccvInput.getText().toString());
             }
         };
     }
@@ -301,7 +319,7 @@ public class CardActionDialogActivity extends BaseActivity {
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
                 response = Service.activateCard(sid, params[0]);
-            }  catch (ServiceException e) {
+            } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
             return response;
@@ -311,10 +329,10 @@ public class CardActionDialogActivity extends BaseActivity {
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
             hideLoading();
-            if(response == null || !response) {
+            if (response == null || !response) {
                 //Hancdle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
-                if(error != null && error == ErrorMessages.INVALID_SESSION) {
+                if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
                 } else {
                     showServiceGenericError();
@@ -341,8 +359,8 @@ public class CardActionDialogActivity extends BaseActivity {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.blockCard(sid, card.getLastDigits(), params[0]);
-            }  catch (ServiceException e) {
+                response = Service.blockCard(sid, card.getLastDigits());
+            } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
             return response;
@@ -352,10 +370,10 @@ public class CardActionDialogActivity extends BaseActivity {
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
             hideLoading();
-            if(response == null || !response) {
+            if (response == null || !response) {
                 //Hancdle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
-                if(error != null && error == ErrorMessages.INVALID_SESSION) {
+                if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
                 } else {
                     showServiceGenericError();
@@ -383,7 +401,7 @@ public class CardActionDialogActivity extends BaseActivity {
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
                 response = Service.addCard(sid, card.getLastDigits(), params[0]);
-            }  catch (ServiceException e) {
+            } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
             return response;
@@ -393,10 +411,10 @@ public class CardActionDialogActivity extends BaseActivity {
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
             hideLoading();
-            if(response == null || !response) {
+            if (response == null || !response) {
                 //Hancdle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
-                if(error != null && error == ErrorMessages.INVALID_SESSION) {
+                if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
                 } else {
                     showServiceGenericError();
