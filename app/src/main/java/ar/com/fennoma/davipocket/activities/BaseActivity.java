@@ -41,12 +41,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public static boolean checkPermission(String strPermission, Context _c, Activity _a) {
         int result = ContextCompat.checkSelfPermission(_c, strPermission);
-        if (result == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            return false;
-
-        }
+        return result == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
@@ -217,9 +212,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void requestPermission(String strPermission, int perCode, Context _c, Activity _a) {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(_a, strPermission)) {
-
-        } else {
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(_a, strPermission)) {
             ActivityCompat.requestPermissions(_a, new String[]{strPermission}, perCode);
         }
     }
@@ -418,7 +411,7 @@ public class BaseActivity extends AppCompatActivity {
                 //Expected error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 processErrorAndContinue(error, "");
-            } else if (response == null && errorCode == null) {
+            } else if (response == null) {
                 //Service error.
                 showServiceGenericError();
             } else {

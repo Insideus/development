@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
@@ -23,18 +25,19 @@ import ar.com.fennoma.davipocket.session.Session;
 
 public class CardActionDialogActivity extends BaseActivity {
 
-    public static String TITLE_KEY = "toast_title_key";
-    public static String SUBTITLE_KEY = "toast_subtitle_key";
-    public static String TEXT_KEY = "toast_text_key";
-    public static String CARD_KEY = "card_key";
+    public static final String TITLE_KEY = "toast_title_key";
+    public static final String SUBTITLE_KEY = "toast_subtitle_key";
+    public static final String TEXT_KEY = "toast_text_key";
+    public static final String CARD_KEY = "card_key";
 
-    public static String IS_CCV_DIALOG = "is_ccv_dialog_key";
-    public static String IS_CARD_NUMBER_DIALOG = "is_card_number_dialog_key";
-    public static String IS_BLOCK_CARD_DIALOG = "is_block_card_dialog_key";
+    public static final String IS_CARD_PAY = "is_card_pay_key";
+    public static final String IS_CCV_DIALOG = "is_ccv_dialog_key";
+    public static final String IS_CARD_NUMBER_DIALOG = "is_card_number_dialog_key";
+    public static final String IS_BLOCK_CARD_DIALOG = "is_block_card_dialog_key";
 
-    public static String SHOW_CALL_BUTTON_KEY = "show_call_button_key";
-    public static String CALL_BUTTON_NUMBER_KEY = "call_button_number_key";
-    public static String SHOW_PAY_BUTTON_KEY = "show_pay_button_key";
+    public static final String SHOW_CALL_BUTTON_KEY = "show_call_button_key";
+    public static final String CALL_BUTTON_NUMBER_KEY = "call_button_number_key";
+    public static final String SHOW_PAY_BUTTON_KEY = "show_pay_button_key";
 
     private String title;
     private String subtitle;
@@ -44,6 +47,7 @@ public class CardActionDialogActivity extends BaseActivity {
     private Boolean isCardNumberDialog;
     private Boolean isBlockCardDialog;
     private Boolean showPayButton;
+    private boolean isCardPay;
     private String callNumber;
     private Card card;
 
@@ -62,6 +66,7 @@ public class CardActionDialogActivity extends BaseActivity {
             callNumber = savedInstanceState.getString(CALL_BUTTON_NUMBER_KEY, "");
             card = savedInstanceState.getParcelable(CARD_KEY);
             showPayButton = savedInstanceState.getBoolean(SHOW_PAY_BUTTON_KEY, false);
+            isCardPay = savedInstanceState.getBoolean(IS_CARD_PAY, false);
         } else {
             title = getIntent().getStringExtra(TITLE_KEY);
             subtitle = getIntent().getStringExtra(SUBTITLE_KEY);
@@ -73,6 +78,7 @@ public class CardActionDialogActivity extends BaseActivity {
             callNumber = getIntent().getStringExtra(CALL_BUTTON_NUMBER_KEY);
             card = getIntent().getParcelableExtra(CARD_KEY);
             showPayButton = getIntent().getBooleanExtra(SHOW_PAY_BUTTON_KEY, false);
+            isCardPay = getIntent().getBooleanExtra(IS_CARD_PAY, false);
         }
         setLayouts();
         animateOpening();
@@ -107,51 +113,29 @@ public class CardActionDialogActivity extends BaseActivity {
         EditText cardNumberInput = (EditText) findViewById(R.id.card_number);
 
         if(showCallButton) {
-            checkCallPermissions();
-            callButton.setVisibility(LinearLayout.VISIBLE);
-            acceptButton.setVisibility(LinearLayout.GONE);
-            callButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (ActivityCompat.checkSelfPermission(CardActionDialogActivity.this,
-                            android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        return;
-                    }
-                    startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel: " + callNumber)));
-                    setResult(RESULT_OK);
-                }
-            });
-            ignoreButton.setOnClickListener(getCloseListener());
+            showCallLayouts(callButton, acceptButton, ignoreButton);
         } else {
             callButton.setVisibility(LinearLayout.GONE);
         }
 
         if(isCardNumberDialog) {
-            acceptButton.setText(getString(R.string.my_cards_continue_button_text));
-            ignoreButton.setText(getString(R.string.my_cards_cancel_button_text));
-
-            acceptButton.setOnClickListener(getActivateCardListener(cardNumberInput));
-            ignoreButton.setOnClickListener(getCloseListener());
+            showCardLayouts(acceptButton, ignoreButton, cardNumberInput);
         } else {
             cardNumberInput.setVisibility(LinearLayout.GONE);
         }
 
         if(isCcvDialog) {
-            acceptButton.setText(getString(R.string.my_cards_continue_button_text));
-            ignoreButton.setText(getString(R.string.my_cards_cancel_button_text));
-
-            acceptButton.setOnClickListener(getBlockOrAddCardListener(ccvInput));
-            ignoreButton.setOnClickListener(getCloseListener());
+            showCvvLayouts(acceptButton, ignoreButton, ccvInput);
         } else {
             ccvInput.setVisibility(LinearLayout.GONE);
         }
 
         if(showPayButton) {
-            acceptButton.setText(getString(R.string.my_cards_pay_button_text));
-            ignoreButton.setText(getString(R.string.my_cards_pay_continue_button_text));
+            showPayButtonLayouts(acceptButton, ignoreButton);
+        }
 
-            acceptButton.setOnClickListener(getGoToPayCardActivity());
-            ignoreButton.setOnClickListener(getGoToCardDetailsActivity());
+        if(isCardPay){
+            showCardPayLayouts(acceptButton, ignoreButton);
         }
 
         TextView titleTv = (TextView) findViewById(R.id.toast_title);
@@ -172,6 +156,68 @@ public class CardActionDialogActivity extends BaseActivity {
         } else {
             textTv.setVisibility(LinearLayout.GONE);
         }
+    }
+
+    private void showCardPayLayouts(TextView acceptButton, TextView ignoreButton) {
+        acceptButton.setText(getString(R.string.card_pay_pay_button_text));
+        ignoreButton.setText(getString(R.string.card_pay_cancel_pay_button_text));
+
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
+        ignoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
+    }
+
+    private void showPayButtonLayouts(TextView acceptButton, TextView ignoreButton) {
+        acceptButton.setText(getString(R.string.my_cards_pay_button_text));
+        ignoreButton.setText(getString(R.string.my_cards_pay_continue_button_text));
+
+        acceptButton.setOnClickListener(getGoToPayCardActivity());
+        ignoreButton.setOnClickListener(getGoToCardDetailsActivity());
+    }
+
+    private void showCvvLayouts(TextView acceptButton, TextView ignoreButton, EditText ccvInput) {
+        acceptButton.setText(getString(R.string.my_cards_continue_button_text));
+        ignoreButton.setText(getString(R.string.my_cards_cancel_button_text));
+
+        acceptButton.setOnClickListener(getBlockOrAddCardListener(ccvInput));
+        ignoreButton.setOnClickListener(getCloseListener());
+    }
+
+    private void showCardLayouts(TextView acceptButton, TextView ignoreButton, EditText cardNumberInput) {
+        acceptButton.setText(getString(R.string.my_cards_continue_button_text));
+        ignoreButton.setText(getString(R.string.my_cards_cancel_button_text));
+
+        acceptButton.setOnClickListener(getActivateCardListener(cardNumberInput));
+        ignoreButton.setOnClickListener(getCloseListener());
+    }
+
+    private void showCallLayouts(View callButton, View acceptButton, View ignoreButton) {
+        checkCallPermissions();
+        callButton.setVisibility(LinearLayout.VISIBLE);
+        acceptButton.setVisibility(LinearLayout.GONE);
+        callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(CardActionDialogActivity.this,
+                        android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel: " + callNumber)));
+                setResult(RESULT_OK);
+            }
+        });
+        ignoreButton.setOnClickListener(getCloseListener());
     }
 
     private View.OnClickListener getActivateCardListener(final EditText cardNumberInput) {

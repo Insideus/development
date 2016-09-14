@@ -82,6 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:button="@android:color/transparent"
+                    android:checked="true"
                     android:drawablePadding="@dimen/card_pay_detail_item_drawable_padding"
                     android:drawableStart="@drawable/checkbox_selector"
                     android:paddingBottom="@dimen/card_pay_detail_spacing_between_items"

@@ -72,6 +72,7 @@ public class ToastDialogActivity extends BaseActivity {
                 if(invalidSessionToast) {
                     goToLoginActivity();
                 } else {
+                    setResult(RESULT_OK);
                     finish();
                 }
             }
@@ -82,6 +83,7 @@ public class ToastDialogActivity extends BaseActivity {
                 if(invalidSessionToast) {
                     goToLoginActivity();
                 } else {
+                    setResult(RESULT_OK);
                     finish();
                 }
             }
@@ -123,6 +125,12 @@ public class ToastDialogActivity extends BaseActivity {
         } else {
             textTv.setVisibility(LinearLayout.GONE);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
     }
 
     public void checkCallPermissions() {

@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.activities.CardPayDetailActivity;
 import ar.com.fennoma.davipocket.activities.ToastDialogActivity;
 
 public class DialogUtil {
@@ -93,4 +94,12 @@ public class DialogUtil {
         return result;
     }
 
+    public static void toast(Activity activity, String title, String subtitle, String text, int request) {
+        Intent intent = new Intent(activity, ToastDialogActivity.class);
+        intent.putExtra(ToastDialogActivity.TITLE_KEY, title);
+        intent.putExtra(ToastDialogActivity.SUBTITLE_KEY, subtitle);
+        intent.putExtra(ToastDialogActivity.TEXT_KEY, text);
+        activity.startActivityForResult(intent, request);
+        activity.overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
 }

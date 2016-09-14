@@ -220,6 +220,14 @@
     <string name="my_cards_pay_card_text_1">Su tarjeta tiene sobrecupo.\n ¿Desea pagarla ahora para poder utilizarla en su billetera?</string>
     <string name="my_cards_pay_card_text_2">Su tarjeta presenta bloqueo de rediferido.\n ¿Desea pagarla ahora para poder utilizarla en su billetera?</string>
 
+    <string name="card_pay_pay_button_text">CONFIRMAR</string>
+    <string name="card_pay_cancel_pay_button_text">CANCELAR</string>
+
+    <string name="card_pay_confirmation_text_1">¿Usted confirma que desea realizar el pago de su tarjeta terminada en</string>
+    <string name="card_pay_confirmation_text_2">con su cuenta</string>
+    <string name="card_pay_confirmation_text_3">terminada en</string>
+    <string name="card_pay_confirmation_text_4">por un valor de $</string>
+
     <string name="load_more_button_text">CARGAR MAS MOVIMIENTOS</string>
     <string name="close_button_text">cerrar</string>
     <string name="tour_title">TOUR</string>

@@ -1,5 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +17,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnBackPressListener;
@@ -35,11 +35,13 @@ import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.controls.ComboHolder;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class CardPayDetailActivity extends BaseActivity {
 
     public static final String TRANSACTION_DETAILS = "transactions details";
     public static final int PAY_REQUEST = 12;
+    private static final int ON_CLOSE_REQUEST = 13;
     public static String CARD_KEY = "card_key";
 
     private Card card;
@@ -54,7 +56,6 @@ public class CardPayDetailActivity extends BaseActivity {
     private TransactionDetails transactionDetails;
     private Account selectedAccount;
     private DialogPlus dialogPlus;
-    private View payButton;
 
     private TextView totalPaymentLabel;
     private TextView minimumPaymentLabel;
@@ -113,7 +114,7 @@ public class CardPayDetailActivity extends BaseActivity {
         otherPayment = (CheckBox) findViewById(R.id.other_payment);
         final View otherPaymentContainer = findViewById(R.id.other_payment_container);
         otherPaymentValue = (EditText) findViewById(R.id.other_payment_value);
-        payButton = findViewById(R.id.pay_button);
+        View payButton = findViewById(R.id.pay_button);
         if (totalPayment == null || minimumPayment == null || otherPayment == null || otherPaymentContainer == null
                 || otherPaymentValue == null || cardTitle == null || payButton == null) {
             return;
@@ -179,11 +180,25 @@ public class CardPayDetailActivity extends BaseActivity {
             public void onClick(View v) {
                 String amount = getAmount();
                 if(!TextUtils.isEmpty(amount)) {
-                    //TODO: Acá tenés que levantar el cartel de confirmación
-                    new PayTask(amount).execute();
+                    Intent intent = new Intent(CardPayDetailActivity.this, CardActionDialogActivity.class);
+                    intent.putExtra(CardActionDialogActivity.TITLE_KEY, "TARJETA");
+                    intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, "A PAGAR");
+                    intent.putExtra(CardActionDialogActivity.TEXT_KEY, getPayConfirmationText(amount));
+                    intent.putExtra(CardActionDialogActivity.IS_CARD_PAY, true);
+                    intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
+                    startActivityForResult(intent, PAY_REQUEST);
+                    overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
                 }
             }
         });
+    }
+
+    private String getPayConfirmationText(String amount) {
+        return getString(R.string.card_pay_confirmation_text_1).concat(" ").concat(card.getLastDigits()).concat(" ")
+                .concat(getString(R.string.card_pay_confirmation_text_2)).concat(" ").concat(selectedAccount.getName())
+                .concat(" ").concat(getString(R.string.card_pay_confirmation_text_3)).concat(" ")
+                .concat(selectedAccount.getLastDigits()).concat(" ").concat(getString(R.string.card_pay_confirmation_text_4))
+                .concat(amount).concat("?");
     }
 
     private String getAmount() {
@@ -295,7 +310,7 @@ public class CardPayDetailActivity extends BaseActivity {
             }
             final Account account = getItem(position);
             row.setText(getAccountInfoToShow(account));
-            if (selectedAccount != null && selectedAccount.getLastDigits() == account.getLastDigits()) {
+            if (selectedAccount != null && selectedAccount.getLastDigits().equals(account.getLastDigits())) {
                 row.setTextColor(ContextCompat.getColor(CardPayDetailActivity.this, R.color.combo_item_text_color_selected));
             } else {
                 row.setTextColor(ContextCompat.getColor(CardPayDetailActivity.this, R.color.combo_item_text_color));
@@ -328,6 +343,18 @@ public class CardPayDetailActivity extends BaseActivity {
         return result;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PAY_REQUEST && resultCode == RESULT_OK){
+            new PayTask(getAmount()).execute();
+        }
+        if(requestCode == ON_CLOSE_REQUEST && resultCode == RESULT_OK){
+            setResult(RESULT_OK);
+            finish();
+        }
+    }
+
     public class GetCardPayDetail extends AsyncTask<Void, Void, Void> {
 
         private String errorCode;
@@ -353,7 +380,7 @@ public class CardPayDetailActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             hideLoading();
             if (detail == null) {
-                //Hancdle invalid session error.
+                //Handle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
@@ -370,6 +397,7 @@ public class CardPayDetailActivity extends BaseActivity {
 
         private String errorCode;
         private String amount;
+        private boolean transactionMade;
 
         public PayTask(String amount) {
             this.amount = amount;
@@ -384,7 +412,7 @@ public class CardPayDetailActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                Service.payCard(sid, card.getLastDigits(), selectedAccount.getLastDigits(), amount);
+                transactionMade = Service.payCard(sid, card.getLastDigits(), selectedAccount.getLastDigits(), amount);
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 e.printStackTrace();
@@ -395,7 +423,7 @@ public class CardPayDetailActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             hideLoading();
-            if (amount == null) {
+            if (!transactionMade) {
                 //Hancdle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
@@ -404,8 +432,8 @@ public class CardPayDetailActivity extends BaseActivity {
                     showServiceGenericError();
                 }
             } else {
-                setResult(RESULT_OK);
-                finish();
+                DialogUtil.toast(CardPayDetailActivity.this, getString(R.string.generic_service_error_title), "",
+                        getString(R.string.generic_service_error), ON_CLOSE_REQUEST);
             }
         }
     }
