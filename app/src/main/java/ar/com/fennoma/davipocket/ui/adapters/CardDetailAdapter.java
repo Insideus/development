@@ -198,7 +198,9 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
 
     protected List<Transaction> getProcessedTransactionList(List<Transaction> transactions) {
         if (transactions == null || transactions.size() <= 1) {
-            return null;
+            transactions = new ArrayList<>();
+            transactions.add(null);
+            return transactions;
         }
 
         transactions.add(0, null);
@@ -217,7 +219,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
 
     public void setList(ArrayList<Transaction> transactions) {
         originalTransactions.clear();
-        originalTransactions.addAll(transactions);
+        originalTransactions.addAll(getProcessedTransactionList(transactions));
         transactionsBeingShowed.clear();
         transactionsBeingShowed.addAll(originalTransactions);
         notifyDataSetChanged();
