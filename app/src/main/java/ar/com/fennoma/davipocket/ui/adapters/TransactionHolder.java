@@ -6,9 +6,6 @@ import android.widget.TextView;
 
 import ar.com.fennoma.davipocket.R;
 
-/**
- * Created by fennoma_dev on 14/09/2016.
- */
 public class TransactionHolder extends RecyclerView.ViewHolder {
 
     protected View container;

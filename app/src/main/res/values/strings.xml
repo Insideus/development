@@ -235,5 +235,6 @@
     <string name="card_pay_success_text">Su pago fue realizado con éxito el día</string>
     <string name="my_cards_block_card_accept">ACEPTAR</string>
     <string name="my_cards_block_card_cancel">CANCELAR</string>
+    <string name="filter_button_text">Filtro</string>
 
 </resources>
