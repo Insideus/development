@@ -184,8 +184,8 @@ public class CardPayDetailActivity extends BaseActivity {
                 String amount = getAmount();
                 if (!TextUtils.isEmpty(amount)) {
                     Intent intent = new Intent(CardPayDetailActivity.this, CardActionDialogActivity.class);
-                    intent.putExtra(CardActionDialogActivity.TITLE_KEY, "TARJETA");
-                    intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, "A PAGAR");
+                    intent.putExtra(CardActionDialogActivity.TITLE_KEY, "CONFIRMAR PAGO");
+                    intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, "");
                     intent.putExtra(CardActionDialogActivity.TEXT_KEY, getPayConfirmationText(amount));
                     intent.putExtra(CardActionDialogActivity.IS_CARD_PAY, true);
                     intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
@@ -201,7 +201,7 @@ public class CardPayDetailActivity extends BaseActivity {
                 .concat(getString(R.string.card_pay_confirmation_text_2)).concat(" ").concat(selectedAccount.getName())
                 .concat(" ").concat(getString(R.string.card_pay_confirmation_text_3)).concat(" ")
                 .concat(selectedAccount.getLastDigits()).concat(" ").concat(getString(R.string.card_pay_confirmation_text_4))
-                .concat(amount).concat("?");
+                .concat(" ").concat(amount).concat("?");
     }
 
     private String getAmount() {
@@ -224,7 +224,7 @@ public class CardPayDetailActivity extends BaseActivity {
         TextView balance = (TextView) findViewById(R.id.balance);
         balance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()).toUpperCase());
         TextView paymentDate = (TextView) findViewById(R.id.payment_date);
-        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate().toUpperCase());
+        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate()).toUpperCase();
         if (date.length() > 0) {
             paymentDate.setText(date);
         } else {
@@ -288,10 +288,11 @@ public class CardPayDetailActivity extends BaseActivity {
             result = result.concat(": ");
         }
         if (!TextUtils.isEmpty(account.getBalance())) {
-            result = result.concat(CurrencyUtils.getCurrencyForString(account.getBalance()));
+            result = result.concat("$" + CurrencyUtils.getCurrencyForString(account.getBalance()));
         }
         return result;
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

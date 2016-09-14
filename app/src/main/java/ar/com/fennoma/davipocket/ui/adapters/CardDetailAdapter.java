@@ -18,6 +18,7 @@ import ar.com.fennoma.davipocket.activities.CardPayDetailActivity;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.Transaction;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
+import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
 
 public class CardDetailAdapter extends RecyclerView.Adapter {
@@ -90,7 +91,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                 Transaction transaction = transactions.get(position);
                 TransactionHolder holder = (TransactionHolder) genericHolder;
                 //holder.daviPoints.setText(String.valueOf(transaction.getDavipoints()));
-                holder.price.setText(String.valueOf(transaction.getPrice()));
+                holder.price.setText(CurrencyUtils.getCurrencyForString(transaction.getPrice()));
                 //holder.productAmount.setText(String.valueOf(transaction.getProductAmount()));
                 holder.name.setText(transaction.getName());
                 switch (getProperBackground(position)) {
@@ -117,7 +118,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                 Transaction transaction = transactions.get(position + 1);
                 if (transaction != null) {
                     DateTitleHolder holder = (DateTitleHolder) genericHolder;
-                    holder.title.setText(DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transaction.getDate()));
+                    holder.title.setText(DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMMYY_FORMAT, transaction.getDate()).toUpperCase());
                 }
                 break;
             }
