@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,28 +47,31 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
 
     private void setSearcher() {
         final EditText query = (EditText) findViewById(R.id.query);
-        View searchButton = findViewById(R.id.search_button);
-        if(query == null || searchButton == null){
-            return;
-        }
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        query.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                if(TextUtils.isEmpty(query.getText())){
-                    return;
-                }
-                doQuery(query.getText().toString());
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                doQuery(s.toString());
             }
         });
         query.clearFocus();
     }
 
     private void doQuery(String query) {
-        DialogUtil.toast(this, "Haciendo búsqueda");
+        adapter.executeFilter(query);
     }
 
     protected void setDataToShow() {
-        adapter.addToList(addManagableData(transactionDetails.getTransactions()));
+        adapter.setList(transactionDetails.getTransactions());
         TextView balance = (TextView) findViewById(R.id.balance);
         balance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()));
         TextView paymentDate = (TextView) findViewById(R.id.payment_date);
@@ -115,4 +120,9 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void loadMore() {
+        ((EditText) findViewById(R.id.query)).setText("");
+        super.loadMore();
+    }
 }

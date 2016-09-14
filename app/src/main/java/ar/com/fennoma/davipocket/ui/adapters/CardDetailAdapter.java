@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -33,35 +34,56 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
     private final static int BUTTON = 2;
 
     private Activity activity;
-    private List<Transaction> transactions;
+    private List<Transaction> originalTransactions;
+    private List<Transaction> filteredTransactions;
+    private List<Transaction> transactionsBeingShowed;
     private ICardDetailAdapterOwner owner;
-
-    public interface ICardDetailAdapterOwner{
-        Card getCard();
-        TransactionDetails getTransactionDetails();
-        boolean doLoadMore();
-        void loadMore();
-    }
 
     public CardDetailAdapter(Activity activity, ICardDetailAdapterOwner owner) {
         this.activity = activity;
-        transactions = new ArrayList<>();
+        originalTransactions = new ArrayList<>();
+        transactionsBeingShowed = new ArrayList<>();
         this.owner = owner;
     }
 
-    public void setList(List<Transaction> transactions){
-        this.transactions = transactions;
+    public void executeFilter(String query) {
+        if (TextUtils.isEmpty(query)) {
+            transactionsBeingShowed.clear();
+            transactionsBeingShowed.addAll(originalTransactions);
+        } else {
+            if (filteredTransactions == null) {
+                filteredTransactions = new ArrayList<>();
+            } else {
+                filteredTransactions.clear();
+            }
+
+            for (int i = 0; i < originalTransactions.size(); i++) {
+                Transaction t = originalTransactions.get(i);
+                if (t != null && t.getName().toLowerCase().contains(query.toLowerCase())) {
+                    filteredTransactions.add(t);
+                }
+            }
+
+            filteredTransactions = getProcessedTransactionList(filteredTransactions);
+            transactionsBeingShowed.clear();
+            if (filteredTransactions != null) {
+                transactionsBeingShowed.addAll(filteredTransactions);
+            }
+        }
         notifyDataSetChanged();
     }
 
-    public void addToList(List<Transaction> transactions) {
-        if (this.transactions.size() > 0) {
-            this.transactions.remove(this.transactions.size() - 1);
-            if (this.transactions.get(this.transactions.size() - 1).getDate().equals(transactions.get(1).getDate())) {
+    public void setList(List<Transaction> transactions) {
+        transactions = getProcessedTransactionList(transactions);
+        if (this.originalTransactions.size() > 0) {
+            this.originalTransactions.remove(this.originalTransactions.size() - 1);
+            if (this.originalTransactions.get(this.originalTransactions.size() - 1).getDate().equals(transactions.get(1).getDate())) {
                 transactions.remove(0);
             }
         }
-        this.transactions.addAll(transactions);
+        this.originalTransactions.addAll(transactions);
+        this.transactionsBeingShowed.clear();
+        this.transactionsBeingShowed.addAll(originalTransactions);
         notifyDataSetChanged();
     }
 
@@ -70,7 +92,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
         if (position == getItemCount() - 1) {
             return BUTTON;
         }
-        Transaction transaction = transactions.get(position);
+        Transaction transaction = transactionsBeingShowed.get(position);
         if (transaction == null) {
             return TITLE;
         }
@@ -93,7 +115,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder genericHolder, int position) {
         switch (getItemViewType(position)) {
             case ITEM: {
-                Transaction transaction = transactions.get(position);
+                Transaction transaction = transactionsBeingShowed.get(position);
                 TransactionHolder holder = (TransactionHolder) genericHolder;
                 //holder.daviPoints.setText(String.valueOf(transaction.getDavipoints()));
                 holder.price.setText(CurrencyUtils.getCurrencyForString(transaction.getPrice()));
@@ -120,7 +142,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                 break;
             }
             case TITLE: {
-                Transaction transaction = transactions.get(position + 1);
+                Transaction transaction = transactionsBeingShowed.get(position + 1);
                 if (transaction != null) {
                     DateTitleHolder holder = (DateTitleHolder) genericHolder;
                     holder.title.setText(DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMMYY_FORMAT, transaction.getDate()).toUpperCase());
@@ -155,8 +177,8 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
     }
 
     private int getProperBackground(int position) {
-        boolean somethingOnTop = position > 0 && transactions.get(position - 1) != null;
-        boolean somethingOnBottom = transactions.get(position + 1) != null;
+        boolean somethingOnTop = position > 0 && transactionsBeingShowed.get(position - 1) != null;
+        boolean somethingOnBottom = transactionsBeingShowed.get(position + 1) != null;
         if (somethingOnBottom && somethingOnTop) {
             return MIDDLE_ITEM;
         }
@@ -171,6 +193,43 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return transactions.size();
+        return transactionsBeingShowed.size();
+    }
+
+    protected List<Transaction> getProcessedTransactionList(List<Transaction> transactions) {
+        if (transactions == null || transactions.size() <= 1) {
+            return null;
+        }
+
+        transactions.add(0, null);
+        Transaction comparator = transactions.get(1);
+        for (int i = 2; i < transactions.size(); i++) {
+            Transaction transaction = transactions.get(i);
+            if (!comparator.getDate().equals(transaction.getDate())) {
+                transactions.add(i, null);
+                i++;
+            }
+            comparator = transaction;
+        }
+        transactions.add(null);
+        return transactions;
+    }
+
+    public void replaceList(ArrayList<Transaction> transactions) {
+        originalTransactions.clear();
+        originalTransactions.addAll(transactions);
+        transactionsBeingShowed.clear();
+        transactionsBeingShowed.addAll(originalTransactions);
+        notifyDataSetChanged();
+    }
+
+    public interface ICardDetailAdapterOwner {
+        Card getCard();
+
+        TransactionDetails getTransactionDetails();
+
+        boolean doLoadMore();
+
+        void loadMore();
     }
 }

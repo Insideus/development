@@ -98,25 +98,4 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
         curPage++;
         new CardDetailActivity.GetCardTransactionDetailsTask().execute();
     }
-
-    protected List<Transaction> addManagableData(List<Transaction> transactions) {
-        if (transactions == null || transactions.size() <= 1) {
-            transactions = new ArrayList<>();
-            transactions.add(null);
-            return transactions;
-        }
-
-        transactions.add(0, null);
-        Transaction comparator = transactions.get(1);
-        for (int i = 2; i < transactions.size(); i++) {
-            Transaction transaction = transactions.get(i);
-            if (!comparator.getDate().equals(transaction.getDate())) {
-                transactions.add(i, null);
-                i++;
-            }
-            comparator = transaction;
-        }
-        transactions.add(null);
-        return transactions;
-    }
 }
