@@ -26,6 +26,7 @@ import ar.com.fennoma.davipocket.model.TransactionDetails;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
+import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
@@ -82,9 +83,9 @@ public class CardDetailActivity extends BaseActivity {
     private void setDataToShow() {
         adapter.setList(addManagableData(transactionDetails.getTransactions()));
         TextView balance = (TextView) findViewById(R.id.balance);
-        balance.setText("$" + transactionDetails.getAvailableAmount());
+        balance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()));
         TextView paymentDate = (TextView) findViewById(R.id.payment_date);
-        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate());
+        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate()).toUpperCase();
         if (date.length() > 0) {
             paymentDate.setText(date);
         } else {
@@ -216,7 +217,7 @@ public class CardDetailActivity extends BaseActivity {
                     Transaction transaction = transactions.get(position + 1);
                     if (transaction != null) {
                         DateTitleHolder holder = (DateTitleHolder) genericHolder;
-                        holder.title.setText(DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transaction.getDate()));
+                        holder.title.setText(DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transaction.getDate()).toUpperCase());
                     }
                     break;
                 }

@@ -22,7 +22,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.com.fennoma.davipocket.model.Account;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.PaymentDetail;
@@ -32,9 +31,9 @@ import ar.com.fennoma.davipocket.model.User;
 
 public class Service {
 
+    public final static String IMAGE_BASE_URL = "http://davipocket-dev.paymentez.com";
     //private static String BASE_URL = "http://davipocket-stg.paymentez.com/api";
     private final static String BASE_URL = "http://davipocket-dev.paymentez.com/api";
-    public final static String IMAGE_BASE_URL = "http://davipocket-dev.paymentez.com";
     //private static String BASE_URL = "http://davivienda.fennoma.com.ar/api";
     private final static int SUCCESS_CODE = 200;
     private final static String DATA_TAG = "data";
@@ -84,10 +83,10 @@ public class Service {
         try {
             urlConnection = getHttpURLConnection(GET_ID_TYPES);
             urlConnection.connect();
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = json.getJSONObject(DATA_TAG);
                 }
             }
@@ -107,10 +106,10 @@ public class Service {
         try {
             urlConnection = getHttpURLConnection(GET_COUNTRIES);
             urlConnection.connect();
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = json.getJSONObject(DATA_TAG);
                 }
             }
@@ -130,10 +129,10 @@ public class Service {
         try {
             urlConnection = getHttpURLConnection(GET_BANK_PRODUCTS);
             urlConnection.connect();
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = json.getJSONObject(DATA_TAG);
                 }
             }
@@ -153,10 +152,10 @@ public class Service {
         try {
             urlConnection = getHttpURLConnection(GET_USER_INTERESTS);
             urlConnection.connect();
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = json.getJSONObject(DATA_TAG);
                     response = response;
                 }
@@ -199,16 +198,16 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson = json.getJSONObject(DATA_TAG);
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     loginResponse = LoginResponse.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     String additionalData = null;
-                    if(responseJson.has(METHOD_TAG)) {
+                    if (responseJson.has(METHOD_TAG)) {
                         additionalData = responseJson.getString(METHOD_TAG);
                     }
                     if (responseJson.has(PASSWORD_TOKEN_TAG)) {
@@ -251,17 +250,17 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
                 responseJson = json.getJSONObject(DATA_TAG);
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     detail = PaymentDetail.fromJsonObject(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     String nextTokenSessionError = "";
-                    if(responseJson.has(NEXT_TOKEN_TAG)) {
+                    if (responseJson.has(NEXT_TOKEN_TAG)) {
                         nextTokenSessionError = responseJson.getString(NEXT_TOKEN_TAG);
                     }
                     throw new ServiceException(errorCode, nextTokenSessionError);
@@ -307,17 +306,17 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
                 responseJson = json.getJSONObject(DATA_TAG);
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     loginResponse = LoginResponse.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     String nextTokenSessionError = "";
-                    if(responseJson.has(NEXT_TOKEN_TAG)) {
+                    if (responseJson.has(NEXT_TOKEN_TAG)) {
                         nextTokenSessionError = responseJson.getString(NEXT_TOKEN_TAG);
                     }
                     throw new ServiceException(errorCode, nextTokenSessionError);
@@ -366,17 +365,17 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
                 responseJson = json.getJSONObject(DATA_TAG);
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     loginResponse = LoginResponse.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     String nextTokenSessionError = "";
-                    if(responseJson.has(NEXT_TOKEN_TAG)) {
+                    if (responseJson.has(NEXT_TOKEN_TAG)) {
                         nextTokenSessionError = responseJson.getString(NEXT_TOKEN_TAG);
                     }
                     throw new ServiceException(errorCode, nextTokenSessionError);
@@ -415,11 +414,11 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = true;
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
@@ -438,7 +437,7 @@ public class Service {
     }
 
     public static Boolean updateUserInfo(String sid, String email, String phone,
-                                         String countryId,  String birthDate) throws ServiceException {
+                                         String countryId, String birthDate) throws ServiceException {
         HttpURLConnection urlConnection = null;
         Boolean response = null;
         try {
@@ -467,11 +466,11 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = true;
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
@@ -512,11 +511,11 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = true;
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
@@ -566,11 +565,11 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = true;
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
@@ -600,11 +599,11 @@ public class Service {
             urlConnection.setDoOutput(true);
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = true;
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
@@ -623,7 +622,7 @@ public class Service {
     }
 
     public static String validateProduct(String personId, String personIdType, String productPassword,
-                                          String productCode, String productNumber) throws ServiceException {
+                                         String productCode, String productNumber) throws ServiceException {
         HttpURLConnection urlConnection = null;
         String response = null;
         try {
@@ -654,12 +653,12 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson = json.getJSONObject(DATA_TAG);
-                if(json.has("error") && !json.getBoolean("error")) {
-                    if(responseJson.has("result")) {
+                if (json.has("error") && !json.getBoolean("error")) {
+                    if (responseJson.has("result")) {
                         response = responseJson.getString("result");
                     } else {
                         if (responseJson.has(PASSWORD_TOKEN_TAG)) {
@@ -708,11 +707,11 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson = json.getJSONObject(DATA_TAG);
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     if (responseJson.has("password_token")) {
                         response = responseJson.getString("password_token");
                     }
@@ -732,7 +731,7 @@ public class Service {
     }
 
     public static LoginResponse setPassword(String personId, String personIdType, String password,
-                                     String passwordToken) throws ServiceException {
+                                            String passwordToken) throws ServiceException {
         HttpURLConnection urlConnection = null;
         LoginResponse response = null;
         try {
@@ -761,19 +760,19 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson = new JSONObject("{}");
-                if(json.has(DATA_TAG)) {
+                if (json.has(DATA_TAG)) {
                     responseJson = json.getJSONObject(DATA_TAG);
                 }
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = LoginResponse.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     String errorMessage = null;
-                    if(responseJson.has(ERROR_MESSAGE_TAG)) {
+                    if (responseJson.has(ERROR_MESSAGE_TAG)) {
                         errorMessage = responseJson.getString(ERROR_MESSAGE_TAG);
                     }
                     throw new ServiceException(errorCode, errorMessage);
@@ -790,7 +789,7 @@ public class Service {
     }
 
     public static LoginResponse setExpiredPassword(String personId, String personIdType,
-                           String oldPassword, String password, String passwordToken) throws ServiceException {
+                                                   String oldPassword, String password, String passwordToken) throws ServiceException {
         HttpURLConnection urlConnection = null;
         LoginResponse response = null;
         try {
@@ -821,19 +820,19 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson = new JSONObject("{}");
-                if(json.has(DATA_TAG)) {
+                if (json.has(DATA_TAG)) {
                     responseJson = json.getJSONObject(DATA_TAG);
                 }
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = LoginResponse.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     String errorMessage = null;
-                    if(responseJson.has(ERROR_MESSAGE_TAG)) {
+                    if (responseJson.has(ERROR_MESSAGE_TAG)) {
                         errorMessage = responseJson.getString(ERROR_MESSAGE_TAG);
                     }
                     throw new ServiceException(errorCode, errorMessage);
@@ -874,12 +873,12 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson = json.getJSONObject(DATA_TAG);
-                if(json.has("error") && !json.getBoolean("error")) {
-                    if(responseJson.has(METHOD_TAG)) {
+                if (json.has("error") && !json.getBoolean("error")) {
+                    if (responseJson.has(METHOD_TAG)) {
                         response = responseJson.getString(METHOD_TAG);
                     }
                 } else {
@@ -920,11 +919,11 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = true;
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
@@ -954,11 +953,11 @@ public class Service {
             urlConnection.setDoOutput(true);
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson = json.getJSONObject(DATA_TAG);
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = Card.fromJsonArray(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
@@ -987,11 +986,11 @@ public class Service {
             urlConnection.setDoOutput(true);
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = true;
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
@@ -1032,11 +1031,11 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = true;
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
@@ -1079,11 +1078,11 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = true;
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
@@ -1124,11 +1123,11 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = true;
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
@@ -1173,11 +1172,11 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = true;
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
@@ -1209,11 +1208,11 @@ public class Service {
             params.add(lastDigitParam);
             Pair<String, String> pageParam = new Pair("page_number", String.valueOf(page));
             params.add(pageParam);
-            if(dateFrom != null && dateFrom.length() > 0) {
+            if (dateFrom != null && dateFrom.length() > 0) {
                 Pair<String, String> dateFromParam = new Pair("date_from", dateFrom);
                 params.add(dateFromParam);
             }
-            if(dateTo != null && dateTo.length() > 0) {
+            if (dateTo != null && dateTo.length() > 0) {
                 Pair<String, String> dateToParam = new Pair("date_to", dateTo);
                 params.add(dateToParam);
             }
@@ -1223,11 +1222,11 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson = json.getJSONObject(DATA_TAG);
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = TransactionDetails.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
@@ -1250,11 +1249,11 @@ public class Service {
             urlConnection = getHttpURLConnection(sid, GET_USER);
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson = json.getJSONObject(DATA_TAG);
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     return User.fromJson(responseJson.getJSONObject("user"));
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
@@ -1268,7 +1267,7 @@ public class Service {
         return new User();
     }
 
-    public static boolean payCard(String sid, String cardLastDigits, String accountLastDigits, String amount) throws ServiceException{
+    public static boolean payCard(String sid, String cardLastDigits, String accountLastDigits, String amount) throws ServiceException {
         boolean response = false;
         HttpURLConnection urlConnection = null;
         try {
@@ -1296,11 +1295,11 @@ public class Service {
             os.close();
             urlConnection.connect();
 
-            if(isValidStatusLineCode(urlConnection.getResponseCode())) {
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
-                if(json.has("error") && !json.getBoolean("error")) {
+                if (json.has("error") && !json.getBoolean("error")) {
                     response = true;
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
@@ -1344,7 +1343,7 @@ public class Service {
             }
             result.append(URLEncoder.encode(pair.first, "UTF-8"));
             result.append("=");
-            if(pair.second == null) {
+            if (pair.second == null) {
                 result.append(URLEncoder.encode("", "UTF-8"));
             }
             result.append(URLEncoder.encode(pair.second, "UTF-8"));

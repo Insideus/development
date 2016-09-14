@@ -226,7 +226,7 @@
     <string name="card_pay_confirmation_text_1">¿Usted confirma que desea realizar el pago de su tarjeta terminada en</string>
     <string name="card_pay_confirmation_text_2">con su cuenta</string>
     <string name="card_pay_confirmation_text_3">terminada en</string>
-    <string name="card_pay_confirmation_text_4">por un valor de $</string>
+    <string name="card_pay_confirmation_text_4">por un valor de </string>
 
     <string name="load_more_button_text">CARGAR MAS MOVIMIENTOS</string>
     <string name="close_button_text">cerrar</string>

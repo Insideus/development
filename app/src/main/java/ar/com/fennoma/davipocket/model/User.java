@@ -98,13 +98,14 @@ public class User implements Parcelable {
 
     @SuppressLint("SimpleDateFormat")
     public void setLastLogin(String lastLogin) {
+        //TODO: mover esto a DateUtils
         DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
         fromFormat.setLenient(false);
-        DateFormat toFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        DateFormat toFormat = new SimpleDateFormat("dd · MMM · yyyy / hh:mm a");
         toFormat.setLenient(false);
         try {
             final Date fromDate = fromFormat.parse(lastLogin);
-            final String toDate = toFormat.format(fromDate);
+            final String toDate = toFormat.format(fromDate).toUpperCase();
             this.lastLogin = toDate;
         } catch (Exception e) {
             e.printStackTrace();

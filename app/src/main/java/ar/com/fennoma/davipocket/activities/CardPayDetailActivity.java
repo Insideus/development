@@ -24,7 +24,6 @@ import com.orhanobut.dialogplus.OnBackPressListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,6 +38,7 @@ import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.controls.ComboHolder;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
+import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
@@ -94,8 +94,8 @@ public class CardPayDetailActivity extends BaseActivity {
     private void setLayoutData() {
         totalPaymentLabel = (TextView) findViewById(R.id.total_payment_label);
         minimumPaymentLabel = (TextView) findViewById(R.id.minimum_payment_label);
-        totalPaymentLabel.setText(String.format("$%s", getCurrencyForString(detail.getTotal())));
-        minimumPaymentLabel.setText(String.format("$%s", getCurrencyForString(detail.getMinimumPayment())));
+        totalPaymentLabel.setText(String.format("$%s", CurrencyUtils.getCurrencyForString(detail.getTotal())));
+        minimumPaymentLabel.setText(String.format("$%s", CurrencyUtils.getCurrencyForString(detail.getMinimumPayment())));
         if (detail.getAccounts() != null && !detail.getAccounts().isEmpty()) {
             selectedAccount = detail.getAccounts().get(0);
             setSelectedIdAccountName();
@@ -182,7 +182,7 @@ public class CardPayDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String amount = getAmount();
-                if(!TextUtils.isEmpty(amount)) {
+                if (!TextUtils.isEmpty(amount)) {
                     Intent intent = new Intent(CardPayDetailActivity.this, CardActionDialogActivity.class);
                     intent.putExtra(CardActionDialogActivity.TITLE_KEY, "TARJETA");
                     intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, "A PAGAR");
@@ -205,9 +205,9 @@ public class CardPayDetailActivity extends BaseActivity {
     }
 
     private String getAmount() {
-        if(totalPayment.isChecked()){
+        if (totalPayment.isChecked()) {
             return totalPaymentLabel.getText().toString();
-        } else if (minimumPayment.isChecked()){
+        } else if (minimumPayment.isChecked()) {
             return minimumPaymentLabel.getText().toString();
         } else {
             String value = otherPaymentValue.getText().toString();
@@ -222,9 +222,9 @@ public class CardPayDetailActivity extends BaseActivity {
             return;
         }
         TextView balance = (TextView) findViewById(R.id.balance);
-        balance.setText("$" + transactionDetails.getAvailableAmount());
+        balance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()).toUpperCase());
         TextView paymentDate = (TextView) findViewById(R.id.payment_date);
-        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate());
+        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate().toUpperCase());
         if (date.length() > 0) {
             paymentDate.setText(date);
         } else {
@@ -277,11 +277,54 @@ public class CardPayDetailActivity extends BaseActivity {
         }
     }
 
+    private static String getAccountInfoToShow(Account account) {
+        String result = "";
+        if (!TextUtils.isEmpty(account.getName())) {
+            result = result.concat(account.getName()).concat(" ");
+        }
+        if (!TextUtils.isEmpty(account.getLastDigits())) {
+            result = result.concat(account.getLastDigits()).concat(": ");
+        } else if (!TextUtils.isEmpty(result)) {
+            result = result.concat(": ");
+        }
+        if (!TextUtils.isEmpty(account.getBalance())) {
+            result = result.concat(CurrencyUtils.getCurrencyForString(account.getBalance()));
+        }
+        return result;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PAY_REQUEST && resultCode == RESULT_OK) {
+            new PayTask(getAmount()).execute();
+        }
+        if (requestCode == ON_CLOSE_REQUEST && resultCode == RESULT_OK) {
+            setResult(RESULT_OK);
+            finish();
+        }
+    }
+
+    private String getSuccessText() {
+        String date = "";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d", Locale.getDefault());
+        Date time = Calendar.getInstance().getTime();
+        date = date.concat(simpleDateFormat.format(time)).concat(" de ");
+        simpleDateFormat = new SimpleDateFormat("MMM", Locale.getDefault());
+        date = date.concat(simpleDateFormat.format(time).concat(" de "));
+        simpleDateFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
+        date = date.concat(simpleDateFormat.format(time)).concat(" a las ");
+        simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        date = date.concat(simpleDateFormat.format(time));
+        return getString(R.string.card_pay_success_text).concat(" ").concat(date);
+    }
+
     private class ComboAdapter extends BaseAdapter {
 
         private List<Account> accounts;
 
         private Account selectedAccount;
+
         public ComboAdapter(List<Account> accounts, Account selectedAccount) {
             this.accounts = accounts;
             this.selectedAccount = selectedAccount;
@@ -330,39 +373,6 @@ public class CardPayDetailActivity extends BaseActivity {
 
     }
 
-    private String getAccountInfoToShow(Account account) {
-        String result = "";
-        if (!TextUtils.isEmpty(account.getName())) {
-            result = result.concat(account.getName()).concat(" ");
-        }
-        if (!TextUtils.isEmpty(account.getLastDigits())) {
-            result = result.concat(account.getLastDigits()).concat(" : ");
-        } else if (!TextUtils.isEmpty(result)) {
-            result = result.concat(": ");
-        }
-        if (!TextUtils.isEmpty(account.getBalance())) {
-            result = result.concat(getCurrencyForString(account.getBalance()));
-        }
-        return result;
-    }
-
-    private String getCurrencyForString(String originalString) {
-        DecimalFormat df = new DecimalFormat( "#,###,###,##0.00" );
-        return df.format(Float.valueOf(originalString));
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PAY_REQUEST && resultCode == RESULT_OK){
-            new PayTask(getAmount()).execute();
-        }
-        if(requestCode == ON_CLOSE_REQUEST && resultCode == RESULT_OK){
-            setResult(RESULT_OK);
-            finish();
-        }
-    }
-
     public class GetCardPayDetail extends AsyncTask<Void, Void, Void> {
 
         private String errorCode;
@@ -388,7 +398,7 @@ public class CardPayDetailActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             hideLoading();
             if (detail == null) {
-                //Hancdle invalid session error.
+                //Handle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
@@ -405,6 +415,7 @@ public class CardPayDetailActivity extends BaseActivity {
 
         private String errorCode;
         private String amount;
+        private boolean transactionMade;
 
         public PayTask(String amount) {
             this.amount = amount;
@@ -419,7 +430,7 @@ public class CardPayDetailActivity extends BaseActivity {
         protected Void doInBackground(Void... params) {
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                Service.payCard(sid, card.getLastDigits(), selectedAccount.getLastDigits(), amount);
+                transactionMade = Service.payCard(sid, card.getLastDigits(), selectedAccount.getLastDigits(), amount);
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 e.printStackTrace();
@@ -430,7 +441,7 @@ public class CardPayDetailActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             hideLoading();
-            if (amount == null) {
+            if (!transactionMade) {
                 //Hancdle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
@@ -443,19 +454,5 @@ public class CardPayDetailActivity extends BaseActivity {
                         getSuccessText(), ON_CLOSE_REQUEST);
             }
         }
-    }
-
-    private String getSuccessText() {
-        String date = "";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d", Locale.getDefault());
-        Date time = Calendar.getInstance().getTime();
-        date = date.concat(simpleDateFormat.format(time)).concat(" de ");
-        simpleDateFormat = new SimpleDateFormat("MMM", Locale.getDefault());
-        date = date.concat(simpleDateFormat.format(time).concat(" de "));
-        simpleDateFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
-        date = date.concat(simpleDateFormat.format(time)).concat(" a las ");
-        simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        date = date.concat(simpleDateFormat.format(time));
-        return getString(R.string.card_pay_success_text).concat(" ").concat(date);
     }
 }

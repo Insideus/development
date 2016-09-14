@@ -9,7 +9,8 @@ import java.util.Locale;
 public class DateUtils {
 
     public static final String DDMMYY_FORMAT = "dd/MM/yy";
-    public static final String DOTTED_DDMMMYY_FORMAT = "dd · MM · yy";
+    public static final String DOTTED_DDMMMYY_FORMAT = "dd · MMM · yy";
+    public static final String DOTTED_DDMMMMYY_FORMAT = "dd · MMMM · yy";
 
     public static int getYearsFromDate(Date birthday){
         return getDiffYears(birthday, Calendar.getInstance(Locale.getDefault()).getTime());
