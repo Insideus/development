@@ -13,7 +13,8 @@ public class PaymentDetail {
 
     private String minimumPayment;
     private String total;
-    private Date paymentDate;
+    private String paymentDate;
+    private String availableAmount;
     private String cardLastDigits;
     private List<Account> accounts;
 
@@ -30,16 +31,14 @@ public class PaymentDetail {
             if (json.has("minimum_payment")) {
                 detail.setMinimumPayment(json.getString("minimum_payment"));
             }
+            if(json.has("available_amount")){
+                detail.setAvailableAmount(json.getString("available_amount"));
+            }
             if (json.has("total")) {
                 detail.setTotal(json.getString("total"));
             }
             if (json.has("payment_date")) {
-                try {
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD/mm/yyyy", Locale.getDefault());
-                    detail.setPaymentDate(simpleDateFormat.parse(json.getString("payment_date")));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                    detail.setPaymentDate(json.getString("payment_date"));
             }
             if(json.has("last_digits")){
                 detail.setCardLastDigits(json.getString("last_digits"));
@@ -70,11 +69,11 @@ public class PaymentDetail {
         this.total = total;
     }
 
-    public Date getPaymentDate() {
+    public String getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(Date paymentDate) {
+    public void setPaymentDate(String paymentDate) {
         this.paymentDate = paymentDate;
     }
 
@@ -92,5 +91,13 @@ public class PaymentDetail {
 
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    public String getAvailableAmount() {
+        return availableAmount;
+    }
+
+    public void setAvailableAmount(String availableAmount) {
+        this.availableAmount = availableAmount;
     }
 }

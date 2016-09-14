@@ -109,7 +109,7 @@ public class CardPayDetailActivity extends BaseActivity {
     }
 
     private void setLayouts() {
-        setTransactionDetails();
+        setBottomLayouts();
         selectedAccountText = (TextView) findViewById(R.id.account_spinner);
         TextView cardTitle = (TextView) findViewById(R.id.card_title);
         totalPayment = (CheckBox) findViewById(R.id.total_payment);
@@ -217,18 +217,29 @@ public class CardPayDetailActivity extends BaseActivity {
         }
     }
 
-    private void setTransactionDetails() {
-        if (transactionDetails == null) {
+    private void setBottomLayouts() {
+        String paymentDay = null;
+        String availableAmount = null;
+        if(transactionDetails != null){
+            paymentDay = transactionDetails.getPaymentDate();
+            availableAmount = transactionDetails.getAvailableAmount();
+        }
+        if(detail != null && !TextUtils.isEmpty(detail.getAvailableAmount()) && !TextUtils.isEmpty(detail.getPaymentDate())){
+            paymentDay = detail.getPaymentDate();
+            availableAmount = detail.getAvailableAmount();
+        }
+        if(TextUtils.isEmpty(paymentDay) || TextUtils.isEmpty(availableAmount)){
             return;
         }
+
         TextView balance = (TextView) findViewById(R.id.balance);
-        balance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()).toUpperCase());
+        balance.setText("$" + CurrencyUtils.getCurrencyForString(availableAmount).toUpperCase());
         TextView paymentDate = (TextView) findViewById(R.id.payment_date);
-        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate()).toUpperCase();
+        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, paymentDay).toUpperCase();
         if (date.length() > 0) {
             paymentDate.setText(date);
         } else {
-            paymentDate.setText(transactionDetails.getPaymentDate());
+            paymentDate.setText(paymentDay);
         }
     }
 
@@ -407,6 +418,7 @@ public class CardPayDetailActivity extends BaseActivity {
                     showServiceGenericError();
                 }
             } else {
+                setBottomLayouts();
                 setLayoutData();
             }
         }
