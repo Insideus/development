@@ -246,7 +246,9 @@ public class CardActionDialogActivity extends BaseActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ActivateCardTask().execute(cardNumberInput.getText().toString());
+                if(cardNumberInput.getText().length() == 16) {
+                    new ActivateCardTask().execute(cardNumberInput.getText().toString());
+                }
             }
         };
     }
