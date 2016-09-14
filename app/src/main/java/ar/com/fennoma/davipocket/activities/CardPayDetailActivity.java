@@ -182,7 +182,7 @@ public class CardPayDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String amount = getAmount();
-                if (!TextUtils.isEmpty(amount)) {
+                if (validateAmount(amount)) {
                     Intent intent = new Intent(CardPayDetailActivity.this, CardActionDialogActivity.class);
                     intent.putExtra(CardActionDialogActivity.TITLE_KEY, "CONFIRMAR PAGO");
                     intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, "");
@@ -196,6 +196,27 @@ public class CardPayDetailActivity extends BaseActivity {
         });
     }
 
+    private boolean validateAmount(String amount) {
+        if(TextUtils.isEmpty(amount)){
+            showErrorDialog(getString(R.string.card_pay_empty_amount));
+            return false;
+        }
+        if(Double.valueOf(amount) == 0){
+            showErrorDialog(getString(R.string.card_pay_zero_amount));
+            return false;
+        }
+        if(Double.valueOf(amount) > Double.valueOf(selectedAccount.getBalance())){
+            showErrorDialog(getString(R.string.card_pay_insuficient_balance));
+            return false;
+        }
+        return true;
+    }
+
+    private void showErrorDialog(String error){
+        DialogUtil.toast(this, getString(R.string.generic_service_error_title), "",
+                error);
+    }
+
     private String getPayConfirmationText(String amount) {
         return getString(R.string.card_pay_confirmation_text_1).concat(" ").concat(card.getLastDigits()).concat(" ")
                 .concat(getString(R.string.card_pay_confirmation_text_2)).concat(" ").concat(selectedAccount.getName())
@@ -206,9 +227,9 @@ public class CardPayDetailActivity extends BaseActivity {
 
     private String getAmount() {
         if (totalPayment.isChecked()) {
-            return totalPaymentLabel.getText().toString();
+            return detail.getTotal();
         } else if (minimumPayment.isChecked()) {
-            return minimumPaymentLabel.getText().toString();
+            return detail.getMinimumPayment();
         } else {
             String value = otherPaymentValue.getText().toString();
             value = value.replace(priceIndicator, "");

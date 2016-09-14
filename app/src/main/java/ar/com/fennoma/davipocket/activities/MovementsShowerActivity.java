@@ -2,13 +2,9 @@ package ar.com.fennoma.davipocket.activities;
 
 import android.os.AsyncTask;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
-import ar.com.fennoma.davipocket.model.Transaction;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;

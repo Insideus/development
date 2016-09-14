@@ -241,5 +241,8 @@
     <string name="filtered_movements_middle_dot_separator">·</string>
     <string name="filtered_movements_to_date_title">Hasta</string>
     <string name="filtered_movements_filter_button">FILTRAR POR FECHAS</string>
+    <string name="card_pay_empty_amount">El importe a pagar no puede estar vacío.</string>
+    <string name="card_pay_zero_amount">El importe a pagar no puede ser cero.</string>
+    <string name="card_pay_insuficient_balance">El balance de la cuenta no es suficiente.</string>
 
 </resources>

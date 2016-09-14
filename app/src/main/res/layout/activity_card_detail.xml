@@ -25,6 +25,7 @@
             android:id="@+id/card_title"
             fontPath="fonts/MyriadPro-Regular.otf"
             android:layout_width="wrap_content"
+            android:background="@drawable/underlined_title_background"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:paddingBottom="@dimen/navigation_drawer_basic_padding"

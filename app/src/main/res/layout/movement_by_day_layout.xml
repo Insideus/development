@@ -29,6 +29,7 @@
             android:layout_gravity="center_horizontal"
             android:paddingBottom="@dimen/navigation_drawer_basic_padding"
             android:paddingTop="@dimen/navigation_drawer_basic_padding"
+            android:background="@drawable/underlined_title_background"
             android:text="oooo oooo oooo 1234"
             android:textColor="@android:color/white"
             android:textSize="@dimen/subtitle_text_size" />
@@ -151,7 +152,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/date_to_title"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/date_to_day"

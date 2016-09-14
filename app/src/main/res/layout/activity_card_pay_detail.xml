@@ -166,7 +166,7 @@
                 android:textColor="@color/input_text_color"
                 android:textSize="@dimen/common_text_size" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/other_payment_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -181,13 +181,15 @@
                     fontPath="fonts/MyriadPro-Regular.otf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/card_pay_detail_items_horizonal_margin"
+                    android:paddingLeft="@dimen/card_pay_detail_items_horizonal_margin"
+                    android:layout_centerInParent="true"
                     android:background="@android:color/transparent"
-                    android:gravity="center"
                     android:inputType="number"
                     android:textColor="@color/input_text_color"
                     android:textSize="@dimen/common_text_size" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 

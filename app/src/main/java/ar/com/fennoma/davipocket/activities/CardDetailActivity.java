@@ -6,11 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -19,13 +17,14 @@ import ar.com.fennoma.davipocket.ui.adapters.CardDetailAdapter;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
-import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class CardDetailActivity extends MovementsShowerActivity implements CardDetailAdapter.ICardDetailAdapterOwner{
 
     public static String CARD_KEY = "card_key";
+    private boolean refresh = false;
 
     private CardDetailAdapter adapter;
+    private LinearLayoutManager linearLayoutManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +70,13 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
     }
 
     protected void setDataToShow() {
-        adapter.setList(transactionDetails.getTransactions());
+        if(refresh) {
+            adapter.setList(transactionDetails.getTransactions());
+            linearLayoutManager.scrollToPosition(0);
+            refresh = false;
+        } else {
+            adapter.addToList(transactionDetails.getTransactions());
+        }
         TextView balance = (TextView) findViewById(R.id.balance);
         balance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()));
         TextView paymentDate = (TextView) findViewById(R.id.payment_date);
@@ -88,7 +93,8 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
         if (recyclerView == null) {
             return;
         }
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new CardDetailAdapter(this, this);
         recyclerView.setAdapter(adapter);
     }
@@ -97,8 +103,8 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == CardPayDetailActivity.PAY_REQUEST && resultCode == RESULT_OK){
-            //new GetCardTransactionDetailsTask().
-            //TODO: Acá tenés que hacer refresh a la data del recycler (volvela a pedir, porque cambió :D)
+            refresh = true;
+            new GetCardTransactionDetailsTask().execute();
         }
     }
 

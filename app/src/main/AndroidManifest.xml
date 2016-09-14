@@ -157,6 +157,7 @@
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 

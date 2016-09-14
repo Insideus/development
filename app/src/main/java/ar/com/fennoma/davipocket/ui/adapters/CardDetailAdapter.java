@@ -73,7 +73,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    public void setList(List<Transaction> transactions) {
+    public void addToList(List<Transaction> transactions) {
         transactions = getProcessedTransactionList(transactions);
         if (this.originalTransactions.size() > 0) {
             this.originalTransactions.remove(this.originalTransactions.size() - 1);
@@ -215,7 +215,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
         return transactions;
     }
 
-    public void replaceList(ArrayList<Transaction> transactions) {
+    public void setList(ArrayList<Transaction> transactions) {
         originalTransactions.clear();
         originalTransactions.addAll(transactions);
         transactionsBeingShowed.clear();
