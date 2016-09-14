@@ -308,9 +308,7 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void updateUserData() {
         User user = SharedPreferencesUtils.getUser();
-        //TODO: formatear la fecha
         ((TextView) findViewById(R.id.drawer_last_login)).setText(user.getLastLogin());
-        //TODO: agregar el puntito separamiles
         ((TextView) findViewById(R.id.drawer_davi_points_amount)).setText(String.format("%s", user.getPoints()));
         ((TextView) findViewById(R.id.drawer_name)).setText(user.getName());
     }
