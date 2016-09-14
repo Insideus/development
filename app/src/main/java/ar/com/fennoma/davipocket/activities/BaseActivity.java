@@ -104,11 +104,13 @@ public class BaseActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        hideLoading();
-                        loadingDialog = new Dialog(BaseActivity.this, R.style.CustomAlertDialog);
-                        loadingDialog.setContentView(R.layout.dialog_loading);
-                        loadingDialog.setCancelable(false);
-                        loadingDialog.show();
+                        if (loadingDialog == null || !loadingDialog.isShowing()) {
+                            hideLoading();
+                            loadingDialog = new Dialog(BaseActivity.this, R.style.CustomAlertDialog);
+                            loadingDialog.setContentView(R.layout.dialog_loading);
+                            loadingDialog.setCancelable(false);
+                            loadingDialog.show();
+                        }
                     }
                 });
             }

@@ -73,7 +73,7 @@ public class Service {
     private final static String ACTIVATE_CARD = "/card/activate";
     private final static String ADD_CARD = "/card/add";
     private final static String BLOCK_CARD = "/card/block";
-    private final static String SET_FAVOURITE_CARD = "/card/favourite";
+    private final static String SET_FAVOURITE_CARD = "/card/set_default";
     private final static String GET_CARD_MOVEMENTS = "/card/movements";
     private final static String GET_CARD_BALANCE = "/card/balance";
     private static final String PAY_CARD = "/card/pay";
@@ -1150,7 +1150,6 @@ public class Service {
 
     public static Boolean setFavouriteCard(String sid, String cardNumber) throws ServiceException {
         HttpURLConnection urlConnection = null;
-        /*
         Boolean response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(SET_FAVOURITE_CARD, sid);
@@ -1163,12 +1162,16 @@ public class Service {
             OutputStream os = urlConnection.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 
-            List<Pair<String, String>> params = new ArrayList<>();
-            Pair<String, String> cardNumberParam = new Pair("card_digits", cardNumber);
-            params.add(cardNumberParam);
-            writer.write(getQuery(params));
-            writer.flush();
-            writer.close();
+
+            if (cardNumber != null && !cardNumber.isEmpty()) {
+                List<Pair<String, String>> params = new ArrayList<>();
+                Pair<String, String> cardNumberParam = new Pair("last_digits", cardNumber);
+                params.add(cardNumberParam);
+                writer.write(getQuery(params));
+                writer.flush();
+                writer.close();
+            }
+
             os.close();
             urlConnection.connect();
 
@@ -1184,7 +1187,7 @@ public class Service {
                     throw new ServiceException(errorCode);
                 }
             }
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (urlConnection != null) {
@@ -1192,8 +1195,6 @@ public class Service {
             }
         }
         return response;
-        */
-        return true;
     }
 
     public static TransactionDetails getCardMovementsDetails(String sid, String lastDigits,

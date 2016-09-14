@@ -170,14 +170,14 @@ public class MyCardsActivity extends BaseActivity {
         }
 
         private void setFavouriteButtonState(ActualCardHolder holder, Card card, CardState.CardButtonsState cardButtonsState) {
-            if(cardButtonsState.favouritetButton == null) {
+            if(cardButtonsState.favouritetButton == null || !card.getEnrolled()) {
                 holder.favouriteCard.setVisibility(View.INVISIBLE);
             } else {
                 holder.favouriteCard.setVisibility(View.VISIBLE);
                 holder.favouriteCard.setImageResource(card.getDefaultCard() ? R.drawable.my_cards_favourite_card_indicator : R.drawable.my_cards_not_favourite_card);
                 holder.favouriteCard.setOnClickListener(getFavouriteOnclickListener(card));
                 if(card.getDefaultCard()) {
-                    holder.favouriteCard.setOnClickListener(null);
+                    holder.favouriteCard.setOnClickListener(getFavouriteOnclickListener(null));
                 } else {
                     holder.favouriteCard.setOnClickListener(getFavouriteOnclickListener(card));
                 }
@@ -188,7 +188,7 @@ public class MyCardsActivity extends BaseActivity {
             return new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new SetFavouriteCardTask().execute(card.getLastDigits());
+                    new SetFavouriteCardTask().execute(card != null ? card.getLastDigits() : "");
                 }
             };
         }
@@ -389,7 +389,7 @@ public class MyCardsActivity extends BaseActivity {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.setFavouriteCard(sid, params[0]);
+                response = Service.setFavouriteCard(sid, params[0].isEmpty() ? null : params[0]);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -399,7 +399,6 @@ public class MyCardsActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
-            hideLoading();
             if(response == null || !response) {
                 //Hancdle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
@@ -408,6 +407,7 @@ public class MyCardsActivity extends BaseActivity {
                 } else {
                     showServiceGenericError();
                 }
+                hideLoading();
             } else {
                 refreshCardList();
             }
