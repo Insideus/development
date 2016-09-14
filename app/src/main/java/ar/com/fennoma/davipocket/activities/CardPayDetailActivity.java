@@ -21,8 +21,12 @@ import android.widget.TextView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnBackPressListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Locale;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Account;
@@ -36,6 +40,7 @@ import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.controls.ComboHolder;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class CardPayDetailActivity extends BaseActivity {
 
@@ -434,9 +439,23 @@ public class CardPayDetailActivity extends BaseActivity {
                     showServiceGenericError();
                 }
             } else {
-                setResult(RESULT_OK);
-                finish();
+                DialogUtil.toast(CardPayDetailActivity.this, getString(R.string.card_pay_success_title), "",
+                        getSuccessText(), ON_CLOSE_REQUEST);
             }
         }
+    }
+
+    private String getSuccessText() {
+        String date = "";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d", Locale.getDefault());
+        Date time = Calendar.getInstance().getTime();
+        date = date.concat(simpleDateFormat.format(time)).concat(" de ");
+        simpleDateFormat = new SimpleDateFormat("MMM", Locale.getDefault());
+        date = date.concat(simpleDateFormat.format(time).concat(" de "));
+        simpleDateFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
+        date = date.concat(simpleDateFormat.format(time)).concat(" a las ");
+        simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        date = date.concat(simpleDateFormat.format(time));
+        return getString(R.string.card_pay_success_text).concat(" ").concat(date);
     }
 }

@@ -254,9 +254,7 @@ public class MyCardsActivity extends BaseActivity {
             //Popup para enrolar tarjeta
             Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
             intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_block_card_title));
-            intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_block_card_subtitle));
             intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_block_card_text));
-            intent.putExtra(CardActionDialogActivity.IS_CCV_DIALOG, true);
             intent.putExtra(CardActionDialogActivity.IS_BLOCK_CARD_DIALOG, true);
             intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
             startActivityForResult(intent, OPEN_ANOTHER_ACTIVITY);
