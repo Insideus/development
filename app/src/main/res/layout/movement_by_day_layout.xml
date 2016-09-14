@@ -36,10 +36,10 @@
     </FrameLayout>
 
     <ScrollView
-        android:layout_below="@id/title_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_bar">
+        android:layout_above="@+id/bottom_bar"
+        android:layout_below="@id/title_container">
 
         <LinearLayout
             android:id="@+id/date_filter"
@@ -49,9 +49,13 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:padding="10dp"
+                android:id="@+id/date_from_filter"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp">
 
                 <TextView
                     android:id="@+id/date_from_title"
@@ -67,7 +71,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/date_from_title"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/date_from_day"
@@ -120,12 +125,16 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/activity_background"/>
+                android:background="@color/activity_background" />
 
             <RelativeLayout
+                android:id="@+id/date_to_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp">
 
                 <TextView
                     android:id="@+id/date_to_title"
@@ -141,7 +150,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/date_to_title"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/date_to_day"
@@ -194,31 +204,31 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/activity_background"/>
+                android:background="@color/activity_background" />
 
             <TextView
-                android:id="@+id/accept_button"
+                android:id="@+id/filter_button"
                 fontPath="fonts/MyriadPro-Semibold.otf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="@dimen/button_without_cardview_padding"
                 android:layout_marginRight="@dimen/button_without_cardview_padding"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/red_button_background"
                 android:padding="15dp"
                 android:text="FILTRAR POR FECHAS"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
                 android:textColor="@color/login_button_text_color"
                 android:textSize="@dimen/login_input_text_size"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
-                android:background="@color/activity_background"
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@color/activity_background" />
 
         </LinearLayout>
 

@@ -3,6 +3,7 @@ package ar.com.fennoma.davipocket.service;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
+import android.text.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -1208,11 +1209,11 @@ public class Service {
             params.add(lastDigitParam);
             Pair<String, String> pageParam = new Pair("page_number", String.valueOf(page));
             params.add(pageParam);
-            if (dateFrom != null && dateFrom.length() > 0) {
+            if (!TextUtils.isEmpty(dateFrom)) {
                 Pair<String, String> dateFromParam = new Pair("date_from", dateFrom);
                 params.add(dateFromParam);
             }
-            if (dateTo != null && dateTo.length() > 0) {
+            if (!TextUtils.isEmpty(dateTo)) {
                 Pair<String, String> dateToParam = new Pair("date_to", dateTo);
                 params.add(dateToParam);
             }

@@ -23,6 +23,15 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
     public class GetCardTransactionDetailsTask extends AsyncTask<Void, Void, TransactionDetails> {
 
         String errorCode;
+        private String dateFrom = null;
+        private String dateTo = null;
+
+        public GetCardTransactionDetailsTask(){}
+
+        public GetCardTransactionDetailsTask(String dateFrom, String dateTo){
+            this.dateFrom = dateFrom;
+            this.dateTo = dateTo;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -35,7 +44,7 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
             TransactionDetails response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.getCardMovementsDetails(sid, card.getLastDigits(), curPage, "", "");
+                response = Service.getCardMovementsDetails(sid, card.getLastDigits(), curPage, dateFrom, dateTo);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
