@@ -19,7 +19,7 @@ public class DialogUtil {
 
     public static void showDatePicker(Activity activity, Calendar calendar, DatePickerDialog.OnDateSetListener listener) {
         hideKeyboard(activity);
-        new DatePickerDialog(activity, listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+        new DatePickerDialog(activity, R.style.DialogTheme,listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     public static void hideKeyboard(Activity activity){

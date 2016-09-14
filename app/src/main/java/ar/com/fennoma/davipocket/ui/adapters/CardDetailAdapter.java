@@ -49,7 +49,12 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
         this.owner = owner;
     }
 
-    public void setList(List<Transaction> transactions) {
+    public void setList(List<Transaction> transactions){
+        this.transactions = transactions;
+        notifyDataSetChanged();
+    }
+
+    public void addToList(List<Transaction> transactions) {
         if (this.transactions.size() > 0) {
             this.transactions.remove(this.transactions.size() - 1);
             if (this.transactions.get(this.transactions.size() - 1).getDate().equals(transactions.get(1).getDate())) {

@@ -174,7 +174,7 @@
     <string name="card_pay_detail_mocked_minimum_payment">$ 843.000</string>
     <string name="card_pay_detail_other_payment_title">Otro valor</string>
     <string name="card_pay_detail_payment_date_title">Fecha pago</string>
-    <string name="card_pay_detail_balance_title">Cupo disponible</string>
+    <string name="card_pay_detail_balance_title">Cupo disp.</string>
 
     <!-- New Card -->
     <string name="new_card_detail_number_hint">NÚMERO</string>
@@ -236,5 +236,10 @@
     <string name="my_cards_block_card_accept">ACEPTAR</string>
     <string name="my_cards_block_card_cancel">CANCELAR</string>
     <string name="filter_button_text">Filtro</string>
+    <string name="filtered_movements_from_date_title">Movimientos desde</string>
+    <string name="filtered_movements_dot_separator">.</string>
+    <string name="filtered_movements_middle_dot_separator">·</string>
+    <string name="filtered_movements_to_date_title">Hasta</string>
+    <string name="filtered_movements_filter_button">FILTRAR POR FECHAS</string>
 
 </resources>

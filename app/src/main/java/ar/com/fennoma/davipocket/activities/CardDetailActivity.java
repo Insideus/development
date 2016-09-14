@@ -12,10 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.List;
-
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.Transaction;
 import ar.com.fennoma.davipocket.ui.adapters.CardDetailAdapter;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
@@ -69,7 +66,7 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
     }
 
     protected void setDataToShow() {
-        adapter.setList(addManagableData(transactionDetails.getTransactions()));
+        adapter.addToList(addManagableData(transactionDetails.getTransactions()));
         TextView balance = (TextView) findViewById(R.id.balance);
         balance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()));
         TextView paymentDate = (TextView) findViewById(R.id.payment_date);

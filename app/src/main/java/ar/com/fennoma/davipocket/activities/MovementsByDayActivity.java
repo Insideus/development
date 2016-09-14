@@ -119,9 +119,9 @@ public class MovementsByDayActivity extends MovementsShowerActivity{
     protected void setDataToShow() {
         if(replaceList){
             replaceList = false;
-            //adapter.replaceList(addManagableData(transactionDetails.getTransactions()))
-        }else {
             adapter.setList(addManagableData(transactionDetails.getTransactions()));
+        }else {
+            adapter.addToList(addManagableData(transactionDetails.getTransactions()));
         }
         TextView balance = (TextView) findViewById(R.id.balance);
         balance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()));

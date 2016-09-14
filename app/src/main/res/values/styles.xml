@@ -44,4 +44,8 @@
         <item name="android:windowBackground">@color/dark_translucent</item>
     </style>
 
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/red_base_color</item>
+    </style>
+
 </resources>

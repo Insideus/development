@@ -2,6 +2,7 @@ package ar.com.fennoma.davipocket.activities;
 
 import android.os.AsyncTask;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.model.Card;
@@ -100,7 +101,9 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
 
     protected List<Transaction> addManagableData(List<Transaction> transactions) {
         if (transactions == null || transactions.size() <= 1) {
-            return null;
+            transactions = new ArrayList<>();
+            transactions.add(null);
+            return transactions;
         }
 
         transactions.add(0, null);
