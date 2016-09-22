@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    tools:ignore="MissingPrefix">
+
+    <RelativeLayout
+        android:id="@+id/date_from_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/date_from_title"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filtered_movements_from_date_title"
+            android:textAllCaps="true"
+            android:textColor="@color/combo_item_text_color" />
+
+        <LinearLayout
+            android:id="@+id/date_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/date_from_title"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/date_from_day"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_base_color" />
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:text="@string/filtered_movements_dot_separator"
+                android:textColor="@color/red_base_color" />
+
+            <TextView
+                android:id="@+id/date_from_month"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_gray_color" />
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:text="@string/filtered_movements_middle_dot_separator"
+                android:textColor="@color/text_light_gray_color" />
+
+            <TextView
+                android:id="@+id/date_from_year"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_gray_color" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/filter_drawable_right" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/activity_background" />
+
+    <RelativeLayout
+        android:id="@+id/date_to_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/date_to_title"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filtered_movements_to_date_title"
+            android:textAllCaps="true"
+            android:textColor="@color/combo_item_text_color" />
+
+        <LinearLayout
+            android:id="@+id/date_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/date_to_title"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/date_to_day"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red_base_color" />
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:text="@string/filtered_movements_dot_separator"
+                android:textColor="@color/red_base_color" />
+
+            <TextView
+                android:id="@+id/date_to_month"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_gray_color" />
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:text="@string/filtered_movements_middle_dot_separator"
+                android:textColor="@color/text_light_gray_color" />
+
+            <TextView
+                android:id="@+id/date_to_year"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_gray_color" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/filter_drawable_right" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/activity_background" />
+
+    <TextView
+        android:id="@+id/filter_button"
+        fontPath="fonts/MyriadPro-Semibold.otf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="@dimen/button_without_cardview_padding"
+        android:layout_marginRight="@dimen/button_without_cardview_padding"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/red_button_background"
+        android:padding="15dp"
+        android:text="@string/filtered_movements_filter_button"
+        android:textColor="@color/login_button_text_color"
+        android:textSize="@dimen/login_input_text_size"
+        android:textStyle="bold" />
+
+
+</LinearLayout>

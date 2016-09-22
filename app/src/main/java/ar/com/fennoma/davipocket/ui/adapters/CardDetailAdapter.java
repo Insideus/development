@@ -1,6 +1,7 @@
 package ar.com.fennoma.davipocket.ui.adapters;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -8,8 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.DavipocketApplication;
@@ -19,11 +22,13 @@ import ar.com.fennoma.davipocket.activities.CardPayDetailActivity;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.IShowableItem;
 import ar.com.fennoma.davipocket.model.Transaction;
+import ar.com.fennoma.davipocket.model.TransactionByDayBar;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
 import ar.com.fennoma.davipocket.model.TransactionPayButton;
 import ar.com.fennoma.davipocket.model.TransactionTitle;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class CardDetailAdapter extends RecyclerView.Adapter {
 
@@ -35,6 +40,8 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
     private final static int TITLE = 0;
     private final static int ITEM = 1;
     private final static int BUTTON = 2;
+    private static final int BY_DAY_BAR = 3;
+    private IByDayBarOwner barOwner;
 
     private Activity activity;
     private ArrayList<IShowableItem> originalTransactions;
@@ -47,6 +54,20 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
         originalTransactions = new ArrayList<>();
         transactionsBeingShowed = new ArrayList<>();
         this.owner = owner;
+    }
+
+    public interface IByDayBarOwner{
+        void gotDateTo(String dateTo);
+        void gotDateFrom(String dateFrom);
+        void onFilter();
+    }
+
+    public CardDetailAdapter(Activity activity, ICardDetailAdapterOwner owner, IByDayBarOwner barOwner) {
+        this.activity = activity;
+        originalTransactions = new ArrayList<>();
+        transactionsBeingShowed = new ArrayList<>();
+        this.owner = owner;
+        this.barOwner = barOwner;
     }
 
     public void executeFilter(String query) {
@@ -93,6 +114,9 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
+        if(transactionsBeingShowed.get(position).getKindOfItem() == IShowableItem.BY_DAY_BAR){
+            return BY_DAY_BAR;
+        }
         if (transactionsBeingShowed.get(position).getKindOfItem() == IShowableItem.BUTTON) {
             return BUTTON;
         }
@@ -110,6 +134,8 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
             return new TransactionHolder(activity.getLayoutInflater().inflate(R.layout.item_card_detail_transaction_item, parent, false));
         } else if (viewType == BUTTON) {
             return new PayButtonHolder(activity.getLayoutInflater().inflate(R.layout.card_detail_pay_button_item, parent, false));
+        } else if (viewType == BY_DAY_BAR){
+            return new ByDayBarHolder(activity.getLayoutInflater().inflate(R.layout.by_day_bar_item, parent, false));
         }
         return null;
     }
@@ -143,6 +169,50 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                     }
                 }
                 break;
+            }
+            case BY_DAY_BAR:{
+                if(barOwner == null){
+                    return;
+                }
+                final ByDayBarHolder holder = (ByDayBarHolder) genericHolder;
+                holder.dateFromFilter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogUtil.showDatePicker(activity, Calendar.getInstance(), new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                holder.dateFromDay.setText(String.valueOf(dayOfMonth));
+                                holder.dateFromMonth.setText(String.valueOf(monthOfYear));
+                                holder.dateFromYear.setText(String.valueOf(year));
+                                holder.dateFromContainer.setVisibility(View.VISIBLE);
+                                barOwner.gotDateFrom(String.format("%s%s%s%s%s", String.valueOf(dayOfMonth), "/", String.valueOf(monthOfYear),
+                                        "/", String.valueOf(year)));
+                            }
+                        });
+                    }
+                });
+                holder.dateToFilter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogUtil.showDatePicker(activity, Calendar.getInstance(), new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                holder.dateToDay.setText(String.valueOf(dayOfMonth));
+                                holder.dateToMonth.setText(String.valueOf(monthOfYear));
+                                holder.dateToYear.setText(String.valueOf(year));
+                                holder.dateToContainer.setVisibility(View.VISIBLE);
+                                barOwner.gotDateTo(String.format("%s%s%s%s%s", String.valueOf(dayOfMonth), "/", String.valueOf(monthOfYear),
+                                        "/", String.valueOf(year)));
+                            }
+                        });
+                    }
+                });
+                holder.filterButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        barOwner.onFilter();
+                    }
+                });
             }
             case TITLE: {
                 IShowableItem showableItem = transactionsBeingShowed.get(position + 1);
@@ -203,6 +273,9 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
     protected List<IShowableItem> getProcessedTransactionList(List<Transaction> transactions) {
         List<IShowableItem> result = new ArrayList<>();
         if (transactions == null || transactions.size() <= 1) {
+            if(barOwner != null){
+                result.add(new TransactionByDayBar());
+            }
             result.add(new TransactionPayButton());
             return result;
         }
