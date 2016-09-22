@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Transaction implements Parcelable {
+public class Transaction implements Parcelable, IShowableItem {
 
     private String date;
     private String name;
@@ -103,4 +103,8 @@ public class Transaction implements Parcelable {
         return transaction;
     }
 
+    @Override
+    public int getKindOfItem() {
+        return IShowableItem.TRANSACTION;
+    }
 }

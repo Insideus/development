@@ -120,6 +120,9 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
             Bundle bundle = new Bundle();
             bundle.putParcelable(CardDetailActivity.CARD_KEY, card);
             bundle.putParcelable(CardPayDetailActivity.TRANSACTION_DETAILS, transactionDetails);
+            bundle.putParcelableArrayList(MovementsByDayActivity.LOADED_TRANSACTIONS, adapter.getList());
+            bundle.putInt(MovementsByDayActivity.LOADED_PAGE, curPage);
+            bundle.putBoolean(MovementsByDayActivity.LOAD_MORE, loadMore);
             startActivity(new Intent(this, MovementsByDayActivity.class).putExtras(bundle));
             return true;
         }

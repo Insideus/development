@@ -8,9 +8,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by Julian Vega on 09/09/2016.
- */
 public class TransactionDetails implements Parcelable {
 
     private String availableAmount;

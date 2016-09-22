@@ -17,8 +17,11 @@ import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.activities.CardDetailActivity;
 import ar.com.fennoma.davipocket.activities.CardPayDetailActivity;
 import ar.com.fennoma.davipocket.model.Card;
+import ar.com.fennoma.davipocket.model.IShowableItem;
 import ar.com.fennoma.davipocket.model.Transaction;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
+import ar.com.fennoma.davipocket.model.TransactionPayButton;
+import ar.com.fennoma.davipocket.model.TransactionTitle;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
 
@@ -34,9 +37,9 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
     private final static int BUTTON = 2;
 
     private Activity activity;
-    private List<Transaction> originalTransactions;
+    private ArrayList<IShowableItem> originalTransactions;
     private List<Transaction> filteredTransactions;
-    private List<Transaction> transactionsBeingShowed;
+    private List<IShowableItem> transactionsBeingShowed;
     private ICardDetailAdapterOwner owner;
 
     public CardDetailAdapter(Activity activity, ICardDetailAdapterOwner owner) {
@@ -58,27 +61,28 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
             }
 
             for (int i = 0; i < originalTransactions.size(); i++) {
-                Transaction t = originalTransactions.get(i);
-                if (t != null && t.getName().toLowerCase().contains(query.toLowerCase())) {
-                    filteredTransactions.add(t);
+                IShowableItem t = originalTransactions.get(i);
+                if (t.getKindOfItem() == IShowableItem.TRANSACTION &&
+                        ((Transaction)t).getName().toLowerCase().contains(query.toLowerCase())) {
+                    filteredTransactions.add((Transaction) t);
                 }
             }
 
-            filteredTransactions = getProcessedTransactionList(filteredTransactions);
+            List<IShowableItem> filteredTransactionsToShow = getProcessedTransactionList(filteredTransactions);
             transactionsBeingShowed.clear();
             if (filteredTransactions != null) {
-                transactionsBeingShowed.addAll(filteredTransactions);
+                transactionsBeingShowed.addAll(filteredTransactionsToShow);
             }
         }
         notifyDataSetChanged();
     }
 
-    public void addToList(List<Transaction> transactions) {
-        transactions = getProcessedTransactionList(transactions);
+    public void addToList(List<Transaction> receivedTransactions) {
+        List<IShowableItem> transactions = getProcessedTransactionList(receivedTransactions);
         if (this.originalTransactions.size() > 0) {
             this.originalTransactions.remove(this.originalTransactions.size() - 1);
-            if (this.originalTransactions.get(this.originalTransactions.size() - 1).getDate().equals(transactions.get(1).getDate())) {
-                transactions.remove(0);
+            if (((Transaction)this.originalTransactions.get(this.originalTransactions.size() - 1)).getDate().equals(((Transaction)transactions.get(1)).getDate())) {
+                receivedTransactions.remove(0);
             }
         }
         this.originalTransactions.addAll(transactions);
@@ -89,14 +93,13 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (position == getItemCount() - 1) {
+        if (transactionsBeingShowed.get(position).getKindOfItem() == IShowableItem.BUTTON) {
             return BUTTON;
         }
-        Transaction transaction = transactionsBeingShowed.get(position);
-        if (transaction == null) {
-            return TITLE;
+        if(transactionsBeingShowed.get(position).getKindOfItem() == IShowableItem.TRANSACTION){
+            return ITEM;
         }
-        return ITEM;
+        return TITLE;
     }
 
     @Override
@@ -115,7 +118,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder genericHolder, int position) {
         switch (getItemViewType(position)) {
             case ITEM: {
-                Transaction transaction = transactionsBeingShowed.get(position);
+                Transaction transaction = (Transaction) transactionsBeingShowed.get(position);
                 TransactionHolder holder = (TransactionHolder) genericHolder;
                 //holder.daviPoints.setText(String.valueOf(transaction.getDavipoints()));
                 holder.price.setText(CurrencyUtils.getCurrencyForString(transaction.getPrice()));
@@ -142,9 +145,10 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                 break;
             }
             case TITLE: {
-                Transaction transaction = transactionsBeingShowed.get(position + 1);
-                if (transaction != null) {
+                IShowableItem showableItem = transactionsBeingShowed.get(position + 1);
+                if (showableItem.getKindOfItem() == IShowableItem.TRANSACTION) {
                     DateTitleHolder holder = (DateTitleHolder) genericHolder;
+                    Transaction transaction = (Transaction) showableItem;
                     holder.title.setText(DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMMYY_FORMAT, transaction.getDate()).toUpperCase());
                 }
                 break;
@@ -177,8 +181,8 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
     }
 
     private int getProperBackground(int position) {
-        boolean somethingOnTop = position > 0 && transactionsBeingShowed.get(position - 1) != null;
-        boolean somethingOnBottom = transactionsBeingShowed.get(position + 1) != null;
+        boolean somethingOnTop = position > 0 && transactionsBeingShowed.get(position - 1).getKindOfItem() == IShowableItem.TRANSACTION;
+        boolean somethingOnBottom = transactionsBeingShowed.get(position + 1).getKindOfItem() == IShowableItem.TRANSACTION;
         if (somethingOnBottom && somethingOnTop) {
             return MIDDLE_ITEM;
         }
@@ -196,25 +200,38 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
         return transactionsBeingShowed.size();
     }
 
-    protected List<Transaction> getProcessedTransactionList(List<Transaction> transactions) {
+    protected List<IShowableItem> getProcessedTransactionList(List<Transaction> transactions) {
+        List<IShowableItem> result = new ArrayList<>();
         if (transactions == null || transactions.size() <= 1) {
-            transactions = new ArrayList<>();
-            transactions.add(null);
-            return transactions;
+            result.add(new TransactionPayButton());
+            return result;
         }
+        result.addAll(transactions);
 
-        transactions.add(0, null);
+        result.add(0, new TransactionTitle());
         Transaction comparator = transactions.get(1);
         for (int i = 2; i < transactions.size(); i++) {
             Transaction transaction = transactions.get(i);
             if (!comparator.getDate().equals(transaction.getDate())) {
-                transactions.add(i, null);
+                result.add(i, new TransactionTitle());
                 i++;
             }
             comparator = transaction;
         }
-        transactions.add(null);
-        return transactions;
+        result.add(new TransactionPayButton());
+        return result;
+    }
+
+    public void justSetList(ArrayList<IShowableItem> transactions){
+        originalTransactions.clear();
+        originalTransactions.addAll(transactions);
+        transactionsBeingShowed.clear();
+        transactionsBeingShowed.addAll(transactions);
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<IShowableItem> getList(){
+        return originalTransactions;
     }
 
     public void setList(ArrayList<Transaction> transactions) {

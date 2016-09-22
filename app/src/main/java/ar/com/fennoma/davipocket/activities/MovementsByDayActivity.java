@@ -2,6 +2,8 @@ package ar.com.fennoma.davipocket.activities;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +12,11 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.IShowableItem;
 import ar.com.fennoma.davipocket.ui.adapters.CardDetailAdapter;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
@@ -21,10 +25,14 @@ import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class MovementsByDayActivity extends MovementsShowerActivity{
 
+    public static final String LOADED_TRANSACTIONS = "loaded transactions";
+    public static final String LOADED_PAGE = "loaded page";
+    public static final String LOAD_MORE = "load more";
     private CardDetailAdapter adapter;
     private String dateFrom;
     private String dateTo;
     private boolean replaceList = false;
+    private ArrayList<IShowableItem> transactions;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,15 +40,29 @@ public class MovementsByDayActivity extends MovementsShowerActivity{
         setContentView(R.layout.movement_by_day_layout);
         if(savedInstanceState != null){
             card = savedInstanceState.getParcelable(CardDetailActivity.CARD_KEY);
+            transactions = savedInstanceState.getParcelableArrayList(LOADED_TRANSACTIONS);
+            curPage = savedInstanceState.getInt(LOADED_PAGE);
+            transactionDetails = savedInstanceState.getParcelable(CardPayDetailActivity.TRANSACTION_DETAILS);
+            loadMore = savedInstanceState.getBoolean(LOAD_MORE);
         }else{
             card = getIntent().getParcelableExtra(CardDetailActivity.CARD_KEY);
+            transactions = getIntent().getParcelableArrayListExtra(LOADED_TRANSACTIONS);
+            curPage = getIntent().getIntExtra(LOADED_PAGE, -1);
+            transactionDetails = getIntent().getParcelableExtra(CardPayDetailActivity.TRANSACTION_DETAILS);
+            loadMore = getIntent().getBooleanExtra(LOAD_MORE, true);
         }
         setToolbar(R.id.toolbar_layout, true, card.getBin().getFranchise().toUpperCase());
         TextView cardTitle = (TextView) findViewById(R.id.card_title);
         cardTitle.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
         setRecycler();
         setLayouts();
-        new GetCardTransactionDetailsTask().execute();
+        setBalanceData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.justSetList(transactions);
     }
 
     private void setLayouts() {
@@ -122,6 +144,13 @@ public class MovementsByDayActivity extends MovementsShowerActivity{
             adapter.setList(transactionDetails.getTransactions());
         }else {
             adapter.addToList(transactionDetails.getTransactions());
+        }
+        setBalanceData();
+    }
+
+    private void setBalanceData(){
+        if(transactionDetails == null){
+            return;
         }
         TextView balance = (TextView) findViewById(R.id.balance);
         balance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()));
