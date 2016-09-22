@@ -188,7 +188,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                                 barOwner.gotDateFrom(String.format("%s%s%s%s%s", String.valueOf(dayOfMonth), "/", String.valueOf(monthOfYear),
                                         "/", String.valueOf(year)));
                             }
-                        });
+                        }, DialogUtil.SIX_MONTHS_AGO, DialogUtil.TODAY);
                     }
                 });
                 holder.dateToFilter.setOnClickListener(new View.OnClickListener() {
@@ -204,7 +204,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                                 barOwner.gotDateTo(String.format("%s%s%s%s%s", String.valueOf(dayOfMonth), "/", String.valueOf(monthOfYear),
                                         "/", String.valueOf(year)));
                             }
-                        });
+                        }, DialogUtil.SIX_MONTHS_AGO, DialogUtil.TODAY);
                     }
                 });
                 holder.filterButton.setOnClickListener(new View.OnClickListener() {

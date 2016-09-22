@@ -1,5 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +13,13 @@ import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.tasks.GetInitDataTask;
 import ar.com.fennoma.davipocket.tasks.TaskCallback;
+import ar.com.fennoma.davipocket.utils.ConnectionUtils;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class SplashActivity extends AppCompatActivity {
+
+    private static final int RETRY_CONNECTION_REQUEST = 1;
+    private View splashLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +29,23 @@ public class SplashActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){
             getSupportActionBar().hide();
         }
+        splashLoading = findViewById(R.id.splash_loading);
         startAnimating();
-        GetInitDataTask task = new GetInitDataTask(this, new TaskCallback() {
-            @Override
-            public void execute(Object result) {
-                goToLoginOrHome();
-            }
-        });
-        task.execute();
+        checkInternetConnection();
+    }
+
+    private void checkInternetConnection() {
+        if(ConnectionUtils.checkInternetConnection()){
+            GetInitDataTask task = new GetInitDataTask(this, new TaskCallback() {
+                @Override
+                public void execute(Object result) {
+                    goToLoginOrHome();
+                }
+            });
+            task.execute();
+        } else {
+            DialogUtil.noConnectionDialog(this, RETRY_CONNECTION_REQUEST);
+        }
     }
 
     private void goToLoginOrHome() {
@@ -57,11 +72,19 @@ public class SplashActivity extends AppCompatActivity {
         an.setRepeatMode(Animation.INFINITE);
         an.setFillAfter(false);
         an.setInterpolator(new LinearInterpolator());
-        View splashLoading = findViewById(R.id.splash_loading);
+
         if(splashLoading == null){
             return;
         }
         splashLoading.setAnimation(an);
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RETRY_CONNECTION_REQUEST){
+            checkInternetConnection();
+        }
+    }
 }

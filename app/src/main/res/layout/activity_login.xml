@@ -72,7 +72,7 @@
             android:hint="@string/id_number_hint"
             android:maxLength="@integer/id_number_max_length"
             android:imeOptions="actionNext"
-            android:inputType="text"
+            android:inputType="number"
             android:paddingLeft="@dimen/login_side_padding"
             android:paddingRight="@dimen/login_side_padding"
             android:singleLine="true"

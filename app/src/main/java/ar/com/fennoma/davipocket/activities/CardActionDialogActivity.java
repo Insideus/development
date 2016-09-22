@@ -8,13 +8,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Card;
@@ -38,6 +37,8 @@ public class CardActionDialogActivity extends BaseActivity {
     public static final String SHOW_CALL_BUTTON_KEY = "show_call_button_key";
     public static final String CALL_BUTTON_NUMBER_KEY = "call_button_number_key";
     public static final String SHOW_PAY_BUTTON_KEY = "show_pay_button_key";
+
+    public static final int RESULT_FAILED = -2;
 
     private String title;
     private String subtitle;
@@ -105,7 +106,7 @@ public class CardActionDialogActivity extends BaseActivity {
         }
         cancelButton.setOnClickListener(getCloseListener());
 
-        TextView callButton = (TextView) findViewById(R.id.call_button);
+        TextView callButton = (TextView) findViewById(R.id.button);
         TextView acceptButton = (TextView) findViewById(R.id.accept_button);
         TextView ignoreButton = (TextView) findViewById(R.id.ignore_button);
 
@@ -257,6 +258,11 @@ public class CardActionDialogActivity extends BaseActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(TextUtils.isEmpty(ccvInput.getText()) || ccvInput.getText().length() < 3){
+                    setResult(RESULT_FAILED);
+                    finish();
+                    return;
+                }
                 new AddCardTask().execute(ccvInput.getText().toString());
             }
         };
@@ -337,10 +343,12 @@ public class CardActionDialogActivity extends BaseActivity {
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
                 } else {
-                    showServiceGenericError();
+                    //showServiceGenericError();
+                    setResult(RESULT_FAILED);
+                    finish();
                 }
             } else {
-                setResult(RESULT_CANCELED);
+                setResult(RESULT_OK);
                 finish();
             }
         }
@@ -378,10 +386,12 @@ public class CardActionDialogActivity extends BaseActivity {
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
                 } else {
-                    showServiceGenericError();
+                    //showServiceGenericError();
+                    setResult(RESULT_FAILED);
+                    finish();
                 }
             } else {
-                setResult(RESULT_CANCELED);
+                setResult(RESULT_OK);
                 finish();
             }
         }
@@ -419,10 +429,12 @@ public class CardActionDialogActivity extends BaseActivity {
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
                 } else {
-                    showServiceGenericError();
+                    //showServiceGenericError();
+                    setResult(RESULT_FAILED);
+                    finish();
                 }
             } else {
-                setResult(RESULT_CANCELED);
+                setResult(RESULT_OK);
                 finish();
             }
         }

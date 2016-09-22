@@ -145,7 +145,7 @@ public class BaseActivity extends AppCompatActivity {
                 case WEB_PASSWORD_ERROR:
                     DialogUtil.toastWithCallButton(this,
                             getString(R.string.login_web_password_error_message_title),
-                            "",
+                            getString(R.string.login_web_password_error_message_subtitle),
                             getString(R.string.login_web_password_error_message_text),
                             getString(R.string.login_web_password_phone));
                     break;

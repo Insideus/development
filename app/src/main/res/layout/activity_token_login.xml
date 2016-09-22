@@ -95,7 +95,7 @@
             android:textColor="@color/login_input_text_color"
             android:textColorHint="@color/gray_text_color"
             android:textSize="@dimen/login_input_text_size"
-            android:inputType="text"
+            android:inputType="number"
             android:singleLine="true"
             android:imeOptions="actionNext"
             tools:ignore="MissingPrefix" />

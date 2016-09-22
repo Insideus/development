@@ -15,18 +15,20 @@ import ar.com.fennoma.davipocket.R;
 
 public class ToastDialogActivity extends BaseActivity {
 
-    public static String TITLE_KEY = "toast_title_key";
-    public static String SUBTITLE_KEY = "toast_subtitle_key";
-    public static String TEXT_KEY = "toast_text_key";
-    public static String INVALID_SESSION_KEY = "invalid_session_key";
-    public static String SHOW_CALL_BUTTON_KEY = "show_call_button_key";
-    public static String CALL_BUTTON_NUMBER_KEY = "call_button_number_key";
+    public static final String SHOW_RETRY_CONNECTION_BUTTON = "retry connection button";
+    public static final String TITLE_KEY = "toast_title_key";
+    public static final String SUBTITLE_KEY = "toast_subtitle_key";
+    public static final String TEXT_KEY = "toast_text_key";
+    public static final String INVALID_SESSION_KEY = "invalid_session_key";
+    public static final String SHOW_CALL_BUTTON_KEY = "show_call_button_key";
+    public static final String CALL_BUTTON_NUMBER_KEY = "call_button_number_key";
 
     private String title;
     private String subtitle;
     private String text;
     private Boolean invalidSessionToast;
     private Boolean showCallButton;
+    private Boolean showRetryButton;
     private String callNumber;
 
     @Override
@@ -39,6 +41,7 @@ public class ToastDialogActivity extends BaseActivity {
             text = savedInstanceState.getString(TEXT_KEY, "");
             invalidSessionToast = savedInstanceState.getBoolean(INVALID_SESSION_KEY, false);
             showCallButton = savedInstanceState.getBoolean(SHOW_CALL_BUTTON_KEY, false);
+            showRetryButton = savedInstanceState.getBoolean(SHOW_RETRY_CONNECTION_BUTTON, false);
             callNumber = savedInstanceState.getString(CALL_BUTTON_NUMBER_KEY, "");
         } else {
             title = getIntent().getStringExtra(TITLE_KEY);
@@ -47,6 +50,7 @@ public class ToastDialogActivity extends BaseActivity {
             invalidSessionToast = getIntent().getBooleanExtra(INVALID_SESSION_KEY, false);
             showCallButton = getIntent().getBooleanExtra(SHOW_CALL_BUTTON_KEY, false);
             callNumber = getIntent().getStringExtra(CALL_BUTTON_NUMBER_KEY);
+            showRetryButton = getIntent().getBooleanExtra(SHOW_RETRY_CONNECTION_BUTTON, false);
         }
         setLayouts();
         animateOpening();
@@ -89,22 +93,13 @@ public class ToastDialogActivity extends BaseActivity {
             }
         });
 
-        TextView callButton = (TextView) findViewById(R.id.call_button);
+        TextView button = (TextView) findViewById(R.id.button);
         if(showCallButton) {
-            checkCallPermissions();
-            callButton.setVisibility(LinearLayout.VISIBLE);
-            callButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (ActivityCompat.checkSelfPermission(ToastDialogActivity.this,
-                            android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        return;
-                    }
-                    startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel: " + callNumber)));
-                }
-            });
-        } else {
-            callButton.setVisibility(LinearLayout.GONE);
+            setCallButtonLayouts(button);
+        }
+
+        if(showRetryButton){
+            setRetryLayouts(button);
         }
 
         TextView titleTv = (TextView) findViewById(R.id.toast_title);
@@ -125,6 +120,35 @@ public class ToastDialogActivity extends BaseActivity {
         } else {
             textTv.setVisibility(LinearLayout.GONE);
         }
+    }
+
+    private void setRetryLayouts(TextView retryButton) {
+        retryButton.setText(getString(R.string.no_connection_dialog_retry_button));
+        retryButton.setVisibility(LinearLayout.VISIBLE);
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                finish();
+                overridePendingTransition(R.anim.fade_out_anim, R.anim.fade_in_anim);
+            }
+        });
+    }
+
+    private void setCallButtonLayouts(TextView callButton) {
+        checkCallPermissions();
+        callButton.setText(getString(R.string.call_button_text));
+        callButton.setVisibility(LinearLayout.VISIBLE);
+        callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(ToastDialogActivity.this,
+                        android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel: " + callNumber)));
+            }
+        });
     }
 
     @Override

@@ -81,7 +81,7 @@
             android:inputType="numberPassword"
             android:singleLine="true"
             android:gravity="center"
-            android:maxLength="4"
+            android:maxLength="3"
             android:textColor="@color/red_base_color"
             android:textSize="@dimen/number_code_text_size" />
 
@@ -118,7 +118,7 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/call_button"
+            android:id="@+id/button"
             fontPath="fonts/MyriadPro-Semibold.otf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

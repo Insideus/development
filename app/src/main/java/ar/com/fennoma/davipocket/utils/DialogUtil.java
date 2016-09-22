@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -12,14 +13,39 @@ import java.util.Calendar;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.activities.CardPayDetailActivity;
 import ar.com.fennoma.davipocket.activities.ToastDialogActivity;
 
 public class DialogUtil {
 
-    public static void showDatePicker(Activity activity, Calendar calendar, DatePickerDialog.OnDateSetListener listener) {
+    public static final String SIX_MONTHS_AGO = "six months ago";
+    public static final String FOURTEEN_YEARS_AGO = "14 years ago";
+    public static final String TODAY = "today";
+
+    public static void showDatePicker(Activity activity, Calendar calendar, DatePickerDialog.OnDateSetListener listener, String fromDate, String toDate) {
         hideKeyboard(activity);
-        new DatePickerDialog(activity, R.style.DialogTheme,listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(activity, R.style.DialogTheme, listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        if(!TextUtils.isEmpty(fromDate)) {
+            datePickerDialog.getDatePicker().setMinDate(getLongFromDate(fromDate));
+        }
+        if(!TextUtils.isEmpty(toDate)){
+            datePickerDialog.getDatePicker().setMaxDate(getLongFromDate(toDate));
+        }
+        datePickerDialog.setTitle("");
+        datePickerDialog.show();
+    }
+
+    private static long getLongFromDate(String date) {
+        Calendar calendar = Calendar.getInstance();
+        if(date.equals(SIX_MONTHS_AGO)){
+            calendar.add(Calendar.MONTH, -6);
+            return calendar.getTimeInMillis();
+        } else if(date.equals(FOURTEEN_YEARS_AGO)){
+            calendar.add(Calendar.YEAR, -14);
+            return calendar.getTimeInMillis();
+        } else if(date.equals(TODAY)){
+            return calendar.getTimeInMillis();
+        }
+        return 0;
     }
 
     public static void hideKeyboard(Activity activity){
@@ -40,6 +66,15 @@ public class DialogUtil {
         intent.putExtra(ToastDialogActivity.SUBTITLE_KEY, subtitle);
         intent.putExtra(ToastDialogActivity.TEXT_KEY, text);
         activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
+
+    public static void toastWithResult(Activity activity, int request, String title, String subtitle, String text){
+        Intent intent = new Intent(activity, ToastDialogActivity.class);
+        intent.putExtra(ToastDialogActivity.TITLE_KEY, title);
+        intent.putExtra(ToastDialogActivity.SUBTITLE_KEY, subtitle);
+        intent.putExtra(ToastDialogActivity.TEXT_KEY, text);
+        activity.startActivityForResult(intent, request);
         activity.overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
@@ -99,6 +134,16 @@ public class DialogUtil {
         intent.putExtra(ToastDialogActivity.TITLE_KEY, title);
         intent.putExtra(ToastDialogActivity.SUBTITLE_KEY, subtitle);
         intent.putExtra(ToastDialogActivity.TEXT_KEY, text);
+        activity.startActivityForResult(intent, request);
+        activity.overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
+
+    public static void noConnectionDialog(Activity activity, int request) {
+        Intent intent = new Intent(activity, ToastDialogActivity.class);
+        intent.putExtra(ToastDialogActivity.TITLE_KEY, activity.getString(R.string.no_connection_dialog_title));
+        intent.putExtra(ToastDialogActivity.SUBTITLE_KEY, activity.getString(R.string.no_connection_dialog_subtitle));
+        intent.putExtra(ToastDialogActivity.TEXT_KEY, activity.getString(R.string.no_connection_dialog_text));
+        intent.putExtra(ToastDialogActivity.SHOW_RETRY_CONNECTION_BUTTON, true);
         activity.startActivityForResult(intent, request);
         activity.overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }

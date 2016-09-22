@@ -484,7 +484,8 @@ public class CardPayDetailActivity extends BaseActivity {
                     showServiceGenericError();
                 }
             } else {
-                DialogUtil.toast(CardPayDetailActivity.this, getString(R.string.card_pay_success_title), "",
+                DialogUtil.toast(CardPayDetailActivity.this, getString(R.string.card_pay_success_title),
+                        getString(R.string.card_pay_success_subtitle),
                         getSuccessText(), ON_CLOSE_REQUEST);
             }
         }

@@ -74,7 +74,7 @@ public class LoginActivity extends LoginBaseActivity {
             @Override
             public void onClick(View v) {
                 showHelpDialog(getString(R.string.login_help_dialog_title),
-                        "",
+                        getString(R.string.login_help_dialog_subtitle),
                         getString(R.string.login_help_dialog_text));
             }
         });

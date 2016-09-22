@@ -98,7 +98,7 @@ public class LoginConfirmationActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 DialogUtil.showDatePicker(LoginConfirmationActivity.this, calendar,
-                        new DatePickerListener(birthday, calendar));
+                        new DatePickerListener(birthday, calendar), null, DialogUtil.FOURTEEN_YEARS_AGO);
             }
         });
         birthday.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -106,7 +106,7 @@ public class LoginConfirmationActivity extends BaseActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     DialogUtil.showDatePicker(LoginConfirmationActivity.this, calendar,
-                            new DatePickerListener(birthday, calendar));
+                            new DatePickerListener(birthday, calendar), null, DialogUtil.FOURTEEN_YEARS_AGO);
                 }
             }
         });

@@ -47,9 +47,7 @@ public class LoginBaseActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(dialogPlus != null && dialogPlus.isShowing()) {
-
-        } else {
+        if (dialogPlus == null || !dialogPlus.isShowing()) {
             super.onBackPressed();
         }
     }

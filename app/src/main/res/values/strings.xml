@@ -41,7 +41,8 @@
     <string name="accept_button_text">ACEPTAR</string>
     <string name="cancel_button_text">CANCELAR</string>
 
-    <string name="login_help_dialog_title">CLAVE VIRTUAL</string>
+    <string name="login_help_dialog_title">CLAVE</string>
+    <string name="login_help_dialog_subtitle">VIRTUAL</string>
     <string name="login_help_dialog_text">Si no tiene clave asignada, deje el campo clave virtual o clave personal en blanco.</string>
 
     <!-- Account Activation Activity -->
@@ -70,9 +71,9 @@
     <string name="change_password_step_1_id_type_hint">TIPO DE IDENTIFICACIÓN</string>
     <string name="change_password_step_1_id_hint">NÚMERO DE IDENTIFICACIÓN</string>
     <string name="change_password_step_1_empty_id_number_error">Debe ingresar su número de identificación</string>
-    <string name="change_password_step_2_debit_card_last_numbers">4 ÚLTIMOS DÍGITOS DE SU TARJETA DE DÉBITO</string>
+    <string name="change_password_step_2_debit_card_last_numbers">4 ÚLT. DÍGITOS DE SU TARJETA DE DÉBITO</string>
     <string name="change_password_step_2_atm_password">CLAVE DE CAJERO AUTOMÁTICO</string>
-    <string name="change_password_step_2_bank_product_number">4 ÚLTIMOS DIGITOS DE SU PRODUCTO</string>
+    <string name="change_password_step_2_bank_product_number">4 ÚLT. DÍGITOS DE SU PRODUCTO</string>
     <string name="change_password_step_2_empty_card_digits_error">Debe ingresar los 4 últimos dígitos de su tarjeta</string>
     <string name="change_password_step_2_empty_bank_product_error">Debe seleccionar un producto</string>
     <string name="change_password_step_2_empty_bank_product_number_error">Debe ingresar el número de producto</string>
@@ -108,7 +109,7 @@
     <string name="help_dialog_activity_text">Usted debe asignar una nueva clave de 4 a 8 dígitos numéricos, que no sean repetidos ni consecutivos.</string>
 
     <string name="input_data_error_generic_title">ERROR</string>
-    <string name="input_data_error_generic_subtitle">Por favor, verifique los datos ingresados.</string>
+    <string name="input_data_error_generic_subtitle">EN DATOS INGRESADOS</string>
     <string name="person_id_type_error_text">Debe seleccionar un tipo de documento.</string>
     <string name="person_in_number_error_text">Debe ingresar su número de documento.</string>
     <string name="virtual_password_error_text">Debe ingresar su clave virtual o segunda clave.</string>
@@ -119,7 +120,8 @@
 
     <string name="login_error_message_title">ERROR</string>
     <string name="login_error_message_text">Acceso denegado, verifique los datos ingresados.</string>
-    <string name="login_web_password_error_message_title">CLAVE WEB</string>
+    <string name="login_web_password_error_message_title">CLAVE</string>
+    <string name="login_web_password_error_message_subtitle">WEB</string>
     <string name="login_web_password_error_message_text">Para poder acceder a la APP usted debe activar su clave virtual a través del Call Center. Puede comunicarse seleccionando la siguiente opción:</string>
     <string name="login_web_password_phone">+5713383838</string>
     <string name="help_dialog_generic_title">AYUDA</string>
@@ -133,7 +135,7 @@
     <string name="rate_app_dialog_rate_button">VALORAR DAVIPOCKET</string>
 
     <string name="invalid_session_title">ERROR</string>
-    <string name="invalid_session_subtitle">Su sesión es inválida.</string>
+    <string name="invalid_session_subtitle">SESIÓN INVÁLIDA</string>
     <string name="invalid_session_text">Por favor ingrese sus credenciales para continuar operando.</string>
     <string name="set_virtual_password_error_text">Debe asignar una clave virtual para acceder.</string>
     <string name="expired_password_error_message">Su clave virtual ha expirado.</string>
@@ -231,7 +233,8 @@
     <string name="load_more_button_text">CARGAR MAS MOVIMIENTOS</string>
     <string name="close_button_text">cerrar</string>
     <string name="tour_title">TOUR</string>
-    <string name="card_pay_success_title">PAGO REALIZADO</string>
+    <string name="card_pay_success_title">PAGO</string>
+    <string name="card_pay_success_subtitle">REALIZADO</string>
     <string name="card_pay_success_text">Su pago fue realizado con éxito el día</string>
     <string name="my_cards_block_card_accept">ACEPTAR</string>
     <string name="my_cards_block_card_cancel">CANCELAR</string>
@@ -244,5 +247,17 @@
     <string name="card_pay_empty_amount">El importe a pagar no puede estar vacío.</string>
     <string name="card_pay_zero_amount">El importe a pagar no puede ser cero.</string>
     <string name="card_pay_insuficient_balance">El balance de la cuenta no es suficiente.</string>
+    <string name="my_cards_failed_opperation_message_title">ERROR</string>
+    <string name="my_cards_failed_opperation_message">Se produjo un error durante la operación. Intente nuevamente más tarde.</string>
+    <string name="my_cards_opperation_success_message_title">OPERACIÓN</string>
+    <string name="my_cards_opperation_success_message_subtitle">EXITOSA</string>
+    <string name="my_cards_opperation_success_message">La operación fue realizada con éxito.</string>
+    <string name="login_token_next_token_title">SIGUIENTE</string>
+    <string name="login_token_next_token_subtitle">TOKEN</string>
+    <string name="login_token_next_token_text">Se requiere hacer una validación extra en este login.</string>
+    <string name="no_connection_dialog_title">NO SE ENCONTRÓ</string>
+    <string name="no_connection_dialog_subtitle">CONEXIÓN</string>
+    <string name="no_connection_dialog_text">No se encontró conexión a internet. Pruebe nuevamente.</string>
+    <string name="no_connection_dialog_retry_button">REINTENTAR</string>
 
 </resources>

@@ -28,12 +28,14 @@ import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 
 public class MyCardsActivity extends BaseActivity {
 
-    private static final int OPEN_ANOTHER_ACTIVITY = 11;
+    private static final int EXPLAINING_DIALOG = 11;
+    private static final int OPERATION_RESULT = 12;
     private CardsAdapter cardsAdapter;
     private boolean refresh = false;
 
@@ -69,7 +71,7 @@ public class MyCardsActivity extends BaseActivity {
         intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_activate_card_subtitle));
         intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_activate_card_text));
         intent.putExtra(CardActionDialogActivity.IS_CARD_NUMBER_DIALOG, true);
-        startActivityForResult(intent, OPEN_ANOTHER_ACTIVITY);
+        startActivityForResult(intent, OPERATION_RESULT);
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
@@ -80,7 +82,7 @@ public class MyCardsActivity extends BaseActivity {
         intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_enrole_card_text));
         intent.putExtra(CardActionDialogActivity.IS_CCV_DIALOG, true);
         intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
-        startActivityForResult(intent, OPEN_ANOTHER_ACTIVITY);
+        startActivityForResult(intent, OPERATION_RESULT);
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
@@ -91,7 +93,7 @@ public class MyCardsActivity extends BaseActivity {
         intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_blocked_call__card_text));
         intent.putExtra(CardActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
         intent.putExtra(CardActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.login_web_password_phone));
-        startActivityForResult(intent, OPEN_ANOTHER_ACTIVITY);
+        startActivityForResult(intent, OPERATION_RESULT);
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
@@ -102,8 +104,20 @@ public class MyCardsActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == OPEN_ANOTHER_ACTIVITY) {
-            refresh = resultCode != RESULT_CANCELED;
+        if(requestCode == OPERATION_RESULT) {
+            if(resultCode == RESULT_OK) {
+                DialogUtil.toastWithResult(this, EXPLAINING_DIALOG, getString(R.string.my_cards_opperation_success_message_title),
+                        getString(R.string.my_cards_opperation_success_message_subtitle),
+                        getString(R.string.my_cards_opperation_success_message));
+                refresh = true;
+            } else if(resultCode == CardActionDialogActivity.RESULT_FAILED){
+                DialogUtil.toastWithResult(this, EXPLAINING_DIALOG,
+                        getString(R.string.my_cards_failed_opperation_message_title), "",
+                        getString(R.string.my_cards_failed_opperation_message));
+                refresh = false;
+            }
+        } else if (requestCode == EXPLAINING_DIALOG) {
+            refresh = false;
         }
     }
 
@@ -282,7 +296,7 @@ public class MyCardsActivity extends BaseActivity {
             intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_block_card_text));
             intent.putExtra(CardActionDialogActivity.IS_BLOCK_CARD_DIALOG, true);
             intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
-            startActivityForResult(intent, OPEN_ANOTHER_ACTIVITY);
+            startActivityForResult(intent, EXPLAINING_DIALOG);
             overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         }
 
@@ -303,7 +317,7 @@ public class MyCardsActivity extends BaseActivity {
                         }
                         intent.putExtra(CardActionDialogActivity.SHOW_PAY_BUTTON_KEY, true);
                         intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
-                        startActivityForResult(intent, OPEN_ANOTHER_ACTIVITY);
+                        startActivityForResult(intent, EXPLAINING_DIALOG);
                         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
                         return;
                     }
@@ -314,7 +328,7 @@ public class MyCardsActivity extends BaseActivity {
                         intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_blocked_call__card_text));
                         intent.putExtra(CardActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
                         intent.putExtra(CardActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.my_cards_blocked_call__phone));
-                        startActivityForResult(intent, OPEN_ANOTHER_ACTIVITY);
+                        startActivityForResult(intent, EXPLAINING_DIALOG);
                         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
                         return;
                     }
