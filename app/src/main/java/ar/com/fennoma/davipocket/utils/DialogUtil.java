@@ -145,6 +145,6 @@ public class DialogUtil {
         intent.putExtra(ToastDialogActivity.TEXT_KEY, activity.getString(R.string.no_connection_dialog_text));
         intent.putExtra(ToastDialogActivity.SHOW_RETRY_CONNECTION_BUTTON, true);
         activity.startActivityForResult(intent, request);
-        activity.overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+        activity.overridePendingTransition(0, 0);
     }
 }

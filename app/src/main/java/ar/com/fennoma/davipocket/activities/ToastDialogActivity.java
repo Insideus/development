@@ -130,7 +130,7 @@ public class ToastDialogActivity extends BaseActivity {
             public void onClick(View v) {
                 setResult(RESULT_OK);
                 finish();
-                overridePendingTransition(R.anim.fade_out_anim, R.anim.fade_in_anim);
+                overridePendingTransition(0, 0);
             }
         });
     }
