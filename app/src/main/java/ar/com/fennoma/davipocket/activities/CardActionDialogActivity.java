@@ -24,6 +24,8 @@ import ar.com.fennoma.davipocket.session.Session;
 
 public class CardActionDialogActivity extends BaseActivity {
 
+    public static final String ERROR_MESSAGE = "error message";
+
     public static final String TITLE_KEY = "toast_title_key";
     public static final String SUBTITLE_KEY = "toast_subtitle_key";
     public static final String TEXT_KEY = "toast_text_key";
@@ -247,9 +249,14 @@ public class CardActionDialogActivity extends BaseActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(cardNumberInput.getText().length() == 16) {
-                    new ActivateCardTask().execute(cardNumberInput.getText().toString());
+                if (cardNumberInput.getText().length() != 16) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(ERROR_MESSAGE, getString(R.string.card_action_not_valid_card_number_error));
+                    setResult(RESULT_FAILED, new Intent().putExtras(bundle));
+                    finish();
+                    return;
                 }
+                new ActivateCardTask().execute(cardNumberInput.getText().toString());
             }
         };
     }
@@ -258,8 +265,10 @@ public class CardActionDialogActivity extends BaseActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(ccvInput.getText()) || ccvInput.getText().length() < 3){
-                    setResult(RESULT_FAILED);
+                if (TextUtils.isEmpty(ccvInput.getText()) || ccvInput.getText().length() < 3) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(ERROR_MESSAGE, getString(R.string.card_action_not_valid_ccv_error));
+                    setResult(RESULT_FAILED, new Intent().putExtras(bundle));
                     finish();
                     return;
                 }

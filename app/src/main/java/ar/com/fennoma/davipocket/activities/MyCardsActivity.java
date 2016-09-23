@@ -111,9 +111,15 @@ public class MyCardsActivity extends BaseActivity {
                         getString(R.string.my_cards_opperation_success_message));
                 refresh = true;
             } else if(resultCode == CardActionDialogActivity.RESULT_FAILED){
+                String errorText;
+                if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.ERROR_MESSAGE))){
+                    errorText = data.getStringExtra(CardActionDialogActivity.ERROR_MESSAGE);
+                }else{
+                    errorText = getString(R.string.my_cards_failed_opperation_message);
+                }
                 DialogUtil.toastWithResult(this, EXPLAINING_DIALOG,
                         getString(R.string.my_cards_failed_opperation_message_title), "",
-                        getString(R.string.my_cards_failed_opperation_message));
+                        errorText);
                 refresh = false;
             }
         } else if (requestCode == EXPLAINING_DIALOG) {
@@ -166,14 +172,6 @@ public class MyCardsActivity extends BaseActivity {
                 ButtonCard buttonCard = (ButtonCard) cards.get(position);
                 ButtonCardHolder holder = (ButtonCardHolder) genericHolder;
                 holder.cardButton.setImageResource(buttonCard.getImageResource());
-                /*if(buttonCard.getType() == ButtonCard.eCard){
-                    holder.cardButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            DialogUtil.toast(MyCardsActivity.this, "No implementado aún");
-                        }
-                    });
-                }*/
                 if (buttonCard.getType() == ButtonCard.portfolioCard) {
                     holder.cardButton.setOnClickListener(new View.OnClickListener() {
                         @Override

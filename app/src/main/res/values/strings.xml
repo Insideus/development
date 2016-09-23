@@ -205,8 +205,8 @@
     <string name="my_cards_block_card_subtitle">Ingrese el CCV</string>
     <string name="my_cards_block_card_text">¿Está seguro que desea bloquear esta tarjeta?</string>
 
-    <string name="my_cards_activate_card_title">ACTIVAR TARJETA</string>
-    <string name="my_cards_activate_card_subtitle">Ingrese el número de su tarjeta</string>
+    <string name="my_cards_activate_card_title">ACTIVAR</string>
+    <string name="my_cards_activate_card_subtitle">TARJETA</string>
     <string name="my_cards_activate_card_text">Ingrese el número completo de su tarjeta tal como figura en el plástico.</string>
 
     <string name="my_cards_blocked_call_card_title">TARJETA BLOQUEADA</string>
@@ -259,5 +259,7 @@
     <string name="no_connection_dialog_subtitle">CONEXIÓN</string>
     <string name="no_connection_dialog_text">No se encontró conexión a internet. Pruebe nuevamente.</string>
     <string name="no_connection_dialog_retry_button">REINTENTAR</string>
+    <string name="card_action_not_valid_ccv_error">El CCV ingresado no es válido.</string>
+    <string name="card_action_not_valid_card_number_error">El número de la tarjeta de crédito no es válido.</string>
 
 </resources>
