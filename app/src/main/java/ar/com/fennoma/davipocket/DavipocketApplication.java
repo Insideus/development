@@ -9,6 +9,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.splunk.mint.Mint;
 
+import net.easysol.dsb.DSB;
+
+import ar.com.fennoma.davipocket.constants.Constants;
+
 /**
  * Created by Julian Vega on 06/07/2016.
  */
@@ -23,11 +27,9 @@ public class DavipocketApplication extends MultiDexApplication {
         initFacebookSdk();
         Mint.initAndStartSession(this, "3cef664b");
         initImageLoader();
+        initEasySolution();
+        initEasySolutionMalwareProtection();
         instance = this;
-    }
-
-    public static DavipocketApplication getInstance(){
-        return instance;
     }
 
     private void initFacebookSdk() {
@@ -47,6 +49,18 @@ public class DavipocketApplication extends MultiDexApplication {
                 .build();
         imageManager = ImageLoader.getInstance();
         imageManager.init(config);
+    }
+
+    private void initEasySolution() {
+        DSB.sdk(this).init(Constants.EASY_SOLUTIONS_DESARROLLO_LICENCIA);
+    }
+
+    private void initEasySolutionMalwareProtection() {
+        DSB.sdk(this).MALWARE_PROTECTOR_API.startOverlappingProtection(this);
+    }
+
+    public static DavipocketApplication getInstance(){
+        return instance;
     }
 
     public static ImageLoader getImageManager() {
