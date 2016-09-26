@@ -14,8 +14,6 @@ import ar.com.fennoma.davipocket.tasks.GetInitDataTask;
 import ar.com.fennoma.davipocket.tasks.TaskCallback;
 import ar.com.fennoma.davipocket.utils.ConnectionUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
-import ar.com.fennoma.davipocket.utils.EasySolutionsUtils;
-import ar.com.fennoma.davipocket.utils.MobileSdkUtils;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -33,10 +31,10 @@ public class SplashActivity extends AppCompatActivity {
         splashLoading = findViewById(R.id.splash_loading);
         startAnimating();
         checkInternetConnection();
-        String deviceId = EasySolutionsUtils.getDeviceId(this);
-        EasySolutionsUtils.scanDeviceStatus(this);
-        EasySolutionsUtils.scanDeviceHosts(this);
-        MobileSdkUtils.initMobileSdk(this);
+        //String deviceId = EasySolutionsUtils.getDeviceId(this);
+        //EasySolutionsUtils.scanDeviceStatus(this);
+        //EasySolutionsUtils.scanDeviceHosts(this);
+        //MobileSdkUtils.initMobileSdk(this);
     }
 
     private void checkInternetConnection() {

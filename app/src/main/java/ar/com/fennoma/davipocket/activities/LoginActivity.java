@@ -19,10 +19,6 @@ import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class LoginActivity extends LoginBaseActivity {
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     private GoogleApiClient client;
 
     @Override
@@ -34,8 +30,6 @@ public class LoginActivity extends LoginBaseActivity {
             getSupportActionBar().hide();
         }
         setActionToButtons();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 

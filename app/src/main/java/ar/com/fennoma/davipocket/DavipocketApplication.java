@@ -27,8 +27,8 @@ public class DavipocketApplication extends MultiDexApplication {
         initFacebookSdk();
         Mint.initAndStartSession(this, "3cef664b");
         initImageLoader();
-        initEasySolution();
-        initEasySolutionMalwareProtection();
+        //initEasySolution();
+        //initEasySolutionMalwareProtection();
         instance = this;
     }
 

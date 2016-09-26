@@ -254,7 +254,7 @@
     <string name="my_cards_opperation_success_message">La operación fue realizada con éxito.</string>
     <string name="login_token_next_token_title">SIGUIENTE</string>
     <string name="login_token_next_token_subtitle">TOKEN</string>
-    <string name="login_token_next_token_text">Se requiere hacer una validación extra en este login.</string>
+    <string name="login_token_next_token_text">Debe ingresar un nuevo token para ingresar.</string>
     <string name="no_connection_dialog_title">NO SE ENCONTRÓ</string>
     <string name="no_connection_dialog_subtitle">CONEXIÓN</string>
     <string name="no_connection_dialog_text">No se encontró conexión a internet. Pruebe nuevamente.</string>

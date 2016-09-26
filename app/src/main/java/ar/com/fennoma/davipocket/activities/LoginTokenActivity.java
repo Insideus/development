@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
@@ -51,6 +50,12 @@ public class LoginTokenActivity extends LoginBaseActivity {
             nextTokenSession = getIntent().getStringExtra(NEXT_TOKEN_KEY);
         }
         setActionsToButtons();
+        if(nextToken) {
+            DialogUtil.toast(LoginTokenActivity.this,
+                    getString(R.string.login_token_next_token_title),
+                    getString(R.string.login_token_next_token_subtitle),
+                    getString(R.string.login_token_next_token_text));
+        }
     }
 
     @Override
@@ -80,11 +85,7 @@ public class LoginTokenActivity extends LoginBaseActivity {
                 if(nextToken == null || !nextToken) {
                     doLogin();
                 } else {
-                    DialogUtil.toastWithResult(LoginTokenActivity.this,
-                            NEXT_TOKEN_REQUEST,
-                            getString(R.string.login_token_next_token_title),
-                            getString(R.string.login_token_next_token_subtitle),
-                            getString(R.string.login_token_next_token_text));
+                    doNextTokenLogin();
                 }
             }
         });
@@ -157,11 +158,4 @@ public class LoginTokenActivity extends LoginBaseActivity {
         return errors;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == NEXT_TOKEN_REQUEST){
-            doNextTokenLogin();
-        }
-    }
 }
