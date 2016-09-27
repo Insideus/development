@@ -71,6 +71,7 @@ public class MovementsByDayActivity extends MovementsShowerActivity implements C
 
     @Override
     protected void setDataToShow() {
+        adapter.setShowPayButton(transactionDetails.isShowPayButton());
         if(replaceList){
             replaceList = false;
             adapter.setList(transactionDetails.getTransactions());

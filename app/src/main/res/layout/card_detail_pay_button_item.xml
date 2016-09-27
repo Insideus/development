@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/button_without_cardview_padding"
     android:orientation="vertical"
     tools:ignore="MissingPrefix">
 
@@ -13,9 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:layout_marginLeft="@dimen/button_without_cardview_padding"
-        android:layout_marginRight="@dimen/button_without_cardview_padding"
-        android:layout_marginTop="@dimen/login_input_margin_top"
+        android:layout_margin="@dimen/button_without_cardview_padding"
         android:background="@drawable/white_center_red_border_selector"
         android:gravity="center_vertical|start"
         android:padding="15dp"

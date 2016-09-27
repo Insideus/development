@@ -48,12 +48,22 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
     private List<Transaction> filteredTransactions;
     private List<IShowableItem> transactionsBeingShowed;
     private ICardDetailAdapterOwner owner;
+    private Boolean showPayButton;
 
     public CardDetailAdapter(Activity activity, ICardDetailAdapterOwner owner) {
         this.activity = activity;
         originalTransactions = new ArrayList<>();
         transactionsBeingShowed = new ArrayList<>();
         this.owner = owner;
+        this.showPayButton = true;
+    }
+
+    public Boolean getShowPayButton() {
+        return showPayButton;
+    }
+
+    public void setShowPayButton(Boolean showPayButton) {
+        this.showPayButton = showPayButton;
     }
 
     public interface IByDayBarOwner {
@@ -70,6 +80,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
         transactionsBeingShowed = new ArrayList<>();
         this.owner = owner;
         this.barOwner = barOwner;
+        this.showPayButton = true;
     }
 
     public void executeFilter(String query) {
@@ -225,16 +236,21 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
             }
             case BUTTON: {
                 PayButtonHolder holder = (PayButtonHolder) genericHolder;
-                holder.payButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(activity, CardPayDetailActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable(CardDetailActivity.CARD_KEY, owner.getCard());
-                        bundle.putParcelable(CardPayDetailActivity.TRANSACTION_DETAILS, owner.getTransactionDetails());
-                        activity.startActivityForResult(intent.putExtras(bundle), CardPayDetailActivity.PAY_REQUEST);
-                    }
-                });
+                if(showPayButton) {
+                    holder.payButton.setVisibility(View.VISIBLE);
+                    holder.payButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(activity, CardPayDetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable(CardDetailActivity.CARD_KEY, owner.getCard());
+                            bundle.putParcelable(CardPayDetailActivity.TRANSACTION_DETAILS, owner.getTransactionDetails());
+                            activity.startActivityForResult(intent.putExtras(bundle), CardPayDetailActivity.PAY_REQUEST);
+                        }
+                    });
+                } else {
+                    holder.payButton.setVisibility(View.GONE);
+                }
                 if (!owner.doLoadMore()) {
                     holder.loadMoreButton.setVisibility(View.GONE);
                 } else {
@@ -252,7 +268,10 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
 
     private int getProperBackground(int position) {
         boolean somethingOnTop = position > 0 && transactionsBeingShowed.get(position - 1).getKindOfItem() == IShowableItem.TRANSACTION;
-        boolean somethingOnBottom = transactionsBeingShowed.get(position + 1).getKindOfItem() == IShowableItem.TRANSACTION;
+        boolean somethingOnBottom = false;
+        if(transactionsBeingShowed.size() > position + 1) {
+            somethingOnBottom = transactionsBeingShowed.get(position + 1).getKindOfItem() == IShowableItem.TRANSACTION;
+        }
         if (somethingOnBottom && somethingOnTop) {
             return MIDDLE_ITEM;
         }

@@ -271,4 +271,8 @@
     <string name="my_cards_e_card_create_success_text">Se ha solicitado con éxito su eCard. Estará disponible en 24 hrs.</string>
     <string name="my_cards_e_card_create_failed_text">Ha ocurrido un error al solicitar su eCard. Reinténtelo nuevamente más tarde.</string>
 
+    <string name="card_24hr_blocked_title">TARJETA</string>
+    <string name="card_24hr_blocked_subtitle">BLOQUEADA</string>
+    <string name="card_24hr_blocked_text">Su tarjeta ha sido bloqueada por 24hs.</string>
+
 </resources>

@@ -22,6 +22,7 @@ import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class CardActionDialogActivity extends BaseActivity {
 
@@ -483,12 +484,16 @@ public class CardActionDialogActivity extends BaseActivity {
             super.onPostExecute(response);
             hideLoading();
             if (response == null || !response) {
-                //Hancdle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
+                } else if (error != null && error == ErrorMessages.CARD_BLOCKED_24) {
+                    DialogUtil.toast(CardActionDialogActivity.this,
+                            getString(R.string.card_24hr_blocked_title),
+                            getString(R.string.card_24hr_blocked_subtitle),
+                            getString(R.string.card_24hr_blocked_text));
+                    finish();
                 } else {
-                    //showServiceGenericError();
                     setResult(RESULT_FAILED);
                     finish();
                 }

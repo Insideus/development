@@ -13,6 +13,7 @@ public class TransactionDetails implements Parcelable {
     private String availableAmount;
     private String paymentDate;
     private boolean loadMore;
+    private boolean showPayButton;
     private ArrayList<Transaction> transactions = new ArrayList<>();
 
     public TransactionDetails() {
@@ -47,7 +48,14 @@ public class TransactionDetails implements Parcelable {
         TransactionDetails transactionDetails = new TransactionDetails();
         try {
             transactionDetails.setLoadMore(json.getBoolean("next_page"));
+            transactionDetails.showPayButton = true;
             json = json.getJSONObject("movements");
+            if(json.has("total")) {
+                Double total = json.getDouble("total");
+                if(total != null && total == 0) {
+                    transactionDetails.showPayButton = false;
+                }
+            }
             if (json.has("payment_date")) {
                 transactionDetails.setPaymentDate(json.getString("payment_date"));
             } else {
@@ -70,16 +78,20 @@ public class TransactionDetails implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.availableAmount);
         dest.writeString(this.paymentDate);
+        dest.writeByte(this.loadMore ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.showPayButton ? (byte) 1 : (byte) 0);
         dest.writeTypedList(this.transactions);
     }
 
     protected TransactionDetails(Parcel in) {
         this.availableAmount = in.readString();
         this.paymentDate = in.readString();
+        this.loadMore = in.readByte() != 0;
+        this.showPayButton = in.readByte() != 0;
         this.transactions = in.createTypedArrayList(Transaction.CREATOR);
     }
 
-    public static final Parcelable.Creator<TransactionDetails> CREATOR = new Parcelable.Creator<TransactionDetails>() {
+    public static final Creator<TransactionDetails> CREATOR = new Creator<TransactionDetails>() {
         @Override
         public TransactionDetails createFromParcel(Parcel source) {
             return new TransactionDetails(source);
@@ -98,4 +110,13 @@ public class TransactionDetails implements Parcelable {
     public void setLoadMore(boolean loadMore) {
         this.loadMore = loadMore;
     }
+
+    public boolean isShowPayButton() {
+        return showPayButton;
+    }
+
+    public void setShowPayButton(boolean showPayButton) {
+        this.showPayButton = showPayButton;
+    }
+
 }

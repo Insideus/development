@@ -16,7 +16,8 @@ public enum  ErrorMessages {
     VALIDATE_PRODUCT_ERROR("error.validate_product_error"),
     PASSWORD_EXPIRED("error.login_error.virtual_password_expired"),
     PASSWORD_EXPIRED_OTP_VALIDATION_NEEDED("error.login_error.virtual_password_expired.otp_validation_needed"),
-    VIRTUAL_PASSWORD_VALIDATION_ERROR("error.virtual_password_validation");
+    VIRTUAL_PASSWORD_VALIDATION_ERROR("error.virtual_password_validation"),
+    CARD_BLOCKED_24("error.add_card.blocked_24");
 
     ErrorMessages(String errorCode) {
         this.errorCode = errorCode;

@@ -156,7 +156,8 @@ public class MyCardsActivity extends BaseActivity {
                 }else{
                     errorText = getString(R.string.my_cards_failed_opperation_message);
                 }
-                DialogUtil.toastWithResult(this, EXPLAINING_DIALOG,
+                DialogUtil.toastWithResult(this,
+                        EXPLAINING_DIALOG,
                         errorTitle, errorSubtitle,
                         errorText);
                 refresh = false;

@@ -70,6 +70,7 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
     }
 
     protected void setDataToShow() {
+        adapter.setShowPayButton(transactionDetails.isShowPayButton());
         if(refresh) {
             adapter.setList(transactionDetails.getTransactions());
             linearLayoutManager.scrollToPosition(0);
