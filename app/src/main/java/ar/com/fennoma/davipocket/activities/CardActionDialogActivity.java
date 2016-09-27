@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +25,11 @@ import ar.com.fennoma.davipocket.session.Session;
 
 public class CardActionDialogActivity extends BaseActivity {
 
+    public static final String SUCCESS_TITLE = "success title";
+    public static final String SUCCESS_SUBTITLE = "success subtitle";
+    public static final String SUCCESS_TEXT = "success text";
+    public static final String ERROR_TITLE = "error title";
+    public static final String ERROR_SUBTITLE = "error subtitle";
     public static final String ERROR_MESSAGE = "error message";
 
     public static final String TITLE_KEY = "toast_title_key";
@@ -40,6 +46,8 @@ public class CardActionDialogActivity extends BaseActivity {
     public static final String CALL_BUTTON_NUMBER_KEY = "call_button_number_key";
     public static final String SHOW_PAY_BUTTON_KEY = "show_pay_button_key";
 
+    public static final String ECARD_CREATE = "ecard create";
+
     public static final int RESULT_FAILED = -2;
 
     private String title;
@@ -50,6 +58,7 @@ public class CardActionDialogActivity extends BaseActivity {
     private Boolean isCardNumberDialog;
     private Boolean isBlockCardDialog;
     private Boolean showPayButton;
+    private Boolean showECardCreateDialog;
     private boolean isCardPay;
     private String callNumber;
     private Card card;
@@ -70,6 +79,7 @@ public class CardActionDialogActivity extends BaseActivity {
             card = savedInstanceState.getParcelable(CARD_KEY);
             showPayButton = savedInstanceState.getBoolean(SHOW_PAY_BUTTON_KEY, false);
             isCardPay = savedInstanceState.getBoolean(IS_CARD_PAY, false);
+            showECardCreateDialog = savedInstanceState.getBoolean(ECARD_CREATE, false);
         } else {
             title = getIntent().getStringExtra(TITLE_KEY);
             subtitle = getIntent().getStringExtra(SUBTITLE_KEY);
@@ -82,6 +92,7 @@ public class CardActionDialogActivity extends BaseActivity {
             card = getIntent().getParcelableExtra(CARD_KEY);
             showPayButton = getIntent().getBooleanExtra(SHOW_PAY_BUTTON_KEY, false);
             isCardPay = getIntent().getBooleanExtra(IS_CARD_PAY, false);
+            showECardCreateDialog = getIntent().getBooleanExtra(ECARD_CREATE, false);
         }
         setLayouts();
         animateOpening();
@@ -141,6 +152,10 @@ public class CardActionDialogActivity extends BaseActivity {
             showPayButtonLayouts(acceptButton, ignoreButton);
         }
 
+        if(showECardCreateDialog){
+            showECardCreateLayouts(acceptButton, ignoreButton);
+        }
+
         if (isCardPay) {
             showCardPayLayouts(acceptButton, ignoreButton);
         }
@@ -163,6 +178,41 @@ public class CardActionDialogActivity extends BaseActivity {
         } else {
             textTv.setVisibility(LinearLayout.GONE);
         }
+    }
+
+    private void showECardCreateLayouts(TextView acceptButton, TextView ignoreButton) {
+        final CheckBox termsAndConditions = (CheckBox) findViewById(R.id.terms_and_conditions);
+        termsAndConditions.setVisibility(View.VISIBLE);
+        acceptButton.setText(getString(R.string.my_cards_block_card_accept));
+        ignoreButton.setText(getString(R.string.my_cards_block_card_cancel));
+        ignoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(termsAndConditions.isChecked()){
+                    new eCardCreateTask().execute();
+                }else{
+                    eCardFailed(true);
+                }
+            }
+        });
+    }
+
+    private void eCardFailed(boolean termsAndConditions) {
+        Bundle bundle = new Bundle();
+        if(termsAndConditions) {
+            bundle.putString(ERROR_MESSAGE, getString(R.string.card_action_terms_and_conditions_not_accepted_error));
+        } else {
+            bundle.putString(ERROR_MESSAGE, getString(R.string.my_cards_e_card_create_failed_text));
+        }
+        setResult(RESULT_FAILED, new Intent().putExtras(bundle));
+        finish();
     }
 
     private void showBlockLayouts(TextView acceptButton, TextView ignoreButton) {
@@ -408,7 +458,7 @@ public class CardActionDialogActivity extends BaseActivity {
 
     public class AddCardTask extends AsyncTask<String, Void, Boolean> {
 
-        String errorCode;
+        private String errorCode;
 
         @Override
         protected void onPreExecute() {
@@ -449,4 +499,52 @@ public class CardActionDialogActivity extends BaseActivity {
         }
     }
 
+    private class eCardCreateTask extends AsyncTask<Void, Void, Void>{
+
+        private Boolean response;
+        private String errorCode;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                response = Service.newECard(Session.getCurrentSession(getApplicationContext()).getSid());
+            } catch (ServiceException e) {
+                e.printStackTrace();
+                errorCode = e.getErrorCode();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            hideLoading();
+            if (response == null || !response) {
+                //Hancdle invalid session error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if (error != null && error == ErrorMessages.INVALID_SESSION) {
+                    handleInvalidSessionError();
+                } else {
+                    eCardFailed(false);
+                }
+            } else {
+                eCardSuccess();
+            }
+        }
+    }
+
+    private void eCardSuccess(){
+        Bundle bundle = new Bundle();
+        bundle.putString(SUCCESS_TITLE, getString(R.string.my_cards_e_card_create_success_title));
+        bundle.putString(SUCCESS_SUBTITLE, getString(R.string.my_cards_e_card_create_success_subtitle));
+        bundle.putString(SUCCESS_TEXT, getString(R.string.my_cards_e_card_create_success_text));
+        setResult(RESULT_OK, new Intent().putExtras(bundle));
+        finish();
+    }
 }

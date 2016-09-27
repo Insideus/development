@@ -261,5 +261,14 @@
     <string name="no_connection_dialog_retry_button">REINTENTAR</string>
     <string name="card_action_not_valid_ccv_error">El CCV ingresado no es válido.</string>
     <string name="card_action_not_valid_card_number_error">El número de la tarjeta de crédito no es válido.</string>
+    <string name="my_cards_e_card_create_title">SOLICITAR</string>
+    <string name="my_cards_e_card_create_subtitle">ECARD</string>
+    <string name="my_cards_e_card_create_text">¿Desea solicitar su eCard?</string>
+    <string name="activity_card_action_dialog_accept_terms_and_conditions">Acepto Términos y Condiciones</string>
+    <string name="card_action_terms_and_conditions_not_accepted_error">Debe aceptar los Términos y Condiciones para solicitar una eCard</string>
+    <string name="my_cards_e_card_create_success_subtitle">DE ECARD</string>
+    <string name="my_cards_e_card_create_success_title">SOLICITUD</string>
+    <string name="my_cards_e_card_create_success_text">Se ha solicitado con éxito su eCard. Estará disponible en 24 hrs.</string>
+    <string name="my_cards_e_card_create_failed_text">Ha ocurrido un error al solicitar su eCard. Reinténtelo nuevamente más tarde.</string>
 
 </resources>

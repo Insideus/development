@@ -49,6 +49,9 @@ public class MyCardsActivity extends BaseActivity {
     }
 
     private List<CardToShowOnList> addButtons(List<CardToShowOnList> cards) {
+        ButtonCard eCard = new ButtonCard(R.drawable.add_e_card_button);
+        eCard.setType(ButtonCard.eCard);
+        cards.add(eCard);
         ButtonCard buttonCard = new ButtonCard(R.drawable.add_portfolio_card_button);
         buttonCard.setType(ButtonCard.portfolioCard);
         cards.add(buttonCard);
@@ -97,6 +100,16 @@ public class MyCardsActivity extends BaseActivity {
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
+    private void createECard() {
+        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
+        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_e_card_create_title));
+        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_e_card_create_subtitle));
+        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_e_card_create_text));
+        intent.putExtra(CardActionDialogActivity.ECARD_CREATE, true);
+        startActivityForResult(intent, OPERATION_RESULT);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
+
     private void refreshCardList() {
         new GetUserCardsTask().execute();
     }
@@ -106,19 +119,45 @@ public class MyCardsActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == OPERATION_RESULT) {
             if(resultCode == RESULT_OK) {
-                DialogUtil.toastWithResult(this, EXPLAINING_DIALOG, getString(R.string.my_cards_opperation_success_message_title),
-                        getString(R.string.my_cards_opperation_success_message_subtitle),
-                        getString(R.string.my_cards_opperation_success_message));
+                String successTitle;
+                String successSubtitle = "";
+                String successText;
+                if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.SUCCESS_TITLE))){
+                    successTitle = data.getStringExtra(CardActionDialogActivity.SUCCESS_TITLE);
+                }else{
+                    successTitle = getString(R.string.my_cards_opperation_success_message_title);
+                }
+                if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.SUCCESS_SUBTITLE))){
+                    successSubtitle = data.getStringExtra(CardActionDialogActivity.SUCCESS_SUBTITLE);
+                }else{
+                    successSubtitle = getString(R.string.my_cards_opperation_success_message_subtitle);
+                }
+                if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.SUCCESS_TEXT))){
+                    successText = data.getStringExtra(CardActionDialogActivity.SUCCESS_TEXT);
+                }else{
+                    successText = getString(R.string.my_cards_opperation_success_message);
+                }
+                DialogUtil.toastWithResult(this, EXPLAINING_DIALOG, successTitle, successSubtitle, successText);
                 refresh = true;
             } else if(resultCode == CardActionDialogActivity.RESULT_FAILED){
+                String errorTitle;
+                String errorSubtitle = "";
                 String errorText;
+                if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.ERROR_TITLE))){
+                    errorTitle = data.getStringExtra(CardActionDialogActivity.ERROR_TITLE);
+                }else{
+                    errorTitle = getString(R.string.my_cards_failed_opperation_message_title);
+                }
+                if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.ERROR_SUBTITLE))){
+                    errorSubtitle = data.getStringExtra(CardActionDialogActivity.ERROR_SUBTITLE);
+                }
                 if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.ERROR_MESSAGE))){
                     errorText = data.getStringExtra(CardActionDialogActivity.ERROR_MESSAGE);
                 }else{
                     errorText = getString(R.string.my_cards_failed_opperation_message);
                 }
                 DialogUtil.toastWithResult(this, EXPLAINING_DIALOG,
-                        getString(R.string.my_cards_failed_opperation_message_title), "",
+                        errorTitle, errorSubtitle,
                         errorText);
                 refresh = false;
             }
@@ -150,16 +189,12 @@ public class MyCardsActivity extends BaseActivity {
 
         @Override
         public int getItemViewType(int position) {
-            if (cards.get(position) instanceof Card) {
-                return 0;
-            } else {
-                return 1;
-            }
+            return cards.get(position).getTypeOfCard();
         }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (viewType == 0) {
+            if (viewType == CardToShowOnList.CARD) {
                 return new ActualCardHolder(getLayoutInflater().inflate(R.layout.item_my_cards_card, parent, false));
             } else {
                 return new ButtonCardHolder(getLayoutInflater().inflate(R.layout.item_new_card_to_list, parent, false));
@@ -168,7 +203,7 @@ public class MyCardsActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder genericHolder, int position) {
-            if (getItemViewType(position) == 1) {
+            if (getItemViewType(position) == CardToShowOnList.BUTTON_CARD) {
                 ButtonCard buttonCard = (ButtonCard) cards.get(position);
                 ButtonCardHolder holder = (ButtonCardHolder) genericHolder;
                 holder.cardButton.setImageResource(buttonCard.getImageResource());
@@ -179,8 +214,15 @@ public class MyCardsActivity extends BaseActivity {
                             blockedActivableCardDialog();
                         }
                     });
+                } else {
+                    holder.cardButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            createECard();
+                        }
+                    });
                 }
-            } else if (getItemViewType(position) == 0) {
+            } else if (getItemViewType(position) == CardToShowOnList.CARD) {
                 final Card card = (Card) cards.get(position);
                 ActualCardHolder holder = (ActualCardHolder) genericHolder;
                 if (card.getBin() != null) {

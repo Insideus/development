@@ -77,6 +77,7 @@ public class Service {
     private final static String GET_CARD_MOVEMENTS = "/card/movements";
     private final static String GET_CARD_BALANCE = "/card/balance";
     private static final String PAY_CARD = "/card/pay";
+    private static final String NEW_E_CARD = "/card/new";
 
     public static JSONObject getPersonIdTypes() {
         HttpURLConnection urlConnection = null;
@@ -1379,5 +1380,40 @@ public class Service {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestProperty("sid", token);
         return urlConnection;
+    }
+
+    public static boolean newECard(String sid) throws ServiceException {
+        boolean response = false;
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(NEW_E_CARD, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if (json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
     }
 }

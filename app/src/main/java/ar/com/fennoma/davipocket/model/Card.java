@@ -179,4 +179,8 @@ public class Card implements Parcelable, CardToShowOnList {
         }
     };
 
+    @Override
+    public int getTypeOfCard() {
+        return CardToShowOnList.CARD;
+    }
 }

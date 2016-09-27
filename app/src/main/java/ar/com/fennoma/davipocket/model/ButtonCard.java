@@ -28,4 +28,8 @@ public class ButtonCard implements CardToShowOnList {
         this.imageResource = imageResource;
     }
 
+    @Override
+    public int getTypeOfCard() {
+        return CardToShowOnList.BUTTON_CARD;
+    }
 }

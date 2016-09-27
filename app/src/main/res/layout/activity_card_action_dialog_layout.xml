@@ -101,6 +101,26 @@
             android:textColor="@color/red_base_color"
             android:textSize="@dimen/card_number_text_size" />
 
+        <CheckBox
+            android:id="@+id/terms_and_conditions"
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@android:color/transparent"
+            android:checked="false"
+            android:gravity="center"
+            android:drawablePadding="@dimen/card_pay_detail_item_drawable_padding"
+            android:drawableStart="@drawable/checkbox_selector"
+            android:paddingBottom="@dimen/card_pay_detail_spacing_between_items"
+            android:paddingEnd="@dimen/card_pay_detail_items_horizonal_margin"
+            android:paddingStart="@dimen/card_pay_detail_items_horizonal_margin"
+            android:paddingTop="@dimen/card_pay_detail_spacing_between_items"
+            android:text="@string/activity_card_action_dialog_accept_terms_and_conditions"
+            android:textAllCaps="true"
+            android:textColor="@color/input_text_color"
+            android:textSize="@dimen/common_text_size"
+            android:visibility="gone"/>
+
         <TextView
             android:id="@+id/accept_button"
             fontPath="fonts/MyriadPro-Semibold.otf"
