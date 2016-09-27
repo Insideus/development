@@ -185,8 +185,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                                 holder.dateFromMonth.setText(String.valueOf(monthOfYear));
                                 holder.dateFromYear.setText(String.valueOf(year));
                                 holder.dateFromContainer.setVisibility(View.VISIBLE);
-                                barOwner.gotDateFrom(String.format("%s%s%s%s%s", String.valueOf(dayOfMonth), "/", String.valueOf(monthOfYear),
-                                        "/", String.valueOf(year)));
+                                barOwner.gotDateFrom(DateUtils.formatPickerDate(dayOfMonth, monthOfYear, year));
                             }
                         }, DialogUtil.SIX_MONTHS_AGO, DialogUtil.TODAY);
                     }
@@ -201,8 +200,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                                 holder.dateToMonth.setText(String.valueOf(monthOfYear));
                                 holder.dateToYear.setText(String.valueOf(year));
                                 holder.dateToContainer.setVisibility(View.VISIBLE);
-                                barOwner.gotDateTo(String.format("%s%s%s%s%s", String.valueOf(dayOfMonth), "/", String.valueOf(monthOfYear),
-                                        "/", String.valueOf(year)));
+                                barOwner.gotDateTo(DateUtils.formatPickerDate(dayOfMonth, monthOfYear, year));
                             }
                         }, DialogUtil.SIX_MONTHS_AGO, DialogUtil.TODAY);
                     }
@@ -272,7 +270,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
 
     protected List<IShowableItem> getProcessedTransactionList(List<Transaction> transactions) {
         List<IShowableItem> result = new ArrayList<>();
-        if (transactions == null || transactions.size() <= 1) {
+        if (transactions == null || transactions.size() < 1) {
             if(barOwner != null){
                 result.add(new TransactionByDayBar());
             }
@@ -282,7 +280,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
         result.addAll(transactions);
 
         result.add(0, new TransactionTitle());
-        Transaction comparator = transactions.get(1);
+        Transaction comparator = (Transaction) result.get(1);
         for (int i = 2; i < transactions.size(); i++) {
             Transaction transaction = transactions.get(i);
             if (!comparator.getDate().equals(transaction.getDate())) {

@@ -113,4 +113,5 @@ public class MovementsByDayActivity extends MovementsShowerActivity implements C
         replaceList = true;
         new GetCardTransactionDetailsTask(dateFrom, dateTo).execute();
     }
+
 }

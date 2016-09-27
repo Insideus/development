@@ -9,6 +9,7 @@ import java.util.Locale;
 public class DateUtils {
 
     public static final String DDMMYY_FORMAT = "dd/MM/yy";
+    public static final String DDMMYYYY_FORMAT = "dd/MM/yyyy";
     public static final String DOTTED_DDMMMYY_FORMAT = "dd · MMM · yy";
     public static final String DOTTED_DDMMMMYY_FORMAT = "dd · MMMM · yy";
 
@@ -58,6 +59,19 @@ public class DateUtils {
             return result;
         }
         return result;
+    }
+
+    public static String formatPickerDate(int day, int month, int year) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        SimpleDateFormat formatter = new SimpleDateFormat(DDMMYYYY_FORMAT);
+        return formatter.format(cal.getTime());
     }
 
 }
