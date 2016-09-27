@@ -56,9 +56,11 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
         this.owner = owner;
     }
 
-    public interface IByDayBarOwner{
+    public interface IByDayBarOwner {
         void gotDateTo(String dateTo);
+
         void gotDateFrom(String dateFrom);
+
         void onFilter();
     }
 
@@ -84,7 +86,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
             for (int i = 0; i < originalTransactions.size(); i++) {
                 IShowableItem t = originalTransactions.get(i);
                 if (t.getKindOfItem() == IShowableItem.TRANSACTION &&
-                        ((Transaction)t).getName().toLowerCase().contains(query.toLowerCase())) {
+                        ((Transaction) t).getName().toLowerCase().contains(query.toLowerCase())) {
                     filteredTransactions.add((Transaction) t);
                 }
             }
@@ -102,7 +104,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
         List<IShowableItem> transactions = getProcessedTransactionList(receivedTransactions);
         if (this.originalTransactions.size() > 0) {
             this.originalTransactions.remove(this.originalTransactions.size() - 1);
-            if (((Transaction)this.originalTransactions.get(this.originalTransactions.size() - 1)).getDate().equals(((Transaction)transactions.get(1)).getDate())) {
+            if (((Transaction) this.originalTransactions.get(this.originalTransactions.size() - 1)).getDate().equals(((Transaction) transactions.get(1)).getDate())) {
                 receivedTransactions.remove(0);
             }
         }
@@ -114,13 +116,13 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if(transactionsBeingShowed.get(position).getKindOfItem() == IShowableItem.BY_DAY_BAR){
+        if (transactionsBeingShowed.get(position).getKindOfItem() == IShowableItem.BY_DAY_BAR) {
             return BY_DAY_BAR;
         }
         if (transactionsBeingShowed.get(position).getKindOfItem() == IShowableItem.BUTTON) {
             return BUTTON;
         }
-        if(transactionsBeingShowed.get(position).getKindOfItem() == IShowableItem.TRANSACTION){
+        if (transactionsBeingShowed.get(position).getKindOfItem() == IShowableItem.TRANSACTION) {
             return ITEM;
         }
         return TITLE;
@@ -134,7 +136,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
             return new TransactionHolder(activity.getLayoutInflater().inflate(R.layout.item_card_detail_transaction_item, parent, false));
         } else if (viewType == BUTTON) {
             return new PayButtonHolder(activity.getLayoutInflater().inflate(R.layout.card_detail_pay_button_item, parent, false));
-        } else if (viewType == BY_DAY_BAR){
+        } else if (viewType == BY_DAY_BAR) {
             return new ByDayBarHolder(activity.getLayoutInflater().inflate(R.layout.by_day_bar_item, parent, false));
         }
         return null;
@@ -170,8 +172,8 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                 }
                 break;
             }
-            case BY_DAY_BAR:{
-                if(barOwner == null){
+            case BY_DAY_BAR: {
+                if (barOwner == null) {
                     return;
                 }
                 final ByDayBarHolder holder = (ByDayBarHolder) genericHolder;
@@ -271,7 +273,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
     protected List<IShowableItem> getProcessedTransactionList(List<Transaction> transactions) {
         List<IShowableItem> result = new ArrayList<>();
         if (transactions == null || transactions.size() < 1) {
-            if(barOwner != null){
+            if (barOwner != null) {
                 result.add(new TransactionByDayBar());
             }
             result.add(new TransactionPayButton());
@@ -280,20 +282,19 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
         result.addAll(transactions);
 
         result.add(0, new TransactionTitle());
-        Transaction comparator = (Transaction) result.get(1);
-        for (int i = 2; i < transactions.size(); i++) {
-            Transaction transaction = transactions.get(i);
+        for (int i = 2; i < result.size(); i++) {
+            Transaction transaction = (Transaction) result.get(i);
+            Transaction comparator = (Transaction) result.get(i-1);
             if (!comparator.getDate().equals(transaction.getDate())) {
                 result.add(i, new TransactionTitle());
                 i++;
             }
-            comparator = transaction;
         }
         result.add(new TransactionPayButton());
         return result;
     }
 
-    public void justSetList(ArrayList<IShowableItem> transactions){
+    public void justSetList(ArrayList<IShowableItem> transactions) {
         originalTransactions.clear();
         originalTransactions.addAll(transactions);
         transactionsBeingShowed.clear();
@@ -301,7 +302,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    public ArrayList<IShowableItem> getList(){
+    public ArrayList<IShowableItem> getList() {
         return originalTransactions;
     }
 
