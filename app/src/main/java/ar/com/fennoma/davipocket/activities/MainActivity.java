@@ -3,7 +3,6 @@ package ar.com.fennoma.davipocket.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
