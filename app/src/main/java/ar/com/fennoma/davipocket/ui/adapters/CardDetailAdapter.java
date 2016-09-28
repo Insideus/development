@@ -200,7 +200,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 holder.dateFromDay.setText(String.valueOf(dayOfMonth));
-                                holder.dateFromMonth.setText(String.valueOf(monthOfYear));
+                                holder.dateFromMonth.setText(String.valueOf(monthOfYear + 1));
                                 holder.dateFromYear.setText(String.valueOf(year));
                                 holder.dateFromContainer.setVisibility(View.VISIBLE);
                                 barOwner.gotDateFrom(DateUtils.formatPickerDate(dayOfMonth, monthOfYear, year));
@@ -215,7 +215,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 holder.dateToDay.setText(String.valueOf(dayOfMonth));
-                                holder.dateToMonth.setText(String.valueOf(monthOfYear));
+                                holder.dateToMonth.setText(String.valueOf(monthOfYear + 1));
                                 holder.dateToYear.setText(String.valueOf(year));
                                 holder.dateToContainer.setVisibility(View.VISIBLE);
                                 barOwner.gotDateTo(DateUtils.formatPickerDate(dayOfMonth, monthOfYear, year));
