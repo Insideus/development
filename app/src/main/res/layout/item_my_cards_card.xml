@@ -15,8 +15,8 @@
             android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp"
             android:layout_alignParentTop="true"
+            android:padding="10dp"
             android:scaleType="fitXY"
             android:src="@drawable/portfolio_card" />
 
@@ -33,12 +33,12 @@
             <TextView
                 android:id="@+id/credit_card_number"
                 fontPath="fonts/MyriadPro-Regular.otf"
-                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginEnd="@dimen/card_pay_detail_items_horizonal_margin"
                 android:layout_marginStart="@dimen/card_pay_detail_items_horizonal_margin"
                 android:layout_weight="0.13"
+                android:gravity="center_vertical"
                 android:nextFocusDown="@+id/expiration_month"
                 android:nextFocusLeft="@+id/expiration_month"
                 android:nextFocusRight="@+id/expiration_month"
@@ -51,22 +51,22 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.04" />
 
-                <TextView
-                    android:id="@+id/expiration_date"
-                    fontPath="fonts/MyriadPro-Regular.otf"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.13"
-                    android:nextFocusDown="@+id/expiration_year"
-                    android:nextFocusLeft="@+id/expiration_year"
-                    android:nextFocusRight="@+id/expiration_year"
-                    android:singleLine="true"
-                    android:gravity="center_vertical"
-                    android:drawablePadding="0dp"
-                    android:textColor="@android:color/white"
-                    android:layout_marginEnd="@dimen/card_pay_detail_items_margin_end"
-                    android:layout_marginStart="@dimen/card_pay_detail_items_horizonal_margin"
-                    android:textSize="@dimen/my_cards_items_card_common_text_size" />
+            <TextView
+                android:id="@+id/expiration_date"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/card_pay_detail_items_margin_end"
+                android:layout_marginStart="@dimen/card_pay_detail_items_horizonal_margin"
+                android:layout_weight="0.13"
+                android:drawablePadding="0dp"
+                android:gravity="center_vertical"
+                android:nextFocusDown="@+id/expiration_year"
+                android:nextFocusLeft="@+id/expiration_year"
+                android:nextFocusRight="@+id/expiration_year"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/my_cards_items_card_common_text_size" />
 
             <View
                 android:layout_width="wrap_content"
@@ -109,30 +109,54 @@
         android:layout_below="@id/card_container"
         android:layout_marginTop="-25dp"
         android:background="@android:color/white"
+        android:gravity="bottom"
         android:orientation="horizontal"
         android:paddingEnd="@dimen/my_cards_items_bar_lateral_spacing"
-        android:paddingStart="@dimen/my_cards_items_bar_lateral_spacing"
-        >
+        android:paddingStart="@dimen/my_cards_items_bar_lateral_spacing">
 
         <ImageView
             android:id="@+id/favourite_card"
             android:layout_width="wrap_content"
-            android:paddingBottom="@dimen/my_cards_items_spacing_bar"
             android:layout_height="wrap_content"
-            android:paddingRight="@dimen/my_cards_items_spacing_between_buttons"
+            android:paddingBottom="@dimen/my_cards_items_spacing_bar"
             android:paddingLeft="@dimen/my_cards_items_spacing_between_buttons"
+            android:paddingRight="@dimen/my_cards_items_spacing_between_buttons"
             android:paddingTop="@dimen/my_cards_items_spacing_bar"
             android:src="@drawable/my_cards_not_favourite_card" />
+
+        <ImageView
+            android:id="@+id/e_card_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/favourite_card"
+            android:paddingBottom="@dimen/my_cards_items_spacing_bar"
+            android:paddingLeft="@dimen/my_cards_items_spacing_between_buttons"
+            android:paddingRight="@dimen/my_cards_items_spacing_between_buttons"
+            android:paddingTop="@dimen/my_cards_items_spacing_bar"
+            android:src="@drawable/e_card_show_data_button" />
+
+        <ImageView
+            android:id="@+id/e_card_get_cvv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/e_card_data"
+            android:paddingBottom="@dimen/my_cards_items_spacing_bar"
+            android:paddingLeft="@dimen/my_cards_items_spacing_between_buttons"
+            android:paddingRight="@dimen/my_cards_items_spacing_between_buttons"
+            android:paddingTop="@dimen/my_cards_items_spacing_bar"
+            android:src="@drawable/e_card_get_cvv_button" />
 
         <ImageView
             android:id="@+id/disable_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:paddingRight="@dimen/my_cards_items_spacing_between_buttons"
-            android:paddingLeft="@dimen/my_cards_items_spacing_between_buttons"
             android:layout_centerVertical="true"
             android:paddingBottom="@dimen/my_cards_items_spacing_bar"
+            android:paddingLeft="@dimen/my_cards_items_spacing_between_buttons"
+            android:paddingRight="@dimen/my_cards_items_spacing_between_buttons"
             android:paddingTop="@dimen/my_cards_items_spacing_bar"
             android:src="@drawable/my_cards_disable_card_button" />
 
@@ -141,11 +165,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/disable_card"
+            android:paddingBottom="@dimen/my_cards_items_spacing_bar"
             android:paddingLeft="@dimen/my_cards_items_spacing_between_buttons"
             android:paddingRight="@dimen/my_cards_items_spacing_between_buttons"
             android:paddingTop="@dimen/my_cards_items_spacing_bar"
-            android:layout_toStartOf="@id/disable_card"
-            android:paddingBottom="@dimen/my_cards_items_spacing_bar"
             android:src="@drawable/my_cards_avalaible_card_indicator" />
 
     </RelativeLayout>

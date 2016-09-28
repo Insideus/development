@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class Card implements Parcelable, CardToShowOnList {
 
+    private Boolean eCard;
     private String lastDigits;
     private String ownerName;
     private Boolean enrolled;
@@ -138,12 +139,26 @@ public class Card implements Parcelable, CardToShowOnList {
     }
 
     @Override
+    public int getTypeOfCard() {
+        return CardToShowOnList.CARD;
+    }
+
+    public Boolean getECard() {
+        return eCard;
+    }
+
+    public void seteCard(Boolean eCard) {
+        this.eCard = eCard;
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.eCard);
         dest.writeString(this.lastDigits);
         dest.writeString(this.ownerName);
         dest.writeValue(this.enrolled);
@@ -156,6 +171,7 @@ public class Card implements Parcelable, CardToShowOnList {
     }
 
     protected Card(Parcel in) {
+        this.eCard = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.lastDigits = in.readString();
         this.ownerName = in.readString();
         this.enrolled = (Boolean) in.readValue(Boolean.class.getClassLoader());
@@ -167,7 +183,7 @@ public class Card implements Parcelable, CardToShowOnList {
         this.bin = in.readParcelable(CardBin.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<Card> CREATOR = new Parcelable.Creator<Card>() {
+    public static final Creator<Card> CREATOR = new Creator<Card>() {
         @Override
         public Card createFromParcel(Parcel source) {
             return new Card(source);
@@ -178,9 +194,4 @@ public class Card implements Parcelable, CardToShowOnList {
             return new Card[size];
         }
     };
-
-    @Override
-    public int getTypeOfCard() {
-        return CardToShowOnList.CARD;
-    }
 }

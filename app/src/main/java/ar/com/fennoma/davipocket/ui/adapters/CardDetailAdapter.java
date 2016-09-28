@@ -17,8 +17,10 @@ import java.util.List;
 
 import ar.com.fennoma.davipocket.DavipocketApplication;
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.activities.AbstractPayActivity;
 import ar.com.fennoma.davipocket.activities.CardDetailActivity;
 import ar.com.fennoma.davipocket.activities.CardPayDetailActivity;
+import ar.com.fennoma.davipocket.activities.ECardRechargeActivity;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.IShowableItem;
 import ar.com.fennoma.davipocket.model.Transaction;
@@ -146,6 +148,9 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
         } else if (viewType == ITEM) {
             return new TransactionHolder(activity.getLayoutInflater().inflate(R.layout.item_card_detail_transaction_item, parent, false));
         } else if (viewType == BUTTON) {
+            if(owner.getCard().getECard() != null && owner.getCard().getECard()){
+                return new PayButtonHolder(activity.getLayoutInflater().inflate(R.layout.card_detail_recharge_card_button_item, parent, false));
+            }
             return new PayButtonHolder(activity.getLayoutInflater().inflate(R.layout.card_detail_pay_button_item, parent, false));
         } else if (viewType == BY_DAY_BAR) {
             return new ByDayBarHolder(activity.getLayoutInflater().inflate(R.layout.by_day_bar_item, parent, false));
@@ -236,6 +241,21 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
             }
             case BUTTON: {
                 PayButtonHolder holder = (PayButtonHolder) genericHolder;
+                holder.payButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent;
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable(AbstractPayActivity.CARD_KEY, owner.getCard());
+                        if(owner.getCard().getECard() != null && owner.getCard().getECard()) {
+                            intent = new Intent(activity, ECardRechargeActivity.class);
+                        } else {
+                            intent = new Intent(activity, CardPayDetailActivity.class);
+                            bundle.putParcelable(CardPayDetailActivity.TRANSACTION_DETAILS, owner.getTransactionDetails());
+                        }
+                        activity.startActivityForResult(intent.putExtras(bundle), ECardRechargeActivity.PAY_REQUEST);
+                    }
+                });
                 if(showPayButton) {
                     holder.payButton.setVisibility(View.VISIBLE);
                     holder.payButton.setOnClickListener(new View.OnClickListener() {

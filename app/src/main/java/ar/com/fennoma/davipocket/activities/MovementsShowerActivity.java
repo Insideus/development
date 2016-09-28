@@ -1,7 +1,9 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.os.AsyncTask;
+import android.view.View;
 
+import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
@@ -69,6 +71,28 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
                 transactionDetails = response;
                 setDataToShow();
             }
+        }
+    }
+
+    protected void setFooterLayouts() {
+        View ecardBalance = findViewById(R.id.ecard_balance);
+        View ecardBalanceTitle = findViewById(R.id.ecard_balance_title);
+        View balanceTitle = findViewById(R.id.balance_title);
+        View balance = findViewById(R.id.balance);
+        View payment = findViewById(R.id.payment_date);
+        View paymentTitle = findViewById(R.id.payment_date_title);
+        if(ecardBalance == null || ecardBalanceTitle == null || balance == null || balanceTitle == null ||
+                payment == null || paymentTitle == null){
+            return;
+        }
+        if(card.getECard() != null && card.getECard()){
+            ecardBalance.setVisibility(View.VISIBLE);
+            ecardBalanceTitle.setVisibility(View.VISIBLE);
+        }else{
+            balance.setVisibility(View.VISIBLE);
+            balanceTitle.setVisibility(View.VISIBLE);
+            payment.setVisibility(View.VISIBLE);
+            paymentTitle.setVisibility(View.VISIBLE);
         }
     }
 

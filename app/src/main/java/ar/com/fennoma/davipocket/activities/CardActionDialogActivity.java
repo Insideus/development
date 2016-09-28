@@ -38,16 +38,19 @@ public class CardActionDialogActivity extends BaseActivity {
     public static final String TEXT_KEY = "toast_text_key";
     public static final String CARD_KEY = "card_key";
 
+    public static final String LAST_FOUR_DIGITS = "last four digits";
     public static final String IS_CARD_PAY = "is_card_pay_key";
     public static final String IS_CCV_DIALOG = "is_ccv_dialog_key";
     public static final String IS_CARD_NUMBER_DIALOG = "is_card_number_dialog_key";
     public static final String IS_BLOCK_CARD_DIALOG = "is_block_card_dialog_key";
+    public static final String E_CARD_GET_CVV = "ecard get cvv";
+    public static final String E_CARD_SHOW_DATA = "ecard show data";
 
     public static final String SHOW_CALL_BUTTON_KEY = "show_call_button_key";
     public static final String CALL_BUTTON_NUMBER_KEY = "call_button_number_key";
     public static final String SHOW_PAY_BUTTON_KEY = "show_pay_button_key";
 
-    public static final String ECARD_CREATE = "ecard create";
+    public static final String E_CARD_CREATE = "ecard create";
 
     public static final int RESULT_FAILED = -2;
 
@@ -60,6 +63,9 @@ public class CardActionDialogActivity extends BaseActivity {
     private Boolean isBlockCardDialog;
     private Boolean showPayButton;
     private Boolean showECardCreateDialog;
+    private String lastFourDigits;
+    private Boolean eCardGetCVV;
+    private Boolean eCardShowData;
     private boolean isCardPay;
     private String callNumber;
     private Card card;
@@ -80,7 +86,10 @@ public class CardActionDialogActivity extends BaseActivity {
             card = savedInstanceState.getParcelable(CARD_KEY);
             showPayButton = savedInstanceState.getBoolean(SHOW_PAY_BUTTON_KEY, false);
             isCardPay = savedInstanceState.getBoolean(IS_CARD_PAY, false);
-            showECardCreateDialog = savedInstanceState.getBoolean(ECARD_CREATE, false);
+            showECardCreateDialog = savedInstanceState.getBoolean(E_CARD_CREATE, false);
+            eCardGetCVV = savedInstanceState.getBoolean(E_CARD_GET_CVV, false);
+            lastFourDigits = savedInstanceState.getString(LAST_FOUR_DIGITS, "");
+            eCardShowData = savedInstanceState.getBoolean(E_CARD_SHOW_DATA, false);
         } else {
             title = getIntent().getStringExtra(TITLE_KEY);
             subtitle = getIntent().getStringExtra(SUBTITLE_KEY);
@@ -93,7 +102,10 @@ public class CardActionDialogActivity extends BaseActivity {
             card = getIntent().getParcelableExtra(CARD_KEY);
             showPayButton = getIntent().getBooleanExtra(SHOW_PAY_BUTTON_KEY, false);
             isCardPay = getIntent().getBooleanExtra(IS_CARD_PAY, false);
-            showECardCreateDialog = getIntent().getBooleanExtra(ECARD_CREATE, false);
+            showECardCreateDialog = getIntent().getBooleanExtra(E_CARD_CREATE, false);
+            eCardGetCVV = getIntent().getBooleanExtra(E_CARD_GET_CVV, false);
+            lastFourDigits = getIntent().getStringExtra(LAST_FOUR_DIGITS);
+            eCardShowData = getIntent().getBooleanExtra(E_CARD_SHOW_DATA, false);
         }
         setLayouts();
         animateOpening();
@@ -153,12 +165,20 @@ public class CardActionDialogActivity extends BaseActivity {
             showPayButtonLayouts(acceptButton, ignoreButton);
         }
 
-        if(showECardCreateDialog){
+        if (showECardCreateDialog) {
             showECardCreateLayouts(acceptButton, ignoreButton);
         }
 
         if (isCardPay) {
             showCardPayLayouts(acceptButton, ignoreButton);
+        }
+
+        if (eCardGetCVV) {
+            setECardCVVLayouts(acceptButton, ignoreButton);
+        }
+
+        if(eCardShowData){
+            setECardShowDataLayouts(acceptButton, ignoreButton);
         }
 
         TextView titleTv = (TextView) findViewById(R.id.toast_title);
@@ -181,6 +201,50 @@ public class CardActionDialogActivity extends BaseActivity {
         }
     }
 
+    private void setECardShowDataLayouts(TextView acceptButton, TextView ignoreButton) {
+        final TextView cvv = (TextView) findViewById(R.id.ccv_code);
+        cvv.setVisibility(View.VISIBLE);
+        acceptButton.setText(getString(R.string.my_cards_block_card_accept));
+        ignoreButton.setText(getString(R.string.my_cards_block_card_cancel));
+        ignoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(TextUtils.isEmpty(lastFourDigits) || cvv == null || TextUtils.isEmpty(cvv.getText())){
+                    eCardFailed(getString(R.string.my_cards_failed_opperation_message));
+                }
+                new ECardShowData(lastFourDigits, cvv.getText().toString()).execute();
+            }
+        });
+    }
+
+    private void setECardCVVLayouts(TextView acceptButton, TextView ignoreButton) {
+        acceptButton.setText(getString(R.string.my_cards_block_card_accept));
+        ignoreButton.setText(getString(R.string.my_cards_block_card_cancel));
+        ignoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(TextUtils.isEmpty(lastFourDigits)){
+                    eCardFailed(getString(R.string.my_cards_failed_opperation_message));
+                }
+                new ECardGetCVV(lastFourDigits).execute();
+            }
+        });
+    }
+
     private void showECardCreateLayouts(TextView acceptButton, TextView ignoreButton) {
         final CheckBox termsAndConditions = (CheckBox) findViewById(R.id.terms_and_conditions);
         termsAndConditions.setVisibility(View.VISIBLE);
@@ -196,24 +260,13 @@ public class CardActionDialogActivity extends BaseActivity {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(termsAndConditions.isChecked()){
+                if (termsAndConditions.isChecked()) {
                     new eCardCreateTask().execute();
-                }else{
-                    eCardFailed(true);
+                } else {
+                    eCardFailed(getString(R.string.card_action_terms_and_conditions_not_accepted_error));
                 }
             }
         });
-    }
-
-    private void eCardFailed(boolean termsAndConditions) {
-        Bundle bundle = new Bundle();
-        if(termsAndConditions) {
-            bundle.putString(ERROR_MESSAGE, getString(R.string.card_action_terms_and_conditions_not_accepted_error));
-        } else {
-            bundle.putString(ERROR_MESSAGE, getString(R.string.my_cards_e_card_create_failed_text));
-        }
-        setResult(RESULT_FAILED, new Intent().putExtras(bundle));
-        finish();
     }
 
     private void showBlockLayouts(TextView acceptButton, TextView ignoreButton) {
@@ -362,7 +415,12 @@ public class CardActionDialogActivity extends BaseActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CardActionDialogActivity.this, CardPayDetailActivity.class);
+                Intent intent;
+                if(card.getECard() != null && card.getECard()) {
+                    intent = new Intent(CardActionDialogActivity.this, ECardRechargeActivity.class);
+                } else {
+                    intent = new Intent(CardActionDialogActivity.this, CardPayDetailActivity.class);
+                }
                 intent.putExtra(CardPayDetailActivity.CARD_KEY, card);
                 startActivity(intent);
                 setResult(RESULT_OK);
@@ -504,7 +562,7 @@ public class CardActionDialogActivity extends BaseActivity {
         }
     }
 
-    private class eCardCreateTask extends AsyncTask<Void, Void, Void>{
+    private class eCardCreateTask extends AsyncTask<Void, Void, Void> {
 
         private Boolean response;
         private String errorCode;
@@ -536,20 +594,133 @@ public class CardActionDialogActivity extends BaseActivity {
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
                 } else {
-                    eCardFailed(false);
+                    eCardFailed(getString(R.string.my_cards_e_card_create_failed_text));
                 }
             } else {
-                eCardSuccess();
+                createECardSuccess();
             }
         }
     }
 
-    private void eCardSuccess(){
+    private void createECardSuccess() {
         Bundle bundle = new Bundle();
         bundle.putString(SUCCESS_TITLE, getString(R.string.my_cards_e_card_create_success_title));
         bundle.putString(SUCCESS_SUBTITLE, getString(R.string.my_cards_e_card_create_success_subtitle));
         bundle.putString(SUCCESS_TEXT, getString(R.string.my_cards_e_card_create_success_text));
         setResult(RESULT_OK, new Intent().putExtras(bundle));
         finish();
+    }
+
+    private void eCardShowDataSuccess() {
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    private void eCardFailed(String errorMessage) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ERROR_MESSAGE, errorMessage);
+        setResult(RESULT_FAILED, new Intent().putExtras(bundle));
+        finish();
+    }
+
+    private class ECardGetCVV extends AsyncTask<Void, Void, Void> {
+
+        private Boolean response;
+        private String errorCode;
+        private String lastDigits;
+
+        public ECardGetCVV(String lastDigits) {
+            this.lastDigits = lastDigits;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                response = Service.getCVV(Session.getCurrentSession(getApplicationContext()).getSid(), lastDigits);
+            } catch (ServiceException e) {
+                e.printStackTrace();
+                errorCode = e.getErrorCode();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            hideLoading();
+            if (response == null || !response) {
+                //Hancdle invalid session error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if (error != null && error == ErrorMessages.INVALID_SESSION) {
+                    handleInvalidSessionError();
+                } else {
+                    eCardFailed(getString(R.string.e_card_get_cvv_error));
+                }
+            } else {
+                eCardGetCVVSuccess();
+            }
+        }
+    }
+
+    private void eCardGetCVVSuccess() {
+        Bundle bundle = new Bundle();
+        bundle.putString(SUCCESS_TITLE, getString(R.string.e_card_get_cvv_success_title));
+        bundle.putString(SUCCESS_SUBTITLE, getString(R.string.e_card_get_cvv_success_subtitle));
+        bundle.putString(SUCCESS_TEXT, getString(R.string.e_card_get_cvv_success_text));
+        setResult(RESULT_OK, new Intent().putExtras(bundle));
+        finish();
+    }
+
+    private class ECardShowData extends AsyncTask<Void, Void, Void>{
+
+        private Boolean response;
+        private String errorCode;
+        private String lastDigits;
+        private String cvv;
+
+        public ECardShowData(String lastFourDigits, String cardCvv) {
+            this.lastDigits = lastFourDigits;
+            this.cvv = cardCvv;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                response = Service.getECardData(Session.getCurrentSession(getApplicationContext()).getSid(), lastDigits, cvv);
+            } catch (ServiceException e) {
+                e.printStackTrace();
+                errorCode = e.getErrorCode();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            hideLoading();
+            if (response == null || !response) {
+                //Hancdle invalid session error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if (error != null && error == ErrorMessages.INVALID_SESSION) {
+                    handleInvalidSessionError();
+                } else {
+                    eCardFailed(getString(R.string.e_card_show_data_error));
+                }
+            } else {
+                eCardShowDataSuccess();
+            }
+        }
     }
 }

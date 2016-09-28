@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
+
+    <TextView
+        android:id="@+id/load_more_button"
+        fontPath="fonts/MyriadPro-Regular.otf"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:layout_marginLeft="@dimen/button_without_cardview_padding"
+        android:layout_marginRight="@dimen/button_without_cardview_padding"
+        android:layout_marginTop="@dimen/login_input_margin_top"
+        android:background="@drawable/white_center_red_border_selector"
+        android:gravity="center_vertical|start"
+        android:padding="15dp"
+        android:text="@string/load_more_button_text"
+        android:textColor="@color/login_button_color"
+        android:textSize="@dimen/login_input_text_size" />
+
+    <ImageView
+        android:id="@+id/pay_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/subtitle_margin"
+        android:layout_marginTop="@dimen/subtitle_margin"
+        android:scaleType="center"
+        android:src="@drawable/card_detail_recharge_card_button_selector" />
+
+</LinearLayout>

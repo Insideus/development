@@ -70,42 +70,60 @@ public class MyCardsActivity extends BaseActivity {
 
     private void blockedActivableCardDialog() {
         Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_activate_card_title));
-        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_activate_card_subtitle));
-        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_activate_card_text));
         intent.putExtra(CardActionDialogActivity.IS_CARD_NUMBER_DIALOG, true);
-        startActivityForResult(intent, OPERATION_RESULT);
-        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+        startOperationPopUp(intent, getString(R.string.my_cards_activate_card_title),
+                getString(R.string.my_cards_activate_card_subtitle),
+                getString(R.string.my_cards_activate_card_text));
     }
 
     private void enrollCardDialog(Card card) {
         Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_enrole_card_title));
-        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_enrole_card_subtitle));
-        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_enrole_card_text));
         intent.putExtra(CardActionDialogActivity.IS_CCV_DIALOG, true);
         intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
-        startActivityForResult(intent, OPERATION_RESULT);
-        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+        startOperationPopUp(intent, getString(R.string.my_cards_enrole_card_title),
+                getString(R.string.my_cards_enrole_card_subtitle),
+                getString(R.string.my_cards_enrole_card_text));
     }
 
     private void blockedCardDialog() {
         Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_blocked_call_card_title));
-        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_blocked_call__card_subtitle));
-        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_blocked_call__card_text));
         intent.putExtra(CardActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
         intent.putExtra(CardActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.login_web_password_phone));
-        startActivityForResult(intent, OPERATION_RESULT);
-        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+        startOperationPopUp(intent, getString(R.string.my_cards_blocked_call_card_title),
+                getString(R.string.my_cards_blocked_call__card_subtitle),
+                getString(R.string.my_cards_blocked_call__card_text));
     }
 
     private void createECard() {
         Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_e_card_create_title));
-        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_e_card_create_subtitle));
-        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_e_card_create_text));
-        intent.putExtra(CardActionDialogActivity.ECARD_CREATE, true);
+        intent.putExtra(CardActionDialogActivity.E_CARD_CREATE, true);
+        startOperationPopUp(intent, getString(R.string.my_cards_e_card_create_title),
+                getString(R.string.my_cards_e_card_create_subtitle),
+                getString(R.string.my_cards_e_card_create_text));
+    }
+
+    private void eCardGetCVV(String lastDigits){
+        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
+        intent.putExtra(CardActionDialogActivity.E_CARD_GET_CVV, true);
+        intent.putExtra(CardActionDialogActivity.LAST_FOUR_DIGITS, lastDigits);
+        startOperationPopUp(intent, getString(R.string.my_cards_e_card_get_cvv_title),
+                getString(R.string.my_cards_e_card_get_cvv_subtitle),
+                getString(R.string.my_cards_e_card_get_cvv_text));
+    }
+
+    private void eCardShowData(String lastDigits) {
+        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
+        intent.putExtra(CardActionDialogActivity.E_CARD_SHOW_DATA, true);
+        intent.putExtra(CardActionDialogActivity.LAST_FOUR_DIGITS, lastDigits);
+        startOperationPopUp(intent, getString(R.string.my_cards_e_card_show_data_title),
+                getString(R.string.my_cards_e_card_show_data_subtitle),
+                getString(R.string.my_cards_e_card_show_data_text));
+    }
+
+    private void startOperationPopUp(Intent intent, String title, String subtitle, String text){
+        intent.putExtra(CardActionDialogActivity.TITLE_KEY, title);
+        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, subtitle);
+        intent.putExtra(CardActionDialogActivity.TEXT_KEY, text);
         startActivityForResult(intent, OPERATION_RESULT);
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
@@ -120,7 +138,7 @@ public class MyCardsActivity extends BaseActivity {
         if(requestCode == OPERATION_RESULT) {
             if(resultCode == RESULT_OK) {
                 String successTitle;
-                String successSubtitle = "";
+                String successSubtitle;
                 String successText;
                 if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.SUCCESS_TITLE))){
                     successTitle = data.getStringExtra(CardActionDialogActivity.SUCCESS_TITLE);
@@ -247,6 +265,30 @@ public class MyCardsActivity extends BaseActivity {
             setFavouriteButtonState(holder, card, cardButtonsState);
             setActivateButtonState(holder, card, cardState, cardButtonsState);
             setBlockButtonState(holder, card, cardState, cardButtonsState);
+            setECardDataButtonState(holder, card);
+
+        }
+
+        private void setECardDataButtonState(ActualCardHolder holder, final Card card) {
+            if(card.getECard() != null && card.getECard()) {
+                holder.eCardData.setVisibility(View.VISIBLE);
+                holder.eCardData.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        eCardShowData(card.getLastDigits());
+                    }
+                });
+                holder.eCardCvv.setVisibility(View.VISIBLE);
+                holder.eCardCvv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        eCardGetCVV(card.getLastDigits());
+                    }
+                });
+            }else{
+                holder.eCardData.setVisibility(View.GONE);
+                holder.eCardCvv.setVisibility(View.GONE);
+            }
         }
 
         private void setFavouriteButtonState(ActualCardHolder holder, Card card, CardState.CardButtonsState cardButtonsState) {
@@ -436,6 +478,8 @@ public class MyCardsActivity extends BaseActivity {
             private ImageView favouriteCard;
             private ImageView checkCardData;
             private ImageView disableCard;
+            private ImageView eCardData;
+            private ImageView eCardCvv;
             private TextView name;
             private TextView number;
             private TextView date;
@@ -447,6 +491,8 @@ public class MyCardsActivity extends BaseActivity {
                 favouriteCard = (ImageView) itemView.findViewById(R.id.favourite_card);
                 checkCardData = (ImageView) itemView.findViewById(R.id.check_card_data);
                 disableCard = (ImageView) itemView.findViewById(R.id.disable_card);
+                eCardData = (ImageView) itemView.findViewById(R.id.e_card_data);
+                eCardCvv = (ImageView) itemView.findViewById(R.id.e_card_get_cvv);
                 name = (TextView) itemView.findViewById(R.id.credit_card_name);
                 number = (TextView) itemView.findViewById(R.id.credit_card_number);
                 date = (TextView) itemView.findViewById(R.id.expiration_date);
@@ -534,6 +580,13 @@ public class MyCardsActivity extends BaseActivity {
                     showServiceGenericError();
                 }
             } else {
+                //TODO: REMOVE MOCK DE E-CARD
+                if(!response.isEmpty()){
+                    CardToShowOnList cardToShowOnList = response.get(0);
+                    if(cardToShowOnList != null){
+                        ((Card)cardToShowOnList).seteCard(true);
+                    }
+                }
                 cardsAdapter.setList(addButtons(response));
             }
         }

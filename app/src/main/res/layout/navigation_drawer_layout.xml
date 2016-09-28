@@ -8,6 +8,7 @@
     android:background="@android:color/white"
     android:choiceMode="singleChoice"
     android:divider="@android:color/transparent"
+    android:clickable="true"
     android:dividerHeight="0dp"
     tools:ignore="MissingPrefix">
 

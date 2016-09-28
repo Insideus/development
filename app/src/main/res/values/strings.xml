@@ -270,9 +270,23 @@
     <string name="my_cards_e_card_create_success_title">SOLICITUD</string>
     <string name="my_cards_e_card_create_success_text">Se ha solicitado con éxito su eCard. Estará disponible en 24 hrs.</string>
     <string name="my_cards_e_card_create_failed_text">Ha ocurrido un error al solicitar su eCard. Reinténtelo nuevamente más tarde.</string>
+    <string name="my_cards_e_card_get_cvv_title">RECORDAR</string>
+    <string name="my_cards_e_card_get_cvv_subtitle">CVV</string>
+    <string name="my_cards_e_card_get_cvv_text">Se le enviará el CVV de su eCard a su celular.</string>
+    <string name="e_card_get_cvv_error">Ha ocurrido un error al enviar el CVV de su eCard.</string>
+    <string name="e_card_get_cvv_success_title">SOLICITUD</string>
+    <string name="e_card_get_cvv_success_subtitle">DE CVV</string>
+    <string name="e_card_get_cvv_success_text">Su CVV ha sido enviado.</string>
+    <string name="my_cards_e_card_show_data_title">MOSTRAR DATOS</string>
+    <string name="my_cards_e_card_show_data_subtitle">DE ECARD</string>
+    <string name="my_cards_e_card_show_data_text">Ingrese el CVV para visualizar los datos de su eCard.</string>
+    <string name="e_card_show_data_error">Ha ocurrido un error al solicitar los datos de su eCard. Reinténtelo nuevamente más tarde.</string>
+    <string name="e_card_recharge_explanation">Recuerde que puede recargar\ndesde $ 10.000 pesos\nhasta $ 50.000 pesos.</string>
+    <string name="e_card_title">E-CARD</string>
 
     <string name="card_24hr_blocked_title">TARJETA</string>
     <string name="card_24hr_blocked_subtitle">BLOQUEADA</string>
     <string name="card_24hr_blocked_text">Su tarjeta ha sido bloqueada por 24hs.</string>
+    <string name="card_pay_detail_e_card_balance_title">Saldo disponible</string>
 
 </resources>

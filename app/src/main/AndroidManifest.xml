@@ -158,6 +158,15 @@
         </activity>
 
         <activity
+            android:name=".activities.ECardRechargeActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
             android:name=".activities.NewCardActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"

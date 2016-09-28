@@ -45,7 +45,12 @@ public class MovementsByDayActivity extends MovementsShowerActivity implements C
             transactionDetails = getIntent().getParcelableExtra(CardPayDetailActivity.TRANSACTION_DETAILS);
             loadMore = getIntent().getBooleanExtra(LOAD_MORE, true);
         }
-        setToolbar(R.id.toolbar_layout, true, card.getBin().getFranchise().toUpperCase());
+        setFooterLayouts();
+        if(card != null && card.getECard() != null && card.getECard()){
+            setToolbar(R.id.toolbar_layout, true, getString(R.string.e_card_title));
+        }else {
+            setToolbar(R.id.toolbar_layout, true, card.getBin().getFranchise().toUpperCase());
+        }
         TextView cardTitle = (TextView) findViewById(R.id.card_title);
         cardTitle.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
         setRecycler();
@@ -83,6 +88,11 @@ public class MovementsByDayActivity extends MovementsShowerActivity implements C
 
     private void setBalanceData(){
         if(transactionDetails == null){
+            return;
+        }
+        if (card.getECard() != null && card.getECard()) {
+            TextView ecardBalance = (TextView) findViewById(R.id.ecard_balance);
+            ecardBalance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()));
             return;
         }
         TextView balance = (TextView) findViewById(R.id.balance);

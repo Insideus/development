@@ -17,7 +17,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setToolbar(R.id.toolbar_layout, false);
-        setButtons();
         checkForTour();
     }
 
@@ -46,16 +45,4 @@ public class MainActivity extends BaseActivity {
         startTour();
     }
 
-    private void setButtons() {
-        View logoutButton = findViewById(R.id.logout_button);
-        if (logoutButton == null) {
-            return;
-        }
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new LogoutTask().execute();
-            }
-        });
-    }
 }
