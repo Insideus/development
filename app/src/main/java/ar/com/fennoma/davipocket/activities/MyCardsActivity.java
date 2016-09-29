@@ -51,13 +51,27 @@ public class MyCardsActivity extends BaseActivity {
     }
 
     private List<CardToShowOnList> addButtons(List<CardToShowOnList> cards) {
-        ButtonCard eCard = new ButtonCard(R.drawable.add_e_card_button);
-        eCard.setType(ButtonCard.eCard);
-        cards.add(eCard);
+        //TODO: Uncomment when we have eCards to test
+        //if(!isThereAnECard(cards)){
+            ButtonCard eCard = new ButtonCard(R.drawable.add_e_card_button);
+            eCard.setType(ButtonCard.eCard);
+            cards.add(eCard);
+        //}
         ButtonCard buttonCard = new ButtonCard(R.drawable.add_portfolio_card_button);
         buttonCard.setType(ButtonCard.portfolioCard);
         cards.add(buttonCard);
         return cards;
+    }
+
+    private boolean isThereAnECard(List<CardToShowOnList> cards) {
+        for(CardToShowOnList cardToShow : cards){
+            if(cardToShow.getTypeOfCard() == CardToShowOnList.CARD){
+                if(((Card)cardToShow).getECard()){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void setRecycler() {
@@ -186,7 +200,7 @@ public class MyCardsActivity extends BaseActivity {
             }
         } else if (requestCode == EXPLAINING_DIALOG) {
             refresh = false;
-        } else if (requestCode == E_CARD_SHOW_DATA) {
+        } else if (requestCode == E_CARD_SHOW_DATA && resultCode == RESULT_OK) {
             refresh = false;
             cardsAdapter.updateCardData(selectedCard, "1234 1234 1234 1234", "11", "19");
         }
@@ -608,7 +622,7 @@ public class MyCardsActivity extends BaseActivity {
                 if(!response.isEmpty()){
                     CardToShowOnList cardToShowOnList = response.get(0);
                     if(cardToShowOnList != null){
-                        ((Card)cardToShowOnList).seteCard(true);
+                        ((Card)cardToShowOnList).setECard(true);
                     }
                 }
                 cardsAdapter.setList(addButtons(response));

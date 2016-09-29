@@ -1,6 +1,7 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -15,12 +16,15 @@ import android.widget.TextView;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Account;
+import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
 import ar.com.fennoma.davipocket.service.Service;
+import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class CardPayDetailActivity extends AbstractPayActivity {
 
@@ -74,11 +78,6 @@ public class CardPayDetailActivity extends AbstractPayActivity {
                 }
             });
         }
-    }
-
-    @Override
-    protected boolean callService(String sid, String amount) throws ServiceException {
-        return Service.payCard(Service.COMMON_CARD, sid, card.getLastDigits(), selectedAccount.getLastDigits(), amount);
     }
 
     private void setLayouts() {
@@ -222,6 +221,52 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         if (requestCode == ON_CLOSE_REQUEST && resultCode == RESULT_OK) {
             setResult(RESULT_OK);
             finish();
+        }
+    }
+
+    private class PayTask extends AsyncTask<Void, Void, Void> {
+
+        private String errorCode;
+        private String amount;
+        private boolean transactionMade;
+
+        public PayTask(String amount) {
+            this.amount = amount;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            showLoading();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                String sid = Session.getCurrentSession(getApplicationContext()).getSid();
+                transactionMade = Service.payCard(sid, card.getLastDigits(), selectedAccount.getLastDigits(), amount);;
+            } catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            hideLoading();
+            if (!transactionMade) {
+                //Hancdle invalid session error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if (error != null && error == ErrorMessages.INVALID_SESSION) {
+                    handleInvalidSessionError();
+                } else {
+                    showServiceGenericError();
+                }
+            } else {
+                DialogUtil.toast(CardPayDetailActivity.this, getString(R.string.card_pay_success_title),
+                        getString(R.string.card_pay_success_subtitle),
+                        getSuccessText(), ON_CLOSE_REQUEST);
+            }
         }
     }
 }

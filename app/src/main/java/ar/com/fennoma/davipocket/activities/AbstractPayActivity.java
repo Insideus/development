@@ -235,7 +235,7 @@ public abstract class AbstractPayActivity extends BaseActivity{
 
     }
 
-    private String getSuccessText() {
+    protected String getSuccessText() {
         String date = "";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d", Locale.getDefault());
         Date time = Calendar.getInstance().getTime();
@@ -249,51 +249,4 @@ public abstract class AbstractPayActivity extends BaseActivity{
         return getString(R.string.card_pay_success_text).concat(" ").concat(date);
     }
 
-    protected class PayTask extends AsyncTask<Void, Void, Void> {
-
-        private String errorCode;
-        private String amount;
-        private boolean transactionMade;
-
-        public PayTask(String amount) {
-            this.amount = amount;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            showLoading();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                transactionMade = callService(sid, amount);
-            } catch (ServiceException e) {
-                errorCode = e.getErrorCode();
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            hideLoading();
-            if (!transactionMade) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
-                    showServiceGenericError();
-                }
-            } else {
-                DialogUtil.toast(AbstractPayActivity.this, getString(R.string.card_pay_success_title),
-                        getString(R.string.card_pay_success_subtitle),
-                        getSuccessText(), ON_CLOSE_REQUEST);
-            }
-        }
-    }
-
-    protected abstract boolean callService(String sid, String amount) throws ServiceException;
 }

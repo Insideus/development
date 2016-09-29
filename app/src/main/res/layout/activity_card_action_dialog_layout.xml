@@ -51,7 +51,7 @@
             android:text="@string/help_dialog_title_2"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:textSize="18dp"
+            android:textSize="26dp"
             android:textAllCaps="true"
             android:layout_marginTop="-5dp"
             android:textStyle="bold"/>
@@ -110,7 +110,7 @@
             android:checked="false"
             android:gravity="center"
             android:drawablePadding="@dimen/card_pay_detail_item_drawable_padding"
-            android:drawableStart="@drawable/checkbox_selector"
+            android:drawableStart="@drawable/gray_checkbox_selector"
             android:paddingBottom="@dimen/card_pay_detail_spacing_between_items"
             android:paddingEnd="@dimen/card_pay_detail_items_horizonal_margin"
             android:paddingStart="@dimen/card_pay_detail_items_horizonal_margin"

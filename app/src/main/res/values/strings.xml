@@ -268,7 +268,7 @@
     <string name="card_action_terms_and_conditions_not_accepted_error">Debe aceptar los Términos y Condiciones para solicitar una eCard</string>
     <string name="my_cards_e_card_create_success_subtitle">DE ECARD</string>
     <string name="my_cards_e_card_create_success_title">SOLICITUD</string>
-    <string name="my_cards_e_card_create_success_text">Se ha solicitado con éxito su eCard. Estará disponible en 24 hrs.</string>
+    <string name="my_cards_e_card_create_success_text">Se ha solicitado con éxito su eCard.\nEstará disponible en 24 hrs.</string>
     <string name="my_cards_e_card_create_failed_text">Ha ocurrido un error al solicitar su eCard. Reinténtelo nuevamente más tarde.</string>
     <string name="my_cards_e_card_get_cvv_title">RECORDAR</string>
     <string name="my_cards_e_card_get_cvv_subtitle">CVV</string>

@@ -82,10 +82,6 @@ public class Service {
     private static final String E_CARD_SHOW_DATA = "/card/show";
     private static final String RECHARGE_E_CARD = "/card/recharge";
 
-    public static final String ECARD = "ecard";
-    public static final String COMMON_CARD = "common card";
-
-
     public static JSONObject getPersonIdTypes() {
         HttpURLConnection urlConnection = null;
         JSONObject response = null;
@@ -1276,15 +1272,11 @@ public class Service {
         return new User();
     }
 
-    public static boolean payCard(String kindOfCard, String sid, String cardLastDigits, String accountLastDigits, String amount) throws ServiceException {
+    public static boolean payCard(String sid, String cardLastDigits, String accountLastDigits, String amount) throws ServiceException {
         boolean response = false;
         HttpURLConnection urlConnection = null;
         try {
-            if(kindOfCard.equals(ECARD)){
-                urlConnection = getHttpURLConnectionWithHeader(RECHARGE_E_CARD, sid);
-            }else if(kindOfCard.equals(COMMON_CARD)){
-                urlConnection = getHttpURLConnectionWithHeader(PAY_CARD, sid);
-            }
+            urlConnection = getHttpURLConnectionWithHeader(PAY_CARD, sid);
             urlConnection.setReadTimeout(10000);
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
@@ -1493,6 +1485,56 @@ public class Service {
             params.add(lastDigitsParam);
             Pair<String, String> cvvParam = new Pair("csv", cvv);
             params.add(cvvParam);
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if (json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static boolean rechargeECard(String sid, String lastDigits, String accountLastDigits, String amount) throws ServiceException {
+        boolean response = false;
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(RECHARGE_E_CARD, sid);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> lastDigitsParam = new Pair("last_digits", lastDigits);
+            params.add(lastDigitsParam);
+            Pair<String, String> accountNumberParam = new Pair("account_number", accountLastDigits);
+            params.add(accountNumberParam);
+            Pair<String, String> amountParam = new Pair("amount", amount);
+            params.add(amountParam);
 
             writer.write(getQuery(params));
             writer.flush();

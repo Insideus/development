@@ -131,6 +131,11 @@ public class Card implements Parcelable, CardToShowOnList {
             if(json.has("message")) {
                 card.setMessage(json.getString("message"));
             }
+            if(json.has("ecard")){
+                card.setECard(json.getBoolean("ecard"));
+            } else {
+                card.setECard(false);
+            }
             JSONObject jsonBin = json.getJSONObject("bin");
             CardBin bin = CardBin.fromJson(jsonBin);
             card.setBin(bin);
@@ -150,7 +155,7 @@ public class Card implements Parcelable, CardToShowOnList {
         return eCard;
     }
 
-    public void seteCard(Boolean eCard) {
+    public void setECard(Boolean eCard) {
         this.eCard = eCard;
     }
 
