@@ -36,7 +36,9 @@ public class MyCardsActivity extends BaseActivity {
 
     private static final int EXPLAINING_DIALOG = 11;
     private static final int OPERATION_RESULT = 12;
+    private static final int E_CARD_SHOW_DATA = 13;
     private CardsAdapter cardsAdapter;
+    private int selectedCard = -1;
     private boolean refresh = false;
 
     @Override
@@ -115,9 +117,11 @@ public class MyCardsActivity extends BaseActivity {
         Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
         intent.putExtra(CardActionDialogActivity.E_CARD_SHOW_DATA, true);
         intent.putExtra(CardActionDialogActivity.LAST_FOUR_DIGITS, lastDigits);
-        startOperationPopUp(intent, getString(R.string.my_cards_e_card_show_data_title),
-                getString(R.string.my_cards_e_card_show_data_subtitle),
-                getString(R.string.my_cards_e_card_show_data_text));
+        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_e_card_show_data_title));
+        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_e_card_show_data_subtitle));
+        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_e_card_show_data_text));
+        startActivityForResult(intent, E_CARD_SHOW_DATA);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
     private void startOperationPopUp(Intent intent, String title, String subtitle, String text){
@@ -182,6 +186,9 @@ public class MyCardsActivity extends BaseActivity {
             }
         } else if (requestCode == EXPLAINING_DIALOG) {
             refresh = false;
+        } else if (requestCode == E_CARD_SHOW_DATA) {
+            refresh = false;
+            cardsAdapter.updateCardData(selectedCard, "1234 1234 1234 1234", "11", "19");
         }
     }
 
@@ -247,8 +254,16 @@ public class MyCardsActivity extends BaseActivity {
                 if (card.getBin() != null) {
                     ImageUtils.loadCardImage(MyCardsActivity.this, holder.card, card.getBin().getImage());
                 }
-                holder.number.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
-                holder.date.setText(CardsUtils.getMaskedExpirationDate());
+                if(TextUtils.isEmpty(card.getFullNumber())) {
+                    holder.number.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
+                }else{
+                    holder.number.setText(CardsUtils.formatFullNumber(card.getFullNumber()));
+                }
+                if(TextUtils.isEmpty(card.getExpirationMonth()) || TextUtils.isEmpty(card.getExpirationYear())) {
+                    holder.date.setText(CardsUtils.getMaskedExpirationDate());
+                }else{
+                    holder.date.setText(String.format("%s%s%s", card.getExpirationMonth(), " / ", card.getExpirationYear()));
+                }
                 holder.name.setText(card.getOwnerName());
                 holder.card.setOnClickListener(getCardOnClickListener(card));
 
@@ -269,13 +284,14 @@ public class MyCardsActivity extends BaseActivity {
 
         }
 
-        private void setECardDataButtonState(ActualCardHolder holder, final Card card) {
+        private void setECardDataButtonState(final ActualCardHolder holder, final Card card) {
             if(card.getECard() != null && card.getECard()) {
                 holder.eCardData.setVisibility(View.VISIBLE);
                 holder.eCardData.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         eCardShowData(card.getLastDigits());
+                        selectedCard = holder.getAdapterPosition();
                     }
                 });
                 holder.eCardCvv.setVisibility(View.VISIBLE);
@@ -459,6 +475,14 @@ public class MyCardsActivity extends BaseActivity {
         public void setList(List<CardToShowOnList> cards) {
             this.cards = cards;
             notifyDataSetChanged();
+        }
+
+        public void updateCardData(int selectedCard, String cardNumber, String expirationMonth, String expirationYear) {
+            Card card = (Card) cards.get(selectedCard);
+            card.setFullNumber(cardNumber);
+            card.setExpirationMonth(expirationMonth);
+            card.setExpirationYear(expirationYear);
+            notifyItemChanged(selectedCard);
         }
 
         private class ButtonCardHolder extends RecyclerView.ViewHolder {

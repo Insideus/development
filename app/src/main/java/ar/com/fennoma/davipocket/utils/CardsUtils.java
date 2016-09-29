@@ -12,6 +12,10 @@ public class CardsUtils {
         return NUMBER_MASK.concat(number);
     }
 
+    public static String formatFullNumber(String fullNumber){
+        return fullNumber.replace(" ", "    ");
+    }
+
     public static String getMaskedExpirationDate() {
         return DATE_MASK;
     }

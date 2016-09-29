@@ -69,7 +69,7 @@ public abstract class AbstractPayActivity extends BaseActivity{
         return true;
     }
 
-    private void showErrorDialog(String error){
+    protected void showErrorDialog(String error){
         DialogUtil.toast(this, getString(R.string.generic_service_error_title), "",
                 error);
     }

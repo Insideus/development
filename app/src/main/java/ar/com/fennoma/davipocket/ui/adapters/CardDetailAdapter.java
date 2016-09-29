@@ -261,10 +261,15 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                     holder.payButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(activity, CardPayDetailActivity.class);
+                            Intent intent;
                             Bundle bundle = new Bundle();
-                            bundle.putParcelable(CardDetailActivity.CARD_KEY, owner.getCard());
-                            bundle.putParcelable(CardPayDetailActivity.TRANSACTION_DETAILS, owner.getTransactionDetails());
+                            bundle.putParcelable(AbstractPayActivity.CARD_KEY, owner.getCard());
+                            if(owner.getCard().getECard() != null && owner.getCard().getECard()) {
+                                intent = new Intent(activity, ECardRechargeActivity.class);
+                            }else {
+                                intent = new Intent(activity, CardPayDetailActivity.class);
+                                bundle.putParcelable(CardPayDetailActivity.TRANSACTION_DETAILS, owner.getTransactionDetails());
+                            }
                             activity.startActivityForResult(intent.putExtras(bundle), CardPayDetailActivity.PAY_REQUEST);
                         }
                     });

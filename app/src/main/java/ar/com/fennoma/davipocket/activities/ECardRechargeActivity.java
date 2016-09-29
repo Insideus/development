@@ -13,6 +13,7 @@ import android.widget.TextView;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
+import ar.com.fennoma.davipocket.utils.CardsUtils;
 
 public class ECardRechargeActivity extends AbstractPayActivity {
 
@@ -29,6 +30,8 @@ public class ECardRechargeActivity extends AbstractPayActivity {
         }
         priceIndicator = getString(R.string.card_detail_item_transaction_price_indicator);
         setToolbar(R.id.toolbar_layout, true, getString(R.string.e_card_title));
+        TextView cardTitle = (TextView) findViewById(R.id.card_title);
+        cardTitle.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
         setLayouts();
         new GetCardPayDetail().execute();
     }
@@ -90,7 +93,7 @@ public class ECardRechargeActivity extends AbstractPayActivity {
             @Override
             public void onClick(View v) {
                 String amount = getAmount();
-                if (validateAmount(amount)) {
+                if (validateAmount(amount) && isAmountOnRange(amount)) {
                     Intent intent = new Intent(ECardRechargeActivity.this, CardActionDialogActivity.class);
                     intent.putExtra(CardActionDialogActivity.TITLE_KEY, "CONFIRMAR PAGO");
                     intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, "");
@@ -102,6 +105,15 @@ public class ECardRechargeActivity extends AbstractPayActivity {
                 }
             }
         });
+    }
+
+    private boolean isAmountOnRange(String amount) {
+        if(Integer.valueOf(amount) < Integer.valueOf(getString(R.string.e_card_recharge_min_value))
+                || Integer.valueOf(amount) > Integer.valueOf(getString(R.string.e_card_recharge_max_value))){
+            showErrorDialog(getString(R.string.e_card_recharge_explanation));
+            return false;
+        }
+        return true;
     }
 
     @Override

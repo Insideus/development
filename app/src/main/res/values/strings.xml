@@ -288,5 +288,7 @@
     <string name="card_24hr_blocked_subtitle">BLOQUEADA</string>
     <string name="card_24hr_blocked_text">Su tarjeta ha sido bloqueada por 24hs.</string>
     <string name="card_pay_detail_e_card_balance_title">Saldo disponible</string>
+    <string name="e_card_recharge_min_value">10000</string>
+    <string name="e_card_recharge_max_value">50000</string>
 
 </resources>

@@ -21,6 +21,9 @@ public class Card implements Parcelable, CardToShowOnList {
     private String message;
     private Boolean activate;
     private CardBin bin;
+    private String fullNumber;
+    private String expirationMonth;
+    private String expirationYear;
 
     public Card() {
 
@@ -151,6 +154,30 @@ public class Card implements Parcelable, CardToShowOnList {
         this.eCard = eCard;
     }
 
+    public String getFullNumber() {
+        return fullNumber;
+    }
+
+    public void setFullNumber(String fullNumber) {
+        this.fullNumber = fullNumber;
+    }
+
+    public String getExpirationMonth() {
+        return expirationMonth;
+    }
+
+    public void setExpirationMonth(String expirationMonth) {
+        this.expirationMonth = expirationMonth;
+    }
+
+    public String getExpirationYear() {
+        return expirationYear;
+    }
+
+    public void setExpirationYear(String expirationYear) {
+        this.expirationYear = expirationYear;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -168,6 +195,9 @@ public class Card implements Parcelable, CardToShowOnList {
         dest.writeString(this.message);
         dest.writeValue(this.activate);
         dest.writeParcelable(this.bin, flags);
+        dest.writeString(this.fullNumber);
+        dest.writeString(this.expirationMonth);
+        dest.writeString(this.expirationYear);
     }
 
     protected Card(Parcel in) {
@@ -181,6 +211,9 @@ public class Card implements Parcelable, CardToShowOnList {
         this.message = in.readString();
         this.activate = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.bin = in.readParcelable(CardBin.class.getClassLoader());
+        this.fullNumber = in.readString();
+        this.expirationMonth = in.readString();
+        this.expirationYear = in.readString();
     }
 
     public static final Creator<Card> CREATOR = new Creator<Card>() {
