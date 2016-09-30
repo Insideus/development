@@ -1272,7 +1272,7 @@ public class Service {
         return new User();
     }
 
-    public static boolean payCard(String sid, String cardLastDigits, String accountLastDigits, String amount) throws ServiceException {
+    public static boolean payCard(String sid, String cardLastDigits, String accountLastDigits, String amount, Boolean isUsdPayment) throws ServiceException {
         boolean response = false;
         HttpURLConnection urlConnection = null;
         try {
@@ -1293,6 +1293,10 @@ public class Service {
             params.add(accountNumberParam);
             Pair<String, String> amountParam = new Pair("amount", amount);
             params.add(amountParam);
+            if(isUsdPayment) {
+                Pair<String, String> usdParam = new Pair("is_usd_payment", isUsdPayment.toString());
+                params.add(usdParam);
+            }
 
             writer.write(getQuery(params));
             writer.flush();

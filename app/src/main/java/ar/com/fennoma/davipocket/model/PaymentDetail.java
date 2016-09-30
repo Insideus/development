@@ -3,11 +3,7 @@ package ar.com.fennoma.davipocket.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class PaymentDetail {
 
@@ -17,6 +13,8 @@ public class PaymentDetail {
     private String availableAmount;
     private String cardLastDigits;
     private List<Account> accounts;
+    private String minimumPaymentUsd;
+    private String totalUsd;
 
     public static PaymentDetail fromJsonObject(JSONObject json) {
         PaymentDetail detail = new PaymentDetail();
@@ -42,6 +40,12 @@ public class PaymentDetail {
             }
             if(json.has("last_digits")){
                 detail.setCardLastDigits(json.getString("last_digits"));
+            }
+            if (json.has("minimum_payment_usd")) {
+                detail.setMinimumPaymentUsd(json.getString("minimum_payment_usd"));
+            }
+            if (json.has("total_usd")) {
+                detail.setTotalUsd(json.getString("total_usd"));
             }
             if(json.has("accounts")){
                 detail.setAccounts(Account.fromJSONArray(json.getJSONArray("accounts")));
@@ -100,4 +104,21 @@ public class PaymentDetail {
     public void setAvailableAmount(String availableAmount) {
         this.availableAmount = availableAmount;
     }
+
+    public String getMinimumPaymentUsd() {
+        return minimumPaymentUsd;
+    }
+
+    public void setMinimumPaymentUsd(String minimumPaymentUsd) {
+        this.minimumPaymentUsd = minimumPaymentUsd;
+    }
+
+    public String getTotalUsd() {
+        return totalUsd;
+    }
+
+    public void setTotalUsd(String totalUsd) {
+        this.totalUsd = totalUsd;
+    }
+
 }

@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.Account;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
@@ -30,6 +29,8 @@ public class CardPayDetailActivity extends AbstractPayActivity {
 
     public static final String TRANSACTION_DETAILS = "transactions details";
 
+    private CheckBox totalPaymentUsd;
+    private CheckBox minimumPaymentUsd;
     private CheckBox totalPayment;
     private CheckBox minimumPayment;
     private CheckBox otherPayment;
@@ -62,6 +63,11 @@ public class CardPayDetailActivity extends AbstractPayActivity {
     }
 
     protected void setLayoutData() {
+        TextView totalPaymentLabelUsd = (TextView) findViewById(R.id.total_payment_label_usd);
+        TextView minimumPaymentLabelUsd = (TextView) findViewById(R.id.minimum_payment_label_usd);
+        totalPaymentLabelUsd.setText(String.format("$%s", CurrencyUtils.getCurrencyForString(detail.getTotalUsd())));
+        minimumPaymentLabelUsd.setText(String.format("$%s", CurrencyUtils.getCurrencyForString(detail.getMinimumPaymentUsd())));
+
         TextView totalPaymentLabel = (TextView) findViewById(R.id.total_payment_label);
         TextView minimumPaymentLabel = (TextView) findViewById(R.id.minimum_payment_label);
         totalPaymentLabel.setText(String.format("$%s", CurrencyUtils.getCurrencyForString(detail.getTotal())));
@@ -82,33 +88,50 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         setBottomLayouts();
         selectedAccountText = (TextView) findViewById(R.id.account_spinner);
         TextView cardTitle = (TextView) findViewById(R.id.card_title);
+
+        totalPaymentUsd = (CheckBox) findViewById(R.id.total_payment_usd);
+        minimumPaymentUsd = (CheckBox) findViewById(R.id.minimum_payment_usd);
         totalPayment = (CheckBox) findViewById(R.id.total_payment);
         minimumPayment = (CheckBox) findViewById(R.id.minimum_payment);
         otherPayment = (CheckBox) findViewById(R.id.other_payment);
+
         final View otherPaymentContainer = findViewById(R.id.other_payment_container);
         otherPaymentValue = (EditText) findViewById(R.id.other_payment_value);
+
         View payButton = findViewById(R.id.pay_button);
         if (totalPayment == null || minimumPayment == null || otherPayment == null || otherPaymentContainer == null
                 || otherPaymentValue == null || cardTitle == null || payButton == null) {
             return;
         }
         cardTitle.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
+        totalPaymentUsd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unselectCheckboxes(minimumPayment, otherPayment, totalPayment, minimumPaymentUsd);
+            }
+        });
+        minimumPaymentUsd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unselectCheckboxes(totalPayment, otherPayment, totalPaymentUsd, minimumPayment);
+            }
+        });
         totalPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                unselectCheckboxes(minimumPayment, otherPayment);
+                unselectCheckboxes(minimumPayment, otherPayment, totalPaymentUsd, minimumPaymentUsd);
             }
         });
         minimumPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                unselectCheckboxes(totalPayment, otherPayment);
+                unselectCheckboxes(totalPayment, otherPayment, totalPaymentUsd, minimumPaymentUsd);
             }
         });
         otherPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                unselectCheckboxes(totalPayment, minimumPayment);
+                unselectCheckboxes(totalPayment, minimumPayment, totalPaymentUsd, minimumPaymentUsd);
             }
         });
         otherPayment.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -166,6 +189,16 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         });
     }
 
+    private Boolean isUsdPayment() {
+        if (minimumPaymentUsd.isChecked()) {
+            return true;
+        }
+        if (totalPaymentUsd.isChecked()) {
+            return true;
+        }
+        return false;
+    }
+
     protected String getPayConfirmationText(String amount) {
         return getString(R.string.card_pay_confirmation_text_1).concat(" ").concat(card.getLastDigits()).concat(" ")
                 .concat(getString(R.string.card_pay_confirmation_text_2)).concat(" ").concat(selectedAccount.getName())
@@ -179,6 +212,10 @@ public class CardPayDetailActivity extends AbstractPayActivity {
             return detail.getTotal();
         } else if (minimumPayment.isChecked()) {
             return detail.getMinimumPayment();
+        } else if (minimumPaymentUsd.isChecked()) {
+            return detail.getMinimumPaymentUsd();
+        } else if (totalPaymentUsd.isChecked()) {
+            return detail.getTotalUsd();
         } else {
             String value = otherPaymentValue.getText().toString();
             value = value.replace(priceIndicator, "");
@@ -213,9 +250,11 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         }
     }
 
-    private void unselectCheckboxes(CheckBox checkBox1, CheckBox checkBox2) {
+    private void unselectCheckboxes(CheckBox checkBox1, CheckBox checkBox2, CheckBox checkBox3, CheckBox checkBox4) {
         checkBox1.setChecked(false);
         checkBox2.setChecked(false);
+        checkBox3.setChecked(false);
+        checkBox4.setChecked(false);
     }
 
     @Override
@@ -249,7 +288,8 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         protected Void doInBackground(Void... params) {
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                transactionMade = Service.payCard(sid, card.getLastDigits(), selectedAccount.getLastDigits(), amount);;
+                transactionMade = Service.payCard(sid, card.getLastDigits(), selectedAccount.getLastDigits(),
+                        amount, isUsdPayment());;
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 e.printStackTrace();

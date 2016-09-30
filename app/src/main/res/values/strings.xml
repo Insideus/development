@@ -173,6 +173,8 @@
     <string name="card_pay_detail_mocked_total_payment">$ 2.314.200</string>
     <string name="card_pay_detail_total_payment_title">Valor Total</string>
     <string name="card_pay_detail_minimum_payment_title">Pago mínimo</string>
+    <string name="card_pay_detail_total_payment_title_usd">Valor Total (USD)</string>
+    <string name="card_pay_detail_minimum_payment_title_usd">Pago mínimo (USD)</string>
     <string name="card_pay_detail_mocked_minimum_payment">$ 843.000</string>
     <string name="card_pay_detail_other_payment_title">Otro valor</string>
     <string name="card_pay_detail_payment_date_title">Fecha pago</string>
