@@ -34,7 +34,7 @@ public class Service {
 
     public final static String IMAGE_BASE_URL = "http://davipocket-dev.paymentez.com";
     //private static String BASE_URL = "http://davipocket-stg.paymentez.com/api";
-    private final static String BASE_URL = "http://davipocket-dev.paymentez.com/api";
+    private final static String BASE_URL = "http://davipocket-dev.paymentez.com/app_dev.php/api";
     //private static String BASE_URL = "http://davivienda.fennoma.com.ar/api";
     private final static int SUCCESS_CODE = 200;
     private final static String DATA_TAG = "data";
@@ -69,6 +69,8 @@ public class Service {
     private final static String SET_USER_INTERESTS = "/user/categories_of_interest";
     private final static String GET_USER_CARDS = "/user/cards";
     private final static String GET_USER = "/user";
+    private final static String ACCEPT_NEW_DEVICE = "/user/accept_new_device";
+    private final static String RESEND_NEW_DEVICE_OTP = "/user/generate_otp_new_device";
 
     //Card services
     private final static String ACTIVATE_CARD = "/card/activate";
@@ -235,6 +237,113 @@ public class Service {
             }
         }
         return loginResponse;
+    }
+
+    public static LoginResponse acceptNewDevice(String newDeviceToken, String pin, String todo1) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        LoginResponse loginResponse = null;
+        try {
+            urlConnection = getHttpURLConnection(ACCEPT_NEW_DEVICE);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> deviceToken = new Pair("new_device_token", newDeviceToken);
+            params.add(deviceToken);
+            if(pin != null && pin.length() > 0) {
+                Pair<String, String> pinParam = new Pair("otp_pin", pin);
+                params.add(pinParam);
+            }
+            Pair<String, String> todo1Param = new Pair("todo1", todo1);
+            params.add(todo1Param);
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                if (json.has("error") && !json.getBoolean("error")) {
+                    loginResponse = LoginResponse.fromJson(responseJson);
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    String additionalData = null;
+                    if (responseJson.has(METHOD_TAG)) {
+                        additionalData = responseJson.getString(METHOD_TAG);
+                    }
+                    if (responseJson.has(PASSWORD_TOKEN_TAG)) {
+                        additionalData = responseJson.getString(PASSWORD_TOKEN_TAG);
+                    }
+                    if (responseJson.has(NEW_DEVICE_TOKEN_TAG)) {
+                        additionalData = responseJson.getString(NEW_DEVICE_TOKEN_TAG);
+                    }
+                    throw new ServiceException(errorCode, additionalData);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return loginResponse;
+    }
+
+    public static Boolean resendNewDeviceValidationCode(String newDeviceToken) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        Boolean response = null;
+        try {
+            urlConnection = getHttpURLConnection(RESEND_NEW_DEVICE_OTP);
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> deviceToken = new Pair("new_device_token", newDeviceToken);
+            params.add(deviceToken);
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if (json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
     }
 
     public static PaymentDetail balanceDetail(String sid, String fourLastDigits, String todo1) throws ServiceException {

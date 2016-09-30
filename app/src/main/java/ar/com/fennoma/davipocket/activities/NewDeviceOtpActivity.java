@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.activities;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,6 +31,7 @@ public class NewDeviceOtpActivity extends LoginBaseActivity {
         } else {
             newDeviceToken = getIntent().getStringExtra(NEW_DEVICE_TOKEN);
         }
+        new ResendOtpSmsTask().execute();
         findCodeField();
         setButtons();
     }
@@ -50,8 +50,7 @@ public class NewDeviceOtpActivity extends LoginBaseActivity {
             @Override
             public void onClick(View v) {
                 if(code != null && !TextUtils.isEmpty(code.getText())) {
-                    //startActivity(new Intent(PasswordConfirmationActivity.this, ActivatedPasswordActivity.class));
-                    new ValidateOtpTask().execute(code.getText().toString());
+                    new RegisterDeviceTask().execute(newDeviceToken, code.getText().toString());
                 } else {
                     DialogUtil.toast(NewDeviceOtpActivity.this,
                             getString(R.string.input_data_error_generic_title),
@@ -68,9 +67,17 @@ public class NewDeviceOtpActivity extends LoginBaseActivity {
         });
     }
 
-    public class ValidateOtpTask extends AsyncTask<String, Void, String> {
+    private void showOtpValidationError() {
+        DialogUtil.toast(this,
+                getString(R.string.new_device_otp_validation_error_title),
+                getString(R.string.new_device_otp_validation_error_subtitle),
+                getString(R.string.new_device_otp_validation_error_text));
+    }
+
+    private class ResendOtpSmsTask extends AsyncTask<Void, Void, Boolean> {
 
         String errorCode;
+        String additionalData;
 
         @Override
         protected void onPreExecute() {
@@ -79,59 +86,31 @@ public class NewDeviceOtpActivity extends LoginBaseActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
-            String response = null;
+        protected Boolean doInBackground(Void... params) {
+            Boolean success = null;
             try {
-                response = Service.validateOtp(params[0], params[1], params[2]);
+                success = Service.resendNewDeviceValidationCode(newDeviceToken);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
+                additionalData = e.getAdditionalData();
             }
-            return response;
+            return success;
         }
 
         @Override
-        protected void onPostExecute(String response) {
+        protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
             if(response == null && errorCode != null) {
                 //Expected error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, "");
-            } else if(response == null && errorCode == null) {
+                processErrorAndContinue(error, additionalData);
+            } else if(response == null) {
                 //Service error.
-                showOtpValidationError();
-            } else {
-                //Success.
-                //Change Password Session Token.
-                showOtpValidationSuccessDialog();
+                showServiceGenericError();
             }
             hideLoading();
         }
+
     }
 
-    private void showOtpValidationSuccessDialog() {
-        DialogUtil.toastWithResult(this, NEW_DEVICE_DIALOG, getString(R.string.new_device_otp_validation_success_title),
-                getString(R.string.new_device_otp_validation_success_subtitle),
-                getString(R.string.new_device_otp_validation_success_text));
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == NEW_DEVICE_DIALOG){
-            //TODO: cerrar activity calculo
-        }
-    }
-
-    private void showOtpValidationError() {
-        DialogUtil.toastWithResult(this, NEW_DEVICE_DIALOG, getString(R.string.new_device_otp_validation_error_title),
-                getString(R.string.new_device_otp_validation_error_subtitle),
-                getString(R.string.new_device_otp_validation_error_text));
-    }
-
-    private class ResendOtpSmsTask extends AsyncTask<Void, Void, Void>{
-        @Override
-        protected Void doInBackground(Void... params) {
-            return null;
-        }
-    }
 }

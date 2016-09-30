@@ -339,8 +339,10 @@ public class LoginBaseActivity extends BaseActivity {
                     this.additionalParam = additionalParam;
                     Intent setVirtualPasswordIntent = new Intent(this, AssignPasswordRecommendationActivity.class);
                     setVirtualPasswordIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    setVirtualPasswordIntent.putExtra(AssignPasswordRecommendationActivity.ID_TYPE_KEY, String.valueOf(selectedIdType.getId()));
-                    setVirtualPasswordIntent.putExtra(AssignPasswordRecommendationActivity.ID_NUMBER_KEY, personIdNumber.getText().toString());
+                    setVirtualPasswordIntent.putExtra(AssignPasswordRecommendationActivity.ID_TYPE_KEY,
+                            String.valueOf(selectedIdType.getId()));
+                    setVirtualPasswordIntent.putExtra(AssignPasswordRecommendationActivity.ID_NUMBER_KEY,
+                            personIdNumber.getText().toString());
                     setVirtualPasswordIntent.putExtra(AssignPasswordRecommendationActivity.PRODUCT_CODE_KEY, additionalParam);
                     startActivity(setVirtualPasswordIntent);
                     break;
@@ -360,48 +362,18 @@ public class LoginBaseActivity extends BaseActivity {
                     startActivityForResult(toastOtpExpiredIntent, EXPIRED_OTP_PASSWORD_TOAST);
                     break;
                 case NEW_DEVICE:
-                    /*
-                    Intent toastOtpExpiredIntent = new Intent(this, ToastDialogActivity.class);
-                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.TITLE_KEY, getString(R.string.generic_service_error_title));
-                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.SUBTITLE_KEY, "");
-                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.TEXT_KEY, getString(R.string.expired_password_error_message));
-                    startActivityForResult(toastOtpExpiredIntent, EXPIRED_OTP_PASSWORD_TOAST);
-                    */
-                    //Toast.makeText(this, "New device.", Toast.LENGTH_LONG).show();
                     this.additionalParam = additionalParam;
                     newDeviceDetectedDialog(ErrorMessages.NEW_DEVICE);
                     break;
                 case NEW_DEVICE_EXISTING_DEVICE:
-                    /*
-                    Intent toastOtpExpiredIntent = new Intent(this, ToastDialogActivity.class);
-                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.TITLE_KEY, getString(R.string.generic_service_error_title));
-                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.SUBTITLE_KEY, "");
-                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.TEXT_KEY, getString(R.string.expired_password_error_message));
-                    startActivityForResult(toastOtpExpiredIntent, EXPIRED_OTP_PASSWORD_TOAST);
-                    */
-                    //Toast.makeText(this, "New device Existing Device", Toast.LENGTH_LONG).show();
                     this.additionalParam = additionalParam;
                     newDeviceDetectedDialog(ErrorMessages.NEW_DEVICE_EXISTING_DEVICE);
                     break;
                 case NEW_DEVICE_OTP_VALIDATION_NEEDED:
-                    /*
-                    Intent toastOtpExpiredIntent = new Intent(this, ToastDialogActivity.class);
-                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.TITLE_KEY, getString(R.string.generic_service_error_title));
-                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.SUBTITLE_KEY, "");
-                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.TEXT_KEY, getString(R.string.expired_password_error_message));
-                    startActivityForResult(toastOtpExpiredIntent, EXPIRED_OTP_PASSWORD_TOAST);
-                    */
                     this.additionalParam = additionalParam;
                     newDeviceDetectedDialog(ErrorMessages.NEW_DEVICE_OTP_VALIDATION_NEEDED);
                     break;
                 case NEW_DEVICE_EXISTING_DEVICE_OTP_VALIDATION_NEEDED:
-                    /*
-                    Intent toastOtpExpiredIntent = new Intent(this, ToastDialogActivity.class);
-                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.TITLE_KEY, getString(R.string.generic_service_error_title));
-                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.SUBTITLE_KEY, "");
-                    toastOtpExpiredIntent.putExtra(ToastDialogActivity.TEXT_KEY, getString(R.string.expired_password_error_message));
-                    startActivityForResult(toastOtpExpiredIntent, EXPIRED_OTP_PASSWORD_TOAST);
-                    */
                     this.additionalParam = additionalParam;
                     newDeviceDetectedDialog(ErrorMessages.NEW_DEVICE_EXISTING_DEVICE_OTP_VALIDATION_NEEDED);
                     break;
@@ -443,11 +415,15 @@ public class LoginBaseActivity extends BaseActivity {
             startActivity(expiredOtpPasswordIntent);
         }
         if(requestCode == NEW_DEVICE_DETECTED && resultCode == RESULT_OK){
-
+            registerDevice();
         }
         if(requestCode == NEW_DEVICE_OTP_VALIDATION && resultCode == RESULT_OK){
             goToNewDeviceOTPScreen();
         }
+    }
+
+    private void registerDevice() {
+        new RegisterDeviceTask().execute(additionalParam, null);
     }
 
     private void showErrorAndGoToLoginActivity() {
@@ -488,10 +464,52 @@ public class LoginBaseActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    private class NewDeviceDetectedTask extends AsyncTask<Void, Void, Void>{
+    public class RegisterDeviceTask extends AsyncTask<String, Void, LoginResponse> {
+
+        String errorCode;
+        String additionalData;
+        String pin;
+
         @Override
-        protected Void doInBackground(Void... params) {
-            return null;
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected LoginResponse doInBackground(String... params) {
+            LoginResponse response = null;
+            try {
+                pin = params[1];
+                response = Service.acceptNewDevice(params[0], pin, getTodo1Data());
+            }  catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+                additionalData = e.getAdditionalData();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(LoginResponse response) {
+            super.onPostExecute(response);
+            if(response == null && errorCode != null) {
+                //Expected error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                processErrorAndContinue(error, additionalData);
+            } else if(response == null && errorCode == null) {
+                //Service error.
+                showServiceGenericError();
+            } else {
+                //Success login.
+                LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
+                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid());
+                if(step == null) {
+                    step = LoginSteps.REGISTRATION_COMPLETED;
+                }
+                new GetUserTask(response.getSid()).execute();
+                goToRegistrationStep(step);
+            }
+            hideLoading();
         }
     }
 
