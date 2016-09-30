@@ -175,6 +175,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
             @Override
             public void onClick(View v) {
                 String amount = getAmount();
+                //amount = "100";
                 if (validateAmount(amount)) {
                     Intent intent = new Intent(CardPayDetailActivity.this, CardActionDialogActivity.class);
                     intent.putExtra(CardActionDialogActivity.TITLE_KEY, "CONFIRMAR");

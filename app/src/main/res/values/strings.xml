@@ -299,6 +299,7 @@
     <string name="new_device_detected_title">NUEVO</string>
     <string name="new_device_detected_subtitle">DISPOSITIVO</string>
     <string name="new_device_detected_text">Este dispositivo quedará asociado a su cuenta. ¿Desea continuar?</string>
+    <string name="new_device_existing_device_detected_text">“Este dispositivo quedará asociado a su cuenta. El dispositivo anterior se desasociará de su cuenta. ¿Desea continuar?</string>
     <string name="otp_confirmation_subtitle_hint">Ingrese el código de confirmación que hemos\nenviado a su celular vía SMS</string>
     <string name="new_device_otp_validation_error_title">ERROR</string>
     <string name="new_device_otp_validation_error_subtitle">VALIDACIÓN</string>

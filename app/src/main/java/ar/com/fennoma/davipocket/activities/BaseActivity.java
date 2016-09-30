@@ -437,7 +437,6 @@ public class BaseActivity extends AppCompatActivity {
         Intent loginIntent = new Intent(this, LoginActivity.class);
         loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
-
         finish();
     }
 

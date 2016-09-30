@@ -223,7 +223,8 @@ public class CardActionDialogActivity extends BaseActivity {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new NewDeviceDetectedTask().execute();
+                setResult(RESULT_OK);
+                finish();
             }
         });
     }
@@ -753,10 +754,4 @@ public class CardActionDialogActivity extends BaseActivity {
         }
     }
 
-    private class NewDeviceDetectedTask extends AsyncTask<Void, Void, Void>{
-        @Override
-        protected Void doInBackground(Void... params) {
-            return null;
-        }
-    }
 }

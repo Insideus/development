@@ -41,6 +41,7 @@ public class Service {
     private final static String ERROR_CODE_TAG = "error_code";
     private final static String ERROR_MESSAGE_TAG = "error_message";
     private final static String METHOD_TAG = "method";
+    private final static String NEW_DEVICE_TOKEN_TAG = "new_device_token";
     private final static String NEXT_TOKEN_TAG = "next_token_session";
     private final static String PASSWORD_TOKEN_TAG = "password_token";
 
@@ -196,8 +197,8 @@ public class Service {
             params.add(personIdTypeParam);
             Pair<String, String> passwordParam = new Pair("password", password);
             params.add(passwordParam);
-            /*Pair<String, String> todo1Param = new Pair("todo1", todo1);
-            params.add(todo1Param);*/
+            Pair<String, String> todo1Param = new Pair("todo1", todo1);
+            params.add(todo1Param);
 
             writer.write(getQuery(params));
             writer.flush();
@@ -219,6 +220,9 @@ public class Service {
                     }
                     if (responseJson.has(PASSWORD_TOKEN_TAG)) {
                         additionalData = responseJson.getString(PASSWORD_TOKEN_TAG);
+                    }
+                    if (responseJson.has(NEW_DEVICE_TOKEN_TAG)) {
+                        additionalData = responseJson.getString(NEW_DEVICE_TOKEN_TAG);
                     }
                     throw new ServiceException(errorCode, additionalData);
                 }
@@ -327,11 +331,14 @@ public class Service {
                     loginResponse = LoginResponse.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
-                    String nextTokenSessionError = "";
+                    String additionalData = "";
                     if (responseJson.has(NEXT_TOKEN_TAG)) {
-                        nextTokenSessionError = responseJson.getString(NEXT_TOKEN_TAG);
+                        additionalData = responseJson.getString(NEXT_TOKEN_TAG);
                     }
-                    throw new ServiceException(errorCode, nextTokenSessionError);
+                    if (responseJson.has(NEW_DEVICE_TOKEN_TAG)) {
+                        additionalData = responseJson.getString(NEW_DEVICE_TOKEN_TAG);
+                    }
+                    throw new ServiceException(errorCode, additionalData);
                 }
             }
         } catch (IOException | JSONException e) {
@@ -388,11 +395,14 @@ public class Service {
                     loginResponse = LoginResponse.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
-                    String nextTokenSessionError = "";
+                    String additionalData = "";
                     if (responseJson.has(NEXT_TOKEN_TAG)) {
-                        nextTokenSessionError = responseJson.getString(NEXT_TOKEN_TAG);
+                        additionalData = responseJson.getString(NEXT_TOKEN_TAG);
                     }
-                    throw new ServiceException(errorCode, nextTokenSessionError);
+                    if (responseJson.has(NEW_DEVICE_TOKEN_TAG)) {
+                        additionalData = responseJson.getString(NEW_DEVICE_TOKEN_TAG);
+                    }
+                    throw new ServiceException(errorCode, additionalData);
                 }
             }
         } catch (IOException | JSONException e) {

@@ -16,13 +16,21 @@ import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class NewDeviceOtpActivity extends LoginBaseActivity {
 
+    public static final String NEW_DEVICE_TOKEN = "new_device_token";
     private static final int NEW_DEVICE_DIALOG = 16;
+
     private EditText code;
+    private String newDeviceToken;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_device_otp_layout);
+        if (savedInstanceState != null) {
+            newDeviceToken = savedInstanceState.getString(NEW_DEVICE_TOKEN, "");
+        } else {
+            newDeviceToken = getIntent().getStringExtra(NEW_DEVICE_TOKEN);
+        }
         findCodeField();
         setButtons();
     }
