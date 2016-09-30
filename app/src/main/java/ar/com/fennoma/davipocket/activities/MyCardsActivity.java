@@ -604,7 +604,7 @@ public class MyCardsActivity extends BaseActivity {
             ArrayList<CardToShowOnList> response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                ArrayList<Card> userCards = Service.getUserCards(sid);
+                ArrayList<Card> userCards = Service.getUserCards(sid, getTodo1Data());
                 if (userCards != null) {
                     response = new ArrayList<>();
                     response.addAll(userCards);

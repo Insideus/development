@@ -177,7 +177,7 @@ public class ECardRechargeActivity extends AbstractPayActivity {
         protected Void doInBackground(Void... params) {
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                transactionMade = Service.rechargeECard(sid, card.getLastDigits(), selectedAccount.getLastDigits(), amount);
+                transactionMade = Service.rechargeECard(sid, card.getLastDigits(), selectedAccount.getLastDigits(), amount, getTodo1Data());
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 e.printStackTrace();

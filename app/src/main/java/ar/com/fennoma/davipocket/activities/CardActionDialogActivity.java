@@ -444,7 +444,7 @@ public class CardActionDialogActivity extends BaseActivity {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.activateCard(sid, params[0]);
+                response = Service.activateCard(sid, params[0], getTodo1Data());
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -487,7 +487,7 @@ public class CardActionDialogActivity extends BaseActivity {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.blockCard(sid, card.getLastDigits());
+                response = Service.blockCard(sid, card.getLastDigits(), getTodo1Data());
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -530,7 +530,7 @@ public class CardActionDialogActivity extends BaseActivity {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.addCard(sid, card.getLastDigits(), params[0]);
+                response = Service.addCard(sid, card.getLastDigits(), params[0], getTodo1Data());
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -576,7 +576,7 @@ public class CardActionDialogActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                response = Service.newECard(Session.getCurrentSession(getApplicationContext()).getSid());
+                response = Service.newECard(Session.getCurrentSession(getApplicationContext()).getSid(), getTodo1Data());
             } catch (ServiceException e) {
                 e.printStackTrace();
                 errorCode = e.getErrorCode();
@@ -644,7 +644,7 @@ public class CardActionDialogActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                response = Service.getCVV(Session.getCurrentSession(getApplicationContext()).getSid(), lastDigits);
+                response = Service.getCVV(Session.getCurrentSession(getApplicationContext()).getSid(), lastDigits, getTodo1Data());
             } catch (ServiceException e) {
                 e.printStackTrace();
                 errorCode = e.getErrorCode();
@@ -700,7 +700,7 @@ public class CardActionDialogActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                response = Service.getECardData(Session.getCurrentSession(getApplicationContext()).getSid(), lastDigits, cvv);
+                response = Service.getECardData(Session.getCurrentSession(getApplicationContext()).getSid(), lastDigits, cvv, getTodo1Data());
             } catch (ServiceException e) {
                 e.printStackTrace();
                 errorCode = e.getErrorCode();

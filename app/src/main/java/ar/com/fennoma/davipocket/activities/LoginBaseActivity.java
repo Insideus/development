@@ -68,7 +68,7 @@ public class LoginBaseActivity extends BaseActivity {
             LoginResponse response = null;
             try {
                 String encryptedPassword = EncryptionUtils.encryptPassword(LoginBaseActivity.this, params[2]);
-                response = Service.login(params[0], params[1], encryptedPassword);
+                response = Service.login(params[0], params[1], encryptedPassword, getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 additionalData = e.getAdditionalData();
@@ -116,7 +116,7 @@ public class LoginBaseActivity extends BaseActivity {
         protected LoginResponse doInBackground(String... params) {
             LoginResponse response = null;
             try {
-                response = Service.loginWithToken(params[0], params[1], params[2], params[3]);
+                response = Service.loginWithToken(params[0], params[1], params[2], params[3], getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 nextTokenSession = e.getAdditionalData();
@@ -162,7 +162,7 @@ public class LoginBaseActivity extends BaseActivity {
         protected LoginResponse doInBackground(String... params) {
             LoginResponse response = null;
             try {
-                response = Service.loginWithNextToken(params[0], params[1], params[2], params[3], params[4]);
+                response = Service.loginWithNextToken(params[0], params[1], params[2], params[3], params[4], getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 nextTokenSession = e.getAdditionalData();

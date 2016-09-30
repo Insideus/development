@@ -3,7 +3,6 @@ package ar.com.fennoma.davipocket.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -32,8 +31,6 @@ public class LoginActivity extends LoginBaseActivity {
         }
         setActionToButtons();
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-        String todo1 = getTodo1Data();
-        Log.d("Todo1", todo1);
     }
 
     private void setActionToButtons() {

@@ -88,7 +88,7 @@ public abstract class AbstractPayActivity extends BaseActivity{
         protected Void doInBackground(Void... params) {
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                detail = Service.balanceDetail(sid, card.getLastDigits());
+                detail = Service.balanceDetail(sid, card.getLastDigits(), getTodo1Data());
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }

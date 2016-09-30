@@ -289,7 +289,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
                 transactionMade = Service.payCard(sid, card.getLastDigits(), selectedAccount.getLastDigits(),
-                        amount, isUsdPayment());;
+                        amount, isUsdPayment(), getTodo1Data());;
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 e.printStackTrace();

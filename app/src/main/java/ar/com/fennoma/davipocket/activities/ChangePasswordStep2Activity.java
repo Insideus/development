@@ -323,7 +323,7 @@ public class ChangePasswordStep2Activity extends BaseActivity {
             String response = null;
             try {
                 String encryptedPin = EncryptionUtils.encryptPin(ChangePasswordStep2Activity.this, params[2]);
-                response = Service.validateProduct(params[0], params[1], encryptedPin, params[3], params[4]);
+                response = Service.validateProduct(params[0], params[1], encryptedPin, params[3], params[4], getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }

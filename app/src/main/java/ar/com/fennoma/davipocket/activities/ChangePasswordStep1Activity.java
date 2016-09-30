@@ -86,7 +86,7 @@ public class ChangePasswordStep1Activity extends LoginBaseActivity {
         protected String doInBackground(String... params) {
             String response = null;
             try {
-                response = Service.forgotPassword(params[0], params[1]);
+                response = Service.forgotPassword(params[0], params[1], getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }

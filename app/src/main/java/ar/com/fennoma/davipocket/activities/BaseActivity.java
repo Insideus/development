@@ -433,18 +433,18 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public String getTodo1Data() {
+        Todo1Utils.initMobileSdk(this);
         return Todo1Utils.getData(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Todo1Utils.initMobileSdk(this);
     }
 
     @Override
     protected void onDestroy() {
-        Todo1Utils.destroyMobileSdk(this);
+        //Todo1Utils.destroyMobileSdk(this);
         super.onDestroy();
     }
 }
