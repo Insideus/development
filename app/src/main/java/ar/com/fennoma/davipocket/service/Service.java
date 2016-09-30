@@ -196,8 +196,8 @@ public class Service {
             params.add(personIdTypeParam);
             Pair<String, String> passwordParam = new Pair("password", password);
             params.add(passwordParam);
-            Pair<String, String> todo1Param = new Pair("todo1", todo1);
-            params.add(todo1Param);
+            /*Pair<String, String> todo1Param = new Pair("todo1", todo1);
+            params.add(todo1Param);*/
 
             writer.write(getQuery(params));
             writer.flush();

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_background"
+    tools:ignore="MissingPrefix">
+
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/main_toolbar" />
+
+    <TextView
+        fontPath="fonts/MyriadPro-Regular.otf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/insecure_device_explanation"
+        android:textSize="@dimen/common_text_size" />
+
+    <TextView
+        android:id="@+id/restart_app"
+        fontPath="fonts/MyriadPro-Semibold.otf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="start"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="@dimen/button_without_cardview_padding"
+        android:layout_marginRight="@dimen/button_without_cardview_padding"
+        android:layout_marginTop="@dimen/login_input_margin_top"
+        android:background="@drawable/red_button_background"
+        android:padding="15dp"
+        android:text="@string/insecure_device_button"
+        android:textColor="@color/login_button_text_color"
+        android:textSize="@dimen/login_input_text_size"
+        android:textStyle="bold" />
+
+</RelativeLayout>

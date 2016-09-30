@@ -51,12 +51,11 @@ public class MyCardsActivity extends BaseActivity {
     }
 
     private List<CardToShowOnList> addButtons(List<CardToShowOnList> cards) {
-        //TODO: Uncomment when we have eCards to test
-        //if(!isThereAnECard(cards)){
+        if(!isThereAnECard(cards)){
             ButtonCard eCard = new ButtonCard(R.drawable.add_e_card_button);
             eCard.setType(ButtonCard.eCard);
             cards.add(eCard);
-        //}
+        }
         ButtonCard buttonCard = new ButtonCard(R.drawable.add_portfolio_card_button);
         buttonCard.setType(ButtonCard.portfolioCard);
         cards.add(buttonCard);
@@ -628,13 +627,6 @@ public class MyCardsActivity extends BaseActivity {
                     showServiceGenericError();
                 }
             } else {
-                //TODO: REMOVE MOCK DE E-CARD
-                if(!response.isEmpty()){
-                    CardToShowOnList cardToShowOnList = response.get(0);
-                    if(cardToShowOnList != null){
-                        ((Card)cardToShowOnList).setECard(true);
-                    }
-                }
                 cardsAdapter.setList(addButtons(response));
             }
         }

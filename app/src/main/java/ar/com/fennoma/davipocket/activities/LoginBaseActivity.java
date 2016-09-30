@@ -68,6 +68,7 @@ public class LoginBaseActivity extends BaseActivity {
             LoginResponse response = null;
             try {
                 String encryptedPassword = EncryptionUtils.encryptPassword(LoginBaseActivity.this, params[2]);
+                //response = Service.login(params[0], params[1], encryptedPassword, getTodo1Data());
                 response = Service.login(params[0], params[1], encryptedPassword, getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();

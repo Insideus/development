@@ -313,9 +313,16 @@ public class BaseActivity extends AppCompatActivity {
         View home = findViewById(R.id.home_shortcut);
         View logout = findViewById(R.id.logout_shortcut);
         View myCards = findViewById(R.id.my_cards_shortcut);
-        if (home == null || logout == null || myCards == null) {
+        View help = findViewById(R.id.help_shortcut);
+        if (home == null || logout == null || myCards == null || help == null) {
             return;
         }
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insecureDevice();
+            }
+        });
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -383,8 +390,7 @@ public class BaseActivity extends AppCompatActivity {
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
-    public class LogoutTask extends AsyncTask<Void, Void, Boolean> {
-
+    protected class BaseLogoutTask extends AsyncTask<Void, Void, Boolean>{
         String errorCode;
 
         @Override
@@ -404,6 +410,9 @@ public class BaseActivity extends AppCompatActivity {
             }
             return response;
         }
+    }
+
+    public class LogoutTask extends BaseLogoutTask {
 
         @Override
         protected void onPostExecute(Boolean response) {
@@ -446,5 +455,12 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         //Todo1Utils.destroyMobileSdk(this);
         super.onDestroy();
+    }
+
+    public void insecureDevice(){
+        Intent intent = new Intent(BaseActivity.this, InsecureDeviceActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }
