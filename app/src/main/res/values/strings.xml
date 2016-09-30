@@ -308,5 +308,6 @@
     <string name="new_device_otp_validation_success_subtitle">ASOCIADO</string>
     <string name="new_device_otp_validation_success_text">Su dispositivo fue asociado a la cuenta.</string>
     <string name="otp_resend_sms">REENVIAR SMS</string>
+    <string name="new_device_otp_title">CONFIRMAR DISPOSITIVO</string>
 
 </resources>

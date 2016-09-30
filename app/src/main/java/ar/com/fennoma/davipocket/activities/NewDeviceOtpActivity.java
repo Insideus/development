@@ -26,6 +26,7 @@ public class NewDeviceOtpActivity extends LoginBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_device_otp_layout);
+        setActionBar(getString(R.string.new_device_otp_title), true);
         if (savedInstanceState != null) {
             newDeviceToken = savedInstanceState.getString(NEW_DEVICE_TOKEN, "");
         } else {
