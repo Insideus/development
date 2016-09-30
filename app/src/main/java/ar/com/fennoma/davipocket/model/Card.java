@@ -9,6 +9,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import ar.com.fennoma.davipocket.utils.CardsUtils;
+import ar.com.fennoma.davipocket.utils.DateUtils;
+
 public class Card implements Parcelable, CardToShowOnList {
 
     private Boolean eCard;
@@ -121,13 +124,30 @@ public class Card implements Parcelable, CardToShowOnList {
     public static Card fromJson(JSONObject json) {
         Card card = new Card();
         try {
-            card.setLastDigits(json.getString("last_digits"));
-            card.setOwnerName(json.getString("owner"));
-            card.setEnrolled(json.getBoolean("enrolled"));
-            card.setDefaultCard(json.getBoolean("default"));
-            card.setEnrolling(json.getBoolean("enrolling"));
-            card.setPay(json.getBoolean("pay"));
-            card.setActivate(json.getBoolean("activate"));
+            if(json.has("card")){
+                json = json.getJSONObject("card");
+            }
+            if(json.has("last_digits")) {
+                card.setLastDigits(json.getString("last_digits"));
+            }
+            if(json.has("owner")){
+                card.setOwnerName(json.getString("owner"));
+            }
+            if(json.has("enrolled")) {
+                card.setEnrolled(json.getBoolean("enrolled"));
+            }
+            if(json.has("default")) {
+                card.setDefaultCard(json.getBoolean("default"));
+            }
+            if(json.has("enrolling")) {
+                card.setEnrolling(json.getBoolean("enrolling"));
+            }
+            if(json.has("pay")) {
+                card.setPay(json.getBoolean("pay"));
+            }
+            if(json.has("activate")) {
+                card.setActivate(json.getBoolean("activate"));
+            }
             if(json.has("message")) {
                 card.setMessage(json.getString("message"));
             }
@@ -136,9 +156,19 @@ public class Card implements Parcelable, CardToShowOnList {
             } else {
                 card.setECard(false);
             }
-            JSONObject jsonBin = json.getJSONObject("bin");
-            CardBin bin = CardBin.fromJson(jsonBin);
-            card.setBin(bin);
+            if(json.has("digits")){
+                card.setFullNumber(CardsUtils.parseFullCardNumber(json.getString("digits")));
+            }
+            if(json.has("expiration_date")){
+                String expirationDate = json.getString("expiration_date");
+                card.setExpirationMonth(DateUtils.getMonthFromExpirationDate(expirationDate));
+                card.setExpirationYear(DateUtils.getYearFromExpirationDate(expirationDate));
+            }
+            if(json.has("bin")) {
+                JSONObject jsonBin = json.getJSONObject("bin");
+                CardBin bin = CardBin.fromJson(jsonBin);
+                card.setBin(bin);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

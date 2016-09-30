@@ -226,6 +226,7 @@
     <string name="card_pay_cancel_pay_button_text">CANCELAR</string>
 
     <string name="card_pay_confirmation_text_1">¿Usted confirma que desea realizar el pago de su tarjeta terminada en</string>
+    <string name="e_card_pay_confirmation_text_1">¿Usted confirma que desea recargar su eCard terminada en</string>
     <string name="card_pay_confirmation_text_2">con su cuenta</string>
     <string name="card_pay_confirmation_text_3">terminada en</string>
     <string name="card_pay_confirmation_text_4">por un valor de </string>
@@ -290,5 +291,6 @@
     <string name="card_pay_detail_e_card_balance_title">Saldo disponible</string>
     <string name="e_card_recharge_min_value">10000</string>
     <string name="e_card_recharge_max_value">50000</string>
+    <string name="e_card_recharge_success_text">Su recarga fue realizada con éxito el día</string>
 
 </resources>

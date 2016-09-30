@@ -176,34 +176,44 @@ public class MyCardsActivity extends BaseActivity {
                 DialogUtil.toastWithResult(this, EXPLAINING_DIALOG, successTitle, successSubtitle, successText);
                 refresh = true;
             } else if(resultCode == CardActionDialogActivity.RESULT_FAILED){
-                String errorTitle;
-                String errorSubtitle = "";
-                String errorText;
-                if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.ERROR_TITLE))){
-                    errorTitle = data.getStringExtra(CardActionDialogActivity.ERROR_TITLE);
-                }else{
-                    errorTitle = getString(R.string.my_cards_failed_opperation_message_title);
-                }
-                if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.ERROR_SUBTITLE))){
-                    errorSubtitle = data.getStringExtra(CardActionDialogActivity.ERROR_SUBTITLE);
-                }
-                if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.ERROR_MESSAGE))){
-                    errorText = data.getStringExtra(CardActionDialogActivity.ERROR_MESSAGE);
-                }else{
-                    errorText = getString(R.string.my_cards_failed_opperation_message);
-                }
-                DialogUtil.toastWithResult(this,
-                        EXPLAINING_DIALOG,
-                        errorTitle, errorSubtitle,
-                        errorText);
-                refresh = false;
+                generateErrorDialog(data);
             }
         } else if (requestCode == EXPLAINING_DIALOG) {
             refresh = false;
-        } else if (requestCode == E_CARD_SHOW_DATA && resultCode == RESULT_OK) {
-            refresh = false;
-            cardsAdapter.updateCardData(selectedCard, "1234 1234 1234 1234", "11", "19");
+        } else if (requestCode == E_CARD_SHOW_DATA) {
+            if(resultCode == RESULT_OK && data != null && data.getParcelableExtra(CardActionDialogActivity.E_CARD_SHOW_DATA) != null) {
+                Card cardData = data.getParcelableExtra(CardActionDialogActivity.E_CARD_SHOW_DATA);
+                refresh = false;
+                cardsAdapter.updateCardData(selectedCard, cardData.getFullNumber(), cardData.getExpirationMonth(),
+                        cardData.getExpirationYear());
+            }else{
+                generateErrorDialog(data);
+            }
         }
+    }
+
+    private void generateErrorDialog(Intent data) {
+        String errorTitle;
+        String errorSubtitle = "";
+        String errorText;
+        if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.ERROR_TITLE))){
+            errorTitle = data.getStringExtra(CardActionDialogActivity.ERROR_TITLE);
+        }else{
+            errorTitle = getString(R.string.my_cards_failed_opperation_message_title);
+        }
+        if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.ERROR_SUBTITLE))){
+            errorSubtitle = data.getStringExtra(CardActionDialogActivity.ERROR_SUBTITLE);
+        }
+        if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.ERROR_MESSAGE))){
+            errorText = data.getStringExtra(CardActionDialogActivity.ERROR_MESSAGE);
+        }else{
+            errorText = getString(R.string.my_cards_failed_opperation_message);
+        }
+        DialogUtil.toastWithResult(this,
+                EXPLAINING_DIALOG,
+                errorTitle, errorSubtitle,
+                errorText);
+        refresh = false;
     }
 
     @Override

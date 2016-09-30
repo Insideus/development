@@ -17,6 +17,7 @@ import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
+import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class ECardRechargeActivity extends AbstractPayActivity {
@@ -99,8 +100,8 @@ public class ECardRechargeActivity extends AbstractPayActivity {
                 String amount = getAmount();
                 if (validateAmount(amount) && isAmountOnRange(amount)) {
                     Intent intent = new Intent(ECardRechargeActivity.this, CardActionDialogActivity.class);
-                    intent.putExtra(CardActionDialogActivity.TITLE_KEY, "CONFIRMAR PAGO");
-                    intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, "");
+                    intent.putExtra(CardActionDialogActivity.TITLE_KEY, "CONFIRMAR");
+                    intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, "RECARGA DE ECARD");
                     intent.putExtra(CardActionDialogActivity.TEXT_KEY, getPayConfirmationText(amount));
                     intent.putExtra(CardActionDialogActivity.IS_CARD_PAY, true);
                     intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
@@ -109,6 +110,14 @@ public class ECardRechargeActivity extends AbstractPayActivity {
                 }
             }
         });
+    }
+
+    protected String getPayConfirmationText(String amount) {
+        return getString(R.string.e_card_pay_confirmation_text_1).concat(" ").concat(card.getLastDigits()).concat(" ")
+                .concat(getString(R.string.card_pay_confirmation_text_2)).concat(" ").concat(selectedAccount.getName())
+                .concat(" ").concat(getString(R.string.card_pay_confirmation_text_3)).concat(" ")
+                .concat(selectedAccount.getLastDigits()).concat(" ").concat(getString(R.string.card_pay_confirmation_text_4))
+                .concat(" $ ").concat(CurrencyUtils.getCurrencyForString(amount)).concat("?");
     }
 
     private boolean isAmountOnRange(String amount) {
@@ -180,7 +189,7 @@ public class ECardRechargeActivity extends AbstractPayActivity {
             } else {
                 DialogUtil.toast(ECardRechargeActivity.this, getString(R.string.card_pay_success_title),
                         getString(R.string.card_pay_success_subtitle),
-                        getSuccessText(), ON_CLOSE_REQUEST);
+                        getSuccessText(getString(R.string.e_card_recharge_success_text)), ON_CLOSE_REQUEST);
             }
         }
     }

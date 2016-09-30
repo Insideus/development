@@ -611,8 +611,10 @@ public class CardActionDialogActivity extends BaseActivity {
         finish();
     }
 
-    private void eCardShowDataSuccess() {
-        setResult(RESULT_OK);
+    private void eCardShowDataSuccess(Card response) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(E_CARD_SHOW_DATA, response);
+        setResult(RESULT_OK, new Intent().putExtras(bundle));
         finish();
     }
 
@@ -679,7 +681,7 @@ public class CardActionDialogActivity extends BaseActivity {
 
     private class ECardShowData extends AsyncTask<Void, Void, Void>{
 
-        private Boolean response;
+        private Card response;
         private String errorCode;
         private String lastDigits;
         private String cvv;
@@ -710,7 +712,7 @@ public class CardActionDialogActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             hideLoading();
-            if (response == null || !response) {
+            if (response == null) {
                 //Hancdle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
@@ -719,7 +721,7 @@ public class CardActionDialogActivity extends BaseActivity {
                     eCardFailed(getString(R.string.e_card_show_data_error));
                 }
             } else {
-                eCardShowDataSuccess();
+                eCardShowDataSuccess(response);
             }
         }
     }

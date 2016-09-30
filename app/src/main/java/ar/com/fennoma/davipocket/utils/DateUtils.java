@@ -1,5 +1,7 @@
 package ar.com.fennoma.davipocket.utils;
 
+import android.text.TextUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -74,4 +76,17 @@ public class DateUtils {
         return formatter.format(cal.getTime());
     }
 
+    public static String getMonthFromExpirationDate(String expirationDate) {
+        if(TextUtils.isEmpty(expirationDate) || expirationDate.length() < 7){
+            return "●●";
+        }
+        return expirationDate.substring(0, 2);
+    }
+
+    public static String getYearFromExpirationDate(String expirationDate) {
+        if(TextUtils.isEmpty(expirationDate) || expirationDate.length() < 7){
+            return "●●";
+        }
+        return expirationDate.substring(expirationDate.length() - 2, expirationDate.length());
+    }
 }

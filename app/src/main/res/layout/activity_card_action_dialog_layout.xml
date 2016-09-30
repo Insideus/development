@@ -110,6 +110,7 @@
             android:checked="false"
             android:gravity="center"
             android:drawablePadding="@dimen/card_pay_detail_item_drawable_padding"
+            android:background="@android:color/transparent"
             android:drawableStart="@drawable/gray_checkbox_selector"
             android:paddingBottom="@dimen/card_pay_detail_spacing_between_items"
             android:paddingEnd="@dimen/card_pay_detail_items_horizonal_margin"

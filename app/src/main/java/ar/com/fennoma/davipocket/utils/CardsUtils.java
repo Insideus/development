@@ -1,5 +1,7 @@
 package ar.com.fennoma.davipocket.utils;
 
+import android.text.TextUtils;
+
 /**
  * Created by Julian Vega on 08/09/2016.
  */
@@ -20,4 +22,14 @@ public class CardsUtils {
         return DATE_MASK;
     }
 
+    public static String parseFullCardNumber(String fullNumber){
+        if(TextUtils.isEmpty(fullNumber) || fullNumber.length() < 16){
+            return NUMBER_MASK + "○○○○";
+        }
+        String firstQuarter = fullNumber.substring(0, 4);
+        String secondQuarter = fullNumber.substring(4, 8);
+        String thirdQuarter = fullNumber.substring(8, 12);
+        String fourthQuarter = fullNumber.substring(12, 16);
+        return String.format("%s%s%s%s%s%s%s", firstQuarter, " ", secondQuarter, " ", thirdQuarter, " ", fourthQuarter);
+    }
 }

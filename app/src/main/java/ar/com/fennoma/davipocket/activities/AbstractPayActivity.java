@@ -44,14 +44,14 @@ public abstract class AbstractPayActivity extends BaseActivity{
     protected PaymentDetail detail;
     protected TextView selectedAccountText;
     protected DialogPlus dialogPlus;
+    protected Account selectedAccount;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         priceIndicator = getString(R.string.card_detail_item_transaction_price_indicator);
     }
-
-    protected Account selectedAccount;
 
     protected boolean validateAmount(String amount) {
         if(TextUtils.isEmpty(amount)){
@@ -72,14 +72,6 @@ public abstract class AbstractPayActivity extends BaseActivity{
     protected void showErrorDialog(String error){
         DialogUtil.toast(this, getString(R.string.generic_service_error_title), "",
                 error);
-    }
-
-    protected String getPayConfirmationText(String amount) {
-        return getString(R.string.card_pay_confirmation_text_1).concat(" ").concat(card.getLastDigits()).concat(" ")
-                .concat(getString(R.string.card_pay_confirmation_text_2)).concat(" ").concat(selectedAccount.getName())
-                .concat(" ").concat(getString(R.string.card_pay_confirmation_text_3)).concat(" ")
-                .concat(selectedAccount.getLastDigits()).concat(" ").concat(getString(R.string.card_pay_confirmation_text_4))
-                .concat(" ").concat(amount).concat("?");
     }
 
     protected class GetCardPayDetail extends AsyncTask<Void, Void, Void> {
@@ -235,7 +227,7 @@ public abstract class AbstractPayActivity extends BaseActivity{
 
     }
 
-    protected String getSuccessText() {
+    protected String getSuccessText(String startingText) {
         String date = "";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d", Locale.getDefault());
         Date time = Calendar.getInstance().getTime();
@@ -246,7 +238,7 @@ public abstract class AbstractPayActivity extends BaseActivity{
         date = date.concat(simpleDateFormat.format(time)).concat(" a las ");
         simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         date = date.concat(simpleDateFormat.format(time));
-        return getString(R.string.card_pay_success_text).concat(" ").concat(date);
+        return startingText.concat(" ").concat(date);
     }
 
 }

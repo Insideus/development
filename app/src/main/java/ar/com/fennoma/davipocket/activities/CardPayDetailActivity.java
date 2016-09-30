@@ -34,9 +34,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
     private CheckBox minimumPayment;
     private CheckBox otherPayment;
 
-    private boolean justDeletedOtherPaymentText = false;
     private TransactionDetails transactionDetails;
-    private Account selectedAccount;
 
     private EditText otherPaymentValue;
 
@@ -156,8 +154,8 @@ public class CardPayDetailActivity extends AbstractPayActivity {
                 String amount = getAmount();
                 if (validateAmount(amount)) {
                     Intent intent = new Intent(CardPayDetailActivity.this, CardActionDialogActivity.class);
-                    intent.putExtra(CardActionDialogActivity.TITLE_KEY, "CONFIRMAR PAGO");
-                    intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, "");
+                    intent.putExtra(CardActionDialogActivity.TITLE_KEY, "CONFIRMAR");
+                    intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, "PAGO");
                     intent.putExtra(CardActionDialogActivity.TEXT_KEY, getPayConfirmationText(amount));
                     intent.putExtra(CardActionDialogActivity.IS_CARD_PAY, true);
                     intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
@@ -166,6 +164,14 @@ public class CardPayDetailActivity extends AbstractPayActivity {
                 }
             }
         });
+    }
+
+    protected String getPayConfirmationText(String amount) {
+        return getString(R.string.card_pay_confirmation_text_1).concat(" ").concat(card.getLastDigits()).concat(" ")
+                .concat(getString(R.string.card_pay_confirmation_text_2)).concat(" ").concat(selectedAccount.getName())
+                .concat(" ").concat(getString(R.string.card_pay_confirmation_text_3)).concat(" ")
+                .concat(selectedAccount.getLastDigits()).concat(" ").concat(getString(R.string.card_pay_confirmation_text_4))
+                .concat(" $ ").concat(CurrencyUtils.getCurrencyForString(amount)).concat("?");
     }
 
     private String getAmount() {
@@ -265,7 +271,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
             } else {
                 DialogUtil.toast(CardPayDetailActivity.this, getString(R.string.card_pay_success_title),
                         getString(R.string.card_pay_success_subtitle),
-                        getSuccessText(), ON_CLOSE_REQUEST);
+                        getSuccessText(getString(R.string.card_pay_success_text)), ON_CLOSE_REQUEST);
             }
         }
     }
