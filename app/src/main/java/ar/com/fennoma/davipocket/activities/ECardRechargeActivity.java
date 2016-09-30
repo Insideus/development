@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.Selection;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
+import ar.com.fennoma.davipocket.utils.DateUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class ECardRechargeActivity extends AbstractPayActivity {
@@ -43,7 +45,15 @@ public class ECardRechargeActivity extends AbstractPayActivity {
 
     @Override
     protected void setBottomLayouts() {
-
+        String availableAmount = null;
+        if(detail != null && !TextUtils.isEmpty(detail.getAvailableAmount())){
+            availableAmount = detail.getAvailableAmount();
+        }
+        if(TextUtils.isEmpty(availableAmount)){
+            return;
+        }
+        TextView balance = (TextView) findViewById(R.id.balance);
+        balance.setText("$" + CurrencyUtils.getCurrencyForString(availableAmount).toUpperCase());
     }
 
     @Override

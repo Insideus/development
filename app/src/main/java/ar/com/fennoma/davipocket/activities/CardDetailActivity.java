@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
         loadMore = true;
         if (card != null && card.getECard() != null && card.getECard()) {
             setToolbar(R.id.toolbar_layout, true, getString(R.string.e_card_title));
+            setECardFooterViews();
         } else {
             setToolbar(R.id.toolbar_layout, true, card.getBin().getFranchise().toUpperCase());
         }
@@ -72,6 +74,17 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
         adapter.executeFilter(query);
     }
 
+    private void setECardFooterViews() {
+        TextView paymentDate = (TextView) findViewById(R.id.payment_date);
+        paymentDate.setVisibility(View.GONE);
+        View eCardBalanceTitle = findViewById(R.id.ecard_balance_title);
+        eCardBalanceTitle.setVisibility(View.VISIBLE);
+        View balanceTitle = findViewById(R.id.balance_title);
+        balanceTitle.setVisibility(View.GONE);
+        View paymentDateTitle = findViewById(R.id.payment_date_title);
+        paymentDateTitle.setVisibility(View.GONE);
+    }
+
     protected void setDataToShow() {
         adapter.setShowPayButton(transactionDetails.isShowPayButton());
         if (refresh) {
@@ -81,20 +94,18 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
         } else {
             adapter.addToList(transactionDetails.getTransactions());
         }
-        if (card.getECard() != null && card.getECard()) {
-            TextView ecardBalance = (TextView) findViewById(R.id.ecard_balance);
-            ecardBalance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()));
-            return;
-        }
         TextView balance = (TextView) findViewById(R.id.balance);
         balance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()));
-        TextView paymentDate = (TextView) findViewById(R.id.payment_date);
-        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate()).toUpperCase();
-        if (date.length() > 0) {
-            paymentDate.setText(date);
-        } else {
-            paymentDate.setText(transactionDetails.getPaymentDate());
+        if (card.getECard() != null && !card.getECard()) {
+            TextView paymentDate = (TextView) findViewById(R.id.payment_date);
+            String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate()).toUpperCase();
+            if (date.length() > 0) {
+                paymentDate.setText(date);
+            } else {
+                paymentDate.setText(transactionDetails.getPaymentDate());
+            }
         }
+
     }
 
     private void setRecycler() {

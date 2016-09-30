@@ -37,7 +37,7 @@
     <dimen name="my_cards_items_spacing_bar">20dp</dimen>
     <dimen name="my_cards_items_card_number_text_size">15dp</dimen>
     <dimen name="my_cards_items_bar_lateral_spacing">20dp</dimen>
-    <dimen name="my_cards_items_spacing_between_buttons">20dp</dimen>
+    <dimen name="my_cards_items_spacing_between_buttons">15dp</dimen>
     <dimen name="new_card_padding_between_option_buttons">10dp</dimen>
 
     <dimen name="card_pay_detail_spacing_between_items">18dp</dimen>
