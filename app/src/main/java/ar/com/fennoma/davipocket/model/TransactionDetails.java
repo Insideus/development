@@ -50,7 +50,7 @@ public class TransactionDetails implements Parcelable {
             transactionDetails.setLoadMore(json.getBoolean("next_page"));
             transactionDetails.showPayButton = true;
             json = json.getJSONObject("movements");
-            shouldShowPayButton(transactionDetails, json);
+            transactionDetails.setShowPayButton(shouldShowPayButton(json));
             if (json.has("payment_date")) {
                 transactionDetails.setPaymentDate(json.getString("payment_date"));
             } else {
@@ -64,7 +64,7 @@ public class TransactionDetails implements Parcelable {
         return transactionDetails;
     }
 
-    private static void shouldShowPayButton(TransactionDetails transactionDetails, JSONObject json) throws JSONException {
+    private static Boolean shouldShowPayButton(JSONObject json) throws JSONException {
         Double totalPesos;
         Double totalDollars;
         if(json.has("total")) {
@@ -78,8 +78,9 @@ public class TransactionDetails implements Parcelable {
             totalDollars = 0d;
         }
         if(totalPesos != null && totalPesos == 0 && totalDollars != null && totalDollars == 0){
-            transactionDetails.showPayButton = false;
+            return false;
         }
+        return true;
     }
 
     @Override

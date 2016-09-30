@@ -14,6 +14,7 @@ import ar.com.fennoma.davipocket.tasks.GetInitDataTask;
 import ar.com.fennoma.davipocket.tasks.TaskCallback;
 import ar.com.fennoma.davipocket.utils.ConnectionUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
+import ar.com.fennoma.davipocket.utils.Todo1Utils;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -34,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
         //String deviceId = EasySolutionsUtils.getDeviceId(this);
         //EasySolutionsUtils.scanDeviceStatus(this);
         //EasySolutionsUtils.scanDeviceHosts(this);
-        //MobileSdkUtils.initMobileSdk(this);
+        Todo1Utils.initMobileSdk(this);
     }
 
     private void checkInternetConnection() {

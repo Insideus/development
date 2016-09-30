@@ -29,6 +29,7 @@ import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
+import ar.com.fennoma.davipocket.utils.Todo1Utils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class BaseActivity extends AppCompatActivity {
@@ -431,4 +432,19 @@ public class BaseActivity extends AppCompatActivity {
         finish();
     }
 
+    public String getTodo1Data() {
+        return Todo1Utils.getData(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Todo1Utils.initMobileSdk(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Todo1Utils.destroyMobileSdk(this);
+        super.onDestroy();
+    }
 }

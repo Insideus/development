@@ -16,7 +16,7 @@ import java.util.Properties;
 /**
  * Created by Julian Vega on 23/09/2016.
  */
-public class MobileSdkUtils {
+public class Todo1Utils {
 
     private static String TAG = "MobileSDK";
 
@@ -34,10 +34,26 @@ public class MobileSdkUtils {
         mobileAPI.destroy();
     }
 
+    public static String getData(AppCompatActivity act) {
+        MobileAPI mobileAPI = MobileAPI.getInstance(act);
+        requestPermissions(act, MobileAPI.COLLECT_BASIC_DEVICE_DATA_ONLY);
+        String mResultStr = mobileAPI.collectInfo();
+        return mResultStr;
+    }
+
+
+    public static void doRestartCollection(AppCompatActivity act) {
+        MobileAPI mobileAPI = MobileAPI.getInstance(act);
+        mobileAPI.destroy();
+        requestPermissions(act, MobileAPI.COLLECT_BASIC_DEVICE_DATA_ONLY);
+        mobileAPI.initSDK(getSdkProperties());
+    }
+
+
     private static Properties getSdkProperties() {
         Properties properties = new Properties();
 
-        properties.setProperty(MobileAPI.CONFIGURATION_KEY, "" + MobileAPI.COLLECT_ALL_DEVICE_DATA_AND_LOCATION);
+        properties.setProperty(MobileAPI.CONFIGURATION_KEY, "" + MobileAPI.COLLECT_BASIC_DEVICE_DATA_ONLY);
         properties.setProperty(MobileAPI.TIMEOUT_MINUTES_KEY, "" + MobileAPI.TIMEOUT_DEFAULT_VALUE);
         properties.setProperty(MobileAPI.BEST_LOCATION_AGE_MINUTES_KEY, "" + MobileAPI.BEST_LOCATION_AGE_MINUTES_DEFAULT_VALUE);
         properties.setProperty(MobileAPI.MAX_LOCATION_AGE_DAYS_KEY, "" + MobileAPI.MAX_LOCATION_AGE_DAYS_DEFAULT_VALUE);
@@ -50,7 +66,7 @@ public class MobileSdkUtils {
         return properties;
     }
 
-    public void requestPermissions(AppCompatActivity act, int collectionMode){
+    public static void requestPermissions(AppCompatActivity act, int collectionMode){
 
         List<String> permissionsList = new ArrayList<>();
         List<String>  permissionsNeeded = new ArrayList<>();
@@ -76,7 +92,7 @@ public class MobileSdkUtils {
 
     }
 
-    private boolean addPermission(AppCompatActivity act, List<String> permissionsList, String permission) {
+    private static boolean addPermission(AppCompatActivity act, List<String> permissionsList, String permission) {
         if (ContextCompat.checkSelfPermission(act, permission) != PackageManager.PERMISSION_GRANTED) {
             permissionsList.add(permission);
             if (!ActivityCompat.shouldShowRequestPermissionRationale(act, permission)){
