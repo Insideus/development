@@ -35,7 +35,7 @@ public class LoginActivity extends LoginBaseActivity {
 
     private void setActionToButtons() {
         View loginButton = findViewById(R.id.login_button);
-        View forgotPassword = findViewById(R.id.forgot_password_button);
+        View forgotPassword = findViewById(R.id.resend_sms);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -144,7 +144,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/forgot_password_button"
+            android:id="@+id/resend_sms"
             fontPath="fonts/MyriadPro-Regular.otf"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

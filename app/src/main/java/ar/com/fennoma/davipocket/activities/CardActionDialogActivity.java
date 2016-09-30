@@ -50,6 +50,8 @@ public class CardActionDialogActivity extends BaseActivity {
     public static final String CALL_BUTTON_NUMBER_KEY = "call_button_number_key";
     public static final String SHOW_PAY_BUTTON_KEY = "show_pay_button_key";
 
+    public static final String NEW_DEVICE_DETECTED = "new device detected";
+
     public static final String E_CARD_CREATE = "ecard create";
 
     public static final int RESULT_FAILED = -2;
@@ -69,6 +71,7 @@ public class CardActionDialogActivity extends BaseActivity {
     private boolean isCardPay;
     private String callNumber;
     private Card card;
+    private Boolean newDeviceDetected;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +93,7 @@ public class CardActionDialogActivity extends BaseActivity {
             eCardGetCVV = savedInstanceState.getBoolean(E_CARD_GET_CVV, false);
             lastFourDigits = savedInstanceState.getString(LAST_FOUR_DIGITS, "");
             eCardShowData = savedInstanceState.getBoolean(E_CARD_SHOW_DATA, false);
+            newDeviceDetected = savedInstanceState.getBoolean(NEW_DEVICE_DETECTED, false);
         } else {
             title = getIntent().getStringExtra(TITLE_KEY);
             subtitle = getIntent().getStringExtra(SUBTITLE_KEY);
@@ -106,6 +110,7 @@ public class CardActionDialogActivity extends BaseActivity {
             eCardGetCVV = getIntent().getBooleanExtra(E_CARD_GET_CVV, false);
             lastFourDigits = getIntent().getStringExtra(LAST_FOUR_DIGITS);
             eCardShowData = getIntent().getBooleanExtra(E_CARD_SHOW_DATA, false);
+            newDeviceDetected = getIntent().getBooleanExtra(NEW_DEVICE_DETECTED, false);
         }
         setLayouts();
         animateOpening();
@@ -181,6 +186,10 @@ public class CardActionDialogActivity extends BaseActivity {
             setECardShowDataLayouts(acceptButton, ignoreButton);
         }
 
+        if(newDeviceDetected){
+            setNewDeviceDetectedLayouts(acceptButton, ignoreButton);
+        }
+
         TextView titleTv = (TextView) findViewById(R.id.toast_title);
         if (title != null && title.length() > 0) {
             titleTv.setText(title);
@@ -199,6 +208,24 @@ public class CardActionDialogActivity extends BaseActivity {
         } else {
             textTv.setVisibility(LinearLayout.GONE);
         }
+    }
+
+    private void setNewDeviceDetectedLayouts(TextView acceptButton, TextView ignoreButton) {
+        acceptButton.setText(getString(R.string.my_cards_block_card_accept));
+        ignoreButton.setText(getString(R.string.my_cards_block_card_cancel));
+        ignoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new NewDeviceDetectedTask().execute();
+            }
+        });
     }
 
     private void setECardShowDataLayouts(TextView acceptButton, TextView ignoreButton) {
@@ -723,6 +750,13 @@ public class CardActionDialogActivity extends BaseActivity {
             } else {
                 eCardShowDataSuccess(response);
             }
+        }
+    }
+
+    private class NewDeviceDetectedTask extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... params) {
+            return null;
         }
     }
 }

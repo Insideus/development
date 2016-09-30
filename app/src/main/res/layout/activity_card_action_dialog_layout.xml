@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/outside"
     android:layout_width="match_parent"
@@ -12,62 +11,62 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:paddingTop="25dp"
-        android:paddingBottom="20dp"
+        android:layout_marginStart="5dp"
         android:background="@drawable/white_rounded_coreners_background"
+        android:gravity="center"
         android:orientation="vertical"
-        android:gravity="center">
+        android:paddingBottom="20dp"
+        android:paddingTop="25dp">
 
         <ImageView
             android:id="@+id/close_button"
-            android:layout_marginBottom="10dp"
-            android:paddingRight="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
+            android:layout_marginBottom="10dp"
+            android:paddingRight="15dp"
             android:src="@drawable/cancel_ex" />
 
         <TextView
             android:id="@+id/toast_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:gravity="center"
             android:text="@string/help_dialog_title_1"
-            android:textSize="26dp"
-            android:textStyle="bold"
             android:textAllCaps="true"
-            android:textColor="@color/red_title_color"/>
+            android:textColor="@color/red_title_color"
+            android:textSize="26dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/toast_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-5dp"
             android:gravity="center"
-            android:textColor="@color/darkest_blue_title_color"
-            android:text="@string/help_dialog_title_2"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:textSize="26dp"
+            android:text="@string/help_dialog_title_2"
             android:textAllCaps="true"
-            android:layout_marginTop="-5dp"
-            android:textStyle="bold"/>
+            android:textColor="@color/darkest_blue_title_color"
+            android:textSize="26dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/toast_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="20dp"
-            android:textSize="@dimen/common_text_size"
+            android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:text="@string/help_dialog_activity_text"
             android:textColor="@color/gray_text_color"
-            android:text="@string/help_dialog_activity_text"/>
+            android:textSize="@dimen/common_text_size" />
 
         <EditText
             android:id="@+id/ccv_code"
@@ -76,12 +75,12 @@
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:padding="10dp"
             android:background="@drawable/code_number_background"
-            android:inputType="numberPassword"
-            android:singleLine="true"
             android:gravity="center"
+            android:inputType="numberPassword"
             android:maxLength="3"
+            android:padding="10dp"
+            android:singleLine="true"
             android:textColor="@color/red_base_color"
             android:textSize="@dimen/number_code_text_size" />
 
@@ -92,12 +91,12 @@
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:padding="10dp"
             android:background="@drawable/code_number_background"
-            android:inputType="number"
-            android:singleLine="true"
-            android:maxLength="16"
             android:gravity="center"
+            android:inputType="number"
+            android:maxLength="16"
+            android:padding="10dp"
+            android:singleLine="true"
             android:textColor="@color/red_base_color"
             android:textSize="@dimen/card_number_text_size" />
 
@@ -106,12 +105,12 @@
             fontPath="fonts/MyriadPro-Regular.otf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:button="@android:color/transparent"
             android:checked="false"
-            android:gravity="center"
             android:drawablePadding="@dimen/card_pay_detail_item_drawable_padding"
-            android:background="@android:color/transparent"
             android:drawableStart="@drawable/gray_checkbox_selector"
+            android:gravity="center"
             android:paddingBottom="@dimen/card_pay_detail_spacing_between_items"
             android:paddingEnd="@dimen/card_pay_detail_items_horizonal_margin"
             android:paddingStart="@dimen/card_pay_detail_items_horizonal_margin"
@@ -120,7 +119,7 @@
             android:textAllCaps="true"
             android:textColor="@color/input_text_color"
             android:textSize="@dimen/common_text_size"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/accept_button"
@@ -136,7 +135,7 @@
             android:text="@string/my_cards_pay_button_text"
             android:textColor="@color/login_button_text_color"
             android:textSize="@dimen/login_input_text_size"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/button"
@@ -152,8 +151,8 @@
             android:text="@string/call_button_text"
             android:textColor="@color/login_button_text_color"
             android:textSize="@dimen/login_input_text_size"
-            android:visibility="gone"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/ignore_button"
@@ -169,7 +168,7 @@
             android:text="@string/my_cards_cancel_button_text"
             android:textColor="@color/login_button_color"
             android:textSize="@dimen/login_input_text_size"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 

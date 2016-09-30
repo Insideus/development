@@ -28,14 +28,12 @@ import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.EncryptionUtils;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 
-/**
- * Created by Julian Vega on 06/07/2016.
- */
 public class LoginBaseActivity extends BaseActivity {
 
-    private static int EXPIRED_PASSWORD_TOAST = 101;
-    private static int EXPIRED_OTP_PASSWORD_TOAST = 102;
-    private static int SET_PASSWORD_TOAST = 103;
+    private static final int NEW_DEVICE_DETECTED = 15;
+    private static final int EXPIRED_PASSWORD_TOAST = 101;
+    private static final int EXPIRED_OTP_PASSWORD_TOAST = 102;
+    private static final int SET_PASSWORD_TOAST = 103;
 
     TextView selectedIdTypeText;
     TextView virtualPasswordText;
@@ -68,7 +66,6 @@ public class LoginBaseActivity extends BaseActivity {
             LoginResponse response = null;
             try {
                 String encryptedPassword = EncryptionUtils.encryptPassword(LoginBaseActivity.this, params[2]);
-                //response = Service.login(params[0], params[1], encryptedPassword, getTodo1Data());
                 response = Service.login(params[0], params[1], encryptedPassword, getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
@@ -398,10 +395,37 @@ public class LoginBaseActivity extends BaseActivity {
             expiredOtpPasswordIntent.putExtra(PasswordConfirmationActivity.EXPIRED_PASSWORD_KEY, true);
             startActivity(expiredOtpPasswordIntent);
         }
+        if(requestCode == NEW_DEVICE_DETECTED){
+            if(resultCode == RESULT_CANCELED){
+                //TODO: volver a la pantalla inicial de login, sin permitirle acceso
+            }else if(resultCode == RESULT_OK){
+                //TODO: decisión de si es necesaria la otp_validation
+            }
+        }
     }
 
     private void showErrorAndGoToLoginActivity() {
         DialogUtil.showErrorAndGoToLoginActivityToast(this);
     }
 
+    private void newDeviceDetectedDialog(){
+        Intent intent = new Intent(LoginBaseActivity.this, CardActionDialogActivity.class);
+        intent.putExtra(CardActionDialogActivity.IS_CARD_NUMBER_DIALOG, true);
+        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.new_device_detected_title));
+        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.new_device_detected_subtitle));
+        //TODO: Esta string la decidís en base al tipo de error
+        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.new_device_detected_text));
+        startActivityForResult(intent, NEW_DEVICE_DETECTED);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
+
+    private void newDeviceOTPScreen(){
+        Intent intent = new Intent(LoginBaseActivity.this, CardActionDialogActivity.class);
+        intent.putExtra(CardActionDialogActivity.IS_CARD_NUMBER_DIALOG, true);
+        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.new_device_detected_title));
+        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.new_device_detected_subtitle));
+        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.new_device_detected_text));
+        startActivityForResult(intent, NEW_DEVICE_DETECTED);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
 }

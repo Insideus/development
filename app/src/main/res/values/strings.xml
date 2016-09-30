@@ -296,5 +296,16 @@
     <string name="e_card_recharge_success_text">Su recarga fue realizada con éxito el día</string>
     <string name="insecure_device_explanation">Su dispositivo es inseguro para el uso\nde la aplicación. Corrobore que su celular no tiene\nMalwares antes de volver a abrir la aplicación.</string>
     <string name="insecure_device_button">CERRAR APLICACIÓN</string>
+    <string name="new_device_detected_title">NUEVO</string>
+    <string name="new_device_detected_subtitle">DISPOSITIVO</string>
+    <string name="new_device_detected_text">Este dispositivo quedará asociado a su cuenta. ¿Desea continuar?</string>
+    <string name="otp_confirmation_subtitle_hint">Ingrese el código de confirmación que hemos\nenviado a su celular vía SMS</string>
+    <string name="new_device_otp_validation_error_title">ERROR</string>
+    <string name="new_device_otp_validation_error_subtitle">VALIDACIÓN</string>
+    <string name="new_device_otp_validation_error_text">No se ha podido validar el código OTP.</string>
+    <string name="new_device_otp_validation_success_title">NUEVO DISPOSITIVO</string>
+    <string name="new_device_otp_validation_success_subtitle">ASOCIADO</string>
+    <string name="new_device_otp_validation_success_text">Su dispositivo fue asociado a la cuenta.</string>
+    <string name="otp_resend_sms">REENVIAR SMS</string>
 
 </resources>
