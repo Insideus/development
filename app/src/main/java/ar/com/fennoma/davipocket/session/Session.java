@@ -15,9 +15,6 @@ import ar.com.fennoma.davipocket.model.Country;
 import ar.com.fennoma.davipocket.model.PersonIdType;
 import ar.com.fennoma.davipocket.model.UserInterest;
 
-/**
- * Created by Julian Vega on 14/06/2016.
- */
 public class Session {
 
     private static String PREFERENCES = "PreferencesFile";

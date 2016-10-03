@@ -166,7 +166,6 @@ public class Service {
                 JSONObject json = getJsonFromResponse(in);
                 if (json.has("error") && !json.getBoolean("error")) {
                     response = json.getJSONObject(DATA_TAG);
-                    response = response;
                 }
             }
         } catch (JSONException | IOException e) {
@@ -1353,7 +1352,7 @@ public class Service {
         return response;
     }
 
-    public static TransactionDetails getCardMovementsDetails(String sid, String lastDigits,
+    public static TransactionDetails getCardMovementsDetails(String sid, Boolean isECard, String lastDigits,
                                                              int page, String dateFrom,
                                                              String dateTo, String todo1) throws ServiceException {
         HttpURLConnection urlConnection = null;
@@ -1390,7 +1389,7 @@ public class Service {
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson = json.getJSONObject(DATA_TAG);
                 if (json.has("error") && !json.getBoolean("error")) {
-                    response = TransactionDetails.fromJson(responseJson);
+                    response = TransactionDetails.fromJson(isECard, responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     throw new ServiceException(errorCode);

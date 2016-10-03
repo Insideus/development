@@ -43,7 +43,7 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
             TransactionDetails response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.getCardMovementsDetails(sid, card.getLastDigits(), curPage, dateFrom, dateTo, getTodo1Data());
+                response = Service.getCardMovementsDetails(sid, card.getECard(), card.getLastDigits(), curPage, dateFrom, dateTo, getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
