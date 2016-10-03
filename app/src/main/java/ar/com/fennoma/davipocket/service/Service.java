@@ -32,10 +32,11 @@ import ar.com.fennoma.davipocket.model.User;
 
 public class Service {
 
-    public final static String IMAGE_BASE_URL = "http://davipocket-dev.paymentez.com";
     //private static String BASE_URL = "http://davipocket-stg.paymentez.com/api";
-    private final static String BASE_URL = "http://davipocket-dev.paymentez.com/app_dev.php/api";
+    private final static String BASE_URL = "http://davipocket-dev.paymentez.com/api";
     //private static String BASE_URL = "http://davivienda.fennoma.com.ar/api";
+    public final static String IMAGE_BASE_URL = "http://davipocket-dev.paymentez.com";
+    private final static int CONNECTION_TIMEOUT = 10000;
     private final static int SUCCESS_CODE = 200;
     private final static String DATA_TAG = "data";
     private final static String ERROR_CODE_TAG = "error_code";
@@ -1531,24 +1532,6 @@ public class Service {
         return new JSONObject(value);
     }
 
-    @NonNull
-    private static HttpURLConnection getHttpURLConnection(String method) throws IOException {
-        URL url = new URL(BASE_URL + method);
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        if (Build.VERSION.SDK != null && Build.VERSION.SDK_INT > 13) {
-            urlConnection.setRequestProperty("Connection", "close");
-        }
-        return urlConnection;
-    }
-
-    @NonNull
-    private static HttpURLConnection getHttpURLConnectionWithHeader(String method, String token) throws IOException {
-        URL url = new URL(BASE_URL + method);
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.setRequestProperty("sid", token);
-        return urlConnection;
-    }
-
     public static boolean newECard(String sid, String todo1) throws ServiceException {
         boolean response = false;
         HttpURLConnection urlConnection = null;
@@ -1744,4 +1727,30 @@ public class Service {
         }
         return response;
     }
+
+    @NonNull
+    private static HttpURLConnection getHttpURLConnection(String method) throws IOException {
+        URL url = new URL(BASE_URL + method);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        if (Build.VERSION.SDK != null && Build.VERSION.SDK_INT > 13) {
+            urlConnection.setRequestProperty("Connection", "close");
+        }
+        setConnectionTimeOut(urlConnection);
+        return urlConnection;
+    }
+
+    @NonNull
+    private static HttpURLConnection getHttpURLConnectionWithHeader(String method, String token) throws IOException {
+        URL url = new URL(BASE_URL + method);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestProperty("sid", token);
+        setConnectionTimeOut(urlConnection);
+        return urlConnection;
+    }
+
+    private static void setConnectionTimeOut(HttpURLConnection urlConnection) {
+        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+        urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
+    }
+
 }
