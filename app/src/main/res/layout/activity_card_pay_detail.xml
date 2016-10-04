@@ -274,7 +274,7 @@
                             android:paddingLeft="@dimen/card_pay_detail_items_horizonal_margin"
                             android:layout_centerInParent="true"
                             android:background="@android:color/transparent"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:textColor="@color/input_text_color"
                             android:textSize="@dimen/common_text_size" />
 

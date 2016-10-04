@@ -185,7 +185,7 @@ public class MyCardsActivity extends BaseActivity {
                 refresh = false;
                 cardsAdapter.updateCardData(selectedCard, cardData.getFullNumber(), cardData.getExpirationMonth(),
                         cardData.getExpirationYear());
-            }else{
+            } else if(resultCode == CardActionDialogActivity.RESULT_FAILED) {
                 generateErrorDialog(data);
             }
         }

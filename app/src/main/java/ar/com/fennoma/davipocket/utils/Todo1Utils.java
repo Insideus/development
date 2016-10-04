@@ -53,7 +53,7 @@ public class Todo1Utils {
     private static Properties getSdkProperties() {
         Properties properties = new Properties();
 
-        properties.setProperty(MobileAPI.CONFIGURATION_KEY, "" + MobileAPI.COLLECT_BASIC_DEVICE_DATA_ONLY);
+        properties.setProperty(MobileAPI.CONFIGURATION_KEY, "" + MobileAPI.COLLECT_ALL_DEVICE_DATA_AND_LOCATION);
         properties.setProperty(MobileAPI.TIMEOUT_MINUTES_KEY, "" + MobileAPI.TIMEOUT_DEFAULT_VALUE);
         properties.setProperty(MobileAPI.BEST_LOCATION_AGE_MINUTES_KEY, "" + MobileAPI.BEST_LOCATION_AGE_MINUTES_DEFAULT_VALUE);
         properties.setProperty(MobileAPI.MAX_LOCATION_AGE_DAYS_KEY, "" + MobileAPI.MAX_LOCATION_AGE_DAYS_DEFAULT_VALUE);

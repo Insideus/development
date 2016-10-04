@@ -155,18 +155,29 @@ public class CardPayDetailActivity extends AbstractPayActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                String price = s.toString();
+                boolean replacedDot = false;
+                if(price.contains(".")) {
+                    price = price.replace(".", ",");
+                    replacedDot = true;
+                }
                 if (justDeletedOtherPaymentText) {
                     justDeletedOtherPaymentText = false;
                     return;
                 }
-                if (s.toString().equals(priceIndicator)) {
+                if (price.equals(priceIndicator)) {
                     justDeletedOtherPaymentText = true;
                     otherPaymentValue.setText(priceIndicator.concat(" "));
                     Selection.setSelection(otherPaymentValue.getText(), otherPaymentValue.getText().length());
                     return;
                 }
-                if (!s.toString().contains(priceIndicator)) {
-                    otherPaymentValue.setText(priceIndicator.concat(" ").concat(s.toString()));
+                if (!price.contains(priceIndicator)) {
+                    otherPaymentValue.setText(priceIndicator.concat(" ").concat(price));
+                    Selection.setSelection(otherPaymentValue.getText(), otherPaymentValue.getText().length());
+                    return;
+                }
+                if(replacedDot) {
+                    otherPaymentValue.setText(price);
                     Selection.setSelection(otherPaymentValue.getText(), otherPaymentValue.getText().length());
                 }
             }
@@ -176,6 +187,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
             public void onClick(View v) {
                 String amount = getAmount();
                 //amount = "100";
+                amount = amount.replace(",", ".");
                 if (validateAmount(amount)) {
                     Intent intent = new Intent(CardPayDetailActivity.this, CardActionDialogActivity.class);
                     intent.putExtra(CardActionDialogActivity.TITLE_KEY, "CONFIRMAR");
@@ -288,6 +300,9 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
+                if(this.amount != null) {
+                    this.amount = amount.replace(",", ".");
+                }
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
                 transactionMade = Service.payCard(sid, card.getLastDigits(), selectedAccount.getLastDigits(),
                         amount, isUsdPayment(), getTodo1Data());;

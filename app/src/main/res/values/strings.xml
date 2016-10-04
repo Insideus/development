@@ -71,7 +71,7 @@
     <string name="change_password_step_1_id_type_hint">TIPO DE IDENTIFICACIÓN</string>
     <string name="change_password_step_1_id_hint">NÚMERO DE IDENTIFICACIÓN</string>
     <string name="change_password_step_1_empty_id_number_error">Debe ingresar su número de identificación</string>
-    <string name="change_password_step_2_debit_card_last_numbers">4 ÚLT. DÍGITOS DE SU TARJETA DE DÉBITO</string>
+    <string name="change_password_step_2_debit_card_last_numbers">4 ÚLT. DÍGITOS DE TARJETA DE DÉBITO</string>
     <string name="change_password_step_2_atm_password">CLAVE DE CAJERO AUTOMÁTICO</string>
     <string name="change_password_step_2_bank_product_number">4 ÚLT. DÍGITOS DE SU PRODUCTO</string>
     <string name="change_password_step_2_empty_card_digits_error">Debe ingresar los 4 últimos dígitos de su tarjeta</string>
