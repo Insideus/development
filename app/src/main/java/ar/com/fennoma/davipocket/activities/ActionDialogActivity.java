@@ -24,7 +24,7 @@ import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
-public class CardActionDialogActivity extends BaseActivity {
+public class ActionDialogActivity extends BaseActivity {
 
     public static final String SUCCESS_TITLE = "success title";
     public static final String SUCCESS_SUBTITLE = "success subtitle";
@@ -366,7 +366,7 @@ public class CardActionDialogActivity extends BaseActivity {
         callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(CardActionDialogActivity.this,
+                if (ActivityCompat.checkSelfPermission(ActionDialogActivity.this,
                         android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
@@ -430,7 +430,7 @@ public class CardActionDialogActivity extends BaseActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CardActionDialogActivity.this, CardDetailActivity.class);
+                Intent intent = new Intent(ActionDialogActivity.this, CardDetailActivity.class);
                 intent.putExtra(CardDetailActivity.CARD_KEY, card);
                 startActivity(intent);
                 setResult(RESULT_OK);
@@ -445,9 +445,9 @@ public class CardActionDialogActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent;
                 if(card.getECard() != null && card.getECard()) {
-                    intent = new Intent(CardActionDialogActivity.this, ECardRechargeActivity.class);
+                    intent = new Intent(ActionDialogActivity.this, ECardRechargeActivity.class);
                 } else {
-                    intent = new Intent(CardActionDialogActivity.this, CardPayDetailActivity.class);
+                    intent = new Intent(ActionDialogActivity.this, CardPayDetailActivity.class);
                 }
                 intent.putExtra(CardPayDetailActivity.CARD_KEY, card);
                 startActivity(intent);
@@ -574,7 +574,7 @@ public class CardActionDialogActivity extends BaseActivity {
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
                 } else if (error != null && error == ErrorMessages.CARD_BLOCKED_24) {
-                    DialogUtil.toast(CardActionDialogActivity.this,
+                    DialogUtil.toast(ActionDialogActivity.this,
                             getString(R.string.card_24hr_blocked_title),
                             getString(R.string.card_24hr_blocked_subtitle),
                             getString(R.string.card_24hr_blocked_text));

@@ -84,63 +84,63 @@ public class MyCardsActivity extends BaseActivity {
     }
 
     private void blockedActivableCardDialog() {
-        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-        intent.putExtra(CardActionDialogActivity.IS_CARD_NUMBER_DIALOG, true);
+        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+        intent.putExtra(ActionDialogActivity.IS_CARD_NUMBER_DIALOG, true);
         startOperationPopUp(intent, getString(R.string.my_cards_activate_card_title),
                 getString(R.string.my_cards_activate_card_subtitle),
                 getString(R.string.my_cards_activate_card_text));
     }
 
     private void enrollCardDialog(Card card) {
-        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-        intent.putExtra(CardActionDialogActivity.IS_CCV_DIALOG, true);
-        intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
+        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+        intent.putExtra(ActionDialogActivity.IS_CCV_DIALOG, true);
+        intent.putExtra(ActionDialogActivity.CARD_KEY, card);
         startOperationPopUp(intent, getString(R.string.my_cards_enrole_card_title),
                 getString(R.string.my_cards_enrole_card_subtitle),
                 getString(R.string.my_cards_enrole_card_text));
     }
 
     private void blockedCardDialog() {
-        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-        intent.putExtra(CardActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
-        intent.putExtra(CardActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.login_web_password_phone));
+        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+        intent.putExtra(ActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
+        intent.putExtra(ActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.login_web_password_phone));
         startOperationPopUp(intent, getString(R.string.my_cards_blocked_call_card_title),
                 getString(R.string.my_cards_blocked_call__card_subtitle),
                 getString(R.string.my_cards_blocked_call__card_text));
     }
 
     private void createECard() {
-        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-        intent.putExtra(CardActionDialogActivity.E_CARD_CREATE, true);
+        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+        intent.putExtra(ActionDialogActivity.E_CARD_CREATE, true);
         startOperationPopUp(intent, getString(R.string.my_cards_e_card_create_title),
                 getString(R.string.my_cards_e_card_create_subtitle),
                 getString(R.string.my_cards_e_card_create_text));
     }
 
     private void eCardGetCVV(String lastDigits){
-        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-        intent.putExtra(CardActionDialogActivity.E_CARD_GET_CVV, true);
-        intent.putExtra(CardActionDialogActivity.LAST_FOUR_DIGITS, lastDigits);
+        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+        intent.putExtra(ActionDialogActivity.E_CARD_GET_CVV, true);
+        intent.putExtra(ActionDialogActivity.LAST_FOUR_DIGITS, lastDigits);
         startOperationPopUp(intent, getString(R.string.my_cards_e_card_get_cvv_title),
                 getString(R.string.my_cards_e_card_get_cvv_subtitle),
                 getString(R.string.my_cards_e_card_get_cvv_text));
     }
 
     private void eCardShowData(String lastDigits) {
-        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-        intent.putExtra(CardActionDialogActivity.E_CARD_SHOW_DATA, true);
-        intent.putExtra(CardActionDialogActivity.LAST_FOUR_DIGITS, lastDigits);
-        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_e_card_show_data_title));
-        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_e_card_show_data_subtitle));
-        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_e_card_show_data_text));
+        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+        intent.putExtra(ActionDialogActivity.E_CARD_SHOW_DATA, true);
+        intent.putExtra(ActionDialogActivity.LAST_FOUR_DIGITS, lastDigits);
+        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_e_card_show_data_title));
+        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_e_card_show_data_subtitle));
+        intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_e_card_show_data_text));
         startActivityForResult(intent, E_CARD_SHOW_DATA);
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
     private void startOperationPopUp(Intent intent, String title, String subtitle, String text){
-        intent.putExtra(CardActionDialogActivity.TITLE_KEY, title);
-        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, subtitle);
-        intent.putExtra(CardActionDialogActivity.TEXT_KEY, text);
+        intent.putExtra(ActionDialogActivity.TITLE_KEY, title);
+        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, subtitle);
+        intent.putExtra(ActionDialogActivity.TEXT_KEY, text);
         startActivityForResult(intent, OPERATION_RESULT);
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
@@ -157,35 +157,35 @@ public class MyCardsActivity extends BaseActivity {
                 String successTitle;
                 String successSubtitle;
                 String successText;
-                if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.SUCCESS_TITLE))){
-                    successTitle = data.getStringExtra(CardActionDialogActivity.SUCCESS_TITLE);
+                if(data != null && !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.SUCCESS_TITLE))){
+                    successTitle = data.getStringExtra(ActionDialogActivity.SUCCESS_TITLE);
                 }else{
                     successTitle = getString(R.string.my_cards_opperation_success_message_title);
                 }
-                if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.SUCCESS_SUBTITLE))){
-                    successSubtitle = data.getStringExtra(CardActionDialogActivity.SUCCESS_SUBTITLE);
+                if(data != null && !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.SUCCESS_SUBTITLE))){
+                    successSubtitle = data.getStringExtra(ActionDialogActivity.SUCCESS_SUBTITLE);
                 }else{
                     successSubtitle = getString(R.string.my_cards_opperation_success_message_subtitle);
                 }
-                if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.SUCCESS_TEXT))){
-                    successText = data.getStringExtra(CardActionDialogActivity.SUCCESS_TEXT);
+                if(data != null && !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.SUCCESS_TEXT))){
+                    successText = data.getStringExtra(ActionDialogActivity.SUCCESS_TEXT);
                 }else{
                     successText = getString(R.string.my_cards_opperation_success_message);
                 }
                 DialogUtil.toastWithResult(this, EXPLAINING_DIALOG, successTitle, successSubtitle, successText);
                 refresh = true;
-            } else if(resultCode == CardActionDialogActivity.RESULT_FAILED){
+            } else if(resultCode == ActionDialogActivity.RESULT_FAILED){
                 generateErrorDialog(data);
             }
         } else if (requestCode == EXPLAINING_DIALOG) {
             refresh = false;
         } else if (requestCode == E_CARD_SHOW_DATA) {
-            if(resultCode == RESULT_OK && data != null && data.getParcelableExtra(CardActionDialogActivity.E_CARD_SHOW_DATA) != null) {
-                Card cardData = data.getParcelableExtra(CardActionDialogActivity.E_CARD_SHOW_DATA);
+            if(resultCode == RESULT_OK && data != null && data.getParcelableExtra(ActionDialogActivity.E_CARD_SHOW_DATA) != null) {
+                Card cardData = data.getParcelableExtra(ActionDialogActivity.E_CARD_SHOW_DATA);
                 refresh = false;
                 cardsAdapter.updateCardData(selectedCard, cardData.getFullNumber(), cardData.getExpirationMonth(),
                         cardData.getExpirationYear());
-            } else if(resultCode == CardActionDialogActivity.RESULT_FAILED) {
+            } else if(resultCode == ActionDialogActivity.RESULT_FAILED) {
                 generateErrorDialog(data);
             }
         }
@@ -195,16 +195,16 @@ public class MyCardsActivity extends BaseActivity {
         String errorTitle;
         String errorSubtitle = "";
         String errorText;
-        if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.ERROR_TITLE))){
-            errorTitle = data.getStringExtra(CardActionDialogActivity.ERROR_TITLE);
+        if(data != null && !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.ERROR_TITLE))){
+            errorTitle = data.getStringExtra(ActionDialogActivity.ERROR_TITLE);
         }else{
             errorTitle = getString(R.string.my_cards_failed_opperation_message_title);
         }
-        if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.ERROR_SUBTITLE))){
-            errorSubtitle = data.getStringExtra(CardActionDialogActivity.ERROR_SUBTITLE);
+        if(data != null && !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.ERROR_SUBTITLE))){
+            errorSubtitle = data.getStringExtra(ActionDialogActivity.ERROR_SUBTITLE);
         }
-        if(data != null && !TextUtils.isEmpty(data.getStringExtra(CardActionDialogActivity.ERROR_MESSAGE))){
-            errorText = data.getStringExtra(CardActionDialogActivity.ERROR_MESSAGE);
+        if(data != null && !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.ERROR_MESSAGE))){
+            errorText = data.getStringExtra(ActionDialogActivity.ERROR_MESSAGE);
         }else{
             errorText = getString(R.string.my_cards_failed_opperation_message);
         }
@@ -413,11 +413,11 @@ public class MyCardsActivity extends BaseActivity {
 
         private void showBlockCardPopup(Card card) {
             //Popup para enrolar tarjeta
-            Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-            intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_block_card_title));
-            intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_block_card_text));
-            intent.putExtra(CardActionDialogActivity.IS_BLOCK_CARD_DIALOG, true);
-            intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
+            Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+            intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_block_card_title));
+            intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_block_card_text));
+            intent.putExtra(ActionDialogActivity.IS_BLOCK_CARD_DIALOG, true);
+            intent.putExtra(ActionDialogActivity.CARD_KEY, card);
             startActivityForResult(intent, EXPLAINING_DIALOG);
             overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         }
@@ -428,28 +428,28 @@ public class MyCardsActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     if (card.getPay() && card.getMessage() != null) {
-                        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-                        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_pay_card_title));
-                        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_pay_card_subtitle));
+                        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+                        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_pay_card_title));
+                        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_pay_card_subtitle));
                         if (card.getMessage().equalsIgnoreCase("card_status.blocked_sobrecupo")) {
-                            intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_pay_card_text_1));
+                            intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_pay_card_text_1));
                         }
                         if (card.getMessage().equalsIgnoreCase("card_status.blocked_rediferido")) {
-                            intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_pay_card_text_2));
+                            intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_pay_card_text_2));
                         }
-                        intent.putExtra(CardActionDialogActivity.SHOW_PAY_BUTTON_KEY, true);
-                        intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
+                        intent.putExtra(ActionDialogActivity.SHOW_PAY_BUTTON_KEY, true);
+                        intent.putExtra(ActionDialogActivity.CARD_KEY, card);
                         startActivityForResult(intent, EXPLAINING_DIALOG);
                         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
                         return;
                     }
                     if (!TextUtils.isEmpty(card.getMessage()) && card.getMessage().equals("card_status.blocked_call_center")) {
-                        Intent intent = new Intent(MyCardsActivity.this, CardActionDialogActivity.class);
-                        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_blocked_call_card_title));
-                        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_blocked_call__card_subtitle));
-                        intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_blocked_call__card_text));
-                        intent.putExtra(CardActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
-                        intent.putExtra(CardActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.my_cards_blocked_call__phone));
+                        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+                        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_blocked_call_card_title));
+                        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_blocked_call__card_subtitle));
+                        intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_blocked_call__card_text));
+                        intent.putExtra(ActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
+                        intent.putExtra(ActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.my_cards_blocked_call__phone));
                         startActivityForResult(intent, EXPLAINING_DIALOG);
                         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
                         return;

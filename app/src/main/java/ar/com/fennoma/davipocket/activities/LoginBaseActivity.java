@@ -431,28 +431,28 @@ public class LoginBaseActivity extends BaseActivity {
     }
 
     private void newDeviceDetectedDialog(ErrorMessages error){
-        Intent intent = new Intent(LoginBaseActivity.this, CardActionDialogActivity.class);
-        intent.putExtra(CardActionDialogActivity.TITLE_KEY, getString(R.string.new_device_detected_title));
-        intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, getString(R.string.new_device_detected_subtitle));
-        intent.putExtra(CardActionDialogActivity.NEW_DEVICE_DETECTED, true);
+        Intent intent = new Intent(LoginBaseActivity.this, ActionDialogActivity.class);
+        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.new_device_detected_title));
+        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.new_device_detected_subtitle));
+        intent.putExtra(ActionDialogActivity.NEW_DEVICE_DETECTED, true);
         int rqCode = NEW_DEVICE_DETECTED;
         switch(error) {
             case NEW_DEVICE:
-                intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.new_device_detected_text));
+                intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.new_device_detected_text));
                 break;
             case NEW_DEVICE_OTP_VALIDATION_NEEDED:
-                intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.new_device_detected_text));
+                intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.new_device_detected_text));
                 rqCode = NEW_DEVICE_OTP_VALIDATION;
                 break;
             case NEW_DEVICE_EXISTING_DEVICE:
-                intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.new_device_existing_device_detected_text));
+                intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.new_device_existing_device_detected_text));
                 break;
             case NEW_DEVICE_EXISTING_DEVICE_OTP_VALIDATION_NEEDED:
-                intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.new_device_existing_device_detected_text));
+                intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.new_device_existing_device_detected_text));
                 rqCode = NEW_DEVICE_OTP_VALIDATION;
                 break;
             default:
-                intent.putExtra(CardActionDialogActivity.TEXT_KEY, getString(R.string.new_device_detected_text));
+                intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.new_device_detected_text));
         }
         startActivityForResult(intent, rqCode);
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);

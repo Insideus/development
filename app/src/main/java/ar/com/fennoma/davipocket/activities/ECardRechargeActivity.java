@@ -19,7 +19,6 @@ import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
-import ar.com.fennoma.davipocket.utils.DateUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class ECardRechargeActivity extends AbstractPayActivity {
@@ -109,12 +108,12 @@ public class ECardRechargeActivity extends AbstractPayActivity {
             public void onClick(View v) {
                 String amount = getAmount();
                 if (validateAmount(amount) && isAmountOnRange(amount)) {
-                    Intent intent = new Intent(ECardRechargeActivity.this, CardActionDialogActivity.class);
-                    intent.putExtra(CardActionDialogActivity.TITLE_KEY, "CONFIRMAR");
-                    intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, "RECARGA DE ECARD");
-                    intent.putExtra(CardActionDialogActivity.TEXT_KEY, getPayConfirmationText(amount));
-                    intent.putExtra(CardActionDialogActivity.IS_CARD_PAY, true);
-                    intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
+                    Intent intent = new Intent(ECardRechargeActivity.this, ActionDialogActivity.class);
+                    intent.putExtra(ActionDialogActivity.TITLE_KEY, "CONFIRMAR");
+                    intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, "RECARGA DE ECARD");
+                    intent.putExtra(ActionDialogActivity.TEXT_KEY, getPayConfirmationText(amount));
+                    intent.putExtra(ActionDialogActivity.IS_CARD_PAY, true);
+                    intent.putExtra(ActionDialogActivity.CARD_KEY, card);
                     startActivityForResult(intent, PAY_REQUEST);
                     overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
                 }

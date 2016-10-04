@@ -189,12 +189,12 @@ public class CardPayDetailActivity extends AbstractPayActivity {
                 //amount = "100";
                 amount = amount.replace(",", ".");
                 if (validateAmount(amount)) {
-                    Intent intent = new Intent(CardPayDetailActivity.this, CardActionDialogActivity.class);
-                    intent.putExtra(CardActionDialogActivity.TITLE_KEY, "CONFIRMAR");
-                    intent.putExtra(CardActionDialogActivity.SUBTITLE_KEY, "PAGO");
-                    intent.putExtra(CardActionDialogActivity.TEXT_KEY, getPayConfirmationText(amount));
-                    intent.putExtra(CardActionDialogActivity.IS_CARD_PAY, true);
-                    intent.putExtra(CardActionDialogActivity.CARD_KEY, card);
+                    Intent intent = new Intent(CardPayDetailActivity.this, ActionDialogActivity.class);
+                    intent.putExtra(ActionDialogActivity.TITLE_KEY, "CONFIRMAR");
+                    intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, "PAGO");
+                    intent.putExtra(ActionDialogActivity.TEXT_KEY, getPayConfirmationText(amount));
+                    intent.putExtra(ActionDialogActivity.IS_CARD_PAY, true);
+                    intent.putExtra(ActionDialogActivity.CARD_KEY, card);
                     startActivityForResult(intent, PAY_REQUEST);
                     overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
                 }
