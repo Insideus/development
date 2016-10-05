@@ -16,7 +16,7 @@ public class DateUtils {
     public static final String DOTTED_DDMMMMYY_FORMAT = "dd · MMMM · yy";
 
     public static int getYearsFromDate(Date birthday){
-        return getDiffYears(birthday, Calendar.getInstance(Locale.getDefault()).getTime());
+        return getDiffYears(birthday, Calendar.getInstance(new Locale("es", "ES")).getTime());
     }
 
     public static int getDiffYears(Date first, Date last) {
@@ -34,14 +34,14 @@ public class DateUtils {
     }
 
     public static Calendar getCalendar(Date date) {
-        Calendar cal = Calendar.getInstance(Locale.getDefault());
+        Calendar cal = Calendar.getInstance(new Locale("es", "ES"));
         cal.setTime(date);
         return cal;
     }
 
     public static Date getDate(String date, String dateFormat) {
         try {
-            return new SimpleDateFormat(dateFormat, Locale.getDefault()).parse(date);
+            return new SimpleDateFormat(dateFormat, new Locale("es", "ES")).parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
@@ -49,8 +49,8 @@ public class DateUtils {
     }
 
     public static String formatDate(String originalFormat, String outputFormat, String originalDate) {
-        SimpleDateFormat formatter = new SimpleDateFormat(originalFormat, Locale.getDefault());
-        SimpleDateFormat resultFormatter = new SimpleDateFormat(outputFormat, Locale.getDefault());
+        SimpleDateFormat formatter = new SimpleDateFormat(originalFormat, new Locale("es", "ES"));
+        SimpleDateFormat resultFormatter = new SimpleDateFormat(outputFormat, new Locale("es", "ES"));
         String result = "";
         try{
             Date date = formatter.parse(originalDate);

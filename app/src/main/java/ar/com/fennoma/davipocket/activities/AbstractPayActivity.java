@@ -229,14 +229,14 @@ public abstract class AbstractPayActivity extends BaseActivity{
 
     protected String getSuccessText(String startingText) {
         String date = "";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d", Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d", new Locale("es", "ES"));
         Date time = Calendar.getInstance().getTime();
         date = date.concat(simpleDateFormat.format(time)).concat(" de ");
-        simpleDateFormat = new SimpleDateFormat("MMM", Locale.getDefault());
+        simpleDateFormat = new SimpleDateFormat("MMM", new Locale("es", "ES"));
         date = date.concat(simpleDateFormat.format(time).concat(" de "));
-        simpleDateFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
+        simpleDateFormat = new SimpleDateFormat("yyyy", new Locale("es", "ES"));
         date = date.concat(simpleDateFormat.format(time)).concat(" a las ");
-        simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        simpleDateFormat = new SimpleDateFormat("HH:mm", new Locale("es", "ES"));
         date = date.concat(simpleDateFormat.format(time));
         return startingText.concat(" ").concat(date);
     }
