@@ -34,11 +34,15 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class BaseActivity extends AppCompatActivity {
 
+    private static final int OTP_NEEDED = 181;
+
     private Dialog loadingDialog = null;
     private Handler loadingHandler = null;
     private Runnable loadingRunnable = null;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+
+    public OtpCodeReceived otpCodeReceived;
 
     public static boolean checkPermission(String strPermission, Context _c, Activity _a) {
         int result = ContextCompat.checkSelfPermission(_c, strPermission);
@@ -159,6 +163,9 @@ public class BaseActivity extends AppCompatActivity {
                     DialogUtil.toast(this,
                             getString(R.string.login_error_message_title), "",
                             additionalParam);
+                    break;
+                case OTP_VALIDATION_NEEDED:
+                    showOtpValidationDialog();
                     break;
                 case INVALID_SESSION:
                     handleInvalidSessionError();
@@ -443,6 +450,42 @@ public class BaseActivity extends AppCompatActivity {
     public String getTodo1Data() {
         Todo1Utils.initMobileSdk(this);
         return Todo1Utils.getData(this);
+    }
+
+    public void showOtpValidationDialog() {
+        Intent intent = new Intent(this, ActionDialogActivity.class);
+        intent.putExtra(ActionDialogActivity.OTP_VALIDATION_DIALOG, true);
+        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.otp_needed_title));
+        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.otp_needed_subtitle));
+        intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.otp_needed_text));
+        startActivityForResult(intent, OTP_NEEDED);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == OTP_NEEDED) {
+            if (resultCode == RESULT_OK && data != null) {
+                String otpCode = data.getStringExtra(ActionDialogActivity.OTP_VALIDATION_DIALOG_TEXT_KEY);
+                if(otpCodeReceived != null) {
+                    otpCodeReceived.onOtpCodeReceived(otpCode);
+                }
+            } else if (resultCode == ActionDialogActivity.RESULT_CANCELED) {
+                DialogUtil.toast(this,
+                        getString(R.string.otp_needed_canceled_title),
+                        getString(R.string.otp_needed_canceled_subtitle),
+                        getString(R.string.otp_needed_canceled_text));
+            } else {
+                showServiceGenericError();
+            }
+        }
+    }
+
+    public interface OtpCodeReceived {
+
+        public void onOtpCodeReceived(String otpCode);
+
     }
 
     @Override

@@ -21,7 +21,8 @@ public enum  ErrorMessages {
     NEW_DEVICE("error.new_device"),
     NEW_DEVICE_EXISTING_DEVICE("error.new_device_existing_device"),
     NEW_DEVICE_OTP_VALIDATION_NEEDED("error.new_device.otp_validation_needed"),
-    NEW_DEVICE_EXISTING_DEVICE_OTP_VALIDATION_NEEDED("error.new_device_existing_device.otp_validation_needed");
+    NEW_DEVICE_EXISTING_DEVICE_OTP_VALIDATION_NEEDED("error.new_device_existing_device.otp_validation_needed"),
+    OTP_VALIDATION_NEEDED("error.otp_validation_needed");
 
     ErrorMessages(String errorCode) {
         this.errorCode = errorCode;

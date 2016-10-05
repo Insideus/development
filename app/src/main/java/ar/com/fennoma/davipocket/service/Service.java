@@ -36,7 +36,7 @@ public class Service {
     private final static String BASE_URL = "http://davipocket-dev.paymentez.com/api";
     //private static String BASE_URL = "http://davivienda.fennoma.com.ar/api";
     public final static String IMAGE_BASE_URL = "http://davipocket-dev.paymentez.com";
-    private final static int CONNECTION_TIMEOUT = 10000;
+    private final static int CONNECTION_TIMEOUT = 20000;
     private final static int SUCCESS_CODE = 200;
     private final static String DATA_TAG = "data";
     private final static String ERROR_CODE_TAG = "error_code";
@@ -1157,7 +1157,7 @@ public class Service {
         return response;
     }
 
-    public static Boolean activateCard(String sid, String cardNumber, String todo1) throws ServiceException {
+    public static Boolean activateCard(String sid, String cardNumber, String todo1, String otpCode) throws ServiceException {
         HttpURLConnection urlConnection = null;
         Boolean response = null;
         try {
@@ -1205,7 +1205,7 @@ public class Service {
         return response;
     }
 
-    public static Boolean addCard(String sid, String lastDigits, String ccv, String todo1) throws ServiceException {
+    public static Boolean addCard(String sid, String lastDigits, String ccv, String todo1, String otpCode) throws ServiceException {
         HttpURLConnection urlConnection = null;
         Boolean response = null;
         try {
@@ -1255,7 +1255,7 @@ public class Service {
         return response;
     }
 
-    public static Boolean blockCard(String sid, String lastDigits, String todo1) throws ServiceException {
+    public static Boolean blockCard(String sid, String lastDigits, String todo1, String otpCode) throws ServiceException {
         HttpURLConnection urlConnection = null;
         Boolean response = null;
         try {
@@ -1625,7 +1625,8 @@ public class Service {
         return response;
     }
 
-    public static Card getECardData(String sid, String cardLastDigits, String cvv, String todo1) throws ServiceException {
+    public static Card getECardData(String sid, String cardLastDigits, String cvv, String todo1,
+                                    String otpCode) throws ServiceException {
         Card response = null;
         HttpURLConnection urlConnection = null;
         try {
@@ -1675,7 +1676,7 @@ public class Service {
     }
 
     public static boolean rechargeECard(String sid, String lastDigits, String accountLastDigits,
-                                        String amount, String todo1) throws ServiceException {
+                                        String amount, String todo1, String otpCode) throws ServiceException {
         boolean response = false;
         HttpURLConnection urlConnection = null;
         try {

@@ -21,7 +21,7 @@ import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
-public class ECardRechargeActivity extends AbstractPayActivity {
+public class ECardRechargeActivity extends AbstractPayActivity implements BaseActivity.OtpCodeReceived {
 
     private EditText otherPaymentValue;
 
@@ -142,7 +142,7 @@ public class ECardRechargeActivity extends AbstractPayActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PAY_REQUEST && resultCode == RESULT_OK) {
-            new RechargeECardTask(getAmount()).execute();
+            new RechargeECardTask(getAmount(), null).execute();
         }
         if (requestCode == ON_CLOSE_REQUEST && resultCode == RESULT_OK) {
             setResult(RESULT_OK);
@@ -162,9 +162,11 @@ public class ECardRechargeActivity extends AbstractPayActivity {
         private String errorCode;
         private String amount;
         private boolean transactionMade;
+        private String otpCode;
 
-        public RechargeECardTask(String amount) {
+        public RechargeECardTask(String amount, String otpCode) {
             this.amount = amount;
+            this.otpCode = otpCode;
         }
 
         @Override
@@ -176,7 +178,7 @@ public class ECardRechargeActivity extends AbstractPayActivity {
         protected Void doInBackground(Void... params) {
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                transactionMade = Service.rechargeECard(sid, card.getLastDigits(), selectedAccount.getLastDigits(), amount, getTodo1Data());
+                transactionMade = Service.rechargeECard(sid, card.getLastDigits(), selectedAccount.getLastDigits(), amount, getTodo1Data(), otpCode);
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 e.printStackTrace();
@@ -190,8 +192,8 @@ public class ECardRechargeActivity extends AbstractPayActivity {
             if (!transactionMade) {
                 //Hancdle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
+                if (error != null) {
+                    processErrorAndContinue(error, null);
                 } else {
                     showServiceGenericError();
                 }
@@ -202,4 +204,10 @@ public class ECardRechargeActivity extends AbstractPayActivity {
             }
         }
     }
+
+    @Override
+    public void onOtpCodeReceived(String otpCode) {
+        new RechargeECardTask(getAmount(), otpCode).execute();
+    }
+
 }

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.session.Session;
 
 public class ToastDialogActivity extends BaseActivity {
 
@@ -164,6 +165,7 @@ public class ToastDialogActivity extends BaseActivity {
     }
 
     private void goToLoginActivity() {
+        Session.getCurrentSession(this).logout();
         Intent facebookIntent = new Intent(this, LoginActivity.class);
         facebookIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(facebookIntent);

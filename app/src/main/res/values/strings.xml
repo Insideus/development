@@ -310,4 +310,13 @@
     <string name="otp_resend_sms">REENVIAR SMS</string>
     <string name="new_device_otp_title">CONFIRMAR DISPOSITIVO</string>
 
+    <string name="otp_needed_title">VALIDAR</string>
+    <string name="otp_needed_subtitle">DISPOSITIVO</string>
+    <string name="otp_needed_text">Para continuar ingrese el código que le hemos enviado vía SMS</string>
+    <string name="otp_needed_accept">ACEPTAR</string>
+    <string name="otp_needed_card_cancel">CANCELAR</string>
+    <string name="otp_needed_canceled_title">ERROR</string>
+    <string name="otp_needed_canceled_subtitle">DE VALIDACIÓN</string>
+    <string name="otp_needed_canceled_text">Para realizar esta operación es necesario que ingrese el código de validación.</string>
+
 </resources>

@@ -24,7 +24,7 @@ import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
-public class ActionDialogActivity extends BaseActivity {
+public class ActionDialogActivity extends BaseActivity implements BaseActivity.OtpCodeReceived {
 
     public static final String SUCCESS_TITLE = "success title";
     public static final String SUCCESS_SUBTITLE = "success subtitle";
@@ -45,6 +45,9 @@ public class ActionDialogActivity extends BaseActivity {
     public static final String IS_BLOCK_CARD_DIALOG = "is_block_card_dialog_key";
     public static final String E_CARD_GET_CVV = "ecard get cvv";
     public static final String E_CARD_SHOW_DATA = "ecard show data";
+
+    public static final String OTP_VALIDATION_DIALOG = "otp_validation_needed_key";
+    public static final String OTP_VALIDATION_DIALOG_TEXT_KEY = "otp_validation_text_key";
 
     public static final String SHOW_CALL_BUTTON_KEY = "show_call_button_key";
     public static final String CALL_BUTTON_NUMBER_KEY = "call_button_number_key";
@@ -72,6 +75,7 @@ public class ActionDialogActivity extends BaseActivity {
     private String callNumber;
     private Card card;
     private Boolean newDeviceDetected;
+    private Boolean otpValidationNeeded;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,6 +98,7 @@ public class ActionDialogActivity extends BaseActivity {
             lastFourDigits = savedInstanceState.getString(LAST_FOUR_DIGITS, "");
             eCardShowData = savedInstanceState.getBoolean(E_CARD_SHOW_DATA, false);
             newDeviceDetected = savedInstanceState.getBoolean(NEW_DEVICE_DETECTED, false);
+            otpValidationNeeded = savedInstanceState.getBoolean(OTP_VALIDATION_DIALOG, false);
         } else {
             title = getIntent().getStringExtra(TITLE_KEY);
             subtitle = getIntent().getStringExtra(SUBTITLE_KEY);
@@ -111,6 +116,7 @@ public class ActionDialogActivity extends BaseActivity {
             lastFourDigits = getIntent().getStringExtra(LAST_FOUR_DIGITS);
             eCardShowData = getIntent().getBooleanExtra(E_CARD_SHOW_DATA, false);
             newDeviceDetected = getIntent().getBooleanExtra(NEW_DEVICE_DETECTED, false);
+            otpValidationNeeded = getIntent().getBooleanExtra(OTP_VALIDATION_DIALOG, false);
         }
         setLayouts();
         animateOpening();
@@ -143,6 +149,7 @@ public class ActionDialogActivity extends BaseActivity {
 
         EditText ccvInput = (EditText) findViewById(R.id.ccv_code);
         EditText cardNumberInput = (EditText) findViewById(R.id.card_number);
+        EditText otpInput = (EditText) findViewById(R.id.otp_code);
 
         if (showCallButton) {
             showCallLayouts(callButton, acceptButton, ignoreButton);
@@ -188,6 +195,12 @@ public class ActionDialogActivity extends BaseActivity {
 
         if(newDeviceDetected){
             setNewDeviceDetectedLayouts(acceptButton, ignoreButton);
+        }
+
+        if(otpValidationNeeded) {
+            setOtpValidationLayouts(acceptButton, ignoreButton);
+        } else {
+            otpInput.setVisibility(View.GONE);
         }
 
         TextView titleTv = (TextView) findViewById(R.id.toast_title);
@@ -247,7 +260,7 @@ public class ActionDialogActivity extends BaseActivity {
                 if(TextUtils.isEmpty(lastFourDigits) || cvv == null || TextUtils.isEmpty(cvv.getText())){
                     eCardFailed(getString(R.string.my_cards_failed_opperation_message));
                 }
-                new ECardShowData(lastFourDigits, cvv.getText().toString()).execute();
+                new ECardShowData(lastFourDigits, cvv.getText().toString(), null).execute();
             }
         });
     }
@@ -310,7 +323,7 @@ public class ActionDialogActivity extends BaseActivity {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new BlockCardTask().execute();
+                new BlockCardTask().execute("");
             }
         });
     }
@@ -359,6 +372,33 @@ public class ActionDialogActivity extends BaseActivity {
         ignoreButton.setOnClickListener(getCloseListener());
     }
 
+    private void setOtpValidationLayouts(TextView acceptButton, TextView ignoreButton) {
+        acceptButton.setText(getString(R.string.my_cards_block_card_accept));
+        ignoreButton.setText(getString(R.string.my_cards_block_card_cancel));
+        ignoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText otpInput = (EditText) findViewById(R.id.otp_code);
+                if(otpInput.getText().toString().length() > 0) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(OTP_VALIDATION_DIALOG_TEXT_KEY, otpInput.getText().toString());
+                    setResult(RESULT_OK, new Intent().putExtras(bundle));
+                    finish();
+                } else {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                }
+            }
+        });
+    }
+
     private void showCallLayouts(View callButton, View acceptButton, View ignoreButton) {
         checkCallPermissions();
         callButton.setVisibility(LinearLayout.VISIBLE);
@@ -388,7 +428,7 @@ public class ActionDialogActivity extends BaseActivity {
                     finish();
                     return;
                 }
-                new ActivateCardTask().execute(cardNumberInput.getText().toString());
+                new ActivateCardTask().execute(cardNumberInput.getText().toString(), null);
             }
         };
     }
@@ -404,7 +444,7 @@ public class ActionDialogActivity extends BaseActivity {
                     finish();
                     return;
                 }
-                new AddCardTask().execute(ccvInput.getText().toString());
+                new AddCardTask().execute(ccvInput.getText().toString(), null);
             }
         };
     }
@@ -472,7 +512,7 @@ public class ActionDialogActivity extends BaseActivity {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.activateCard(sid, params[0], getTodo1Data());
+                response = Service.activateCard(sid, params[0], getTodo1Data(), params[1]);
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -515,7 +555,7 @@ public class ActionDialogActivity extends BaseActivity {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.blockCard(sid, card.getLastDigits(), getTodo1Data());
+                response = Service.blockCard(sid, card.getLastDigits(), getTodo1Data(), params[0]);
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -558,7 +598,7 @@ public class ActionDialogActivity extends BaseActivity {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.addCard(sid, card.getLastDigits(), params[0], getTodo1Data());
+                response = Service.addCard(sid, card.getLastDigits(), params[0], getTodo1Data(), params[1]);
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -713,10 +753,12 @@ public class ActionDialogActivity extends BaseActivity {
         private String errorCode;
         private String lastDigits;
         private String cvv;
+        private String otpCode;
 
-        public ECardShowData(String lastFourDigits, String cardCvv) {
+        public ECardShowData(String lastFourDigits, String cardCvv, String otpCode) {
             this.lastDigits = lastFourDigits;
             this.cvv = cardCvv;
+            this.otpCode = otpCode;
         }
 
         @Override
@@ -728,7 +770,8 @@ public class ActionDialogActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                response = Service.getECardData(Session.getCurrentSession(getApplicationContext()).getSid(), lastDigits, cvv, getTodo1Data());
+                response = Service.getECardData(Session.getCurrentSession(getApplicationContext()).getSid(),
+                        lastDigits, cvv, getTodo1Data(), otpCode);
             } catch (ServiceException e) {
                 e.printStackTrace();
                 errorCode = e.getErrorCode();
@@ -752,6 +795,38 @@ public class ActionDialogActivity extends BaseActivity {
                 eCardShowDataSuccess(response);
             }
         }
+    }
+
+    @Override
+    public void onOtpCodeReceived(String otpCode) {
+        if(isCardNumberDialog) {
+            EditText cardNumberInput = (EditText) findViewById(R.id.card_number);
+            if(cardNumberInput != null) {
+                new ActivateCardTask().execute(cardNumberInput.getText().toString(), otpCode);
+                return;
+            }
+        }
+        if(isCcvDialog) {
+            EditText ccvInput = (EditText) findViewById(R.id.ccv_code);
+            if(ccvInput != null) {
+                new AddCardTask().execute(ccvInput.getText().toString(), otpCode);
+                return;
+            }
+        }
+        if(isBlockCardDialog) {
+            if(card != null) {
+                new BlockCardTask().execute(otpCode);
+                return;
+            }
+        }
+        if(eCardShowData) {
+            TextView cvv = (TextView) findViewById(R.id.ccv_code);
+            if(cvv != null) {
+                new ECardShowData(lastFourDigits, cvv.getText().toString(), otpCode).execute();
+                return;
+            }
+        }
+        showServiceGenericError();
     }
 
 }
