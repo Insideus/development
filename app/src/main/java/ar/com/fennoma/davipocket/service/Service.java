@@ -36,7 +36,7 @@ public class Service {
     private final static String BASE_URL = "http://davipocket-dev.paymentez.com/api";
     //private static String BASE_URL = "http://davivienda.fennoma.com.ar/api";
     public final static String IMAGE_BASE_URL = "http://davipocket-dev.paymentez.com";
-    private final static int CONNECTION_TIMEOUT = 20000;
+    private final static int CONNECTION_TIMEOUT = 30000;
     private final static int SUCCESS_CODE = 200;
     private final static String DATA_TAG = "data";
     private final static String ERROR_CODE_TAG = "error_code";
@@ -183,8 +183,6 @@ public class Service {
         LoginResponse loginResponse = null;
         try {
             urlConnection = getHttpURLConnection(LOGIN);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -244,8 +242,6 @@ public class Service {
         LoginResponse loginResponse = null;
         try {
             urlConnection = getHttpURLConnection(ACCEPT_NEW_DEVICE);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -305,8 +301,6 @@ public class Service {
         Boolean response = null;
         try {
             urlConnection = getHttpURLConnection(RESEND_NEW_DEVICE_OTP);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -351,8 +345,6 @@ public class Service {
         PaymentDetail detail = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(GET_CARD_BALANCE, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -404,8 +396,6 @@ public class Service {
         LoginResponse loginResponse = null;
         try {
             urlConnection = getHttpURLConnection(LOGIN_WITH_TOKEN);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -466,8 +456,6 @@ public class Service {
         LoginResponse loginResponse = null;
         try {
             urlConnection = getHttpURLConnection(LOGIN_WITH_NEXT_TOKEN);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -529,8 +517,6 @@ public class Service {
         Boolean response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(CONNECT_USER_FACEBOOK, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -575,8 +561,6 @@ public class Service {
         Boolean response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(UPDATE_USER_INFO, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -626,8 +610,6 @@ public class Service {
         Boolean response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(USER_ACCOUNT_VALIDATION, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -672,8 +654,6 @@ public class Service {
         Boolean response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(UPDATE_USER_COMMUNICATIONS_INFO, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -725,8 +705,6 @@ public class Service {
         Boolean response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(RESEND_USER_VALIDATION_CODE, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -760,8 +738,6 @@ public class Service {
         String response = null;
         try {
             urlConnection = getHttpURLConnection(VALIDATE_PRODUCT);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -821,8 +797,6 @@ public class Service {
         String response = null;
         try {
             urlConnection = getHttpURLConnection(VALIDATE_OTP);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -872,8 +846,6 @@ public class Service {
         LoginResponse response = null;
         try {
             urlConnection = getHttpURLConnection(SET_PASSWORD);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -930,8 +902,6 @@ public class Service {
         LoginResponse response = null;
         try {
             urlConnection = getHttpURLConnection(SET_EXPIRED_PASSWORD);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -989,8 +959,6 @@ public class Service {
         String response = null;
         try {
             urlConnection = getHttpURLConnection(FORGOT_PASSWORD);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1040,8 +1008,6 @@ public class Service {
         Boolean response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(SET_USER_INTERESTS, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1085,8 +1051,6 @@ public class Service {
         ArrayList<Card> response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(GET_USER_CARDS, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1128,8 +1092,6 @@ public class Service {
         Boolean response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(LOGOUT, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1162,8 +1124,6 @@ public class Service {
         Boolean response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(ACTIVATE_CARD, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1210,8 +1170,6 @@ public class Service {
         Boolean response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(ADD_CARD, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1260,8 +1218,6 @@ public class Service {
         Boolean response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(BLOCK_CARD, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1308,8 +1264,6 @@ public class Service {
         Boolean response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(SET_FAVOURITE_CARD, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1435,8 +1389,6 @@ public class Service {
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(PAY_CARD, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1486,17 +1438,6 @@ public class Service {
         return response;
     }
 
-    @NonNull
-    private static HttpURLConnection getHttpURLConnection(String sid, String getCardMovements) throws IOException {
-        HttpURLConnection urlConnection = getHttpURLConnectionWithHeader(getCardMovements, sid);
-        urlConnection.setReadTimeout(10000);
-        urlConnection.setConnectTimeout(15000);
-        urlConnection.setRequestMethod("POST");
-        urlConnection.setDoInput(true);
-        urlConnection.setDoOutput(true);
-        return urlConnection;
-    }
-
     private static boolean isValidStatusLineCode(int statusCode) {
         return statusCode == SUCCESS_CODE;
     }
@@ -1536,8 +1477,6 @@ public class Service {
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(NEW_E_CARD, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1582,8 +1521,6 @@ public class Service {
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(E_CARD_GET_CVV, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1631,8 +1568,6 @@ public class Service {
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(E_CARD_SHOW_DATA, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1681,8 +1616,6 @@ public class Service {
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(RECHARGE_E_CARD, sid);
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1735,7 +1668,8 @@ public class Service {
         if (Build.VERSION.SDK != null && Build.VERSION.SDK_INT > 13) {
             urlConnection.setRequestProperty("Connection", "close");
         }
-        setConnectionTimeOut(urlConnection);
+        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+        urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
         return urlConnection;
     }
 
@@ -1744,13 +1678,18 @@ public class Service {
         URL url = new URL(BASE_URL + method);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestProperty("sid", token);
-        setConnectionTimeOut(urlConnection);
+        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+        urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
         return urlConnection;
     }
 
-    private static void setConnectionTimeOut(HttpURLConnection urlConnection) {
-        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
-        urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
+    @NonNull
+    private static HttpURLConnection getHttpURLConnection(String sid, String getCardMovements) throws IOException {
+        HttpURLConnection urlConnection = getHttpURLConnectionWithHeader(getCardMovements, sid);
+        urlConnection.setRequestMethod("POST");
+        urlConnection.setDoInput(true);
+        urlConnection.setDoOutput(true);
+        return urlConnection;
     }
 
 }

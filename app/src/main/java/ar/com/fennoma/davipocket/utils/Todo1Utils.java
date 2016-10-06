@@ -19,8 +19,7 @@ import java.util.Properties;
 public class Todo1Utils {
 
     private static String TAG = "MobileSDK";
-
-    private static final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 153;//A unique code in this app
+    private static final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 153;
 
     public static void initMobileSdk(AppCompatActivity act) {
         MobileAPI mobileAPI = MobileAPI.getInstance(act);
@@ -52,17 +51,12 @@ public class Todo1Utils {
 
     private static Properties getSdkProperties() {
         Properties properties = new Properties();
-
         properties.setProperty(MobileAPI.CONFIGURATION_KEY, "" + MobileAPI.COLLECT_ALL_DEVICE_DATA_AND_LOCATION);
         properties.setProperty(MobileAPI.TIMEOUT_MINUTES_KEY, "" + MobileAPI.TIMEOUT_DEFAULT_VALUE);
         properties.setProperty(MobileAPI.BEST_LOCATION_AGE_MINUTES_KEY, "" + MobileAPI.BEST_LOCATION_AGE_MINUTES_DEFAULT_VALUE);
         properties.setProperty(MobileAPI.MAX_LOCATION_AGE_DAYS_KEY, "" + MobileAPI.MAX_LOCATION_AGE_DAYS_DEFAULT_VALUE);
         properties.setProperty(MobileAPI.ADD_TIMESTAMP_KEY, "1");
-        // override max accuracy - it is 100 meter by default, but we get
-        // network location with higher
-        // accuracy, we want to force GPS locations
-        properties.setProperty(MobileAPI.MAX_ACCURACY_KEY, "" + 50);
-
+        properties.setProperty(MobileAPI.MAX_ACCURACY_KEY, "" + 100);
         return properties;
     }
 
@@ -101,6 +95,5 @@ public class Todo1Utils {
         }
         return true;
     }
-
 
 }
