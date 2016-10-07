@@ -27,6 +27,7 @@ public class Card implements Parcelable, CardToShowOnList {
     private String fullNumber;
     private String expirationMonth;
     private String expirationYear;
+    private Boolean availableNow;
 
     public Card() {
 
@@ -104,6 +105,14 @@ public class Card implements Parcelable, CardToShowOnList {
         this.bin = bin;
     }
 
+    public Boolean getAvailableNow() {
+        return availableNow;
+    }
+
+    public void setAvailableNow(Boolean availableNow) {
+        this.availableNow = availableNow;
+    }
+
     public static ArrayList<Card> fromJsonArray(JSONObject json) {
         ArrayList<Card> cards = new ArrayList<>();
         if(json.has("cards")) {
@@ -169,6 +178,11 @@ public class Card implements Parcelable, CardToShowOnList {
                 CardBin bin = CardBin.fromJson(jsonBin);
                 card.setBin(bin);
             }
+            if(json.has("available_now")){
+                card.setAvailableNow(json.getBoolean("available_now"));
+            } else {
+                card.setAvailableNow(false);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
@@ -233,6 +247,7 @@ public class Card implements Parcelable, CardToShowOnList {
         dest.writeString(this.fullNumber);
         dest.writeString(this.expirationMonth);
         dest.writeString(this.expirationYear);
+        dest.writeValue(this.availableNow);
     }
 
     protected Card(Parcel in) {
@@ -249,6 +264,7 @@ public class Card implements Parcelable, CardToShowOnList {
         this.fullNumber = in.readString();
         this.expirationMonth = in.readString();
         this.expirationYear = in.readString();
+        this.availableNow = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
     public static final Creator<Card> CREATOR = new Creator<Card>() {

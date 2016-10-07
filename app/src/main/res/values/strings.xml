@@ -319,4 +319,10 @@
     <string name="otp_needed_canceled_subtitle">DE VALIDACIÓN</string>
     <string name="otp_needed_canceled_text">Para realizar esta operación es necesario que ingrese el código de validación.</string>
 
+    <string name="new_ecard_title">DISFRUTE SU</string>
+    <string name="new_ecard_subtitle">E-CARD</string>
+    <string name="new_ecard_text">Esta es su nueva tarjeta de prepago eCard.</string>
+    <string name="new_ecard_24hs_text">Esta es su nueva tarjeta de prepago eCard.\nEstará disponible en 24 hrs.</string>
+    <string name="new_ecard_button_text">CONTINUAR</string>
+
 </resources>

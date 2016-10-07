@@ -38,6 +38,7 @@ public class MyCardsActivity extends BaseActivity {
     private static final int EXPLAINING_DIALOG = 11;
     private static final int OPERATION_RESULT = 12;
     private static final int E_CARD_SHOW_DATA = 13;
+    private static final int CREATE_E_CARD = 14;
     private CardsAdapter cardsAdapter;
     private int selectedCard = -1;
     private boolean refresh = false;
@@ -105,11 +106,20 @@ public class MyCardsActivity extends BaseActivity {
     }
 
     private void createECard() {
+        /*
         Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
         intent.putExtra(ActionDialogActivity.E_CARD_CREATE, true);
         startOperationPopUp(intent, getString(R.string.my_cards_e_card_create_title),
                 getString(R.string.my_cards_e_card_create_subtitle),
                 getString(R.string.my_cards_e_card_create_text));
+                */
+        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+        intent.putExtra(ActionDialogActivity.E_CARD_CREATE, true);
+        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_e_card_create_title));
+        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_e_card_create_subtitle));
+        intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_e_card_create_text));
+        startActivityForResult(intent, CREATE_E_CARD);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
     private void eCardGetCVV(String lastDigits){
@@ -147,43 +157,51 @@ public class MyCardsActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == OPERATION_RESULT) {
-            if(resultCode == RESULT_OK) {
+        if (requestCode == OPERATION_RESULT) {
+            if (resultCode == RESULT_OK) {
                 String successTitle;
                 String successSubtitle;
                 String successText;
-                if(data != null && !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.SUCCESS_TITLE))){
+                if (data != null && !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.SUCCESS_TITLE))) {
                     successTitle = data.getStringExtra(ActionDialogActivity.SUCCESS_TITLE);
-                }else{
+                } else {
                     successTitle = getString(R.string.my_cards_opperation_success_message_title);
                 }
-                if(data != null && !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.SUCCESS_SUBTITLE))){
+                if (data != null && !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.SUCCESS_SUBTITLE))) {
                     successSubtitle = data.getStringExtra(ActionDialogActivity.SUCCESS_SUBTITLE);
-                }else{
+                } else {
                     successSubtitle = getString(R.string.my_cards_opperation_success_message_subtitle);
                 }
-                if(data != null && !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.SUCCESS_TEXT))){
+                if (data != null && !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.SUCCESS_TEXT))) {
                     successText = data.getStringExtra(ActionDialogActivity.SUCCESS_TEXT);
-                }else{
+                } else {
                     successText = getString(R.string.my_cards_opperation_success_message);
                 }
                 DialogUtil.toastWithResult(this, EXPLAINING_DIALOG, successTitle, successSubtitle, successText);
                 refresh = true;
-            } else if(resultCode == ActionDialogActivity.RESULT_FAILED){
+            } else if (resultCode == ActionDialogActivity.RESULT_FAILED) {
                 generateErrorDialog(data);
             }
         } else if (requestCode == EXPLAINING_DIALOG) {
             refresh = false;
-            if(resultCode == ActionDialogActivity.RESULT_FAILED){
+            if (resultCode == ActionDialogActivity.RESULT_FAILED) {
                 generateErrorDialog(data);
             }
         } else if (requestCode == E_CARD_SHOW_DATA) {
-            if(resultCode == RESULT_OK && data != null && data.getParcelableExtra(ActionDialogActivity.E_CARD_SHOW_DATA) != null) {
+            if (resultCode == RESULT_OK && data != null && data.getParcelableExtra(ActionDialogActivity.E_CARD_SHOW_DATA) != null) {
                 Card cardData = data.getParcelableExtra(ActionDialogActivity.E_CARD_SHOW_DATA);
                 refresh = false;
                 cardsAdapter.updateCardData(selectedCard, cardData.getFullNumber(), cardData.getExpirationMonth(),
                         cardData.getExpirationYear());
-            } else if(resultCode == ActionDialogActivity.RESULT_FAILED) {
+            } else if (resultCode == ActionDialogActivity.RESULT_FAILED) {
+                generateErrorDialog(data);
+            }
+        } else if (requestCode == CREATE_E_CARD) {
+            if (resultCode == RESULT_OK && data != null && data.getParcelableExtra(ActionDialogActivity.E_CARD_SHOW_DATA) != null) {
+                Card cardData = data.getParcelableExtra(ActionDialogActivity.E_CARD_SHOW_DATA);
+                showEcardCreatedPopup(cardData);
+                refresh = true;
+            } else if (resultCode == ActionDialogActivity.RESULT_FAILED) {
                 generateErrorDialog(data);
             }
         }

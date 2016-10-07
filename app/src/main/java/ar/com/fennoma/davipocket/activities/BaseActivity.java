@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
@@ -35,6 +36,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class BaseActivity extends AppCompatActivity {
 
     private static final int OTP_NEEDED = 181;
+    public static final int SHOW_CREATED_ECARD_POPUP = 182;
 
     private Dialog loadingDialog = null;
     private Handler loadingHandler = null;
@@ -205,6 +207,11 @@ public class BaseActivity extends AppCompatActivity {
                     Intent interestActivity = new Intent(this, InterestsPickerActivity.class);
                     interestActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(interestActivity);
+                    break;
+                case GET_E_CARD:
+                    Intent getEcardActivity = new Intent(this, EcardLoginActivity.class);
+                    getEcardActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(getEcardActivity);
                     break;
                 case REGISTRATION_COMPLETED:
                     Intent mainActivityIntent = new Intent(this, MainActivity.class);
@@ -504,6 +511,13 @@ public class BaseActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    public void showEcardCreatedPopup(Card card) {
+        Intent intent = new Intent(this, NewEcardDialogActivity.class);
+        intent.putExtra(NewEcardDialogActivity.CARD_KEY, card);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+        startActivityForResult(intent, SHOW_CREATED_ECARD_POPUP);
     }
 
     public void setOtpCodeReceived(OtpCodeReceived otpCodeReceived) {

@@ -1476,8 +1476,8 @@ public class Service {
         return new JSONObject(value);
     }
 
-    public static boolean newECard(String sid, String todo1) throws ServiceException {
-        boolean response = false;
+    public static Card newECard(String sid, String todo1) throws ServiceException {
+        Card response = null;
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(NEW_E_CARD, sid);
@@ -1501,11 +1501,10 @@ public class Service {
             if (isValidStatusLineCode(urlConnection.getResponseCode())) {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
-                JSONObject responseJson;
+                JSONObject responseJson = json.getJSONObject(DATA_TAG);
                 if (json.has("error") && !json.getBoolean("error")) {
-                    response = true;
+                    response = Card.fromJson(responseJson);
                 } else {
-                    responseJson = json.getJSONObject(DATA_TAG);
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     throw new ServiceException(errorCode);
                 }

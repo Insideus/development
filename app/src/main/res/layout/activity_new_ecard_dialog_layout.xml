@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/outside"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/white_rounded_coreners_background"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingTop="25dp">
+
+        <ImageView
+            android:id="@+id/close_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginBottom="10dp"
+            android:paddingRight="15dp"
+            android:src="@drawable/cancel_ex" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/new_ecard_title"
+            android:textAllCaps="true"
+            android:textColor="@color/red_title_color"
+            android:textSize="26dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-5dp"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/new_ecard_subtitle"
+            android:textAllCaps="true"
+            android:textColor="@color/darkest_blue_title_color"
+            android:textSize="26dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/new_ecard_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/new_ecard_24hs_text"
+            android:textColor="@color/gray_text_color"
+            android:textSize="@dimen/common_text_size" />
+
+        <RelativeLayout
+            android:id="@+id/card_container"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="220dp">
+
+            <ImageView
+                android:id="@+id/card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:padding="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ecard_placeholder" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.40" />
+
+                <TextView
+                    android:id="@+id/credit_card_number"
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="@dimen/card_pay_detail_items_horizonal_margin"
+                    android:layout_marginStart="@dimen/card_pay_detail_items_horizonal_margin"
+                    android:layout_weight="0.13"
+                    android:gravity="center_vertical"
+                    android:nextFocusDown="@+id/expiration_month"
+                    android:nextFocusLeft="@+id/expiration_month"
+                    android:nextFocusRight="@+id/expiration_month"
+                    android:singleLine="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/my_cards_items_card_number_text_size" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.04" />
+
+                <TextView
+                    android:id="@+id/expiration_date"
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="@dimen/card_pay_detail_items_margin_end"
+                    android:layout_marginStart="@dimen/card_pay_detail_items_horizonal_margin"
+                    android:layout_weight="0.13"
+                    android:drawablePadding="0dp"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/my_cards_items_card_common_text_size" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.04" />
+
+                <TextView
+                    android:id="@+id/credit_card_name"
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="@dimen/card_pay_detail_items_margin_end"
+                    android:layout_marginStart="@dimen/card_pay_detail_items_horizonal_margin"
+                    android:layout_weight="0.13"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/my_cards_items_card_common_text_size" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.13" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/accept_button"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginLeft="@dimen/button_without_cardview_padding"
+            android:layout_marginRight="@dimen/button_without_cardview_padding"
+            android:layout_marginTop="@dimen/login_input_margin_top"
+            android:background="@drawable/red_button_background"
+            android:padding="15dp"
+            android:text="@string/new_ecard_button_text"
+            android:textColor="@color/login_button_text_color"
+            android:textSize="@dimen/login_input_text_size"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</RelativeLayout>

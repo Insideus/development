@@ -639,7 +639,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
 
     private class eCardCreateTask extends AsyncTask<Void, Void, Void> {
 
-        private Boolean response;
+        private Card response;
         private String errorCode;
 
         @Override
@@ -663,7 +663,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             hideLoading();
-            if (response == null || !response) {
+            if (response == null) {
                 //Hancdle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
@@ -672,16 +672,14 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                     eCardFailed(getString(R.string.my_cards_e_card_create_failed_text));
                 }
             } else {
-                createECardSuccess();
+                createECardSuccess(response);
             }
         }
     }
 
-    private void createECardSuccess() {
+    private void createECardSuccess(Card card) {
         Bundle bundle = new Bundle();
-        bundle.putString(SUCCESS_TITLE, getString(R.string.my_cards_e_card_create_success_title));
-        bundle.putString(SUCCESS_SUBTITLE, getString(R.string.my_cards_e_card_create_success_subtitle));
-        bundle.putString(SUCCESS_TEXT, getString(R.string.my_cards_e_card_create_success_text));
+        bundle.putParcelable(E_CARD_SHOW_DATA, card);
         setResult(RESULT_OK, new Intent().putExtras(bundle));
         finish();
     }
