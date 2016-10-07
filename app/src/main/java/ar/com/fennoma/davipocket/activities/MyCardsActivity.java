@@ -24,6 +24,7 @@ import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.CardState;
 import ar.com.fennoma.davipocket.model.CardToShowOnList;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.MyCardsResponse;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
@@ -40,6 +41,7 @@ public class MyCardsActivity extends BaseActivity {
     private CardsAdapter cardsAdapter;
     private int selectedCard = -1;
     private boolean refresh = false;
+    private boolean showNewEcardButton = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,10 +50,14 @@ public class MyCardsActivity extends BaseActivity {
         setToolbar(R.id.toolbar_layout, false, getString(R.string.my_cards_activity_title));
         setRecycler();
         refreshCardList();
+        showNewEcardButton = false;
     }
 
-    private List<CardToShowOnList> addButtons(List<CardToShowOnList> cards) {
-        if(!isThereAnECard(cards)){
+    private List<CardToShowOnList> addButtons(MyCardsResponse response) {
+        ArrayList<CardToShowOnList> cards = new ArrayList<>();
+        cards.addAll(response.getCards());
+
+        if(response.getCanGetEcard()){
             ButtonCard eCard = new ButtonCard(R.drawable.add_e_card_button);
             eCard.setType(ButtonCard.eCard);
             cards.add(eCard);
@@ -60,17 +66,6 @@ public class MyCardsActivity extends BaseActivity {
         buttonCard.setType(ButtonCard.portfolioCard);
         cards.add(buttonCard);
         return cards;
-    }
-
-    private boolean isThereAnECard(List<CardToShowOnList> cards) {
-        for(CardToShowOnList cardToShow : cards){
-            if(cardToShow.getTypeOfCard() == CardToShowOnList.CARD){
-                if(((Card)cardToShow).getECard()){
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     private void setRecycler() {
@@ -591,7 +586,7 @@ public class MyCardsActivity extends BaseActivity {
         }
     }
 
-    public class GetUserCardsTask extends AsyncTask<Void, Void, ArrayList<CardToShowOnList>> {
+    public class GetUserCardsTask extends AsyncTask<Void, Void, MyCardsResponse> {
 
         String errorCode;
 
@@ -602,15 +597,11 @@ public class MyCardsActivity extends BaseActivity {
         }
 
         @Override
-        protected ArrayList<CardToShowOnList> doInBackground(Void... params) {
-            ArrayList<CardToShowOnList> response = null;
+        protected MyCardsResponse doInBackground(Void... params) {
+            MyCardsResponse response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                ArrayList<Card> userCards = Service.getUserCards(sid, getTodo1Data());
-                if (userCards != null) {
-                    response = new ArrayList<>();
-                    response.addAll(userCards);
-                }
+                response = Service.getUserCards(sid, getTodo1Data());
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -618,7 +609,7 @@ public class MyCardsActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<CardToShowOnList> response) {
+        protected void onPostExecute(MyCardsResponse response) {
             super.onPostExecute(response);
             hideLoading();
             if (response == null) {

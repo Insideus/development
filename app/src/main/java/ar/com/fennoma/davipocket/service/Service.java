@@ -25,6 +25,7 @@ import java.util.List;
 
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.LoginResponse;
+import ar.com.fennoma.davipocket.model.MyCardsResponse;
 import ar.com.fennoma.davipocket.model.PaymentDetail;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
@@ -1046,9 +1047,9 @@ public class Service {
         return response;
     }
 
-    public static ArrayList<Card> getUserCards(String sid, String todo1) throws ServiceException {
+    public static MyCardsResponse getUserCards(String sid, String todo1) throws ServiceException {
         HttpURLConnection urlConnection = null;
-        ArrayList<Card> response = null;
+        MyCardsResponse response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(GET_USER_CARDS, sid);
             urlConnection.setRequestMethod("POST");
@@ -1071,7 +1072,7 @@ public class Service {
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson = json.getJSONObject(DATA_TAG);
                 if (json.has("error") && !json.getBoolean("error")) {
-                    response = Card.fromJsonArray(responseJson);
+                    response = MyCardsResponse.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     throw new ServiceException(errorCode);
