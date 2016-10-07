@@ -78,6 +78,11 @@ public class LoginTokenActivity extends LoginBaseActivity {
         nextTokenSession = savedInstanceState.getString(NEXT_TOKEN_KEY);
     }
 
+    @Override
+    public void onBackPressed() {
+        goLoginActivity();
+    }
+
     private void setActionsToButtons() {
         findViewById(R.id.send_button).setOnClickListener(new View.OnClickListener() {
             @Override

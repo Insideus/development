@@ -439,7 +439,7 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    private void goLoginActivity() {
+    public void goLoginActivity() {
         Session.getCurrentSession(this).logout();
         Intent loginIntent = new Intent(this, LoginActivity.class);
         loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -505,4 +505,9 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    public void setOtpCodeReceived(OtpCodeReceived otpCodeReceived) {
+        this.otpCodeReceived = otpCodeReceived;
+    }
+
 }

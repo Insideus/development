@@ -82,7 +82,6 @@ public class LoginBaseActivity extends BaseActivity {
                 //Expected error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 processErrorAndContinue(error, additionalData);
-
             } else if(response == null && errorCode == null) {
                 //Service error.
                 showServiceGenericError();

@@ -120,6 +120,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         }
         setLayouts();
         animateOpening();
+        setOtpCodeReceived(this);
     }
 
     private void animateOpening() {
@@ -528,6 +529,8 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
+                } else if (error != null && error == ErrorMessages.OTP_VALIDATION_NEEDED) {
+                    processErrorAndContinue(error, null);
                 } else {
                     //showServiceGenericError();
                     setResult(RESULT_FAILED);
@@ -571,6 +574,8 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
+                } else if (error != null && error == ErrorMessages.OTP_VALIDATION_NEEDED) {
+                    processErrorAndContinue(error, null);
                 } else {
                     //showServiceGenericError();
                     setResult(RESULT_FAILED);
@@ -619,6 +624,8 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                             getString(R.string.card_24hr_blocked_subtitle),
                             getString(R.string.card_24hr_blocked_text));
                     finish();
+                } else if (error != null && error == ErrorMessages.OTP_VALIDATION_NEEDED) {
+                    processErrorAndContinue(error, null);
                 } else {
                     setResult(RESULT_FAILED);
                     finish();
@@ -784,11 +791,12 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             super.onPostExecute(aVoid);
             hideLoading();
             if (response == null) {
-                //Hancdle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
-                } else {
+                } else if (error != null && error == ErrorMessages.OTP_VALIDATION_NEEDED) {
+                    processErrorAndContinue(error, null);
+                }  else {
                     eCardFailed(getString(R.string.e_card_show_data_error));
                 }
             } else {

@@ -1136,6 +1136,7 @@ public class Service {
             params.add(cardNumberParam);
             Pair<String, String> todo1Param = new Pair("todo1", todo1);
             params.add(todo1Param);
+            addOtpParamIsNeeded(params, otpCode);
 
             writer.write(getQuery(params));
             writer.flush();
@@ -1184,6 +1185,7 @@ public class Service {
             params.add(ccvParam);
             Pair<String, String> todo1Param = new Pair("todo1", todo1);
             params.add(todo1Param);
+            addOtpParamIsNeeded(params, otpCode);
 
             writer.write(getQuery(params));
             writer.flush();
@@ -1230,6 +1232,7 @@ public class Service {
             params.add(lastDigitsParam);
             Pair<String, String> todo1Param = new Pair("todo1", todo1);
             params.add(todo1Param);
+            addOtpParamIsNeeded(params, otpCode);
 
             writer.write(getQuery(params));
             writer.flush();
@@ -1582,6 +1585,7 @@ public class Service {
             params.add(cvvParam);
             Pair<String, String> todo1Param = new Pair("todo1", todo1);
             params.add(todo1Param);
+            addOtpParamIsNeeded(params, otpCode);
 
             writer.write(getQuery(params));
             writer.flush();
@@ -1632,6 +1636,7 @@ public class Service {
             params.add(amountParam);
             Pair<String, String> todo1Param = new Pair("todo1", todo1);
             params.add(todo1Param);
+            addOtpParamIsNeeded(params, otpCode);
 
             writer.write(getQuery(params));
             writer.flush();
@@ -1659,6 +1664,13 @@ public class Service {
             }
         }
         return response;
+    }
+
+    private static void addOtpParamIsNeeded(List<Pair<String, String>> params, String otpCode) {
+        if(otpCode != null && otpCode.length() > 0) {
+            Pair<String, String> otpParam = new Pair("otp_pin", otpCode);
+            params.add(otpParam);
+        }
     }
 
     @NonNull

@@ -179,6 +179,9 @@ public class MyCardsActivity extends BaseActivity {
             }
         } else if (requestCode == EXPLAINING_DIALOG) {
             refresh = false;
+            if(resultCode == ActionDialogActivity.RESULT_FAILED){
+                generateErrorDialog(data);
+            }
         } else if (requestCode == E_CARD_SHOW_DATA) {
             if(resultCode == RESULT_OK && data != null && data.getParcelableExtra(ActionDialogActivity.E_CARD_SHOW_DATA) != null) {
                 Card cardData = data.getParcelableExtra(ActionDialogActivity.E_CARD_SHOW_DATA);
