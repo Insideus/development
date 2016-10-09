@@ -143,7 +143,7 @@ public class InterestsPickerActivity extends BaseActivity{
                 //Service error.
                 showServiceGenericError();
             } else {
-                goToMainActivity();
+                goToEcardActivity();
             }
         }
     }
@@ -169,8 +169,8 @@ public class InterestsPickerActivity extends BaseActivity{
         return result;
     }
 
-    private void goToMainActivity() {
-        startActivity(new Intent(this, MainActivity.class));
+    private void goToEcardActivity() {
+        startActivity(new Intent(this, EcardLoginActivity.class));
         this.finish();
     }
 

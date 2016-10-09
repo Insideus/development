@@ -73,6 +73,7 @@ public class Service {
     private final static String GET_USER = "/user";
     private final static String ACCEPT_NEW_DEVICE = "/user/accept_new_device";
     private final static String RESEND_NEW_DEVICE_OTP = "/user/generate_otp_new_device";
+    private final static String ECARD_STEP = "/user/ecard_step";
 
     //Card services
     private final static String ACTIVATE_CARD = "/card/activate";
@@ -200,6 +201,10 @@ public class Service {
             params.add(passwordParam);
             Pair<String, String> todo1Param = new Pair("todo1", todo1);
             params.add(todo1Param);
+            /*
+            Pair<String, String> android = new Pair("android", "true");
+            params.add(android);
+            */
 
             writer.write(getQuery(params));
             writer.flush();
@@ -1023,6 +1028,38 @@ public class Service {
             writer.flush();
             writer.close();
             os.close();
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson;
+                if (json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static Boolean setEcardStep(String sid) throws ServiceException {
+        HttpURLConnection urlConnection = null;
+        Boolean response = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(ECARD_STEP, sid);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
             urlConnection.connect();
 
             if (isValidStatusLineCode(urlConnection.getResponseCode())) {

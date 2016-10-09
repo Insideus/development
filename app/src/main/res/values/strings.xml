@@ -32,6 +32,12 @@
     <string name="login_confirmation_error_message_wrong_phone">El celular ingresado debe ser válido</string>
     <string name="login_confirmation_activity_title">CONFIRMACIONES</string>
 
+    <!-- Ecard Login -->
+    <string name="ecard_login_activity_title">ECARD</string>
+    <string name="ecard_login_activity_text_1">¿NO TIENE TARJETA DE CRÉDITO?\nSOLICITE SU E-CARD</string>
+    <string name="ecard_login_activity_text_2">e-Card, Es una tarjeta prepago virtual, que puede recargar con el valor que desee y desde su propia cuenta bancaria o en un punto de recaudo en efectivo.\n\nAsí su dinero continúa protegido en su cuenta bancaria y sólo expone esta tarjeta en Internet, sea en la web o en su celular.</string>
+    <string name="ecard_login_continue_without">OMITIR</string>
+
     <string name="birthday_hint">FECHA DE NACIMIENTO</string>
     <string name="celphone_hint">CELULAR</string>
     <string name="email_hint">E-MAIL</string>

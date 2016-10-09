@@ -4,94 +4,98 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
-
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-
-import java.util.Arrays;
-import java.util.List;
+import android.widget.CheckBox;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class EcardLoginActivity extends BaseActivity {
-
-    private static String CONTINUE_WITHOUT_LOGIN_TOKEN = "-1";
-
-    CallbackManager callbackManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.facebook_activity_layout);
-        setActionBar(getString(R.string.facebook_login_token_activity_title), false);
-        setLoginButtons();
-        LoginManager.getInstance().logOut();
+        setContentView(R.layout.activity_ecard_login_layout);
+        setActionBar(getString(R.string.ecard_login_activity_title), false);
+        setLayouts();
     }
 
-    private void setLoginButtons() {
-        initFacebookLoginApi();
-        View login = findViewById(R.id.send_button);
-        View loginWOConnection = findViewById(R.id.do_login_without_connection_button);
-        if(login == null || loginWOConnection == null){
-            return;
-        }
-        login.setOnClickListener(new FacebookOnClickListener());
-        loginWOConnection.setOnClickListener(new WithoutFacebookOnClickListener());
+    private void setLayouts() {
+        View continueButton = findViewById(R.id.continue_button);
+        final CheckBox termsAndConditions = (CheckBox) findViewById(R.id.terms_and_conditions);
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!termsAndConditions.isChecked()){
+                    DialogUtil.toast(EcardLoginActivity.this, getString(R.string.input_data_error_generic_title),
+                            "",
+                            getString(R.string.assign_password_recommendation_terms_and_conditions));
+                } else {
+                    excecuteEcardStepTask();
+                }
+            }
+        });
+        View createEcard = findViewById(R.id.card_image);
+        createEcard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!termsAndConditions.isChecked()){
+                    DialogUtil.toast(EcardLoginActivity.this, getString(R.string.input_data_error_generic_title),
+                            "",
+                            getString(R.string.assign_password_recommendation_terms_and_conditions));
+                } else {
+                    new EcardCreateTask().execute();
+                }
+            }
+        });
     }
 
-    private void initFacebookLoginApi() {
-        callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        Log.d("facebook_login" , loginResult.toString());
-                        AccessToken accessToken = loginResult.getAccessToken();
-                        new FacebookLoginTask().execute(accessToken.getToken());
-                    }
+    private class EcardCreateTask extends AsyncTask<Void, Void, Void> {
 
-                    @Override
-                    public void onCancel() {
-                        Log.d("facebook_login", "Cancel");
-                    }
+        private Card response;
+        private String errorCode;
 
-                    @Override
-                    public void onError(FacebookException exception) {
-                        Log.d("facebook_login" , exception.toString());
-                    }
-                });
-    }
-
-    private class FacebookOnClickListener implements View.OnClickListener{
         @Override
-        public void onClick(View v) {
-            performFacebookLogin();
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
         }
-    }
 
-    private class WithoutFacebookOnClickListener implements View.OnClickListener{
         @Override
-        public void onClick(View v) {
-            new FacebookLoginTask().execute(CONTINUE_WITHOUT_LOGIN_TOKEN);
+        protected Void doInBackground(Void... params) {
+            try {
+                response = Service.newECard(Session.getCurrentSession(getApplicationContext()).getSid(), getTodo1Data());
+            } catch (ServiceException e) {
+                e.printStackTrace();
+                errorCode = e.getErrorCode();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            hideLoading();
+            if (response == null) {
+                //Hancdle invalid session error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if (error != null && error == ErrorMessages.INVALID_SESSION) {
+                    handleInvalidSessionError();
+                } else {
+                    showServiceGenericError();
+                }
+            } else {
+                showEcardCreatedPopup(response);
+            }
         }
     }
 
-    private void goToConfirmationActivity() {
-        startActivity(new Intent(EcardLoginActivity.this, LoginConfirmationActivity.class));
-        this.finish();
-    }
-
-    public class FacebookLoginTask extends AsyncTask<String, Void, Boolean> {
+    public class SetEcardStepTask extends AsyncTask<String, Void, Boolean> {
 
         String errorCode;
 
@@ -106,7 +110,7 @@ public class EcardLoginActivity extends BaseActivity {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.facebookConnect(sid, params[0]);
+                response = Service.setEcardStep(sid);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -129,20 +133,26 @@ public class EcardLoginActivity extends BaseActivity {
                 //Service error.
                 showServiceGenericError();
             } else {
-                goToConfirmationActivity();
+                goToMainActivity();
             }
         }
     }
 
-    private void performFacebookLogin() {
-        List<String> permissionNeeds= Arrays.asList("email", "user_birthday");
-        LoginManager.getInstance().logInWithReadPermissions(this, permissionNeeds);
+    private void excecuteEcardStepTask() {
+        new SetEcardStepTask().execute();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SHOW_CREATED_ECARD_POPUP) {
+            excecuteEcardStepTask();
+        }
+    }
+
+    private void goToMainActivity() {
+        startActivity(new Intent(this, MainActivity.class));
+        this.finish();
     }
 
 }
