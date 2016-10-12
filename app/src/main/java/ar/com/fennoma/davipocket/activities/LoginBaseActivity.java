@@ -337,7 +337,7 @@ public class LoginBaseActivity extends BaseActivity {
                case SET_VIRTUAL_PASSWORD:
                     this.additionalParam = additionalParam;
                     Intent setVirtualPasswordIntent = new Intent(this, AssignPasswordRecommendationActivity.class);
-                    setVirtualPasswordIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    //setVirtualPasswordIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     setVirtualPasswordIntent.putExtra(AssignPasswordRecommendationActivity.ID_TYPE_KEY,
                             String.valueOf(selectedIdType.getId()));
                     setVirtualPasswordIntent.putExtra(AssignPasswordRecommendationActivity.ID_NUMBER_KEY,
@@ -394,7 +394,6 @@ public class LoginBaseActivity extends BaseActivity {
             setVirtualPasswordIntent.putExtra(ChangePasswordStep2Activity.PRODUCT_CODE_KEY, additionalParam);
             this.additionalParam = null;
             startActivity(setVirtualPasswordIntent);
-
         }
         if(requestCode == EXPIRED_PASSWORD_TOAST) {
             Intent expiredPasswordIntent = new Intent(this, ChangePasswordStep3Activity.class);

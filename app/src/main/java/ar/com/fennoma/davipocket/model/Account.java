@@ -10,6 +10,7 @@ import java.util.List;
 public class Account {
 
     private String name;
+    private String code;
     private String lastDigits;
     private String balance;
 
@@ -36,6 +37,9 @@ public class Account {
         try {
             if (json.has("name")) {
                 account.setName(json.getString("name"));
+            }
+            if (json.has("code")) {
+                account.setCode(json.getString("code"));
             }
             if(json.has("last_digits")){
                 account.setLastDigits(json.getString("last_digits"));
@@ -74,4 +78,13 @@ public class Account {
     public void setBalance(String balance) {
         this.balance = balance;
     }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
 }

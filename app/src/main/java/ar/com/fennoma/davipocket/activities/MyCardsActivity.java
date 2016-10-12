@@ -79,9 +79,12 @@ public class MyCardsActivity extends BaseActivity {
         recycler.setAdapter(cardsAdapter);
     }
 
-    private void blockedActivableCardDialog() {
+    private void blockedActivableCardDialog(Card card) {
         Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
         intent.putExtra(ActionDialogActivity.IS_CARD_NUMBER_DIALOG, true);
+        if(card != null) {
+            intent.putExtra(ActionDialogActivity.CARD_KEY, card);
+        }
         startOperationPopUp(intent, getString(R.string.my_cards_activate_card_title),
                 getString(R.string.my_cards_activate_card_subtitle),
                 getString(R.string.my_cards_activate_card_text));
@@ -276,7 +279,7 @@ public class MyCardsActivity extends BaseActivity {
                     holder.cardButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            blockedActivableCardDialog();
+                            blockedActivableCardDialog(null);
                         }
                     });
                 } else {
@@ -417,7 +420,7 @@ public class MyCardsActivity extends BaseActivity {
                     }
                     if (cardState == CardState.BLOCKED_ACTIVABLE) {
                         //Popup para activar tarjeta
-                        blockedActivableCardDialog();
+                        blockedActivableCardDialog(card);
                     }
                     if (cardState == CardState.BLOCKED) {
                         //Si lo indica el mensaje, popup para llamar al call center.
@@ -471,7 +474,7 @@ public class MyCardsActivity extends BaseActivity {
                         return;
                     }
                     if (card.getActivate()) {
-                        blockedActivableCardDialog();
+                        blockedActivableCardDialog(card);
                         return;
                     }
                     if (card.getEnrolling() && !card.getEnrolled()) {

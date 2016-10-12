@@ -44,7 +44,7 @@ public class Todo1Utils {
     public static void doRestartCollection(AppCompatActivity act) {
         MobileAPI mobileAPI = MobileAPI.getInstance(act);
         mobileAPI.destroy();
-        requestPermissions(act, MobileAPI.COLLECT_BASIC_DEVICE_DATA_ONLY);
+        requestPermissions(act, MobileAPI.COLLECT_ALL_DEVICE_DATA_AND_LOCATION);
         mobileAPI.initSDK(getSdkProperties());
     }
 

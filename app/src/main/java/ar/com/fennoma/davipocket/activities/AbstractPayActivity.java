@@ -210,7 +210,8 @@ public abstract class AbstractPayActivity extends BaseActivity{
             }
             final Account account = getItem(position);
             row.setText(getAccountInfoToShow(account));
-            if (selectedAccount != null && selectedAccount.getLastDigits().equals(account.getLastDigits())) {
+            if (selectedAccount != null && selectedAccount.getLastDigits().equals(account.getLastDigits())
+                    && selectedAccount.getCode().equals(account.getCode())) {
                 row.setTextColor(ContextCompat.getColor(AbstractPayActivity.this, R.color.combo_item_text_color_selected));
             } else {
                 row.setTextColor(ContextCompat.getColor(AbstractPayActivity.this, R.color.combo_item_text_color));

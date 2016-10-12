@@ -513,7 +513,11 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.activateCard(sid, params[0], getTodo1Data(), params[1]);
+                String cardLastDigits = "";
+                if(card != null) {
+                    cardLastDigits = card.getLastDigits();
+                }
+                response = Service.activateCard(sid, params[0], getTodo1Data(), params[1], cardLastDigits);
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }

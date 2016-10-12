@@ -1157,7 +1157,8 @@ public class Service {
         return response;
     }
 
-    public static Boolean activateCard(String sid, String cardNumber, String todo1, String otpCode) throws ServiceException {
+    public static Boolean activateCard(String sid, String cardNumber, String todo1, String otpCode,
+                                       String lastDigits) throws ServiceException {
         HttpURLConnection urlConnection = null;
         Boolean response = null;
         try {
@@ -1175,6 +1176,8 @@ public class Service {
             Pair<String, String> todo1Param = new Pair("todo1", todo1);
             params.add(todo1Param);
             addOtpParamIsNeeded(params, otpCode);
+            Pair<String, String> lastDigitsParam = new Pair("last_digits", lastDigits);
+            params.add(lastDigitsParam);
 
             writer.write(getQuery(params));
             writer.flush();
@@ -1425,7 +1428,7 @@ public class Service {
     }
 
     public static boolean payCard(String sid, String cardLastDigits, String accountLastDigits,
-                                  String amount, Boolean isUsdPayment, String todo1) throws ServiceException {
+                                  String amount, Boolean isUsdPayment, String todo1, String accountCode) throws ServiceException {
         boolean response = false;
         HttpURLConnection urlConnection = null;
         try {
@@ -1450,6 +1453,8 @@ public class Service {
             }
             Pair<String, String> todo1Param = new Pair("todo1", todo1);
             params.add(todo1Param);
+            Pair<String, String> codeParam = new Pair("account_code", accountCode);
+            params.add(codeParam);
 
             writer.write(getQuery(params));
             writer.flush();
