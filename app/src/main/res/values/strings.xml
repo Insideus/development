@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Davipocket</string>
     <string name="facebook_app_id">631326240376633</string>
+    <string name="google_maps_api_key">AIzaSyDprT-uMwe012dmqLQ3RiisRj82ujcK4VA</string>
 
     <string name="id_type_hint">TIPO DE DOCUMENTO</string>
     <string name="id_number_hint">NÚMERO DE DOCUMENTO</string>
@@ -330,5 +331,7 @@
     <string name="new_ecard_text">Esta es su nueva tarjeta de prepago eCard.</string>
     <string name="new_ecard_24hs_text">Esta es su nueva tarjeta de prepago eCard.\nEstará disponible en 24 hrs.</string>
     <string name="new_ecard_button_text">CONTINUAR</string>
+    <string name="home_store_tab_title">Ir a Tienda</string>
+    <string name="home_domicile_tab_title">Domicilio</string>
 
 </resources>

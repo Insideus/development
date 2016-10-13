@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -1746,4 +1747,74 @@ public class Service {
         return urlConnection;
     }
 
+    public static JSONArray getMOCKEDStoresWithoutDelivery() {
+        String json = "{\"stores\": [\n" +
+                "  {\n" +
+                "\t\"id\": 1,\n" +
+                "\t\"name\": \"Juan Valdez Prueba\",\n" +
+                "\t\"address\": \"Calle 100\",\n" +
+                "\t\"country\": \"COL\",\n" +
+                "\t\"city\": \"BOGOTA\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "\t\"id\": 2,\n" +
+                "\t\"name\": \"Home Burgers\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "\t\"id\": 3,\n" +
+                "\t\"name\": \"Andres Carne de Res\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "\t\"id\": 4,\n" +
+                "\t\"name\": \"Juan Valdez - Laboratorio\",\n" +
+                "\t\"latitude\": 25.796,\n" +
+                "\t\"longitude\": -80.289,\n" +
+                "\t\"country\": \"Colombia\",\n" +
+                "\t\"city\": \"Bogota\",\n" +
+                "\t\"website\": \"http://www.juanvaldezcafe.com\",\n" +
+                "\t\"company_name\": \"Juan Valdez Cafe\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "\t\"id\": 5,\n" +
+                "\t\"name\": \"Middleware api lab\",\n" +
+                "\t\"address\": \"Carrera 90 #90 90\",\n" +
+                "\t\"latitude\": -80,\n" +
+                "\t\"longitude\": 40,\n" +
+                "\t\"country\": \"Colombia\",\n" +
+                "\t\"city\": \"Bogota\",\n" +
+                "\t\"website\": \"http://www.juanvaldezcafe.com\",\n" +
+                "\t\"zip_code\": \"01000\",\n" +
+                "\t\"company_name\": \"Laboratorio Paymentez\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "\t\"id\": 6,\n" +
+                "\t\"name\": \"Aldelo HB API Test Store\",\n" +
+                "\t\"latitude\": 80,\n" +
+                "\t\"longitude\": -40,\n" +
+                "\t\"country\": \"Colombia\",\n" +
+                "\t\"city\": \"Bogota\",\n" +
+                "\t\"website\": \"http://paymentez.com\",\n" +
+                "\t\"phone\": \"123456789\",\n" +
+                "\t\"zip_code\": \"1000\",\n" +
+                "\t\"company_name\": \"HomeBurgers\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "\t\"id\": 7,\n" +
+                "\t\"name\": \"Calle 81\",\n" +
+                "\t\"country\": \"Colombia\",\n" +
+                "\t\"city\": \"Bogota\",\n" +
+                "\t\"website\": \"http://somosmasa.com\",\n" +
+                "\t\"zip_code\": \"1000\",\n" +
+                "\t\"company_name\": \"Masa\"\n" +
+                "  }\n" +
+                "]}";
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray stores = jsonObject.getJSONArray("stores");
+            return stores;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

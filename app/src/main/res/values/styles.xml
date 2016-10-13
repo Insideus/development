@@ -49,4 +49,10 @@
         <item name="colorAccent">@color/red_base_color</item>
     </style>
 
+    <style name="TabTextAppearance">
+        <item name="android:textSize">@dimen/tab_layout_text_size</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
 </resources>

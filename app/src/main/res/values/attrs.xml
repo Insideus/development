@@ -12,4 +12,8 @@
         <attr name="box_inputType" format="integer" />
         <attr name="box_textColor" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="MyViewPager">
+        <attr name="swipeable" format="boolean" />
+    </declare-styleable>
 </resources>

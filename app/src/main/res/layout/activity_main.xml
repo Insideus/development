@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -12,11 +15,85 @@
         tools:ignore="MissingPrefix">
 
         <include
-            android:id="@+id/toolbar_layout"
-            layout="@layout/main_toolbar"
+            android:id="@+id/toolbar"
+            layout="@layout/image_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
+
+        <ar.com.fennoma.davipocket.ui.controls.TypoTabLayout
+            android:id="@+id/tab_layout"
+            style="@style/TabTextAppearance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:background="@color/red_base_color"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:tabIndicatorColor="@android:color/white"
+            app:tabIndicatorHeight="@dimen/tab_layout_tab_indicator_height"
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextAppearance="@style/TabTextAppearance"
+            app:tabTextColor="@color/tab_unselected_text_color" />
+
+        <ar.com.fennoma.davipocket.ui.controls.NotSwipableViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bottom_bar"
+            android:layout_below="@id/tab_layout"
+            app:swipeable="false" />
+
+        <RelativeLayout
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white">
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/bottom_bar_davi_logo"
+                android:text="@string/navigation_drawer_bottom_bar_first_text"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
+
+            <ImageView
+                android:id="@+id/bottom_bar_davi_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="@dimen/navigation_drawer_basic_padding"
+                android:src="@drawable/nav_davi_logo_bottom_bar" />
+
+            <TextView
+                android:id="@+id/drawer_davi_points_amount"
+                fontPath="fonts/MyriadPro-Semibold.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/bottom_bar_davi_logo"
+                android:text="1.600"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
+                android:layout_toEndOf="@+id/drawer_davi_points_amount"
+                android:text="@string/navigation_drawer_bottom_bar_second_text"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
+        </RelativeLayout>
 
     </RelativeLayout>
 

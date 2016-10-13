@@ -49,4 +49,7 @@
     <dimen name="card_detail_item_vertical_padding">20dp</dimen>
     <dimen name="card_detail_item_horizontal_padding">30dp</dimen>
     <dimen name="card_pay_detail_item_drawable_padding">15dp</dimen>
+
+    <dimen name="tab_layout_text_size">18dp</dimen>
+    <dimen name="tab_layout_tab_indicator_height">2dp</dimen>
 </resources>
