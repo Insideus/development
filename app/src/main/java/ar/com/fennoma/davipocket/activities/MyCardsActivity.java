@@ -336,16 +336,8 @@ public class MyCardsActivity extends BaseActivity {
                         selectedCard = holder.getAdapterPosition();
                     }
                 });
-                holder.eCardCvv.setVisibility(View.VISIBLE);
-                holder.eCardCvv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        eCardGetCVV(card.getLastDigits());
-                    }
-                });
             }else{
                 holder.eCardData.setVisibility(View.GONE);
-                holder.eCardCvv.setVisibility(View.GONE);
             }
         }
 
@@ -545,7 +537,6 @@ public class MyCardsActivity extends BaseActivity {
             private ImageView checkCardData;
             private ImageView disableCard;
             private ImageView eCardData;
-            private ImageView eCardCvv;
             private TextView name;
             private TextView number;
             private TextView date;
@@ -558,7 +549,6 @@ public class MyCardsActivity extends BaseActivity {
                 checkCardData = (ImageView) itemView.findViewById(R.id.check_card_data);
                 disableCard = (ImageView) itemView.findViewById(R.id.disable_card);
                 eCardData = (ImageView) itemView.findViewById(R.id.e_card_data);
-                eCardCvv = (ImageView) itemView.findViewById(R.id.e_card_get_cvv);
                 name = (TextView) itemView.findViewById(R.id.credit_card_name);
                 number = (TextView) itemView.findViewById(R.id.credit_card_number);
                 date = (TextView) itemView.findViewById(R.id.expiration_date);

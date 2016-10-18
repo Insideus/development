@@ -55,6 +55,7 @@ public class MovementsByDayActivity extends MovementsShowerActivity implements C
         cardTitle.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
         setRecycler();
         setBalanceData();
+        adapter.setShowPayButton(transactionDetails.isShowPayButton());
         adapter.justSetList(addByDayBar(transactions));
     }
 

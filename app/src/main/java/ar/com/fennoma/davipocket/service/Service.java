@@ -1608,7 +1608,7 @@ public class Service {
         return response;
     }
 
-    public static Card getECardData(String sid, String cardLastDigits, String cvv, String todo1,
+    public static Card getECardData(String sid, String cardLastDigits, String todo1,
                                     String otpCode) throws ServiceException {
         Card response = null;
         HttpURLConnection urlConnection = null;
@@ -1624,8 +1624,6 @@ public class Service {
             List<Pair<String, String>> params = new ArrayList<>();
             Pair<String, String> lastDigitsParam = new Pair("last_digits", cardLastDigits);
             params.add(lastDigitsParam);
-            Pair<String, String> cvvParam = new Pair("csv", cvv);
-            params.add(cvvParam);
             Pair<String, String> todo1Param = new Pair("todo1", todo1);
             params.add(todo1Param);
             addOtpParamIsNeeded(params, otpCode);

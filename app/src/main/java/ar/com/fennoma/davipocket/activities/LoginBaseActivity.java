@@ -99,99 +99,6 @@ public class LoginBaseActivity extends BaseActivity {
         }
     }
 
-    public class LoginWithTokenTask extends AsyncTask<String, Void, LoginResponse> {
-
-        String errorCode;
-        String nextTokenSession;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showLoading();
-        }
-
-        @Override
-        protected LoginResponse doInBackground(String... params) {
-            LoginResponse response = null;
-            try {
-                response = Service.loginWithToken(params[0], params[1], params[2], params[3], getTodo1Data());
-            }  catch (ServiceException e) {
-                errorCode = e.getErrorCode();
-                nextTokenSession = e.getAdditionalData();
-            }
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(LoginResponse response) {
-            super.onPostExecute(response);
-            if(response == null && errorCode != null) {
-                //Expected error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, nextTokenSession);
-            } else if(response == null) {
-                //Service error.
-                showServiceGenericError();
-            } else {
-                //Success login.
-                LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
-                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid());
-                if(step == null) {
-                    step = LoginSteps.REGISTRATION_COMPLETED;
-                }
-                goToRegistrationStep(step);
-            }
-            hideLoading();
-        }
-    }
-
-    public class LoginWithNextTokenTask extends AsyncTask<String, Void, LoginResponse> {
-
-        String errorCode;
-        String nextTokenSession;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showLoading();
-        }
-
-        @Override
-        protected LoginResponse doInBackground(String... params) {
-            LoginResponse response = null;
-            try {
-                response = Service.loginWithNextToken(params[0], params[1], params[2], params[3], params[4], getTodo1Data());
-            }  catch (ServiceException e) {
-                errorCode = e.getErrorCode();
-                nextTokenSession = e.getAdditionalData();
-            }
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(LoginResponse response) {
-            super.onPostExecute(response);
-            if(response == null && errorCode != null) {
-                //Expected error.
-                //ErrorMessages error = ErrorMessages.getError(errorCode);
-                //processErrorAndContinue(error, nextTokenSession);
-                showErrorAndGoToLoginActivity();
-            } else if(response == null && errorCode == null) {
-                //Service error.
-                showServiceGenericError();
-            } else {
-                //Success login.
-                LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
-                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid());
-                if(step == null) {
-                    step = LoginSteps.REGISTRATION_COMPLETED;
-                }
-                goToRegistrationStep(step);
-            }
-            hideLoading();
-        }
-    }
-
     public class GetUserTask extends AsyncTask<String, Void, User> {
         private String sid;
 
@@ -424,7 +331,7 @@ public class LoginBaseActivity extends BaseActivity {
         new RegisterDeviceTask().execute(additionalParam, null);
     }
 
-    private void showErrorAndGoToLoginActivity() {
+    protected void showErrorAndGoToLoginActivity() {
         DialogUtil.showErrorAndGoToLoginActivityToast(this);
     }
 

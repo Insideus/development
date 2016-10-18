@@ -80,16 +80,28 @@
                 android:paddingTop="@dimen/card_pay_detail_spacing_between_items"
                 android:visibility="visible">
 
+                <TextView
+                    android:id="@+id/price_indicator"
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:paddingLeft="@dimen/card_pay_detail_items_horizonal_margin"
+                    android:text="@string/card_pay_price_indicator"
+                    android:textColor="@color/input_text_color"
+                    android:visibility="gone" />
+
                 <EditText
                     android:id="@+id/other_payment_value"
                     fontPath="fonts/MyriadPro-Regular.otf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/card_pay_detail_items_horizonal_margin"
-                    android:paddingLeft="@dimen/card_pay_detail_items_horizonal_margin"
                     android:layout_centerInParent="true"
+                    android:layout_toRightOf="@id/price_indicator"
                     android:background="@android:color/transparent"
                     android:inputType="number"
+                    android:maxLength="6"
+                    android:paddingRight="@dimen/card_pay_detail_items_horizonal_margin"
                     android:textColor="@color/input_text_color"
                     android:textSize="@dimen/common_text_size" />
 
@@ -103,7 +115,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="@string/e_card_recharge_explanation"
-            android:textAllCaps="true"/>
+            android:textAllCaps="true" />
 
         <ImageView
             android:id="@+id/pay_button"
@@ -143,7 +155,7 @@
                 android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 

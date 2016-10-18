@@ -244,8 +244,6 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
     }
 
     private void setECardShowDataLayouts(TextView acceptButton, TextView ignoreButton) {
-        final TextView cvv = (TextView) findViewById(R.id.ccv_code);
-        cvv.setVisibility(View.VISIBLE);
         acceptButton.setText(getString(R.string.my_cards_block_card_accept));
         ignoreButton.setText(getString(R.string.my_cards_block_card_cancel));
         ignoreButton.setOnClickListener(new View.OnClickListener() {
@@ -258,10 +256,10 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(lastFourDigits) || cvv == null || TextUtils.isEmpty(cvv.getText())){
+                if(TextUtils.isEmpty(lastFourDigits)){
                     eCardFailed(getString(R.string.my_cards_failed_opperation_message));
                 }
-                new ECardShowData(lastFourDigits, cvv.getText().toString(), null).execute();
+                new ECardShowData(lastFourDigits, null).execute();
             }
         });
     }
@@ -761,12 +759,10 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         private Card response;
         private String errorCode;
         private String lastDigits;
-        private String cvv;
         private String otpCode;
 
-        public ECardShowData(String lastFourDigits, String cardCvv, String otpCode) {
+        public ECardShowData(String lastFourDigits, String otpCode) {
             this.lastDigits = lastFourDigits;
-            this.cvv = cardCvv;
             this.otpCode = otpCode;
         }
 
@@ -780,7 +776,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         protected Void doInBackground(Void... params) {
             try {
                 response = Service.getECardData(Session.getCurrentSession(getApplicationContext()).getSid(),
-                        lastDigits, cvv, getTodo1Data(), otpCode);
+                        lastDigits, getTodo1Data(), otpCode);
             } catch (ServiceException e) {
                 e.printStackTrace();
                 errorCode = e.getErrorCode();
@@ -832,7 +828,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         if(eCardShowData) {
             TextView cvv = (TextView) findViewById(R.id.ccv_code);
             if(cvv != null) {
-                new ECardShowData(lastFourDigits, cvv.getText().toString(), otpCode).execute();
+                new ECardShowData(lastFourDigits, otpCode).execute();
                 return;
             }
         }

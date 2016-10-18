@@ -3,12 +3,12 @@
     <string name="facebook_app_id">631326240376633</string>
     <string name="google_maps_api_key">AIzaSyDprT-uMwe012dmqLQ3RiisRj82ujcK4VA</string>
 
-    <string name="id_type_hint">TIPO DE DOCUMENTO</string>
-    <string name="id_number_hint">NÚMERO DE DOCUMENTO</string>
-    <string name="login_password_hint">CLAVE VIRTUAL O CLAVE PERSONAL</string>
+    <string name="id_type_hint">Tipo de documento</string>
+    <string name="id_number_hint">Número de documento</string>
+    <string name="login_password_hint">Clave virtual o clave personal</string>
     <string name="login_token_password_hint">CLAVE PERSONAL</string>
-    <string name="login_button_text">INGRESAR</string>
-    <string name="login_forgot_password_button_text">RECUPERAR O CAMBIAR CLAVE</string>
+    <string name="login_button_text">Ingresar</string>
+    <string name="login_forgot_password_button_text">¿Olvidó o bloqueó su clave?</string>
     <string name="login_validate_token_button_text">VALIDAR TOKEN</string>
     <string name="login_token_hint">INGRESAR TOKEN</string>
     <string name="login_token_activity_title">TOKEN</string>
@@ -42,15 +42,15 @@
     <string name="birthday_hint">FECHA DE NACIMIENTO</string>
     <string name="celphone_hint">CELULAR</string>
     <string name="email_hint">E-MAIL</string>
-    <string name="continue_button_text">CONTINUAR</string>
+    <string name="continue_button_text">Continuar</string>
     <string name="registration_error_message_empty_birthday">Debe ingresar su fecha de cumpleaños</string>
 
-    <string name="accept_button_text">ACEPTAR</string>
-    <string name="cancel_button_text">CANCELAR</string>
+    <string name="accept_button_text">Aceptar</string>
+    <string name="cancel_button_text">Cancelar</string>
 
-    <string name="login_help_dialog_title">CLAVE</string>
-    <string name="login_help_dialog_subtitle">VIRTUAL</string>
-    <string name="login_help_dialog_text">Si no tiene clave asignada, deje el campo clave virtual o clave personal en blanco.</string>
+    <string name="login_help_dialog_title">ASIGNACIÓN</string>
+    <string name="login_help_dialog_subtitle">DE CLAVE VIRTUAL</string>
+    <string name="login_help_dialog_text">Para asignar su clave virtual, deje este campo en blanco y de clic en el botón Ingresar.</string>
 
     <!-- Account Activation Activity -->
     <string name="account_activation_activity_title">ACTIVACIÓN</string>
@@ -74,7 +74,7 @@
     <string name="assign_password_title">ASIGNAR CONTRASEÑA</string>
 
     <!-- Change Password Activities -->
-    <string name="change_password_title">CAMBIO DE CONTRASEÑA</string>
+    <string name="change_password_title">ASIGNAR O CAMBIAR CLAVE</string>
     <string name="change_password_step_1_id_type_hint">TIPO DE IDENTIFICACIÓN</string>
     <string name="change_password_step_1_id_hint">NÚMERO DE IDENTIFICACIÓN</string>
     <string name="change_password_step_1_empty_id_number_error">Debe ingresar su número de identificación</string>
@@ -127,9 +127,9 @@
 
     <string name="login_error_message_title">ERROR</string>
     <string name="login_error_message_text">Acceso denegado, verifique los datos ingresados.</string>
-    <string name="login_web_password_error_message_title">CLAVE</string>
-    <string name="login_web_password_error_message_subtitle">WEB</string>
-    <string name="login_web_password_error_message_text">Para poder acceder a la APP usted debe activar su clave virtual a través del Call Center. Puede comunicarse seleccionando la siguiente opción:</string>
+    <string name="login_web_password_error_message_title">ACTIVACIÓN</string>
+    <string name="login_web_password_error_message_subtitle">DE CLAVE VIRTUAL</string>
+    <string name="login_web_password_error_message_text">Para poder ingresar, usted debe activar su clave virtual a través del Call Center</string>
     <string name="login_web_password_phone">+5713383838</string>
     <string name="help_dialog_generic_title">AYUDA</string>
     <string name="help_dialog_title_1">AYUDA</string>
@@ -154,7 +154,7 @@
     <string name="assign_password_recommendation_terms_and_conditions_title">Error de autorizaciones</string>
     <string name="registration_error_message_underage">Debe ser mayor de 14 años</string>
     <string name="login_confirmation_error_message_wrong_colombian_phone">El teléfono ingresado no es válido</string>
-    <string name="call_button_text">LLAMAR AL CALL CENTER</string>
+    <string name="call_button_text">Llamar al Call Center</string>
 
     <!-- Interests Picker Activity -->
     <string name="interests_picker_subtitle_1">Queremos conocerlo mejor</string>
@@ -289,7 +289,7 @@
     <string name="e_card_get_cvv_success_text">Su CVV ha sido enviado.</string>
     <string name="my_cards_e_card_show_data_title">MOSTRAR DATOS</string>
     <string name="my_cards_e_card_show_data_subtitle">DE ECARD</string>
-    <string name="my_cards_e_card_show_data_text">Ingrese el CVV para visualizar los datos de su eCard.</string>
+    <string name="my_cards_e_card_show_data_text">Se mostrarán los datos de su eCard y se enviará el CVV por SMS.</string>
     <string name="e_card_show_data_error">Ha ocurrido un error al solicitar los datos de su eCard. Reinténtelo nuevamente más tarde.</string>
     <string name="e_card_recharge_explanation">Recuerde que puede recargar\ndesde $ 10.000 pesos\nhasta $ 50.000 pesos.</string>
     <string name="e_card_title">E-CARD</string>
@@ -333,5 +333,9 @@
     <string name="new_ecard_button_text">CONTINUAR</string>
     <string name="home_store_tab_title">Ir a Tienda</string>
     <string name="home_domicile_tab_title">Domicilio</string>
+    <string name="card_pay_price_indicator">$</string>
+    <string name="login_invalid_inputs_error_title">DATOS</string>
+    <string name="login_invalid_inputs_error_subtitle">INVÁLIDOS</string>
+    <string name="login_invalid_inputs_error_text">Verifique los datos ingresados.</string>
 
 </resources>

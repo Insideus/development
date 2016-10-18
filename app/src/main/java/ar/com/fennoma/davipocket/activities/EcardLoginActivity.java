@@ -31,13 +31,7 @@ public class EcardLoginActivity extends BaseActivity {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!termsAndConditions.isChecked()){
-                    DialogUtil.toast(EcardLoginActivity.this, getString(R.string.input_data_error_generic_title),
-                            "",
-                            getString(R.string.assign_password_recommendation_terms_and_conditions));
-                } else {
-                    excecuteEcardStepTask();
-                }
+                excecuteEcardStepTask();
             }
         });
         View createEcard = findViewById(R.id.card_image);

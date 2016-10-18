@@ -1,5 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
@@ -10,7 +11,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.LoginResponse;
+import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.PersonIdType;
+import ar.com.fennoma.davipocket.model.ServiceException;
+import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
@@ -161,6 +167,107 @@ public class LoginTokenActivity extends LoginBaseActivity {
             errors.add(getString(R.string.token_error_text));
         }
         return errors;
+    }
+
+    public class LoginWithNextTokenTask extends AsyncTask<String, Void, LoginResponse> {
+
+        String errorCode;
+        String nextTokenSession;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected LoginResponse doInBackground(String... params) {
+            LoginResponse response = null;
+            try {
+                response = Service.loginWithNextToken(params[0], params[1], params[2], params[3], params[4], getTodo1Data());
+            }  catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+                nextTokenSession = e.getAdditionalData();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(LoginResponse response) {
+            super.onPostExecute(response);
+            if(response == null && errorCode != null) {
+                //Expected error.
+                //ErrorMessages error = ErrorMessages.getError(errorCode);
+                //processErrorAndContinue(error, nextTokenSession);
+                showErrorAndGoToLoginActivity();
+                resetLayoutOnFail();
+            } else if(response == null && errorCode == null) {
+                //Service error.
+                showServiceGenericError();
+                resetLayoutOnFail();
+            } else {
+                //Success login.
+                LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
+                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid());
+                if(step == null) {
+                    step = LoginSteps.REGISTRATION_COMPLETED;
+                }
+                goToRegistrationStep(step);
+            }
+            hideLoading();
+        }
+    }
+
+    private void resetLayoutOnFail() {
+        token.setText("");
+    }
+
+    public class LoginWithTokenTask extends AsyncTask<String, Void, LoginResponse> {
+
+        String errorCode;
+        String nextTokenSession;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected LoginResponse doInBackground(String... params) {
+            LoginResponse response = null;
+            try {
+                response = Service.loginWithToken(params[0], params[1], params[2], params[3], getTodo1Data());
+            }  catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+                nextTokenSession = e.getAdditionalData();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(LoginResponse response) {
+            super.onPostExecute(response);
+            if(response == null && errorCode != null) {
+                //Expected error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                processErrorAndContinue(error, nextTokenSession);
+                resetLayoutOnFail();
+            } else if(response == null) {
+                //Service error.
+                showServiceGenericError();
+                resetLayoutOnFail();
+            } else {
+                //Success login.
+                LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
+                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid());
+                if(step == null) {
+                    step = LoginSteps.REGISTRATION_COMPLETED;
+                }
+                goToRegistrationStep(step);
+            }
+            hideLoading();
+        }
     }
 
 }

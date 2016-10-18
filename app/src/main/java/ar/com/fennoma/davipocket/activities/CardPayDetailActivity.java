@@ -38,6 +38,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
     private TransactionDetails transactionDetails;
 
     private EditText otherPaymentValue;
+    private View priceIndicatorView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,13 +89,12 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         setBottomLayouts();
         selectedAccountText = (TextView) findViewById(R.id.account_spinner);
         TextView cardTitle = (TextView) findViewById(R.id.card_title);
-
         totalPaymentUsd = (CheckBox) findViewById(R.id.total_payment_usd);
         minimumPaymentUsd = (CheckBox) findViewById(R.id.minimum_payment_usd);
         totalPayment = (CheckBox) findViewById(R.id.total_payment);
         minimumPayment = (CheckBox) findViewById(R.id.minimum_payment);
         otherPayment = (CheckBox) findViewById(R.id.other_payment);
-
+        priceIndicatorView = findViewById(R.id.price_indicator);
         final View otherPaymentContainer = findViewById(R.id.other_payment_container);
         otherPaymentValue = (EditText) findViewById(R.id.other_payment_value);
 
@@ -144,6 +144,14 @@ public class CardPayDetailActivity extends AbstractPayActivity {
                 }
             }
         });
+        otherPaymentValue.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    priceIndicatorView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         otherPaymentValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -155,31 +163,20 @@ public class CardPayDetailActivity extends AbstractPayActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String price = s.toString();
-                boolean replacedDot = false;
-                if(price.contains(".")) {
-                    price = price.replace(".", ",");
-                    replacedDot = true;
-                }
-                if (justDeletedOtherPaymentText) {
+                if(justDeletedOtherPaymentText){
                     justDeletedOtherPaymentText = false;
                     return;
                 }
-                if (price.equals(priceIndicator)) {
-                    justDeletedOtherPaymentText = true;
-                    otherPaymentValue.setText(priceIndicator.concat(" "));
-                    Selection.setSelection(otherPaymentValue.getText(), otherPaymentValue.getText().length());
-                    return;
+                String price = s.toString();
+                price = price.replace(".", "");
+                try {
+                    price = String.format("%,d", Long.parseLong(price));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
                 }
-                if (!price.contains(priceIndicator)) {
-                    otherPaymentValue.setText(priceIndicator.concat(" ").concat(price));
-                    Selection.setSelection(otherPaymentValue.getText(), otherPaymentValue.getText().length());
-                    return;
-                }
-                if(replacedDot) {
-                    otherPaymentValue.setText(price);
-                    Selection.setSelection(otherPaymentValue.getText(), otherPaymentValue.getText().length());
-                }
+                justDeletedOtherPaymentText = true;
+                otherPaymentValue.setText(price);
+                Selection.setSelection(otherPaymentValue.getText(), otherPaymentValue.getText().length());
             }
         });
         payButton.setOnClickListener(new View.OnClickListener() {
@@ -230,10 +227,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         } else if (totalPaymentUsd.isChecked()) {
             return detail.getTotalUsd();
         } else {
-            String value = otherPaymentValue.getText().toString();
-            value = value.replace(priceIndicator, "");
-            value = value.replace(" ", "");
-            return value;
+            return otherPaymentValue.getText().toString();
         }
     }
 

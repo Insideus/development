@@ -144,7 +144,7 @@
             android:textColor="@color/login_input_text_color"
             android:textColorHint="@color/gray_text_color"
             android:maxLength="@integer/passwords_token_max_length"
-            android:inputType="number"
+            android:inputType="numberPassword"
             android:textSize="@dimen/login_input_text_size"
             android:singleLine="true"
             tools:ignore="MissingPrefix" />

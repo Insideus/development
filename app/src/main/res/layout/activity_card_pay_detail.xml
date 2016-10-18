@@ -42,10 +42,10 @@
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@id/title_container"
             android:layout_above="@+id/bottom_bar"
-            android:fillViewport="false">
+            android:layout_below="@id/title_container"
+            android:fillViewport="false"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -265,16 +265,28 @@
                         android:paddingTop="@dimen/card_pay_detail_spacing_between_items"
                         android:visibility="gone">
 
+                        <TextView
+                            android:id="@+id/price_indicator"
+                            fontPath="fonts/MyriadPro-Regular.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="4dp"
+                            android:paddingLeft="@dimen/card_pay_detail_items_horizonal_margin"
+                            android:text="@string/card_pay_price_indicator"
+                            android:textColor="@color/input_text_color"
+                            android:visibility="gone" />
+
                         <EditText
                             android:id="@+id/other_payment_value"
+                            android:maxLength="25"
                             fontPath="fonts/MyriadPro-Regular.otf"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingRight="@dimen/card_pay_detail_items_horizonal_margin"
-                            android:paddingLeft="@dimen/card_pay_detail_items_horizonal_margin"
                             android:layout_centerInParent="true"
+                            android:layout_toRightOf="@id/price_indicator"
                             android:background="@android:color/transparent"
-                            android:inputType="numberDecimal"
+                            android:inputType="number"
+                            android:paddingRight="@dimen/card_pay_detail_items_horizonal_margin"
                             android:textColor="@color/input_text_color"
                             android:textSize="@dimen/common_text_size" />
 
@@ -287,8 +299,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/card_pay_detail_pay_button_bottom_margin"
                     android:layout_marginBottom="@dimen/card_pay_detail_pay_button_bottom_margin"
+                    android:layout_marginTop="@dimen/card_pay_detail_pay_button_bottom_margin"
                     android:src="@drawable/card_payment_pay_button_selector" />
 
             </LinearLayout>
