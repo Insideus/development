@@ -57,7 +57,7 @@ public class EcardLoginActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showLoading();
+                showLoading();
         }
 
         @Override

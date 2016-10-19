@@ -27,18 +27,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_layout"
+        android:layout_above="@+id/card_image"
+        android:gravity="center"
         android:layout_margin="20dp"
         android:orientation="vertical">
-
-        <TextView
-            fontPath="fonts/MyriadPro-Regular.otf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/ecard_login_activity_text_1"
-            android:textColor="@color/red_base_color"
-            android:layout_marginBottom="10dp"
-            android:textSize="@dimen/common_text_size" />
 
         <TextView
             fontPath="fonts/MyriadPro-Regular.otf"
@@ -54,10 +46,10 @@
     <ImageView
         android:id="@+id/card_image"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:layout_below="@+id/text_container"
+        android:layout_above="@+id/checkbox_container"
         android:src="@drawable/add_e_card_button"
         android:scaleType="fitXY" />
 
@@ -65,8 +57,8 @@
         android:id="@+id/checkbox_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/card_image"
         android:gravity="center"
+        android:layout_above="@+id/continue_button"
         android:orientation="vertical">
 
         <CheckBox

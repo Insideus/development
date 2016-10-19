@@ -64,7 +64,7 @@ public class Service {
     private final static String RESEND_USER_VALIDATION_CODE = "/user/validate_account";
     private final static String UPDATE_USER_COMMUNICATIONS_INFO = "/user/update_communications_info";
     private final static String VALIDATE_PRODUCT = "/user/validate_product";
-    private final static String VALIDATE_OTP = "/user/validate_otp_pin";
+    private final static String VALIDATE_OTP = "/user/validate_otp_pin"; //<<<<
     private final static String SET_PASSWORD = "/user/set_password";
     private final static String FORGOT_PASSWORD = "/user/forgot_password";
     private final static String SET_EXPIRED_PASSWORD = "/user/set_expired_password";
@@ -73,7 +73,7 @@ public class Service {
     private final static String GET_USER_CARDS = "/user/cards";
     private final static String GET_USER = "/user";
     private final static String ACCEPT_NEW_DEVICE = "/user/accept_new_device";
-    private final static String RESEND_NEW_DEVICE_OTP = "/user/generate_otp_new_device";
+    private final static String RESEND_NEW_DEVICE_OTP = "/user/generate_otp_new_device"; //<<<
     private final static String ECARD_STEP = "/user/ecard_step";
 
     //Card services

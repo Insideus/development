@@ -35,21 +35,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/new_ecard_title"
-            android:textAllCaps="true"
             android:textColor="@color/red_title_color"
-            android:textSize="26dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
-            android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="@string/new_ecard_subtitle"
-            android:textAllCaps="true"
-            android:textColor="@color/darkest_blue_title_color"
             android:textSize="26dp"
             android:textStyle="bold" />
 

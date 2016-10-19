@@ -114,34 +114,35 @@ public class ChangePasswordStep3Activity extends BaseActivity{
     }
 
     private boolean validateFields() {
-        List<String> errorList = new ArrayList<>();
+        String errorText = null;
         if(expiredPassword) {
             if (TextUtils.isEmpty(oldPassword.getText())) {
-                errorList.add(getString(R.string.change_password_step_3_empty_old_virtual_password_error));
+                errorText = getString(R.string.change_password_step_3_empty_old_virtual_password_error);
             }
         }
-        if (TextUtils.isEmpty(virtualPassword.getText())) {
-            errorList.add(getString(R.string.change_password_step_3_empty_virtual_password_error));
+        if (TextUtils.isEmpty(errorText) && TextUtils.isEmpty(virtualPassword.getText())) {
+            errorText = getString(R.string.change_password_step_3_empty_virtual_password_error);
         }
-        if (TextUtils.isEmpty(repeatedPassword.getText())) {
-            errorList.add(getString(R.string.change_password_step_3_empty_password_repeat_error));
+        if (TextUtils.isEmpty(errorText) && TextUtils.isEmpty(repeatedPassword.getText())) {
+            errorText = getString(R.string.change_password_step_3_empty_password_repeat_error);
         }
-        if(errorList.size() < 1) {
+        if(TextUtils.isEmpty(errorText)) {
             if (virtualPassword.getText().length() < 4 || virtualPassword.getText().length() > 8) {
-                errorList.add(getString(R.string.change_password_step_3_invalid_amount_of_digits));
+                errorText = getString(R.string.change_password_step_3_invalid_amount_of_digits);
             } else if (!validatePasswordAscending(virtualPassword.getText().toString())) {
-                errorList.add(getString(R.string.change_password_step_3_invalid_password));
+                errorText = getString(R.string.change_password_step_3_invalid_password);
             } else if (!validatePasswordEqualsNumbers(virtualPassword.getText().toString())) {
-                errorList.add(getString(R.string.change_password_step_3_invalid_password_equals_numbers));
-            } else if (!TextUtils.equals(virtualPassword.getText(), repeatedPassword.getText())) {
-                errorList.add(getString(R.string.change_password_step_3_password_repeat_error));
+                errorText = getString(R.string.change_password_step_3_invalid_password_equals_numbers);
+            } else
+            if (!TextUtils.equals(virtualPassword.getText(), repeatedPassword.getText())) {
+                errorText = getString(R.string.change_password_step_3_password_repeat_error);
             }
         }
-        if (!errorList.isEmpty()) {
+        if (!TextUtils.isEmpty(errorText)) {
             DialogUtil.toast(this,
-                    getString(R.string.input_data_error_generic_title),
-                    getString(R.string.input_data_error_generic_subtitle),
-                    errorList);
+                    getString(R.string.change_password_input_error_title),
+                    getString(R.string.change_password_input_error_subtitle),
+                    errorText);
             return false;
         }
         return true;

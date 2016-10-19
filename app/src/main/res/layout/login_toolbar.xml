@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.AppBarLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbar_layout"
@@ -17,13 +16,13 @@
 
         <TextView
             android:id="@+id/toolbar_title"
+            fontPath="fonts/MyriadPro-Regular.otf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textColor="@color/red_base_color"
             android:textSize="@dimen/action_bar_title_text_size"
-            fontPath="fonts/MyriadPro-Regular.otf"
-            tools:ignore="MissingPrefix"
-            android:textColor="@color/red_base_color"/>
+            tools:ignore="MissingPrefix" />
 
     </android.support.v7.widget.Toolbar>
 

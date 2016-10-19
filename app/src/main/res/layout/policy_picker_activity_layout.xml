@@ -30,6 +30,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="@dimen/button_without_cardview_padding"
         android:layout_marginRight="@dimen/button_without_cardview_padding"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:gravity="center"
         android:text="@string/policy_picker_subtitle"
         android:textColor="@color/login_input_text_color"

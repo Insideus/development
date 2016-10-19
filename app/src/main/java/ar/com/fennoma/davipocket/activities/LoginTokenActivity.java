@@ -128,9 +128,9 @@ public class LoginTokenActivity extends LoginBaseActivity {
         ArrayList<String> errors = validate();
         if(errors != null && errors.size() > 0) {
             DialogUtil.toast(this,
-                    getString(R.string.input_data_error_generic_title),
-                    getString(R.string.input_data_error_generic_subtitle),
-                    errors);
+                    getString(R.string.login_token_invalid_inputs_title),
+                    getString(R.string.login_token_invalid_inputs_subtitle),
+                    getString(R.string.login_token_invalid_inputs_text));
         } else {
             new LoginWithTokenTask().execute(personIdNumber.getText().toString(),
                     String.valueOf(selectedIdType.getId()),
