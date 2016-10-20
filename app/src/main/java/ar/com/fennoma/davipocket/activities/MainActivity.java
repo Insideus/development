@@ -1,6 +1,7 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -9,24 +10,49 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.ui.adapters.HomePagerAdapter;
 import ar.com.fennoma.davipocket.ui.controls.TypoTabLayout;
+import ar.com.fennoma.davipocket.utils.LocationGetter;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 
 public class MainActivity extends BaseActivity {
 
     public static final String OPEN_TOUR = "tour open";
     private HomePagerAdapter adapter;
+    private LatLng latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setToolbar();
         setPager();
+        getLocation();
+        setToolbar();
         checkForTour();
+    }
+
+    private void getLocation() {
+        new LocationGetter(this, new LocationGetter.ILocationListener() {
+            @Override
+            public void onGotLocation(Location location) {
+                if(location == null){
+                    failedGettingLocation();
+                    return;
+                }
+                latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                adapter.setLocation(latLng);
+            }
+
+            @Override
+            public void failedGettingLocation() {
+
+            }
+        }).locupdate(2000, 1);
     }
 
     private void setToolbar(){
@@ -90,7 +116,13 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.maps){
-            startActivity(new Intent(this, MapActivity.class));
+            if(latLng == null){
+                Toast.makeText(this, "Locación no encontrada", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(MapActivity.LAT_LNG_KEY, latLng);
+            startActivity(new Intent(this, MapActivity.class).putExtras(bundle));
         }
         return super.onOptionsItemSelected(item);
     }

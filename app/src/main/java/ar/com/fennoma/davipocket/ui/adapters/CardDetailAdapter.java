@@ -170,7 +170,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                 holder.name.setText(transaction.getName());
                 switch (getProperBackground(position)) {
                     case LONELY_ITEM: {
-                        holder.container.setBackgroundResource(R.drawable.white_rounded_coreners_background);
+                        holder.container.setBackgroundResource(R.drawable.white_rounded_corners_background);
                         break;
                     }
                     case MIDDLE_ITEM: {

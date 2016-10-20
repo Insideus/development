@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.fragments;
 
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,20 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.Store;
 import ar.com.fennoma.davipocket.service.Service;
+import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.adapters.WithoutDeliveryStoreAdapter;
 
 public class DeliveryStoreFragment extends Fragment {
 
-    private Location location;
+    private LatLng latLng;
     private WithoutDeliveryStoreAdapter adapter;
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocation(LatLng latLng) {
+        this.latLng = latLng;
     }
 
     @Nullable
@@ -49,7 +52,14 @@ public class DeliveryStoreFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            stores = Store.fromJsonArray(Service.getMOCKEDStoresWithoutDelivery());
+            String sid = Session.getCurrentSession(getActivity().getApplicationContext()).getSid();
+            try {
+                stores = Store.fromJsonArray(Service.getStoresWithoutDelivery(sid,
+                        latLng != null ? String.valueOf(latLng.latitude) : "",
+                        latLng != null ? String.valueOf(latLng.longitude) : ""));
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            }
             return null;
         }
 

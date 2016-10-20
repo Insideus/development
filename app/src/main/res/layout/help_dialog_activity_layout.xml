@@ -16,7 +16,7 @@
         android:layout_marginEnd="5dp"
         android:paddingTop="25dp"
         android:paddingBottom="20dp"
-        android:background="@drawable/white_rounded_coreners_background"
+        android:background="@drawable/white_rounded_corners_background"
         android:orientation="vertical"
         android:gravity="center">
 

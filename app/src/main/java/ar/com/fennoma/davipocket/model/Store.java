@@ -1,5 +1,8 @@
 package ar.com.fennoma.davipocket.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,7 +10,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Store {
+public class Store implements Parcelable {
     private long id;
     private String name;
     private String address;
@@ -191,4 +194,57 @@ public class Store {
         }
         return stores;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.address);
+        dest.writeString(this.country);
+        dest.writeString(this.city);
+        dest.writeDouble(this.latitude);
+        dest.writeDouble(this.longitude);
+        dest.writeString(this.website);
+        dest.writeString(this.companyName);
+        dest.writeString(this.zipCode);
+        dest.writeString(this.phone);
+        dest.writeString(this.logo);
+        dest.writeString(this.image);
+    }
+
+    public Store() {
+    }
+
+    protected Store(Parcel in) {
+        this.id = in.readLong();
+        this.name = in.readString();
+        this.address = in.readString();
+        this.country = in.readString();
+        this.city = in.readString();
+        this.latitude = in.readDouble();
+        this.longitude = in.readDouble();
+        this.website = in.readString();
+        this.companyName = in.readString();
+        this.zipCode = in.readString();
+        this.phone = in.readString();
+        this.logo = in.readString();
+        this.image = in.readString();
+    }
+
+    public static final Creator<Store> CREATOR = new Creator<Store>() {
+        @Override
+        public Store createFromParcel(Parcel source) {
+            return new Store(source);
+        }
+
+        @Override
+        public Store[] newArray(int size) {
+            return new Store[size];
+        }
+    };
 }

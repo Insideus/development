@@ -1,9 +1,10 @@
 package ar.com.fennoma.davipocket.ui.adapters;
 
-import android.location.Location;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import ar.com.fennoma.davipocket.fragments.DeliveryStoreFragment;
 import ar.com.fennoma.davipocket.fragments.WithoutDeliveryStoreFragment;
@@ -39,12 +40,12 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
         return null;
     }
 
-    public void setLocation(Location location){
+    public void setLocation(LatLng latLng){
         if(withoutDeliveryStoreFragment != null){
-            withoutDeliveryStoreFragment.setLocation(location);
+            withoutDeliveryStoreFragment.setLocation(latLng);
         }
         if(deliveryStoreFragment != null){
-            deliveryStoreFragment.setLocation(location);
+            deliveryStoreFragment.setLocation(latLng);
         }
     }
 }
