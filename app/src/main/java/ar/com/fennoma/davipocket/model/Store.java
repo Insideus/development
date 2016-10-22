@@ -16,8 +16,8 @@ public class Store implements Parcelable {
     private String address;
     private String country;
     private String city;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
     private String website;
     private String companyName;
     private String zipCode;
@@ -116,7 +116,7 @@ public class Store implements Parcelable {
         this.city = city;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
@@ -124,7 +124,7 @@ public class Store implements Parcelable {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 

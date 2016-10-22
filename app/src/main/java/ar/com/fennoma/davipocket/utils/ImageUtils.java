@@ -12,9 +12,6 @@ import ar.com.fennoma.davipocket.DavipocketApplication;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.service.Service;
 
-/**
- * Created by fennoma on 12/4/16.
- */
 public class ImageUtils {
 
     private static void loadImage(Activity activity, final ImageView imageView, final String imageUrl, final int placeholder) {
@@ -43,6 +40,32 @@ public class ImageUtils {
                 }
             });
         }
+    }
+
+    public static void loadImageFullURL(final ImageView imageView, String imageUrl){
+        if (imageUrl == null) {
+            return;
+        }
+        DavipocketApplication.getImageManager().displayImage(imageUrl, imageView, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {}
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                imageView.setImageBitmap(loadedImage);
+            }
+
+            @Override
+            public void onLoadingCancelled(String imageUri, View view) {
+
+            }
+        });
+
     }
 
     public static void loadCardImage(Activity activity, final ImageView imageView, final String imageUrl) {

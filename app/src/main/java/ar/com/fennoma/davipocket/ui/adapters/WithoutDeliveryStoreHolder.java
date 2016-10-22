@@ -11,7 +11,7 @@ public class WithoutDeliveryStoreHolder extends RecyclerView.ViewHolder {
     protected ImageView imageView;
     protected ImageView brandLogo;
     protected TextView name;
-    protected TextView relevantData;
+    protected TextView address;
     protected TextView distance;
 
     public WithoutDeliveryStoreHolder(View itemView) {
@@ -19,7 +19,7 @@ public class WithoutDeliveryStoreHolder extends RecyclerView.ViewHolder {
         imageView = (ImageView) itemView.findViewById(R.id.image);
         brandLogo = (ImageView) itemView.findViewById(R.id.brand_logo);
         name = (TextView) itemView.findViewById(R.id.name);
-        relevantData = (TextView) itemView.findViewById(R.id.relevant_data);
+        address = (TextView) itemView.findViewById(R.id.address);
         distance = (TextView) itemView.findViewById(R.id.distance);
     }
 }

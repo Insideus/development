@@ -37,6 +37,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getLocation() {
+        showLoading();
         new LocationGetter(this, new LocationGetter.ILocationListener() {
             @Override
             public void onGotLocation(Location location) {
@@ -46,11 +47,12 @@ public class MainActivity extends BaseActivity {
                 }
                 latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 adapter.setLocation(latLng);
+                hideLoading();
             }
 
             @Override
             public void failedGettingLocation() {
-
+                hideLoading();
             }
         }).locupdate(2000, 1);
     }

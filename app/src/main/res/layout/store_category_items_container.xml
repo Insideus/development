@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="20dp"
+    android:background="@drawable/white_rounded_corners_background"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    tools:ignore="MissingPrefix">
+
+    <TextView
+        android:id="@+id/title"
+        fontPath="fonts/MyriadPro-Regular.otf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Más vendidos"
+        android:textAllCaps="true"
+        android:textColor="@color/red_base_color"
+        android:textSize="@dimen/common_text_size" />
+
+    <TextView
+        android:id="@+id/category_title"
+        fontPath="fonts/MyriadPro-Semibold.otf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SUGERENCIAS"
+        android:textColor="@color/common_dark_gray_color"
+        android:textSize="@dimen/store_category_title_size"
+        android:textStyle="bold" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" />
+
+</LinearLayout>

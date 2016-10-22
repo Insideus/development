@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    tools:ignore="MissingPrefix">
+
+    <ar.com.fennoma.davipocket.ui.controls.RoundedCornerImageView
+        android:id="@+id/image"
+        android:layout_width="120dp"
+        android:layout_height="140dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/mocked_store_item_image" />
+
+    <TextView
+        android:id="@+id/title"
+        fontPath="fonts/MyriadPro-Regular.otf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:text="FLAT WHITE"
+        android:textAllCaps="true"
+        android:textColor="@color/common_dark_gray_color"
+        android:textSize="@dimen/store_category_item_title_size" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <TextView
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$"
+            android:textColor="@color/text_light_gray_color"
+            android:textSize="@dimen/common_text_size" />
+
+        <TextView
+            android:id="@+id/price"
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:text="6.800"
+            android:textColor="@color/text_light_gray_color"
+            android:textSize="@dimen/common_text_size" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

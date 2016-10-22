@@ -29,6 +29,7 @@ import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.MyCardsResponse;
 import ar.com.fennoma.davipocket.model.PaymentDetail;
 import ar.com.fennoma.davipocket.model.ServiceException;
+import ar.com.fennoma.davipocket.model.StoreCategory;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
 import ar.com.fennoma.davipocket.model.User;
 
@@ -91,6 +92,7 @@ public class Service {
 
     //Store
     private static final String STORE_LIST = "/store/get_list";
+    private static final String STORE_BY_ID = "/store/get_menu";
 
     public static JSONObject getPersonIdTypes() {
         HttpURLConnection urlConnection = null;
@@ -1782,6 +1784,51 @@ public class Service {
                     response = responseJson.getJSONArray("stores");
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static List<StoreCategory> getStoreById(String sid, String id) throws ServiceException {
+        List<StoreCategory> response = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(STORE_BY_ID, sid);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> idParam = new Pair("id", id);
+            params.add(idParam);
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONArray dataArray = json.getJSONArray(DATA_TAG);
+                if (json.has("error") && !json.getBoolean("error")) {
+                    JSONObject data = dataArray.getJSONObject(0);
+                    response = StoreCategory.fromJSONArray(data.getJSONArray("categories"));
+                } else {
+                    JSONObject data = dataArray.getJSONObject(0);
+                    String errorCode = data.getString(ERROR_CODE_TAG);
                     throw new ServiceException(errorCode);
                 }
             }

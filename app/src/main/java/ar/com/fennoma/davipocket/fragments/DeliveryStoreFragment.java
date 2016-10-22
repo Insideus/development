@@ -28,6 +28,8 @@ public class DeliveryStoreFragment extends Fragment {
 
     public void setLocation(LatLng latLng) {
         this.latLng = latLng;
+        adapter.setLatLng(latLng);
+        new GetStoresTask().execute();
     }
 
     @Nullable
@@ -43,7 +45,6 @@ public class DeliveryStoreFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new WithoutDeliveryStoreAdapter(getActivity());
         recyclerView.setAdapter(adapter);
-        new GetStoresTask().execute();
     }
 
     private class GetStoresTask extends AsyncTask<Void, Void, Void> {

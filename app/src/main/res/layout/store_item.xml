@@ -45,7 +45,7 @@
                 android:textColor="@color/common_dark_gray_color" />
 
             <TextView
-                android:id="@+id/relevant_data"
+                android:id="@+id/address"
                 fontPath="fonts/MyriadPro-Regular.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
