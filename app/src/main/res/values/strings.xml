@@ -71,7 +71,7 @@
     <string name="policy_picker_terms_and_conditions_not_checked_error">Debe aceptar los términos y condiciones</string>
     <string name="policy_picker_privacy_policy_not_checked_error">Debe aceptar la política de privacidad</string>
     <string name="interests_picker_title">INTERESES</string>
-    <string name="assign_password_title">ASIGNAR CONTRASEÑA</string>
+    <string name="assign_password_title">ASIGNAR CLAVE</string>
 
     <!-- Change Password Activities -->
     <string name="change_password_title">ASIGNAR O CAMBIAR CLAVE</string>
@@ -108,7 +108,7 @@
     <!-- Password Confirmation Activity -->
     <string name="password_confirmation_title">CONFIRMACIÓN</string>
     <string name="password_confirmation_subtitle_hint">Ingrese el Código de Confirmación que hemos enviado\nal celular que tiene registrado con nosotros.\n\nEn caso de no recibir el Código de Confirmación,\ncomuníquese en Bogotá al 338 3838 o a nivel nacional al\n018000 12838.</string>
-    <string name="password_confirmation_send_button">ENVIAR</string>
+    <string name="password_confirmation_send_button">Enviar</string>
     <string name="password_confirmation_incomplete_code_error">Debe ingresar el código de confirmación.</string>
 
 
@@ -152,7 +152,7 @@
     <string name="change_password_step_3_invalid_password">La clave no puede tener dígitos repetidos ni consecutivos.\nVerifique los datos ingresados.</string>
     <string name="change_password_step_3_invalid_password_equals_numbers">La clave no puede tener dígitos repetidos ni consecutivos.\nVerifique los datos ingresados.</string>
     <string name="change_password_step_3_invalid_amount_of_digits">La clave debe tener entre 4 y 8 dígitos</string>
-    <string name="assign_password_recommendation">Bienvenido a davipocket, para continuar\ndebe confirmar su clave</string>
+    <string name="assign_password_recommendation">Bienvenido a DaviPay, por favor acepte\nTérminos y Condiciones para poder continuar</string>
     <string name="assign_password_recommendation_terms_and_conditions">Debe aceptar los términos y condiciones</string>
     <string name="assign_password_recommendation_terms_and_conditions_title">Error de autorizaciones</string>
     <string name="registration_error_message_underage">Debe ser mayor de 14 años</string>
@@ -249,8 +249,8 @@
     <string name="card_pay_success_title">PAGO</string>
     <string name="card_pay_success_subtitle">REALIZADO</string>
     <string name="card_pay_success_text">Su pago fue realizado con éxito el día</string>
-    <string name="my_cards_block_card_accept">ACEPTAR</string>
-    <string name="my_cards_block_card_cancel">CANCELAR</string>
+    <string name="my_cards_block_card_accept">Aceptar</string>
+    <string name="my_cards_block_card_cancel">Cancelar</string>
     <string name="filter_button_text">Filtro</string>
     <string name="filtered_movements_from_date_title">Movimientos desde</string>
     <string name="filtered_movements_dot_separator">.</string>
@@ -296,6 +296,9 @@
     <string name="e_card_show_data_error">Ha ocurrido un error al solicitar los datos de su eCard. Reinténtelo nuevamente más tarde.</string>
     <string name="e_card_recharge_explanation">Recuerde que puede recargar\ndesde $ 10.000 pesos\nhasta $ 50.000 pesos.</string>
     <string name="e_card_title">E-CARD</string>
+    <string name="my_cards_activate_blocked_card_title">TARJETA</string>
+    <string name="my_cards_activate_blocked_card_subtitle">BLOQUEADA</string>
+    <string name="my_cards_activate_blocked_card_text">Su tarjeta ha sido bloqueada.</string>
 
     <string name="card_24hr_blocked_title">TARJETA</string>
     <string name="card_24hr_blocked_subtitle">BLOQUEADA</string>
@@ -317,7 +320,7 @@
     <string name="new_device_otp_validation_success_title">NUEVO DISPOSITIVO</string>
     <string name="new_device_otp_validation_success_subtitle">ASOCIADO</string>
     <string name="new_device_otp_validation_success_text">Su dispositivo fue asociado a la cuenta.</string>
-    <string name="otp_resend_sms">REENVIAR SMS</string>
+    <string name="otp_resend_sms">Reenviar SMS</string>
     <string name="new_device_otp_title">CONFIRMACIÓN</string>
 
     <string name="otp_needed_title">VALIDAR</string>
@@ -332,7 +335,7 @@
     <string name="new_ecard_title">eCARD APROBADA</string>
     <string name="new_ecard_subtitle">E-CARD</string>
     <string name="new_ecard_text">Esta es su nueva tarjeta de prepago eCard.</string>
-    <string name="new_ecard_24hs_text">Ya hemos creado su eCard.\nCon esta tarjeta usted podrá realizar compras por internet o vincularla en cualquier aplicación  como opción de pagos. Le enviaremos el código  de seguridad al celular que tiene registrado con nosotros cuando realice la primera recarga de la tarjeta.\nUsted podrá consultar el número y el código de seguridad en cualquier momento en la opción "Mis Tarjetas"</string>
+    <string name="new_ecard_24hs_text">Podrá realizar compras por internet o usarla en cualquier aplicación. Enviaremos el código de seguridad por SMS al realizar la primera recarga.\nPodrá consultar el número y código de seguridad en la opción "Mis Tarjetas".</string>
     <string name="new_ecard_button_text">CONTINUAR</string>
     <string name="home_store_tab_title">Ir a Tienda</string>
     <string name="home_domicile_tab_title">Domicilio</string>

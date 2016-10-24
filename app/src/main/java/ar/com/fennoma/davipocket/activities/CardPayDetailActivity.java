@@ -184,7 +184,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
             public void onClick(View v) {
                 String amount = getAmount();
                 //amount = "100";
-                amount = amount.replace(",", ".");
+                //amount = amount.replace(",", ".");
                 if (validateAmount(amount)) {
                     Intent intent = new Intent(CardPayDetailActivity.this, ActionDialogActivity.class);
                     intent.putExtra(ActionDialogActivity.TITLE_KEY, "CONFIRMAR");
@@ -227,7 +227,9 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         } else if (totalPaymentUsd.isChecked()) {
             return detail.getTotalUsd();
         } else {
-            return otherPaymentValue.getText().toString();
+            String amount = otherPaymentValue.getText().toString();
+            amount = amount.replace(".", "");
+            return amount;
         }
     }
 

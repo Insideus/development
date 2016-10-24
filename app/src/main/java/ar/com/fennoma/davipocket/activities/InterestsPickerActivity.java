@@ -16,6 +16,7 @@ import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.UserInterest;
 import ar.com.fennoma.davipocket.service.Service;
@@ -32,6 +33,7 @@ public class InterestsPickerActivity extends BaseActivity{
         setActionBar(getString(R.string.interests_picker_title), false);
         setRecycler();
         setContinueButton();
+        Session.getCurrentSession(this).setPendingStep(LoginSteps.CATEGORIES_OF_INTEREST.getStep());
     }
 
     private void setRecycler() {

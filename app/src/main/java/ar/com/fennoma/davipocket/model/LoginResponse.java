@@ -12,7 +12,6 @@ import org.json.JSONObject;
 public class LoginResponse implements Parcelable {
 
     private String sid;
-    private String pendingStep;
     private String accountStatus;
 
     public LoginResponse() {
@@ -24,14 +23,6 @@ public class LoginResponse implements Parcelable {
 
     public void setSid(String sid) {
         this.sid = sid;
-    }
-
-    public String getPendingStep() {
-        return pendingStep;
-    }
-
-    public void setPendingStep(String pendingStep) {
-        this.pendingStep = pendingStep;
     }
 
     public String getAccountStatus() {
@@ -47,9 +38,6 @@ public class LoginResponse implements Parcelable {
         try {
             if(json.has("sid")) {
                 response.setSid(json.getString("sid"));
-            }
-            if(json.has("pending_step")) {
-                response.setPendingStep(json.getString("pending_step"));
             }
             if(json.has("account_status")) {
                 response.setAccountStatus(json.getString("account_status"));
@@ -69,13 +57,11 @@ public class LoginResponse implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.sid);
-        dest.writeString(this.pendingStep);
         dest.writeString(this.accountStatus);
     }
 
     protected LoginResponse(Parcel in) {
         this.sid = in.readString();
-        this.pendingStep = in.readString();
         this.accountStatus = in.readString();
     }
 

@@ -12,6 +12,7 @@ import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
@@ -32,6 +33,7 @@ public class PolicyPickerActivity extends BaseActivity{
         setActionBar(getString(R.string.policy_picker_title), false);
         findCheckBoxes();
         setContinueButton();
+        Session.getCurrentSession(this).setPendingStep(LoginSteps.COMMUNICATION_PERMISSIONS.getStep());
     }
 
     private void setContinueButton() {

@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
@@ -23,6 +24,7 @@ public class EcardLoginActivity extends BaseActivity {
         setContentView(R.layout.activity_ecard_login_layout);
         setActionBar(getString(R.string.ecard_login_activity_title), false);
         setLayouts();
+        Session.getCurrentSession(this).setPendingStep(LoginSteps.GET_E_CARD.getStep());
     }
 
     private void setLayouts() {
@@ -145,6 +147,7 @@ public class EcardLoginActivity extends BaseActivity {
     }
 
     private void goToMainActivity() {
+        Session.getCurrentSession(this).setPendingStep(null);
         startActivity(new Intent(this, MainActivity.class));
         this.finish();
     }

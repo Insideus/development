@@ -39,6 +39,7 @@ public class MyCardsActivity extends BaseActivity {
     private static final int OPERATION_RESULT = 12;
     private static final int E_CARD_SHOW_DATA = 13;
     private static final int CREATE_E_CARD = 14;
+    private static final int BLOCK_CARD_RQ = 15;
     private CardsAdapter cardsAdapter;
     private int selectedCard = -1;
     private boolean refresh = false;
@@ -203,6 +204,15 @@ public class MyCardsActivity extends BaseActivity {
             if (resultCode == RESULT_OK && data != null && data.getParcelableExtra(ActionDialogActivity.E_CARD_SHOW_DATA) != null) {
                 Card cardData = data.getParcelableExtra(ActionDialogActivity.E_CARD_SHOW_DATA);
                 showEcardCreatedPopup(cardData);
+                refresh = true;
+            } else if (resultCode == ActionDialogActivity.RESULT_FAILED) {
+                generateErrorDialog(data);
+            }
+        } else if (requestCode == BLOCK_CARD_RQ) {
+            if (resultCode == RESULT_OK) {
+                DialogUtil.toastWithResult(this, EXPLAINING_DIALOG, getString(R.string.my_cards_activate_blocked_card_title),
+                        getString(R.string.my_cards_activate_blocked_card_subtitle),
+                        getString(R.string.my_cards_activate_blocked_card_text));
                 refresh = true;
             } else if (resultCode == ActionDialogActivity.RESULT_FAILED) {
                 generateErrorDialog(data);
@@ -429,7 +439,7 @@ public class MyCardsActivity extends BaseActivity {
             intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_block_card_text));
             intent.putExtra(ActionDialogActivity.IS_BLOCK_CARD_DIALOG, true);
             intent.putExtra(ActionDialogActivity.CARD_KEY, card);
-            startActivityForResult(intent, EXPLAINING_DIALOG);
+            startActivityForResult(intent, BLOCK_CARD_RQ);
             overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
         }
 

@@ -2,13 +2,13 @@ package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.tasks.GetInitDataTask;
 import ar.com.fennoma.davipocket.tasks.TaskCallback;
@@ -16,7 +16,7 @@ import ar.com.fennoma.davipocket.utils.ConnectionUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.Todo1Utils;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     private static final int RETRY_CONNECTION_REQUEST = 1;
     private View splashLoading;
@@ -54,9 +54,19 @@ public class SplashActivity extends AppCompatActivity {
 
     private void goToLoginOrHome() {
         if(Session.getCurrentSession(this).isValid()) {
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            if(Session.getCurrentSession(this).hasPengingStep()) {
+                /*
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                */
+                LoginSteps step = LoginSteps.getStep(Session.getCurrentSession(this).getPendingStep());
+                goToRegistrationStep(step);
+            } else {
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
         } else {
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

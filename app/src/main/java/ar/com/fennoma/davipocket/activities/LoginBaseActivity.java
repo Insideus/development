@@ -88,7 +88,8 @@ public class LoginBaseActivity extends BaseActivity {
             } else {
                 //Success login.
                 LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
-                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid());
+                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(),
+                        response.getAccountStatus());
                 if(step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
@@ -407,7 +408,8 @@ public class LoginBaseActivity extends BaseActivity {
             } else {
                 //Success login.
                 LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
-                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid());
+                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(),
+                        response.getAccountStatus());
                 if(step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }

@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
@@ -28,6 +29,7 @@ public class AccountActivationActivity extends BaseActivity{
         setActionBar(getString(R.string.account_activation_activity_title), false);
         findCodeBoxContainer();
         setRequestCodeButton();
+        Session.getCurrentSession(this).setPendingStep(LoginSteps.ACCOUNT_VERIFICATION.getStep());
         new ResendValidationCodeTask().execute();
     }
 

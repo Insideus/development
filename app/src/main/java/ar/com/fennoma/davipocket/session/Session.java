@@ -24,6 +24,7 @@ public class Session {
     private static String USER_INTERESTS = "UserInterests";
     private static String PREF_SESSION_KEY = "SessionKey";
     private static String USER_INFORMATION = "UserInformation";
+    private static String PENDING_STEP = "PendingStep";
 
     private static Session instance = null;
     private SharedPreferences sharedPreferences;
@@ -32,6 +33,7 @@ public class Session {
     private ArrayList<BankProduct> bankProducts;
     private ArrayList<UserInterest> userInterests;
     private String sid;
+    private String pendingStep;
 
     private Session() {
 
@@ -42,6 +44,7 @@ public class Session {
             instance = new Session();
             instance.sharedPreferences = context.getSharedPreferences(PREFERENCES, 0);
             instance.sid = instance.sharedPreferences.getString(PREF_SESSION_KEY, null);
+            instance.pendingStep = instance.sharedPreferences.getString(PENDING_STEP, null);
             try {
                 String jsonIdTypes = instance.sharedPreferences.getString(PERSON_ID_TYPES, null);
                 if (jsonIdTypes != null) {
@@ -74,10 +77,11 @@ public class Session {
         return instance.sid;
     }
 
-    public void loginUser(String sid) {
+    public void loginUser(String sid, String pendingStep) {
         this.sid = sid;
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(PREF_SESSION_KEY, sid);
+        editor.putString(PENDING_STEP, pendingStep);
         editor.commit();
         this.sid = sid;
     }
@@ -85,8 +89,10 @@ public class Session {
     public void logout() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(PREF_SESSION_KEY);
+        editor.remove(PENDING_STEP);
         editor.commit();
         this.sid = null;
+        this.pendingStep = null;
         LoginManager.getInstance().logOut();
     }
 
@@ -136,6 +142,21 @@ public class Session {
 
     public boolean isValid() {
         return this.sid != null;
+    }
+
+    public String getPendingStep() {
+        return instance.pendingStep;
+    }
+
+    public void setPendingStep(String pendingStep) {
+        this.pendingStep = pendingStep;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PENDING_STEP, pendingStep);
+        editor.commit();
+    }
+
+    public boolean hasPengingStep() {
+        return instance.pendingStep != null;
     }
 
 }

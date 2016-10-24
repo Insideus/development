@@ -19,6 +19,7 @@ import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
@@ -35,6 +36,7 @@ public class FacebookLoginActivity extends BaseActivity {
         setContentView(R.layout.facebook_activity_layout);
         setActionBar(getString(R.string.facebook_login_token_activity_title), false);
         setLoginButtons();
+        Session.getCurrentSession(this).setPendingStep(LoginSteps.FACEBOOK.getStep());
         LoginManager.getInstance().logOut();
     }
 

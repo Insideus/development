@@ -54,7 +54,8 @@ public class ActivatedPasswordActivity extends BaseActivity {
             public void onClick(View v) {
                 if(loginResponse.getSid() != null && loginResponse.getSid().length() > 0) {
                     LoginSteps step = LoginSteps.getStep(loginResponse.getAccountStatus());
-                    Session.getCurrentSession(getApplicationContext()).loginUser(loginResponse.getSid());
+                    Session.getCurrentSession(getApplicationContext()).loginUser(loginResponse.getSid(),
+                            loginResponse.getAccountStatus());
                     if (step == null) {
                         step = LoginSteps.REGISTRATION_COMPLETED;
                     }

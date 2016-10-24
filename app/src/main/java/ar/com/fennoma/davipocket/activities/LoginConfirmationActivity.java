@@ -36,6 +36,7 @@ import java.util.Locale;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Country;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
@@ -68,6 +69,7 @@ public class LoginConfirmationActivity extends BaseActivity {
         setBirthdayLayout();
         setContinueButton();
         setCountriesCombo();
+        Session.getCurrentSession(this).setPendingStep(LoginSteps.ADDITIONAL_INFO.getStep());
     }
 
     @Override
