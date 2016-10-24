@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.BundleCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.FloatMath;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,6 @@ import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.activities.StoreDetailActivity;
-import ar.com.fennoma.davipocket.activities.StoreItemDetailActivity;
 import ar.com.fennoma.davipocket.model.Store;
 
 public class WithoutDeliveryStoreAdapter extends RecyclerView.Adapter<WithoutDeliveryStoreHolder>{
