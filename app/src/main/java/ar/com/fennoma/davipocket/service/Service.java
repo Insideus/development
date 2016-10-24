@@ -29,6 +29,7 @@ import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.MyCardsResponse;
 import ar.com.fennoma.davipocket.model.PaymentDetail;
 import ar.com.fennoma.davipocket.model.ServiceException;
+import ar.com.fennoma.davipocket.model.Store;
 import ar.com.fennoma.davipocket.model.StoreCategory;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
 import ar.com.fennoma.davipocket.model.User;
@@ -1750,8 +1751,8 @@ public class Service {
         return urlConnection;
     }
 
-    public static JSONArray getStoresWithoutDelivery(String sid, String latitude, String longitude) throws ServiceException {
-        JSONArray response = null;
+    public static List<Store> getStoresWithoutDelivery(String sid, String latitude, String longitude) throws ServiceException {
+        List<Store> response = null;
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(STORE_LIST, sid);
@@ -1781,7 +1782,7 @@ public class Service {
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson = json.getJSONObject(DATA_TAG);
                 if (json.has("error") && !json.getBoolean("error")) {
-                    response = responseJson.getJSONArray("stores");
+                    response = Store.fromJsonArray(responseJson.getJSONArray("stores"));
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     throw new ServiceException(errorCode);

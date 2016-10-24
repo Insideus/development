@@ -226,9 +226,9 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void requestPermission(String strPermission, int perCode, Context _c, Activity _a) {
-        if (!ActivityCompat.shouldShowRequestPermissionRationale(_a, strPermission)) {
-            ActivityCompat.requestPermissions(_a, new String[]{strPermission}, perCode);
+    public void requestPermission(String strPermission, int perCode) {
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, strPermission)) {
+            ActivityCompat.requestPermissions(this, new String[]{strPermission}, perCode);
         }
     }
 
@@ -522,6 +522,23 @@ public class BaseActivity extends AppCompatActivity {
 
     public void setOtpCodeReceived(OtpCodeReceived otpCodeReceived) {
         this.otpCodeReceived = otpCodeReceived;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isMenuOpened()) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public Boolean isMenuOpened() {
+        if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

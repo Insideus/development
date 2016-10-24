@@ -160,7 +160,7 @@ public class ToastDialogActivity extends BaseActivity {
 
     public void checkCallPermissions() {
         if (!checkPermission(android.Manifest.permission.CALL_PHONE, getApplicationContext(), this)) {
-            requestPermission(android.Manifest.permission.CALL_PHONE, 101, getApplicationContext(), this);
+            requestPermission(android.Manifest.permission.CALL_PHONE, 101);
         }
     }
 

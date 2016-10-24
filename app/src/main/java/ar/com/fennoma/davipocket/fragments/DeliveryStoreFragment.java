@@ -55,9 +55,9 @@ public class DeliveryStoreFragment extends Fragment {
         protected Void doInBackground(Void... params) {
             String sid = Session.getCurrentSession(getActivity().getApplicationContext()).getSid();
             try {
-                stores = Store.fromJsonArray(Service.getStoresWithoutDelivery(sid,
+                stores = Service.getStoresWithoutDelivery(sid,
                         latLng != null ? String.valueOf(latLng.latitude) : "",
-                        latLng != null ? String.valueOf(latLng.longitude) : ""));
+                        latLng != null ? String.valueOf(latLng.longitude) : "");
             } catch (ServiceException e) {
                 e.printStackTrace();
             }

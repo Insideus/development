@@ -55,11 +55,6 @@ public class SplashActivity extends BaseActivity {
     private void goToLoginOrHome() {
         if(Session.getCurrentSession(this).isValid()) {
             if(Session.getCurrentSession(this).hasPengingStep()) {
-                /*
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                */
                 LoginSteps step = LoginSteps.getStep(Session.getCurrentSession(this).getPendingStep());
                 goToRegistrationStep(step);
             } else {

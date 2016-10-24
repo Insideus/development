@@ -64,20 +64,20 @@ public class WithoutDeliveryStoreAdapter extends RecyclerView.Adapter<WithoutDel
         });
         if(position % 3 == 0){
             holder.brandLogo.setImageResource(R.drawable.brand_mocked_1);
-        } else if(position % 3 == 1){
+        } else if(position % 3 == 1) {
             holder.brandLogo.setImageResource(R.drawable.brand_mocked_2);
         } else {
             holder.brandLogo.setImageResource(R.drawable.brand_mocked_3);
         }
-        if(TextUtils.isEmpty(store.getAddress())){
+        if(TextUtils.isEmpty(store.getAddress())) {
             holder.address.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.address.setVisibility(View.VISIBLE);
             holder.address.setText(store.getAddress());
         }
-        if(store.getLatitude() == null || store.getLongitude() == null || latLng == null){
+        if(store.getLatitude() == null || store.getLongitude() == null || latLng == null) {
             holder.distance.setText(activity.getString(R.string.delivery_adapter_not_available_distance));
-        }else{
+        } else {
             holder.distance.setText(calculateDistance(store.getLatitude(), store.getLongitude()));
         }
     }

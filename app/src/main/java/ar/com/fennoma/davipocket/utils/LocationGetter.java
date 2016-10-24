@@ -42,7 +42,7 @@ public class LocationGetter implements LocationListener {
         }
     }
 
-    public void locupdate(int minTime, float minDistance) {
+    public void locUpdate(int minTime, float minDistance) {
         mlocManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
         if (mlocManager != null) {
             if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
