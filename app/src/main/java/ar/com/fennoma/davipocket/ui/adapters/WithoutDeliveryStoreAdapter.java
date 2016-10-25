@@ -18,6 +18,7 @@ import java.util.List;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.activities.StoreDetailActivity;
 import ar.com.fennoma.davipocket.model.Store;
+import ar.com.fennoma.davipocket.utils.ImageUtils;
 
 public class WithoutDeliveryStoreAdapter extends RecyclerView.Adapter<WithoutDeliveryStoreHolder>{
 
@@ -49,25 +50,23 @@ public class WithoutDeliveryStoreAdapter extends RecyclerView.Adapter<WithoutDel
     public void onBindViewHolder(WithoutDeliveryStoreHolder holder, int position) {
         final Store store = stores.get(position);
         holder.name.setText(store.getName());
-        if(position % 2 == 0) {
-            holder.imageView.setImageResource(R.drawable.without_delivery_mock_1);
-        }else{
-            holder.imageView.setImageResource(R.drawable.without_delivery_mock_2);
+        if(store.getImage() != null && store.getImage().length() > 0) {
+            ImageUtils.loadImageFullURL(holder.imageView, store.getImage());
+        } else {
+            holder.imageView.setImageResource(R.drawable.placeholder);
         }
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putLong(StoreDetailActivity.STORE_ID, store.getId());
+                bundle.putParcelable(StoreDetailActivity.STORE_KEY, store);
                 activity.startActivity(new Intent(activity, StoreDetailActivity.class).putExtras(bundle));
             }
         });
-        if(position % 3 == 0){
-            holder.brandLogo.setImageResource(R.drawable.brand_mocked_1);
-        } else if(position % 3 == 1) {
-            holder.brandLogo.setImageResource(R.drawable.brand_mocked_2);
+        if(store.getLogo() != null && store.getLogo().length() > 0) {
+            ImageUtils.loadImageFullURL(holder.brandLogo, store.getLogo());
         } else {
-            holder.brandLogo.setImageResource(R.drawable.brand_mocked_3);
+            holder.brandLogo.setImageResource(R.drawable.placeholder_small);
         }
         if(TextUtils.isEmpty(store.getAddress())) {
             holder.address.setVisibility(View.GONE);

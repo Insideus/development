@@ -43,4 +43,5 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryHolder>{
         this.categories = categories;
         notifyDataSetChanged();
     }
+
 }

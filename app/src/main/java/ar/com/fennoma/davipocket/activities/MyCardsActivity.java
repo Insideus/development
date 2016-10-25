@@ -110,13 +110,6 @@ public class MyCardsActivity extends BaseActivity {
     }
 
     private void createECard() {
-        /*
-        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
-        intent.putExtra(ActionDialogActivity.E_CARD_CREATE, true);
-        startOperationPopUp(intent, getString(R.string.my_cards_e_card_create_title),
-                getString(R.string.my_cards_e_card_create_subtitle),
-                getString(R.string.my_cards_e_card_create_text));
-                */
         Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
         intent.putExtra(ActionDialogActivity.E_CARD_CREATE, true);
         intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_e_card_create_title));

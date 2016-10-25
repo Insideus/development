@@ -363,7 +363,7 @@ public class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(BaseActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Bundle bundle = new Bundle();
-        bundle.putBoolean(MainActivity.OPEN_TOUR, true);
+        //bundle.putBoolean(MainActivity.OPEN_TOUR, true);
         startActivity(intent.putExtras(bundle));
     }
 

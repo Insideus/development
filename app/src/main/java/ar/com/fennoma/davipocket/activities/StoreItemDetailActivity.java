@@ -52,4 +52,5 @@ public class StoreItemDetailActivity extends BaseActivity{
         }
         imageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.mocked_store_item_image));
     }
+    
 }
