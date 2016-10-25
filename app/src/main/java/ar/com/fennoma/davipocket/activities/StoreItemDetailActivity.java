@@ -13,7 +13,7 @@ import ar.com.fennoma.davipocket.ui.controls.RoundedCornerImageView;
 
 public class StoreItemDetailActivity extends BaseActivity{
 
-    private static final String PRODUCT_KEY = "product key";
+    public static final String PRODUCT_KEY = "product key";
     private StoreItemDetailAdapter adapter;
     private StoreProduct product;
 
@@ -41,8 +41,8 @@ public class StoreItemDetailActivity extends BaseActivity{
             return;
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //adapter = new StoreItemDetailAdapter(this, product);
-        //recyclerView.setAdapter(adapter);
+        adapter = new StoreItemDetailAdapter(this, product);
+        recyclerView.setAdapter(adapter);
     }
 
     private void setViews() {

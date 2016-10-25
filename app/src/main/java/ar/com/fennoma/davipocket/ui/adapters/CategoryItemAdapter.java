@@ -2,6 +2,7 @@ package ar.com.fennoma.davipocket.ui.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,14 +31,16 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemHolder
 
     @Override
     public void onBindViewHolder(CategoryItemHolder holder, int position) {
-        StoreProduct product = products.get(position);
+        final StoreProduct product = products.get(position);
         holder.name.setText(product.getName());
         holder.price.setText(product.getListPrice());
         ImageUtils.loadImageFullURL(holder.image, product.getImage());
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.startActivity(new Intent(activity, StoreItemDetailActivity.class));
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(StoreItemDetailActivity.PRODUCT_KEY, product);
+                activity.startActivity(new Intent(activity, StoreItemDetailActivity.class).putExtras(bundle));
             }
         });
     }

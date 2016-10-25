@@ -51,8 +51,8 @@ public class StoreConfiguration implements Parcelable {
             if(json.has("max_configuration")){
                 configuration.setMaxConfiguration(json.getInt("max_configuration"));
             }
-            if(json.has("configuration_item")){
-                configuration.setConfigurations(StoreConfigurationItem.fromJSONArray(json.getJSONArray("configuration_item")));
+            if(json.has("configuration_items")){
+                configuration.setConfigurations(StoreConfigurationItem.fromJSONArray(json.getJSONArray("configuration_items")));
             }
         } catch (JSONException e) {
             e.printStackTrace();

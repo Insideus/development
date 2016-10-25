@@ -348,5 +348,6 @@
     <string name="login_token_invalid_inputs_text">Verifique los datos ingresados.</string>
     <string name="delivery_adapter_not_available_distance">N/A</string>
     <string name="delivery_adapter_km_indicator">KM.</string>
+    <string name="store_item_detail_additional_title">Adicionales</string>
 
 </resources>
