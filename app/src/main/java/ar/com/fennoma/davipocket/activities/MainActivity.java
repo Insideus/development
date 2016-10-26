@@ -49,6 +49,12 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.setLocation(latLng);
+    }
+
     private void getLocation() {
         showLoading();
         new LocationUtils(this, new LocationUtils.ILocationListener() {

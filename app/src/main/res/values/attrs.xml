@@ -16,4 +16,11 @@
     <declare-styleable name="MyViewPager">
         <attr name="swipeable" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="ResizableImageView">
+        <attr name="scale" format="float">
+            <enum name="scale_4_3" value="0"/>
+        </attr>
+    </declare-styleable>
+
 </resources>
