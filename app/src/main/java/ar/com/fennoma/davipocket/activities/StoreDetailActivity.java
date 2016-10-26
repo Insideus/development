@@ -64,7 +64,6 @@ public class StoreDetailActivity extends BaseActivity {
         TextView storeDistance = (TextView) findViewById(R.id.distance);
         storeDistance.setText(LocationUtils.calculateDistance(this, LocationUtils.getLastKnowLocation(this),
                 store.getLatitude(), store.getLongitude()));
-        //storeName.setText(store.getName());
     }
 
     private void setRecyclerView() {
