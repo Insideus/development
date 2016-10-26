@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.ImageView;
 
 import ar.com.fennoma.davipocket.R;
@@ -53,6 +54,10 @@ public class StoreItemDetailActivity extends BaseActivity{
         if(product.getImage() != null && product.getImage().length() > 0) {
             ImageUtils.loadImageFullURL(productImage, product.getImage());
         }
+        TextView name = (TextView) findViewById(R.id.name);
+        name.setText(product.getName());
+        TextView description = (TextView) findViewById(R.id.description);
+        description.setText(product.getAppDisplayName());
     }
 
     @Override
@@ -66,7 +71,7 @@ public class StoreItemDetailActivity extends BaseActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.shop_menu, menu);
+        getMenuInflater().inflate(R.menu.add_item_menu, menu);
         return true;
     }
 

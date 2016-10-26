@@ -354,4 +354,6 @@
     <string name="store_payment_selected_products_title_1">PRODUCTOS</string>
     <string name="store_payment_selected_products_title_2">SELECCIONADOS</string>
 
+    <string name="add_item_button_text">Agregar</string>
+
 </resources>
