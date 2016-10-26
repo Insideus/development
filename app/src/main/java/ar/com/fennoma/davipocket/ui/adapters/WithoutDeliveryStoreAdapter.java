@@ -2,7 +2,6 @@ package ar.com.fennoma.davipocket.ui.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -19,6 +18,7 @@ import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.activities.StoreDetailActivity;
 import ar.com.fennoma.davipocket.model.Store;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
+import ar.com.fennoma.davipocket.utils.LocationUtils;
 
 public class WithoutDeliveryStoreAdapter extends RecyclerView.Adapter<WithoutDeliveryStoreHolder>{
 
@@ -74,24 +74,7 @@ public class WithoutDeliveryStoreAdapter extends RecyclerView.Adapter<WithoutDel
             holder.address.setVisibility(View.VISIBLE);
             holder.address.setText(store.getAddress());
         }
-        if(store.getLatitude() == null || store.getLongitude() == null || latLng == null) {
-            holder.distance.setText(activity.getString(R.string.delivery_adapter_not_available_distance));
-        } else {
-            holder.distance.setText(calculateDistance(store.getLatitude(), store.getLongitude()));
-        }
-    }
-
-    private String calculateDistance(Double latitude, Double longitude) {
-        Location locationA = new Location("Location A");
-        locationA.setLatitude(latitude);
-        locationA.setLatitude(longitude);
-        Location locationB = new Location("Location B");
-        locationB.setLatitude(latLng.latitude);
-        locationB.setLongitude(latLng.longitude);
-        float distance = locationA.distanceTo(locationB);
-        double rounded = Math.round(distance * 10 ) / 10f;
-        String finalResult = String.valueOf(rounded).replace(".", ",");
-        return finalResult.concat(" ").concat(activity.getString(R.string.delivery_adapter_km_indicator));
+        holder.distance.setText(LocationUtils.calculateDistance(activity, latLng, store.getLatitude(), store.getLongitude()));
     }
 
     @Override

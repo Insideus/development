@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.activities;
 
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,10 +11,11 @@ import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.StoreProduct;
 import ar.com.fennoma.davipocket.ui.adapters.StoreItemDetailAdapter;
 import ar.com.fennoma.davipocket.ui.controls.RoundedCornerImageView;
+import ar.com.fennoma.davipocket.utils.ImageUtils;
 
 public class StoreItemDetailActivity extends BaseActivity{
 
-    public static final String PRODUCT_KEY = "product key";
+    public static final String PRODUCT_KEY = "product_key";
     private StoreItemDetailAdapter adapter;
     private StoreProduct product;
 
@@ -49,11 +49,10 @@ public class StoreItemDetailActivity extends BaseActivity{
     }
 
     private void setViews() {
-        RoundedCornerImageView imageView = (RoundedCornerImageView) findViewById(R.id.image);
-        if (imageView == null) {
-            return;
+        RoundedCornerImageView productImage = (RoundedCornerImageView) findViewById(R.id.image);
+        if(product.getImage() != null && product.getImage().length() > 0) {
+            ImageUtils.loadImageFullURL(productImage, product.getImage());
         }
-        imageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.mocked_store_item_image));
     }
 
     @Override
@@ -70,5 +69,5 @@ public class StoreItemDetailActivity extends BaseActivity{
         getMenuInflater().inflate(R.menu.shop_menu, menu);
         return true;
     }
-    
+
 }

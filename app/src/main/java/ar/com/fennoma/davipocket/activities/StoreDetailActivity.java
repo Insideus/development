@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -20,6 +23,7 @@ import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.adapters.CategoryAdapter;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
+import ar.com.fennoma.davipocket.utils.LocationUtils;
 
 public class StoreDetailActivity extends BaseActivity {
 
@@ -47,6 +51,20 @@ public class StoreDetailActivity extends BaseActivity {
         if(store.getLogo() != null && store.getLogo().length() > 0) {
             ImageUtils.loadImageFullURL(storeLogo, store.getLogo());
         }
+        TextView storeName = (TextView) findViewById(R.id.name);
+        storeName.setText(store.getName());
+        TextView storeAddress = (TextView) findViewById(R.id.address);
+        storeName.setText(store.getName());
+        if(TextUtils.isEmpty(store.getAddress())) {
+            storeAddress.setVisibility(View.GONE);
+        } else {
+            storeAddress.setVisibility(View.VISIBLE);
+            storeAddress.setText(store.getAddress());
+        }
+        TextView storeDistance = (TextView) findViewById(R.id.distance);
+        storeDistance.setText(LocationUtils.calculateDistance(this, LocationUtils.getLastKnowLocation(this),
+                store.getLatitude(), store.getLongitude()));
+        //storeName.setText(store.getName());
     }
 
     private void setRecyclerView() {
@@ -119,4 +137,5 @@ public class StoreDetailActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.shop_menu, menu);
         return true;
     }
+
 }

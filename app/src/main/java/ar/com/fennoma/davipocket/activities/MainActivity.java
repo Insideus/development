@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.ui.adapters.HomePagerAdapter;
 import ar.com.fennoma.davipocket.ui.controls.TypoTabLayout;
-import ar.com.fennoma.davipocket.utils.LocationGetter;
+import ar.com.fennoma.davipocket.utils.LocationUtils;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 
 public class MainActivity extends BaseActivity {
@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity {
 
     private void getLocation() {
         showLoading();
-        new LocationGetter(this, new LocationGetter.ILocationListener() {
+        new LocationUtils(this, new LocationUtils.ILocationListener() {
             @Override
             public void onGotLocation(Location location) {
                 if(location == null){

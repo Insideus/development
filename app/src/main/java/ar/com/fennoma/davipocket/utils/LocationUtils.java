@@ -11,15 +11,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 
-import java.util.Calendar;
+import com.google.android.gms.maps.model.LatLng;
 
-public class LocationGetter implements LocationListener {
+import java.util.Calendar;
+import java.util.Locale;
+
+import ar.com.fennoma.davipocket.R;
+
+public class LocationUtils implements LocationListener {
 
     private final Activity activity;
-    private LocationManager mlocManager;
-    private int loccounter;
+    private LocationManager locationManager;
+    private int locationCounter;
     private Handler serviceHandler;
-    private boolean timertest;
+    private boolean timerTest;
     private Location location;
     private ILocationListener listener;
 
@@ -29,30 +34,30 @@ public class LocationGetter implements LocationListener {
         void failedGettingLocation();
     }
 
-    public LocationGetter(Activity activity, ILocationListener listener) {
+    public LocationUtils(Activity activity, ILocationListener listener) {
         this.activity = activity;
         this.listener = listener;
     }
 
     public void onStart() {
-        if (!timertest) {
-            timertest = true;
+        if (!timerTest) {
+            timerTest = true;
             serviceHandler = new Handler();
             serviceHandler.postDelayed(new timer(), 1000L);
         }
     }
 
     public void locUpdate(int minTime, float minDistance) {
-        mlocManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-        if (mlocManager != null) {
+        locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager != null) {
             if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-            mlocManager.removeUpdates(this);
+            locationManager.removeUpdates(this);
         }
-        loccounter = 0;
+        locationCounter = 0;
         onStart();
-        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                 minTime, minDistance, this);
     }
 
@@ -66,20 +71,23 @@ public class LocationGetter implements LocationListener {
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {}
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
 
     @Override
-    public void onProviderEnabled(String provider) {}
+    public void onProviderEnabled(String provider) {
+    }
 
     @Override
-    public void onProviderDisabled(String provider) {}
+    public void onProviderDisabled(String provider) {
+    }
 
     public void stopListening() {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        mlocManager.removeUpdates(this);
-        loccounter = 0;
+        locationManager.removeUpdates(this);
+        locationCounter = 0;
         if (location == null) {
             getLastKnownLocation();
         }
@@ -87,7 +95,7 @@ public class LocationGetter implements LocationListener {
 
     private void getLastKnownLocation() {
         Location bestLastLocation = getBestLastLocation();
-        if(bestLastLocation == null) {
+        if (bestLastLocation == null) {
             listener.failedGettingLocation();
             return;
         }
@@ -131,7 +139,7 @@ public class LocationGetter implements LocationListener {
 
     private Location getLocationByProvider(String provider) {
         Location location = null;
-        if (!mlocManager.isProviderEnabled(provider)) {
+        if (!locationManager.isProviderEnabled(provider)) {
             return null;
         }
         LocationManager locationManager = (LocationManager) activity.getApplicationContext()
@@ -151,10 +159,43 @@ public class LocationGetter implements LocationListener {
 
     class timer implements Runnable {
         public void run() {
-            ++loccounter;
-            if (location != null || loccounter > 8) {
+            ++locationCounter;
+            if (location != null || locationCounter > 8) {
                 stopListening();
             } else serviceHandler.postDelayed(this, 1000L);
         }
     }
+
+    public static String calculateDistance(Context ctx, LatLng latLng, Double latitude, Double longitude) {
+        if (latitude == null || longitude == null || latLng == null) {
+            return ctx.getString(R.string.delivery_adapter_not_available_distance);
+        }
+        Location locationA = new Location("Location A");
+        locationA.setLatitude(latitude);
+        locationA.setLatitude(longitude);
+        Location locationB = new Location("Location B");
+        locationB.setLatitude(latLng.latitude);
+        locationB.setLongitude(latLng.longitude);
+        double inKms = locationA.distanceTo(locationB) / 1000;
+        String finalResult = String.format(Locale.US, "%.2f", inKms).replace(".", ",");
+        return finalResult.concat(" ").concat(ctx.getString(R.string.delivery_adapter_km_indicator));
+    }
+
+    public static LatLng getLastKnowLocation(Context ctx) {
+        LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return null;
+        }
+        Location gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location networkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if(gpsLocation != null) {
+            return new LatLng(gpsLocation.getLatitude(), gpsLocation.getLongitude());
+        }
+        if(networkLocation != null) {
+            return new LatLng(networkLocation.getLatitude(), networkLocation.getLongitude());
+        }
+        return null;
+    }
+
 }
