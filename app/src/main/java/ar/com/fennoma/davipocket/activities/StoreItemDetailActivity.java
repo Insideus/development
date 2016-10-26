@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.StoreProduct;
@@ -22,6 +24,7 @@ public class StoreItemDetailActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_item_detail_layout);
         handleIntent();
+        setToolbar(R.id.toolbar, true, product.getName());
         setViews();
         setRecycler();
     }
@@ -51,6 +54,21 @@ public class StoreItemDetailActivity extends BaseActivity{
             return;
         }
         imageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.mocked_store_item_image));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.shop_button){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.shop_menu, menu);
+        return true;
     }
     
 }

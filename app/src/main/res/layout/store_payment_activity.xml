@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/main_toolbar" />
+
+    <FrameLayout
+        android:id="@+id/title_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:background="@color/red_base_color">
+
+        <TextView
+            android:id="@+id/menu_title"
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/underlined_title_background"
+            android:paddingBottom="@dimen/navigation_drawer_basic_padding"
+            android:paddingTop="@dimen/navigation_drawer_basic_padding"
+            android:text="@string/store_payment_subtitle"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/subtitle_text_size" />
+
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_container">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ar.com.fennoma.davipocket.ui.controls.ResizableImageView
+                android:id="@+id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="260dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white">
+
+                <ImageView
+                    android:id="@+id/brand_logo"
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="20dp"
+                    android:scaleType="center"
+                    android:src="@drawable/placeholder_small" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/brand_logo"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/name"
+                        fontPath="fonts/MyriadPro-Semibold.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="UNICENTRO"
+                        android:textColor="@color/common_dark_gray_color" />
+
+                    <TextView
+                        android:id="@+id/address"
+                        fontPath="fonts/MyriadPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="cra 15 # 127 32 · l 1-207"
+                        android:textColor="@color/text_light_gray_color" />
+
+                    <TextView
+                        android:id="@+id/distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0,4 KM."
+                        android:textColor="@color/red_base_color" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/white_rounded_corners_background"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/title"
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/store_payment_selected_products_title_1"
+                    android:textAllCaps="true"
+                    android:textColor="@color/red_base_color"
+                    android:textSize="@dimen/common_text_size" />
+
+                <TextView
+                    android:id="@+id/category_title"
+                    fontPath="fonts/MyriadPro-Semibold.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/store_payment_selected_products_title_2"
+                    android:textColor="@color/common_dark_gray_color"
+                    android:textSize="@dimen/store_category_title_size"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

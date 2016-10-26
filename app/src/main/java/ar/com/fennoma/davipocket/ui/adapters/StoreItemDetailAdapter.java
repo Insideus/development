@@ -1,6 +1,7 @@
 package ar.com.fennoma.davipocket.ui.adapters;
 
 import android.app.Activity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -33,12 +34,19 @@ public class StoreItemDetailAdapter extends RecyclerView.Adapter<StoreItemDetail
     public void onBindViewHolder(StoreItemDetailHolder holder, int position) {
         final StoreConfiguration configuration = itemsToShow.get(position);
         holder.title.setText(configuration.getSubType());
-
         for (StoreConfigurationItem configurationItem : configuration.getConfigurations()) {
             View selectableRow = activity.getLayoutInflater().inflate(R.layout.store_item_detail_selectable_item, null);
+            final View container = selectableRow.findViewById(R.id.container);
             TextView title = (TextView) selectableRow.findViewById(R.id.title);
             TextView price = (TextView) selectableRow.findViewById(R.id.price);
-            final View container = selectableRow.findViewById(R.id.container);
+            View bottomSeparator = selectableRow.findViewById(R.id.bottom_separator);
+            if(configuration.getConfigurations().indexOf(configurationItem) + 1 == configuration.getConfigurations().size()) {
+                container.setBackground(ContextCompat.getDrawable(activity, R.drawable.white_shape_rounded_bottom_corners));
+                bottomSeparator.setVisibility(View.GONE);
+            } else {
+                container.setBackground(ContextCompat.getDrawable(activity, R.drawable.white_background));
+                bottomSeparator.setVisibility(View.VISIBLE);
+            }
             title.setText(configurationItem.getName());
             if (TextUtils.isEmpty(configurationItem.getExtraPrice()) || Float.valueOf(configurationItem.getExtraPrice()) == 0) {
                 price.setVisibility(View.GONE);

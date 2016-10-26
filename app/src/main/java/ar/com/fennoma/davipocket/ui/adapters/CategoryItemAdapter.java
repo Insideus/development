@@ -18,10 +18,12 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemHolder
 
     private Activity activity;
     private List<StoreProduct> products;
+    private boolean fromStoreDetail;
 
-    public CategoryItemAdapter(Activity activity, List<StoreProduct> products) {
+    public CategoryItemAdapter(Activity activity, List<StoreProduct> products, boolean fromStoreDetail) {
         this.activity = activity;
         this.products = products;
+        this.fromStoreDetail = fromStoreDetail;
     }
 
     @Override
@@ -35,14 +37,16 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemHolder
         holder.name.setText(product.getName());
         holder.price.setText(product.getListPrice());
         ImageUtils.loadImageFullURL(holder.image, product.getImage());
-        holder.container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(StoreItemDetailActivity.PRODUCT_KEY, product);
-                activity.startActivity(new Intent(activity, StoreItemDetailActivity.class).putExtras(bundle));
-            }
-        });
+        if(fromStoreDetail) {
+            holder.container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(StoreItemDetailActivity.PRODUCT_KEY, product);
+                    activity.startActivity(new Intent(activity, StoreItemDetailActivity.class).putExtras(bundle));
+                }
+            });
+        }
     }
 
     @Override

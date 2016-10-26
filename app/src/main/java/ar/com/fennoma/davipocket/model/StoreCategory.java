@@ -93,7 +93,7 @@ public class StoreCategory implements Parcelable {
     protected StoreCategory(Parcel in) {
         this.id = in.readString();
         this.name = in.readString();
-        this.products = new ArrayList<StoreProduct>();
+        this.products = new ArrayList<>();
         in.readList(this.products, StoreProduct.class.getClassLoader());
     }
 

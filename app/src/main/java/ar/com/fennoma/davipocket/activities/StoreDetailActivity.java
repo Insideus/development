@@ -1,10 +1,13 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -52,7 +55,6 @@ public class StoreDetailActivity extends BaseActivity {
             return;
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setNestedScrollingEnabled(false);
         adapter = new CategoryAdapter(this);
         recyclerView.setAdapter(adapter);
     }
@@ -103,4 +105,18 @@ public class StoreDetailActivity extends BaseActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.shop_button){
+            startActivity(new Intent(this, StorePaymentActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.shop_menu, menu);
+        return true;
+    }
 }

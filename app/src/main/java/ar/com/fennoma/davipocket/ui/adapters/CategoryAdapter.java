@@ -3,6 +3,7 @@ package ar.com.fennoma.davipocket.ui.adapters;
 import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -29,9 +30,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryHolder>{
     @Override
     public void onBindViewHolder(CategoryHolder holder, int position) {
         StoreCategory category = categories.get(position);
-        holder.title.setText(category.getName());
+        holder.title.setVisibility(View.GONE);
+        holder.categoryTitle.setText(category.getName());
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
-        holder.recyclerView.setAdapter(new CategoryItemAdapter(activity, category.getProducts()));
+        holder.recyclerView.setAdapter(new CategoryItemAdapter(activity, category.getProducts(), true));
     }
 
     @Override
