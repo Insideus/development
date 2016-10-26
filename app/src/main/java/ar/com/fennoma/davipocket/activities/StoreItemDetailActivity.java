@@ -6,11 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.StoreProduct;
 import ar.com.fennoma.davipocket.ui.adapters.StoreItemDetailAdapter;
-import ar.com.fennoma.davipocket.ui.controls.RoundedCornerImageView;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 
 public class StoreItemDetailActivity extends BaseActivity{
@@ -49,7 +49,7 @@ public class StoreItemDetailActivity extends BaseActivity{
     }
 
     private void setViews() {
-        RoundedCornerImageView productImage = (RoundedCornerImageView) findViewById(R.id.image);
+        ImageView productImage = (ImageView) findViewById(R.id.image);
         if(product.getImage() != null && product.getImage().length() > 0) {
             ImageUtils.loadImageFullURL(productImage, product.getImage());
         }

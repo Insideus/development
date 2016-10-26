@@ -57,4 +57,5 @@ dependencies {
     compile "com.splunk.mint:mint:5.0.0"
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.viewpagerindicator:library:2.4.1@aar'
+    compile 'com.makeramen:roundedimageview:2.2.1'
 }
