@@ -21,7 +21,6 @@ import ar.com.fennoma.davipocket.utils.ImageUtils;
 public class StoreItemDetailActivity extends BaseActivity{
 
     public static final String PRODUCT_KEY = "product_key";
-    private StoreItemDetailAdapter adapter;
     private StoreProduct product;
     private StoreProduct selectedProduct;
     private TextView daviPointsAmount;
@@ -55,8 +54,7 @@ public class StoreItemDetailActivity extends BaseActivity{
             return;
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new StoreItemDetailAdapter(this, product);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(new StoreItemDetailAdapter(this, product));
     }
 
     private void setViews() {

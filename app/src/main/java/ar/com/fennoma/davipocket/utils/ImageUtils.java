@@ -14,7 +14,7 @@ import ar.com.fennoma.davipocket.service.Service;
 
 public class ImageUtils {
 
-    private static void loadImage(Activity activity, final ImageView imageView, final String imageUrl, final int placeholder) {
+    public static void loadImage(Activity activity, final ImageView imageView, final String imageUrl, final int placeholder) {
         if (imageUrl == null) {
             imageView.setImageResource(placeholder);
         } else {

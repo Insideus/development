@@ -11,9 +11,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnBackPressListener;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,7 +25,6 @@ import ar.com.fennoma.davipocket.model.PaymentDetail;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
-import ar.com.fennoma.davipocket.ui.controls.ComboHolder;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
@@ -43,7 +39,6 @@ public abstract class AbstractPayActivity extends BaseActivity{
     protected boolean justDeletedOtherPaymentText = false;
     protected PaymentDetail detail;
     protected TextView selectedAccountText;
-    protected DialogPlus dialogPlus;
     protected Account selectedAccount;
 
 
@@ -139,40 +134,6 @@ public abstract class AbstractPayActivity extends BaseActivity{
 
     protected abstract void setLayoutData();
 
-    public void showCombo() {
-        final ComboAdapter adapter = new ComboAdapter(detail.getAccounts(), selectedAccount);
-        final DialogPlus dialog = DialogPlus.newDialog(this)
-                .setAdapter(adapter)
-                .setContentHolder(new ComboHolder())
-                .setFooter(R.layout.combo_footer)
-                .setExpanded(false)  // This will enable the expand feature, (similar to android L share dialog)
-                .setOnBackPressListener(new OnBackPressListener() {
-                    @Override
-                    public void onBackPressed(DialogPlus dialogPlus) {
-                        dialogPlus.dismiss();
-                    }
-                })
-                .create();
-        View footerView = dialog.getFooterView();
-        footerView.findViewById(R.id.accept_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedAccount = adapter.selectedAccount;
-                setSelectedIdAccountName();
-                dialog.dismiss();
-            }
-        });
-        footerView.findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        setSelectedIdAccountName();
-        dialog.show();
-        dialogPlus = dialog;
-    }
-
     private class ComboAdapter extends BaseAdapter {
 
         private List<Account> accounts;
@@ -226,6 +187,23 @@ public abstract class AbstractPayActivity extends BaseActivity{
             return row;
         }
 
+    }
+
+    public void showCombo(){
+        final ComboAdapter adapter = new ComboAdapter(detail.getAccounts(), selectedAccount);
+        showCombo(adapter, new IComboListener() {
+            @Override
+            public void onAccept() {
+                selectedAccount = adapter.selectedAccount;
+                setSelectedIdAccountName();
+                dialogPlus.dismiss();
+            }
+
+            @Override
+            public void setSelectedItem() {
+                setSelectedIdAccountName();
+            }
+        });
     }
 
     protected String getSuccessText(String startingText) {

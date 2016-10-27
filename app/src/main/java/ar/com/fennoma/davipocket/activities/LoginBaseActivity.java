@@ -40,8 +40,6 @@ public class LoginBaseActivity extends BaseActivity {
     TextView virtualPasswordText;
     TextView personIdNumber;
     PersonIdType selectedIdType;
-    DialogPlus dialogPlus;
-
     private String additionalParam;
 
     @Override
@@ -123,38 +121,20 @@ public class LoginBaseActivity extends BaseActivity {
         }
     }
 
-    public void showCombo() {
+    public void showCombo(){
         final ComboAdapter adapter = new ComboAdapter(Session.getCurrentSession(this).getPersonIdTypes(), selectedIdType);
-        final DialogPlus dialog = DialogPlus.newDialog(this)
-                .setAdapter(adapter)
-                .setContentHolder(new ComboHolder())
-                .setFooter(R.layout.combo_footer)
-                .setExpanded(false)  // This will enable the expand feature, (similar to android L share dialog)
-                .setOnBackPressListener(new OnBackPressListener() {
-                    @Override
-                    public void onBackPressed(DialogPlus dialogPlus) {
-                        dialogPlus.dismiss();
-                    }
-                })
-                .create();
-        View footerView = dialog.getFooterView();
-        footerView.findViewById(R.id.accept_button).setOnClickListener(new View.OnClickListener() {
+        showCombo(adapter, new IComboListener() {
             @Override
-            public void onClick(View v) {
+            public void onAccept() {
                 selectedIdType = adapter.selectedType;
                 setSelectedIdTypeName();
-                dialog.dismiss();
             }
-        });
-        footerView.findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                dialog.dismiss();
+            public void setSelectedItem() {
+                setSelectedIdTypeName();
             }
         });
-        setSelectedIdTypeName();
-        dialog.show();
-        dialogPlus = dialog;
     }
 
     public void setSelectedIdTypeName() {

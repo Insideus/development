@@ -356,5 +356,10 @@
 
     <string name="add_item_button_text">Agregar</string>
     <string name="store_item_detail_price_title">Precio</string>
+    <string name="discount_coupon">CUPÓN DE DESCUENTO</string>
+    <string name="store_payment_voluntary_tip_title">PROPINA VOLUNTARIA</string>
+    <string name="card_numbers_replacement">oooo oooo oooo</string>
+    <string name="store_payment_monthly_fee_title">CUOTAS</string>
+    <string name="store_payment_shop_price_title">VALOR DE SU COMPRA</string>
 
 </resources>

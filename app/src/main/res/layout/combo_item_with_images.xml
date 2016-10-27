@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="3dp"
+    android:background="@drawable/white_rounded_corners_background"
+    android:paddingBottom="10dp"
+    android:paddingRight="20dp"
+    android:paddingTop="10dp"
+    tools:ignore="MissingPrefix">
+
+    <ImageView
+        android:id="@+id/card_logo"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/hardcoded_mastercard_logo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/dropdown_spinner_icon"
+        android:layout_toRightOf="@+id/card_logo"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_numbers_replacement"
+            android:textColor="@color/text_light_gray_color"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/four_digits"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="1234"
+            android:textColor="@color/common_dark_gray_color"
+            android:textSize="16dp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/dropdown_spinner_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/spinner_down_arrow" />
+
+</RelativeLayout>

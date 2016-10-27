@@ -18,7 +18,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnBackPressListener;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Card;
@@ -28,6 +32,7 @@ import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.User;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.ui.controls.ComboHolder;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 import ar.com.fennoma.davipocket.utils.Todo1Utils;
@@ -38,6 +43,7 @@ public class BaseActivity extends AppCompatActivity {
     private static final int OTP_NEEDED = 181;
     public static final int SHOW_CREATED_ECARD_POPUP = 182;
 
+    protected DialogPlus dialogPlus;
     private Dialog loadingDialog = null;
     private Handler loadingHandler = null;
     private Runnable loadingRunnable = null;
@@ -539,6 +545,43 @@ public class BaseActivity extends AppCompatActivity {
         } else {
             return false;
         }
+    }
+
+    protected interface IComboListener{
+        void onAccept();
+        void setSelectedItem();
+    }
+
+    public void showCombo(BaseAdapter adapter, final IComboListener listener) {
+        final DialogPlus dialog = DialogPlus.newDialog(this)
+                .setAdapter(adapter)
+                .setContentHolder(new ComboHolder())
+                .setFooter(R.layout.combo_footer)
+                .setExpanded(false)  // This will enable the expand feature, (similar to android L share dialog)
+                .setOnBackPressListener(new OnBackPressListener() {
+                    @Override
+                    public void onBackPressed(DialogPlus dialogPlus) {
+                        dialogPlus.dismiss();
+                    }
+                })
+                .create();
+        View footerView = dialog.getFooterView();
+        footerView.findViewById(R.id.accept_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onAccept();
+                dialog.dismiss();
+            }
+        });
+        footerView.findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        listener.setSelectedItem();
+        dialog.show();
+        dialogPlus = dialog;
     }
 
 }
