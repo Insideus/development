@@ -16,7 +16,7 @@ public class StoreProduct implements Parcelable{
     private String name;
     private String description;
     private String image;
-    private String listPrice;
+    private Double listPrice;
     private String appDisplayName;
     private String currencyPrice;
     private List<StoreConfiguration> configurations;
@@ -55,7 +55,7 @@ public class StoreProduct implements Parcelable{
                 product.setImage(json.getString("image"));
             }
             if(json.has("list_price")){
-                product.setListPrice(json.getString("list_price"));
+                product.setListPrice(json.getDouble("list_price"));
             }
             if(json.has("app_display_name")){
                 product.setAppDisplayName(json.getString("app_display_name"));
@@ -101,11 +101,11 @@ public class StoreProduct implements Parcelable{
         this.image = image;
     }
 
-    public String getListPrice() {
+    public Double getListPrice() {
         return listPrice;
     }
 
-    public void setListPrice(String listPrice) {
+    public void setListPrice(Double listPrice) {
         this.listPrice = listPrice;
     }
 
@@ -133,6 +133,19 @@ public class StoreProduct implements Parcelable{
         this.configurations = configurations;
     }
 
+    public StoreProduct createEmptyProduct() {
+        StoreProduct emptyProduct = new StoreProduct();
+        emptyProduct.setId(this.getId());
+        emptyProduct.setName(this.getName());
+        emptyProduct.setDescription(this.getDescription());
+        emptyProduct.setImage(this.getImage());
+        emptyProduct.setListPrice(this.getListPrice());
+        emptyProduct.setAppDisplayName(this.getAppDisplayName());
+        emptyProduct.setCurrencyPrice(this.getCurrencyPrice());
+        emptyProduct.setConfigurations(new ArrayList<StoreConfiguration>());
+        return emptyProduct;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -144,7 +157,7 @@ public class StoreProduct implements Parcelable{
         dest.writeString(this.name);
         dest.writeString(this.description);
         dest.writeString(this.image);
-        dest.writeString(this.listPrice);
+        dest.writeValue(this.listPrice);
         dest.writeString(this.appDisplayName);
         dest.writeString(this.currencyPrice);
         dest.writeTypedList(this.configurations);
@@ -158,7 +171,7 @@ public class StoreProduct implements Parcelable{
         this.name = in.readString();
         this.description = in.readString();
         this.image = in.readString();
-        this.listPrice = in.readString();
+        this.listPrice = (Double) in.readValue(Double.class.getClassLoader());
         this.appDisplayName = in.readString();
         this.currencyPrice = in.readString();
         this.configurations = in.createTypedArrayList(StoreConfiguration.CREATOR);
@@ -175,4 +188,5 @@ public class StoreProduct implements Parcelable{
             return new StoreProduct[size];
         }
     };
+
 }

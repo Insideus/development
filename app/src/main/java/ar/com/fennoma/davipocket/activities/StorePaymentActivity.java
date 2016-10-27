@@ -39,7 +39,7 @@ public class StorePaymentActivity extends BaseActivity {
         for(int i = 0; i < 3; i ++){
             product = new StoreProduct();
             product.setName("Coffee cup");
-            product.setListPrice("6300");
+            product.setListPrice(6300d);
             product.setImage("https://middleware-paymentez.s3.amazonaws.com/fca455ef6b32ad512033367e0d52e951.jpeg");
             selectedProducts.add(product);
         }

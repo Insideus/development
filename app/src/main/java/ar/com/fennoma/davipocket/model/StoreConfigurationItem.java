@@ -14,7 +14,7 @@ public class StoreConfigurationItem implements Parcelable {
 
     private String id;
     private String name;
-    private String extraPrice;
+    private Double extraPrice;
 
     public static List<StoreConfigurationItem> fromJSONArray(JSONArray jsonArray) {
         List<StoreConfigurationItem> configurationItems = new ArrayList<>();
@@ -44,7 +44,7 @@ public class StoreConfigurationItem implements Parcelable {
                 configurationItem.setName(json.getString("name"));
             }
             if(json.has("extra_price")){
-                configurationItem.setExtraPrice(json.getString("extra_price"));
+                configurationItem.setExtraPrice(json.getDouble("extra_price"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -68,11 +68,11 @@ public class StoreConfigurationItem implements Parcelable {
         this.name = name;
     }
 
-    public String getExtraPrice() {
+    public Double getExtraPrice() {
         return extraPrice;
     }
 
-    public void setExtraPrice(String extraPrice) {
+    public void setExtraPrice(Double extraPrice) {
         this.extraPrice = extraPrice;
     }
 
@@ -85,7 +85,7 @@ public class StoreConfigurationItem implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
         dest.writeString(this.name);
-        dest.writeString(this.extraPrice);
+        dest.writeValue(this.extraPrice);
     }
 
     public StoreConfigurationItem() {
@@ -94,7 +94,7 @@ public class StoreConfigurationItem implements Parcelable {
     protected StoreConfigurationItem(Parcel in) {
         this.id = in.readString();
         this.name = in.readString();
-        this.extraPrice = in.readString();
+        this.extraPrice = (Double) in.readValue(Double.class.getClassLoader());
     }
 
     public static final Creator<StoreConfigurationItem> CREATOR = new Creator<StoreConfigurationItem>() {

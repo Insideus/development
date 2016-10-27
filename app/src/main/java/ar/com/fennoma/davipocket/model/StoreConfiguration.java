@@ -16,7 +16,7 @@ public class StoreConfiguration implements Parcelable {
     private String subType;
     private int minConfiguration;
     private int maxConfiguration;
-    private List<StoreConfigurationItem> configurations;
+    private List<StoreConfigurationItem> configurations = new ArrayList<>();
 
     public static List<StoreConfiguration> fromJSONArray(JSONArray jsonArray) {
         List<StoreConfiguration> configurations = new ArrayList<>();

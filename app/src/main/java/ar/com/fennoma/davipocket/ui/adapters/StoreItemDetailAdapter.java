@@ -3,7 +3,6 @@ package ar.com.fennoma.davipocket.ui.adapters;
 import android.app.Activity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -14,6 +13,7 @@ import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.StoreConfiguration;
 import ar.com.fennoma.davipocket.model.StoreConfigurationItem;
 import ar.com.fennoma.davipocket.model.StoreProduct;
+import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 
 public class StoreItemDetailAdapter extends RecyclerView.Adapter<StoreItemDetailHolder> {
 
@@ -48,11 +48,11 @@ public class StoreItemDetailAdapter extends RecyclerView.Adapter<StoreItemDetail
                 bottomSeparator.setVisibility(View.VISIBLE);
             }
             title.setText(configurationItem.getName());
-            if (TextUtils.isEmpty(configurationItem.getExtraPrice()) || Float.valueOf(configurationItem.getExtraPrice()) == 0) {
+            if (configurationItem.getExtraPrice() == null || configurationItem.getExtraPrice() == 0) {
                 price.setVisibility(View.GONE);
             } else {
                 price.setVisibility(View.VISIBLE);
-                price.setText(configurationItem.getExtraPrice());
+                price.setText(CurrencyUtils.getCurrencyForString(String.valueOf(configurationItem.getExtraPrice())));
             }
             container.setOnClickListener(new View.OnClickListener() {
                 @Override

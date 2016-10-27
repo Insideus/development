@@ -92,76 +92,78 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/price_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/white_rounded_corners_background"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            fontPath="fonts/MyriadPro-Regular.otf"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.33"
-                            android:paddingBottom="20dp"
-                            android:paddingLeft="15dp"
-                            android:paddingTop="20dp"
-                            android:text="@string/store_item_detail_price_title"
-                            android:textAllCaps="true"
-                            android:textColor="@color/text_light_gray_color"
-                            android:textSize="@dimen/common_text_size" />
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/activity_background" />
-
-                        <TextView
-                            fontPath="fonts/MyriadPro-Semibold.otf"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.33"
-                            android:drawableLeft="@drawable/davipoints_tiny_logo"
-                            android:drawablePadding="15dp"
-                            android:gravity="end"
-                            android:paddingBottom="20dp"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="20dp"
-                            android:paddingTop="20dp"
-                            android:text="680"
-                            android:textAllCaps="true"
-                            android:textColor="@color/common_dark_gray_color"
-                            android:textSize="@dimen/common_text_size" />
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/activity_background" />
-
-                        <TextView
-                            fontPath="fonts/MyriadPro-Semibold.otf"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.33"
-                            android:drawableLeft="@drawable/price_indicator"
-                            android:gravity="end"
-                            android:paddingBottom="20dp"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="20dp"
-                            android:paddingTop="20dp"
-                            android:text="6.800"
-                            android:textAllCaps="true"
-                            android:textColor="@color/common_dark_gray_color"
-                            android:textSize="@dimen/common_text_size" />
-
-                    </LinearLayout>
                 </LinearLayout>
 
             </android.support.design.widget.CollapsingToolbarLayout>
+
+            <LinearLayout
+                android:id="@+id/price_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/white_rounded_corners_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.33"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="20dp"
+                    android:text="@string/store_item_detail_price_title"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_light_gray_color"
+                    android:textSize="@dimen/common_text_size" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/activity_background" />
+
+                <TextView
+                    android:id="@+id/davi_points_amount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.33"
+                    android:drawableLeft="@drawable/davipoints_tiny_logo"
+                    android:drawablePadding="15dp"
+                    android:gravity="end"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="20dp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/common_dark_gray_color"
+                    fontPath="fonts/MyriadPro-Semibold.otf"
+                    android:textSize="@dimen/common_text_size" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/activity_background" />
+
+                <TextView
+                    android:id="@+id/product_amount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.33"
+                    android:drawableLeft="@drawable/price_indicator"
+                    android:gravity="end"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="20dp"
+                    android:text="6.800"
+                    android:textAllCaps="true"
+                    android:textColor="@color/common_dark_gray_color"
+                    fontPath="fonts/MyriadPro-Semibold.otf"
+                    android:textSize="@dimen/common_text_size" />
+
+            </LinearLayout>
 
         </android.support.design.widget.AppBarLayout>
 
