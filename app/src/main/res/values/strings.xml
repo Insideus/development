@@ -363,5 +363,7 @@
     <string name="store_payment_shop_price_title">VALOR DE SU COMPRA</string>
     <string name="bought_items_layout_receipt_title">RECIBO NÚMERO</string>
     <string name="bought_items_bought_title">COMPRADOS</string>
+    <string name="bought_items_thanks_explanation">DIRÍJASE A RECOGER SU PEDIDO EN EL COMERCIO\nCON EL RECIBO:</string>
+    <string name="bought_items_thanks_title">GRACIAS POR SU COMPRA</string>
 
 </resources>

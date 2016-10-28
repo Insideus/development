@@ -12,6 +12,7 @@
         layout="@layout/main_toolbar" />
 
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_bar"
@@ -21,6 +22,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_rounded_corners_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:textColor="@color/red_base_color">
+
+                <TextView
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bought_items_thanks_title"
+                    android:textColor="@color/red_base_color"
+                    android:textSize="16dp" />
+
+                <TextView
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bought_items_thanks_explanation"
+                    android:textColor="@color/gray_text_color"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -59,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/white_rounded_corners_background"
                 android:orientation="vertical">
 
@@ -212,12 +245,11 @@
                 </RelativeLayout>
             </LinearLayout>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/white_left_rounded_corners_background"
                 android:orientation="vertical"
                 android:paddingBottom="20dp"
@@ -252,7 +284,166 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/white_rounded_corners_background"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp">
+
+                <ar.com.fennoma.davipocket.ui.controls.RatingBar
+                    android:id="@+id/rating_bar"
+                    android:paddingTop="10dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"/>
+
+                <TextView
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:paddingTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:text="CALIFIQUE SU EXPERIENCIA"
+                    android:textSize="16dp"
+                    android:textColor="@color/common_dark_gray_color"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/white_rounded_corners_background"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:text="SUS COMENTARIOS"
+                    android:textSize="16dp"
+                    android:textColor="@color/common_dark_gray_color"/>
+
+                <EditText
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="90dp"
+                    android:gravity="top"
+                    android:paddingTop="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:background="@color/activity_background"
+                    android:textSize="@dimen/common_text_size"
+                    android:textColor="@color/gray_text_color"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5">
+
+                    <LinearLayout
+                        android:id="@+id/go_home_button"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/bought_items_home_button"/>
+
+                        <TextView
+                            fontPath="fonts/MyriadPro-Regular.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:textSize="17dp"
+                            android:textColor="@color/common_dark_gray_color"
+                            android:text="CALIFICAR E IR"/>
+
+                        <TextView
+                            fontPath="fonts/MyriadPro-Semibold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="-5dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/red_base_color"
+                            android:text="A HOME"
+                            android:textSize="20dp"/>
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5">
+
+                    <LinearLayout
+                        android:id="@+id/repeat_order_button"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/bought_items_re_order_button"/>
+
+                        <TextView
+                            fontPath="fonts/MyriadPro-Regular.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:textSize="17dp"
+                            android:textColor="@color/common_dark_gray_color"
+                            android:text="CALIFICAR Y REPETIR"/>
+
+                        <TextView
+                            fontPath="fonts/MyriadPro-Semibold.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="-5dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/red_base_color"
+                            android:text="PEDIDO"
+                            android:textSize="20dp"/>
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+            
         </LinearLayout>
+
 
     </ScrollView>
 

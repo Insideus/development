@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ScrollView;
 
 import java.util.ArrayList;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.StoreProduct;
 import ar.com.fennoma.davipocket.ui.adapters.CategoryItemAdapter;
+import ar.com.fennoma.davipocket.ui.controls.RatingBar;
 
 public abstract class AbstractBoughtItemsActivity extends BaseActivity {
 
@@ -21,6 +24,37 @@ public abstract class AbstractBoughtItemsActivity extends BaseActivity {
         setContentView(R.layout.bought_items_layout);
         hardcodeData();
         setRecycler();
+        setRaitingBar();
+        scrollUp();
+        setButtons();
+    }
+
+    private void setButtons() {
+        View goHomeButton = findViewById(R.id.go_home_button);
+        View repeatOrderButton = findViewById(R.id.repeat_order_button);
+        goHomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToHome();
+            }
+        });
+        repeatOrderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+    }
+
+    private void scrollUp() {
+        ScrollView scroll = (ScrollView) findViewById(R.id.scroll_view);
+        scroll.fullScroll(ScrollView.FOCUS_UP);
+        scroll.smoothScrollTo(0, 0);
+    }
+
+    private void setRaitingBar() {
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+        ratingBar.setActivity(this).setAmountOfStars(5).setAsClickable().setSelectedTill(1);
     }
 
     private void setRecycler() {

@@ -181,7 +181,7 @@ public class StorePaymentActivity extends BaseActivity {
         }
         tips = new ArrayList<>(Arrays.asList("0%", "10%", "20%", "30%", "40%", "50%"));
         monthlyFees = new ArrayList<>();
-        for(int i = 0; i < 12; i++){
+        for(int i = 0; i < 36; i++){
             monthlyFees.add(i + 1);
         }
         monthlyFeeIndex = monthlyFees.size() - 1;

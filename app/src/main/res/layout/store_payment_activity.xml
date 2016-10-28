@@ -383,18 +383,84 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:gravity="center_horizontal"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
                 android:background="@drawable/white_rounded_corners_background">
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/payment_cash_amount_icon"/>
+
+                    <TextView
+                        fontPath="fonts/MyriadPro-Semibold.otf"
+                        android:id="@+id/cash_amount"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12.500"
+                        android:textSize="16dp"
+                        android:textColor="@color/common_dark_gray_color"/>
+
+                    <TextView
+                        fontPath="fonts/MyriadPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="COP"
+                        android:textSize="@dimen/common_text_size"
+                        android:textColor="@color/common_dark_gray_color"/>
+
+                </LinearLayout>
+                
                 <ImageView
                     android:id="@+id/pay_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/card_detail_pay_button"
+                    android:src="@drawable/card_detail_pay_button_selector"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/payment_davi_points_logo"/>
+
+                    <TextView
+                        fontPath="fonts/MyriadPro-Semibold.otf"
+                        android:id="@+id/davi_points_amount"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="190"
+                        android:textSize="16dp"
+                        android:textColor="@color/common_dark_gray_color"/>
+
+                    <TextView
+                        fontPath="fonts/MyriadPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DAVIPUNTOS"
+                        android:textSize="@dimen/common_text_size"
+                        android:textColor="@color/common_dark_gray_color"/>
+
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
