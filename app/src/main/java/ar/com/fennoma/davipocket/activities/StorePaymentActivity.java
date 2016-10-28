@@ -1,5 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -48,6 +50,27 @@ public class StorePaymentActivity extends BaseActivity {
         setTipLayouts();
         setMonthlyFleeLayouts();
         findCardLayouts();
+        setPayButton();
+        scrollUp();
+    }
+
+    private void setPayButton() {
+        View payButton = findViewById(R.id.pay_button);
+        if(payButton == null){
+            return;
+        }
+        payButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(StorePaymentActivity.this, StoreReceiptActivity.class));
+            }
+        });
+    }
+
+    private void scrollUp() {
+        ScrollView scroll = (ScrollView) findViewById(R.id.scroll_view);
+        scroll.fullScroll(ScrollView.FOCUS_UP);
+        scroll.smoothScrollTo(0, 0);
     }
 
     private void findCardLayouts() {

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_background"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/main_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_below="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_rounded_corners_background"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:textColor="@color/red_base_color">
+
+                <TextView
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bought_items_layout_receipt_title"
+                    android:textColor="@color/common_dark_gray_color"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/receipt_number"
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="654321"
+                    android:textColor="@color/common_dark_gray_color"
+                    android:textSize="40dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_rounded_corners_background"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/brand_logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:padding="15dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/mocked_bought_items_brand" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/activity_background" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:paddingTop="10dp">
+
+                            <TextView
+                                android:id="@+id/davi_price"
+                                fontPath="fonts/MyriadPro-Regular.otf"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.33"
+                                android:drawableLeft="@drawable/davipoints_tiny_logo"
+                                android:gravity="center"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:text="190"
+                                android:textColor="@color/gray_text_color"
+                                android:textSize="@dimen/common_text_size" />
+
+                            <TextView
+                                android:id="@+id/cash_price"
+                                fontPath="fonts/MyriadPro-Regular.otf"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.33"
+                                android:gravity="center"
+                                android:text="$ 41.000"
+                                android:textColor="@color/gray_text_color"
+                                android:textSize="@dimen/common_text_size" />
+
+                            <TextView
+                                android:id="@+id/total_price"
+                                fontPath="fonts/MyriadPro-Semibold.otf"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.33"
+                                android:gravity="right"
+                                android:text="$ 60.000"
+                                android:textColor="@color/red_base_color"
+                                android:textSize="@dimen/common_text_size" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/activity_background" />
+
+                        <TextView
+                            android:id="@+id/brand_name"
+                            fontPath="fonts/MyriadPro-Regular.otf"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:paddingRight="20dp"
+                            android:paddingTop="10dp"
+                            android:text="UNICENTRO"
+                            android:textColor="@color/common_dark_gray_color"
+                            android:textSize="@dimen/common_text_size" />
+
+                        <TextView
+                            android:id="@+id/buy_date"
+                            fontPath="fonts/MyriadPro-Regular.otf"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:paddingBottom="10dp"
+                            android:paddingRight="20dp"
+                            android:text="06 . JUN . 2016 / 09 : 30 AM"
+                            android:textColor="@color/gray_text_color"
+                            android:textSize="@dimen/common_text_size" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/activity_background" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/hardcoded_mastercard_logo" />
+
+                    <TextView
+                        fontPath="fonts/MyriadPro-Regular.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/last_card_digits"
+                        android:paddingRight="5dp"
+                        android:text="@string/card_numbers_replacement"
+                        android:textColor="@color/gray_text_color"
+                        android:textSize="@dimen/common_text_size" />
+
+                    <TextView
+                        android:id="@+id/last_card_digits"
+                        fontPath="fonts/MyriadPro-Semibold.otf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="1234"
+                        android:textColor="@color/common_dark_gray_color"
+                        android:textSize="@dimen/common_text_size" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_left_rounded_corners_background"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/title"
+                    fontPath="fonts/MyriadPro-Regular.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/store_payment_selected_products_title_1"
+                    android:textAllCaps="true"
+                    android:textColor="@color/red_base_color"
+                    android:textSize="@dimen/common_text_size" />
+
+                <TextView
+                    android:id="@+id/category_title"
+                    fontPath="fonts/MyriadPro-Semibold.otf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bought_items_bought_title"
+                    android:textColor="@color/common_dark_gray_color"
+                    android:textSize="@dimen/store_category_title_size"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white">
+
+        <TextView
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/bottom_bar_davi_logo"
+            android:text="@string/navigation_drawer_bottom_bar_first_text"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
+
+        <ImageView
+            android:id="@+id/bottom_bar_davi_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/navigation_drawer_basic_padding"
+            android:src="@drawable/nav_davi_logo_bottom_bar" />
+
+        <TextView
+            android:id="@+id/drawer_davi_points_amount"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/bottom_bar_davi_logo"
+            android:text="1.600"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
+            android:layout_toEndOf="@+id/drawer_davi_points_amount"
+            android:text="@string/navigation_drawer_bottom_bar_second_text"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
+    </RelativeLayout>
+
+</RelativeLayout>

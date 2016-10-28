@@ -361,5 +361,7 @@
     <string name="card_numbers_replacement">oooo oooo oooo</string>
     <string name="store_payment_monthly_fee_title">CUOTAS</string>
     <string name="store_payment_shop_price_title">VALOR DE SU COMPRA</string>
+    <string name="bought_items_layout_receipt_title">RECIBO NÚMERO</string>
+    <string name="bought_items_bought_title">COMPRADOS</string>
 
 </resources>
