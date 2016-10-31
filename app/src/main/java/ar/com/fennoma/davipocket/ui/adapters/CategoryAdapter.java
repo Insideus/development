@@ -34,6 +34,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryHolder>{
         holder.categoryTitle.setText(category.getName());
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
         holder.recyclerView.setAdapter(new CategoryItemAdapter(activity, category.getProducts(), true));
+        holder.recyclerView.setNestedScrollingEnabled(false);
     }
 
     @Override

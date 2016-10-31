@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.fragments.WithoutDeliveryStoreFragment;
 import ar.com.fennoma.davipocket.ui.adapters.HomePagerAdapter;
 import ar.com.fennoma.davipocket.ui.controls.TypoTabLayout;
 import ar.com.fennoma.davipocket.utils.LocationUtils;
@@ -28,17 +30,21 @@ public class MainActivity extends BaseActivity {
     public static final String OPEN_TOUR = "tour open";
     public static int LOCATION_PERMISSION_CODE = 169;
 
-    private HomePagerAdapter adapter;
+    private WithoutDeliveryStoreFragment fragment;
     private LatLng latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setPager();
+        findFragment();
         checkLocationPermissions();
         checkForTour();
         setToolbar();
+    }
+
+    private void findFragment() {
+        fragment = (WithoutDeliveryStoreFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
     }
 
     public void checkLocationPermissions() {
@@ -52,7 +58,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.setLocation(latLng);
+        fragment.setLocation(latLng);
     }
 
     private void getLocation() {
@@ -65,7 +71,7 @@ public class MainActivity extends BaseActivity {
                     return;
                 }
                 latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                adapter.setLocation(latLng);
+                fragment.setLocation(latLng);
                 hideLoading();
             }
 
@@ -86,21 +92,6 @@ public class MainActivity extends BaseActivity {
             return;
         }
         logo.setImageResource(R.drawable.home_toolbar_logo);
-    }
-
-    private void setPager() {
-        TypoTabLayout tabLayout = (TypoTabLayout) findViewById(R.id.tab_layout);
-        final ViewPager pager = (ViewPager) findViewById(R.id.pager);
-        if(tabLayout == null || pager == null){
-            return;
-        }
-        tabLayout.setPager(pager)
-                .setTypo("MyriadPro-Regular.otf")
-                .addTitle(getString(R.string.home_store_tab_title))
-                .addTitle(getString(R.string.home_domicile_tab_title))
-                .build();
-        adapter = new HomePagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
-        pager.setAdapter(adapter);
     }
 
     private void checkForTour() {
@@ -160,7 +151,7 @@ public class MainActivity extends BaseActivity {
                 getLocation();
             } else {
                 hideLoading();
-                adapter.setLocation(null);
+                fragment.setLocation(null);
             }
         }
     }

@@ -131,7 +131,7 @@ public class StorePaymentActivity extends BaseActivity {
             return;
         }
         monthlyFee.setText(String.valueOf(monthlyFees.get(monthlyFeeIndex)));
-        plusMonthlyFee.setEnabled(false);
+        minusMonthlyFee.setEnabled(false);
         plusMonthlyFee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,7 +184,7 @@ public class StorePaymentActivity extends BaseActivity {
         for(int i = 0; i < 36; i++){
             monthlyFees.add(i + 1);
         }
-        monthlyFeeIndex = monthlyFees.size() - 1;
+        monthlyFeeIndex = 0;
 
         cards = new ArrayList<>();
         Card card = new Card();

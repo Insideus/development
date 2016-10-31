@@ -21,27 +21,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
 
-        <ar.com.fennoma.davipocket.ui.controls.TypoTabLayout
-            android:id="@+id/tab_layout"
-            style="@style/TabTextAppearance"
+        <fragment
+            android:id="@+id/fragment"
+            android:name="ar.com.fennoma.davipocket.fragments.WithoutDeliveryStoreFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:background="@color/red_base_color"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:tabIndicatorColor="@android:color/white"
-            app:tabIndicatorHeight="@dimen/tab_layout_tab_indicator_height"
-            app:tabSelectedTextColor="@android:color/white"
-            app:tabTextAppearance="@style/TabTextAppearance"
-            app:tabTextColor="@color/tab_unselected_text_color" />
-
-        <ar.com.fennoma.davipocket.ui.controls.NotSwipableViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_above="@+id/bottom_bar"
-            android:layout_below="@id/tab_layout"
-            app:swipeable="false" />
+            android:layout_below="@id/toolbar" />
 
         <RelativeLayout
             android:id="@+id/bottom_bar"
