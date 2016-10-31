@@ -110,6 +110,7 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
             @Override
             public void onClick(View v) {
                 String amount = getAmount();
+                amount = amount.replace(".", "");
                 if (validateAmount(amount) && isAmountOnRange(amount)) {
                     Intent intent = new Intent(ECardRechargeActivity.this, ActionDialogActivity.class);
                     intent.putExtra(ActionDialogActivity.TITLE_KEY, "CONFIRMAR");
@@ -133,6 +134,7 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
     }
 
     private boolean isAmountOnRange(String amount) {
+        amount = amount.replace(".", "");
         if(Integer.valueOf(amount) < Integer.valueOf(getString(R.string.e_card_recharge_min_value))
                 || Integer.valueOf(amount) > Integer.valueOf(getString(R.string.e_card_recharge_max_value))){
             showErrorDialog(getString(R.string.e_card_recharge_explanation));
@@ -157,6 +159,7 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
         String value = otherPaymentValue.getText().toString();
         value = value.replace(priceIndicator, "");
         value = value.replace(" ", "");
+        value = value.replace(".", "");
         return value;
     }
 

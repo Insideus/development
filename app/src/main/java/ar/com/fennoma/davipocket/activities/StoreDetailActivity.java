@@ -3,6 +3,7 @@ package ar.com.fennoma.davipocket.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.Cart;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.Store;
 import ar.com.fennoma.davipocket.model.StoreCategory;
@@ -28,16 +30,20 @@ import ar.com.fennoma.davipocket.utils.LocationUtils;
 public class StoreDetailActivity extends BaseActivity {
 
     public static final String STORE_KEY = "store_key";
+    public static final String CART_KEY = "cart_key";
+
+    public static final int ADD_ITEM_TO_CART = 190;
 
     private Store store;
     private CategoryAdapter adapter;
+    private Cart cart;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_detail_layout);
         handleIntent();
-        setToolbar(R.id.toolbar, true, store.getName());
+        setToolbar(R.id.toolbar, true, store.getName().toUpperCase());
         setLayout();
         setRecyclerView();
     }
@@ -81,7 +87,24 @@ public class StoreDetailActivity extends BaseActivity {
             return;
         }
         store = getIntent().getParcelableExtra(STORE_KEY);
+        if(cart == null) {
+            cart = new Cart();
+        }
         new GetCategoriesByStore(store.getId()).execute();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        outState.putParcelable(CART_KEY, cart);
+        outState.putParcelable(STORE_KEY, store);
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        store = savedInstanceState.getParcelable(STORE_KEY);
+        cart = savedInstanceState.getParcelable(CART_KEY);
     }
 
     private class GetCategoriesByStore extends AsyncTask<Void, Void, Void> {
@@ -137,4 +160,9 @@ public class StoreDetailActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    
 }

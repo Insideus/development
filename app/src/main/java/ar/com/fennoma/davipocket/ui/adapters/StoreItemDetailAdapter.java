@@ -1,6 +1,6 @@
 package ar.com.fennoma.davipocket.ui.adapters;
 
-import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.activities.StoreItemDetailActivity;
 import ar.com.fennoma.davipocket.model.StoreConfiguration;
 import ar.com.fennoma.davipocket.model.StoreConfigurationItem;
 import ar.com.fennoma.davipocket.model.StoreProduct;
@@ -17,10 +18,10 @@ import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 
 public class StoreItemDetailAdapter extends RecyclerView.Adapter<StoreItemDetailHolder> {
 
-    private Activity activity;
+    private StoreItemDetailActivity activity;
     private List<StoreConfiguration> itemsToShow;
 
-    public StoreItemDetailAdapter(Activity activity, StoreProduct product) {
+    public StoreItemDetailAdapter(StoreItemDetailActivity activity, StoreProduct product) {
         this.activity = activity;
         this.itemsToShow = product.getConfigurations();
     }
@@ -34,6 +35,9 @@ public class StoreItemDetailAdapter extends RecyclerView.Adapter<StoreItemDetail
     public void onBindViewHolder(StoreItemDetailHolder holder, int position) {
         final StoreConfiguration configuration = itemsToShow.get(position);
         holder.title.setText(configuration.getSubType());
+        if(holder.container.getChildCount() > 1) {
+            holder.container.removeViews(1, holder.container.getChildCount() - 1);
+        }
         for (StoreConfigurationItem configurationItem : configuration.getConfigurations()) {
             View selectableRow = activity.getLayoutInflater().inflate(R.layout.store_item_detail_selectable_item, null);
             final View container = selectableRow.findViewById(R.id.container);
@@ -52,20 +56,52 @@ public class StoreItemDetailAdapter extends RecyclerView.Adapter<StoreItemDetail
                 price.setVisibility(View.GONE);
             } else {
                 price.setVisibility(View.VISIBLE);
-                price.setText(CurrencyUtils.getCurrencyForString(String.valueOf(configurationItem.getExtraPrice())));
+                String itemPrice = ("$ ").concat(CurrencyUtils.getCurrencyForString(String.valueOf(configurationItem.getExtraPrice())));
+                price.setText(itemPrice);
             }
-            container.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    container.setSelected(!container.isSelected());
-                }
-            });
+            if(activity.isConfigurationAdded(configuration, configurationItem)) {
+                container.setSelected(true);
+            } else {
+                container.setSelected(false);
+            }
+            container.setOnClickListener(getSelectedItemListener(container, configuration, configurationItem, position));
             holder.container.addView(selectableRow);
         }
+    }
+
+    @NonNull
+    private View.OnClickListener getSelectedItemListener(final View container, final StoreConfiguration configuration, final StoreConfigurationItem configurationItem, final int position) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Remove item
+                if(container.isSelected()) {
+                    if(activity.removeConfiguration(configuration, configurationItem)) {
+                        container.setSelected(false);
+                        activity.setProductAmount();
+                        notifyItemChanged(position);
+                    } else {
+                        //Show error?
+                    }
+                //Add item.
+                } else {
+                    if(activity.addConfiguration(configuration, configurationItem)) {
+                        container.setSelected(true);
+                        activity.setProductAmount();
+                        notifyItemChanged(position);
+                    } else {
+                        //Show error?
+                        activity.showConfigurationNotAdded(configuration);
+                    }
+                }
+
+            }
+        };
     }
 
     @Override
     public int getItemCount() {
         return itemsToShow.size();
     }
+
 }

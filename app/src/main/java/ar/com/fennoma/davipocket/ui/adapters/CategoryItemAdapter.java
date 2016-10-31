@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.activities.StoreDetailActivity;
 import ar.com.fennoma.davipocket.activities.StoreItemDetailActivity;
 import ar.com.fennoma.davipocket.model.StoreProduct;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
@@ -35,7 +36,7 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemHolder
     @Override
     public void onBindViewHolder(CategoryItemHolder holder, int position) {
         final StoreProduct product = products.get(position);
-        holder.name.setText(product.getName());
+        holder.name.setText(product.getAppDisplayName());
         holder.price.setText(CurrencyUtils.getCurrencyForString(String.valueOf(product.getListPrice())));
         ImageUtils.loadImageFullURL(holder.image, product.getImage());
         if(fromStoreDetail) {
@@ -44,7 +45,7 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemHolder
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable(StoreItemDetailActivity.PRODUCT_KEY, product);
-                    activity.startActivity(new Intent(activity, StoreItemDetailActivity.class).putExtras(bundle));
+                    activity.startActivityForResult(new Intent(activity, StoreItemDetailActivity.class).putExtras(bundle), StoreDetailActivity.ADD_ITEM_TO_CART);
                 }
             });
         }

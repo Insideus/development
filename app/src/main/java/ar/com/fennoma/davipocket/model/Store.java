@@ -208,8 +208,8 @@ public class Store implements Parcelable {
         dest.writeString(this.address);
         dest.writeString(this.country);
         dest.writeString(this.city);
-        dest.writeDouble(this.latitude);
-        dest.writeDouble(this.longitude);
+        dest.writeValue(this.latitude);
+        dest.writeValue(this.longitude);
         dest.writeString(this.website);
         dest.writeString(this.companyName);
         dest.writeString(this.zipCode);
@@ -227,8 +227,8 @@ public class Store implements Parcelable {
         this.address = in.readString();
         this.country = in.readString();
         this.city = in.readString();
-        this.latitude = in.readDouble();
-        this.longitude = in.readDouble();
+        this.latitude = (Double) in.readValue(Double.class.getClassLoader());
+        this.longitude = (Double) in.readValue(Double.class.getClassLoader());
         this.website = in.readString();
         this.companyName = in.readString();
         this.zipCode = in.readString();
@@ -248,4 +248,5 @@ public class Store implements Parcelable {
             return new Store[size];
         }
     };
+
 }

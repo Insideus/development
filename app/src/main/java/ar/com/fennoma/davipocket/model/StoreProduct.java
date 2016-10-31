@@ -19,7 +19,7 @@ public class StoreProduct implements Parcelable{
     private Double listPrice;
     private String appDisplayName;
     private String currencyPrice;
-    private List<StoreConfiguration> configurations;
+    private List<StoreConfiguration> configurations = new ArrayList<>();
 
     public static List<StoreProduct> fromJSONArray(JSONArray jsonArray) {
         List<StoreProduct> products = new ArrayList<>();
@@ -142,7 +142,9 @@ public class StoreProduct implements Parcelable{
         emptyProduct.setListPrice(this.getListPrice());
         emptyProduct.setAppDisplayName(this.getAppDisplayName());
         emptyProduct.setCurrencyPrice(this.getCurrencyPrice());
-        emptyProduct.setConfigurations(new ArrayList<StoreConfiguration>());
+        for(StoreConfiguration config : this.getConfigurations()) {
+            emptyProduct.getConfigurations().add(config.createEmptyConfiguration());
+        }
         return emptyProduct;
     }
 

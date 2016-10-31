@@ -137,4 +137,27 @@ public class StoreConfiguration implements Parcelable {
             return new StoreConfiguration[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if(o != null && o instanceof StoreConfiguration) {
+            StoreConfiguration obj = (StoreConfiguration) o;
+            if(obj.getSubType().equals(this.getSubType()) && obj.getType().equals(this.getType())) {
+                return true;
+            }
+            return false;
+        }
+        return super.equals(o);
+    }
+
+    public StoreConfiguration createEmptyConfiguration() {
+        StoreConfiguration emptyConf = new StoreConfiguration();
+        emptyConf.setConfigurations(new ArrayList<StoreConfigurationItem>());
+        emptyConf.setMaxConfiguration(this.getMaxConfiguration());
+        emptyConf.setMinConfiguration(this.getMinConfiguration());
+        emptyConf.setType(this.getType());
+        emptyConf.setSubType(this.getSubType());
+        return emptyConf;
+    }
+
 }

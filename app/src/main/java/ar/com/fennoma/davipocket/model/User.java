@@ -15,17 +15,6 @@ import java.util.Date;
 import ar.com.fennoma.davipocket.DavipocketApplication;
 
 public class User implements Parcelable {
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 
     private final static String JSON_LAST_LOGIN = "last_login";
     private final static String JSON_NAME = "name";
@@ -78,6 +67,18 @@ public class User implements Parcelable {
         dest.writeString(name);
         dest.writeInt(points);
     }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     @Override
     public int describeContents() {

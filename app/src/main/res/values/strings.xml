@@ -366,4 +366,14 @@
     <string name="bought_items_thanks_explanation">DIRÍJASE A RECOGER SU PEDIDO EN EL COMERCIO\nCON EL RECIBO:</string>
     <string name="bought_items_thanks_title">GRACIAS POR SU COMPRA</string>
 
+    <string name="configuration_not_added_title">ATENCIÓN</string>
+    <plurals name="configuration_not_added_text">
+        <item quantity="one">Solo puedes agregar %1$d ítem de esta categoría.</item>
+        <item quantity="other">Solo puedes agregar %1$d ítems de esta categoría.</item>
+    </plurals>
+    <plurals name="configuration_error_text">
+        <item quantity="one">Debes agregar al menos %1$d ítem de la categoría %2$s.</item>
+        <item quantity="other">Debes agregar al menos %1$d ítems de la categoría %2$s.</item>
+    </plurals>
+
 </resources>

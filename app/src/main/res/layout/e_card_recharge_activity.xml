@@ -88,8 +88,7 @@
                     android:layout_marginRight="4dp"
                     android:paddingLeft="@dimen/card_pay_detail_items_horizonal_margin"
                     android:text="@string/card_pay_price_indicator"
-                    android:textColor="@color/input_text_color"
-                    android:visibility="gone" />
+                    android:textColor="@color/input_text_color" />
 
                 <EditText
                     android:id="@+id/other_payment_value"
@@ -100,7 +99,6 @@
                     android:layout_toRightOf="@id/price_indicator"
                     android:background="@android:color/transparent"
                     android:inputType="number"
-                    android:maxLength="6"
                     android:paddingRight="@dimen/card_pay_detail_items_horizonal_margin"
                     android:textColor="@color/input_text_color"
                     android:textSize="@dimen/common_text_size" />

@@ -108,4 +108,17 @@ public class StoreConfigurationItem implements Parcelable {
             return new StoreConfigurationItem[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if(o != null && o instanceof StoreConfigurationItem) {
+            StoreConfigurationItem obj = (StoreConfigurationItem) o;
+            if(obj.getId() == this.getId()) {
+                return true;
+            }
+            return false;
+        }
+        return super.equals(o);
+    }
+
 }

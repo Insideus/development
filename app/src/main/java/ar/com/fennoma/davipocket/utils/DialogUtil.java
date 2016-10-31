@@ -147,4 +147,5 @@ public class DialogUtil {
         activity.startActivityForResult(intent, request);
         activity.overridePendingTransition(0, 0);
     }
+
 }
