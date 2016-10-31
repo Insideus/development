@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="MissingPrefix">
@@ -153,6 +155,7 @@
                 android:gravity="center"
                 android:hint="@string/discount_coupon"
                 android:paddingBottom="15dp"
+                android:textAllCaps="true"
                 android:paddingTop="15dp"
                 android:textColor="@color/red_base_color"
                 android:textColorHint="@color/common_dark_gray_color"
@@ -386,83 +389,104 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
-                android:background="@drawable/white_rounded_corners_background">
+                android:background="@drawable/white_rounded_corners_background"
+                android:orientation="vertical">
+
+                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                    android:id="@+id/davipoints_cash_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:dsb_min="0"
+                    app:dsb_max="50"
+                    app:dsb_value="0"
+                    app:dsb_progressColor="@color/red_base_color"
+                    app:dsb_indicatorColor="@color/red_base_color" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:layout_gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/payment_cash_amount_icon"/>
+
+                        <TextView
+                            fontPath="fonts/MyriadPro-Semibold.otf"
+                            android:id="@+id/cash_amount"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/common_dark_gray_color"/>
+
+                        <TextView
+                            fontPath="fonts/MyriadPro-Regular.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="COP"
+                            android:textSize="@dimen/common_text_size"
+                            android:textColor="@color/common_dark_gray_color"/>
+
+                    </LinearLayout>
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/pay_button"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/payment_cash_amount_icon"/>
-
-                    <TextView
-                        fontPath="fonts/MyriadPro-Semibold.otf"
-                        android:id="@+id/cash_amount"
+                        android:src="@drawable/card_detail_pay_button_selector"
                         android:layout_marginTop="10dp"
-                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textSize="16dp"
-                        android:textColor="@color/common_dark_gray_color"/>
+                        android:layout_weight="0.25"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:gravity="center">
 
-                    <TextView
-                        fontPath="fonts/MyriadPro-Regular.otf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="COP"
-                        android:textSize="@dimen/common_text_size"
-                        android:textColor="@color/common_dark_gray_color"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/payment_davi_points_logo"/>
 
-                </LinearLayout>
-                
-                <ImageView
-                    android:id="@+id/pay_button"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/card_detail_pay_button_selector"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"/>
+                        <TextView
+                            fontPath="fonts/MyriadPro-Semibold.otf"
+                            android:id="@+id/davi_points_cart"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/common_dark_gray_color"/>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:layout_gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                        <TextView
+                            fontPath="fonts/MyriadPro-Regular.otf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="DAVIPUNTOS"
+                            android:textSize="@dimen/common_text_size"
+                            android:textColor="@color/common_dark_gray_color"/>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/payment_davi_points_logo"/>
-
-                    <TextView
-                        fontPath="fonts/MyriadPro-Semibold.otf"
-                        android:id="@+id/store_davi_points_amount"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="16dp"
-                        android:textColor="@color/common_dark_gray_color"/>
-
-                    <TextView
-                        fontPath="fonts/MyriadPro-Regular.otf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DAVIPUNTOS"
-                        android:textSize="@dimen/common_text_size"
-                        android:textColor="@color/common_dark_gray_color"/>
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
+
         </LinearLayout>
+
     </ScrollView>
 
     <RelativeLayout

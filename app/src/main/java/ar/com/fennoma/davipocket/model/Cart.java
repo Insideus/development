@@ -14,6 +14,7 @@ public class Cart implements Parcelable {
     private Store store;
     private ArrayList<StoreProduct> products = new ArrayList<>();
     private Double cartPrice;
+    private int cartDavipoints;
 
     public Store getStore() {
         return store;
@@ -39,6 +40,22 @@ public class Cart implements Parcelable {
         this.cartPrice = cartPrice;
     }
 
+    public int getCartDavipoints() {
+        return cartDavipoints;
+    }
+
+    public void setCartDavipoints(int cartDavipoints) {
+        this.cartDavipoints = cartDavipoints;
+    }
+
+    public void calculateCartPrice() {
+        Double price = 0d;
+        for(StoreProduct product : getProducts()) {
+            price += product.getSelectedProductPrice();
+        }
+        this.cartPrice = price;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -49,6 +66,7 @@ public class Cart implements Parcelable {
         dest.writeParcelable(this.store, flags);
         dest.writeTypedList(this.products);
         dest.writeValue(this.cartPrice);
+        dest.writeInt(this.cartDavipoints);
     }
 
     public Cart() {
@@ -58,9 +76,10 @@ public class Cart implements Parcelable {
         this.store = in.readParcelable(Store.class.getClassLoader());
         this.products = in.createTypedArrayList(StoreProduct.CREATOR);
         this.cartPrice = (Double) in.readValue(Double.class.getClassLoader());
+        this.cartDavipoints = in.readInt();
     }
 
-    public static final Parcelable.Creator<Cart> CREATOR = new Parcelable.Creator<Cart>() {
+    public static final Creator<Cart> CREATOR = new Creator<Cart>() {
         @Override
         public Cart createFromParcel(Parcel source) {
             return new Cart(source);
@@ -71,13 +90,5 @@ public class Cart implements Parcelable {
             return new Cart[size];
         }
     };
-
-    public void calculateCartPrice() {
-        Double price = 0d;
-        for(StoreProduct product : getProducts()) {
-            price += product.getSelectedProductPrice();
-        }
-        this.cartPrice = price;
-    }
-
+    
 }

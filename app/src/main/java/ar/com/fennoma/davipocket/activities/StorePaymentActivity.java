@@ -17,11 +17,14 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.Cart;
+import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.PreCheckout;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.StoreProduct;
@@ -29,6 +32,7 @@ import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.adapters.CategoryItemAdapter;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
+import ar.com.fennoma.davipocket.utils.DavipointUtils;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 import ar.com.fennoma.davipocket.utils.LocationUtils;
 
@@ -94,6 +98,7 @@ public class StorePaymentActivity extends BaseActivity {
         //setTitle(getString(R.string.main_activity_title));
         setStoreLayout();
         setRecycler();
+        setSeekBar();
         //setTipLayouts();
         setPriceLayout();
         setMonthlyFleeLayouts();
@@ -102,19 +107,54 @@ public class StorePaymentActivity extends BaseActivity {
         scrollUp();
     }
 
+    private void setSeekBar() {
+        DiscreteSeekBar seekBar = (DiscreteSeekBar) findViewById(R.id.davipoints_cash_seekbar);
+        seekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+            @Override
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+                if(fromUser) {
+                    updatePriceAndDavipoints(value);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+
+            }
+        });
+        Double cartPrice = cart.getCartPrice();
+        if(cartPrice != null) {
+            Integer currentDaviPointAmount = cartPrice.intValue() / DavipointUtils.getDavipointsEquivalence();
+            seekBar.setMin(0);
+            seekBar.setMax(currentDaviPointAmount);
+            seekBar.setProgress(cart.getCartDavipoints());
+        } else {
+            seekBar.setEnabled(false);
+        }
+    }
+
     private void setPriceLayout() {
         TextView cartPrice = (TextView) findViewById(R.id.cart_price);
         if(cart.getCartPrice() != null) {
             cartPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(String.valueOf(cart.getCartPrice()))));
-            setDavipointsAndMoney();
         }
     }
 
-    private void setDavipointsAndMoney() {
-        TextView cashAmount = (TextView) findViewById(R.id.cash_amount);
-        cashAmount.setText(CurrencyUtils.getCurrencyForString(String.valueOf(cart.getCartPrice())));
-        TextView davipointsAmount = (TextView) findViewById(R.id.store_davi_points_amount);
-        davipointsAmount.setText("0");
+    private void updatePriceAndDavipoints(int davipointsQuantitySelected) {
+        int davipointsEquivalence = DavipointUtils.getDavipointsEquivalence();
+        Integer davipointCashAmount = davipointsQuantitySelected * davipointsEquivalence;
+        Double cashAmount = cart.getCartPrice() - davipointCashAmount;
+
+        TextView cashAmountTv = (TextView) findViewById(R.id.cash_amount);
+        cashAmountTv.setText(CurrencyUtils.getCurrencyForString(String.valueOf(cashAmount)));
+
+        TextView davipointsAmountTv = (TextView) findViewById(R.id.davi_points_cart);
+        davipointsAmountTv.setText(String.valueOf(davipointsQuantitySelected));
     }
 
     private void setStoreLayout() {
@@ -173,7 +213,8 @@ public class StorePaymentActivity extends BaseActivity {
         });
     }
 
-    /*private void setTipLayouts(){
+    /*
+    private void setTipLayouts(){
         final TextView tip = (TextView) findViewById(R.id.tip);
         final View minusTip = findViewById(R.id.minus_tip);
         final View plusTip = findViewById(R.id.plus_tip);
@@ -208,7 +249,8 @@ public class StorePaymentActivity extends BaseActivity {
                 }
             }
         });
-    }*/
+    }
+    */
 
     @Override
     public void onBackPressed() {
@@ -358,6 +400,7 @@ public class StorePaymentActivity extends BaseActivity {
     private class GetPreCheckoutData extends AsyncTask<Void, Void, PreCheckout> {
 
         private String id;
+        String errorCode;
 
         public GetPreCheckoutData(long id) {
             this.id = String.valueOf(id);
@@ -375,7 +418,7 @@ public class StorePaymentActivity extends BaseActivity {
             try {
                 data = Service.preCheckout(Session.getCurrentSession(getApplicationContext()).getSid(), id);
             } catch (ServiceException e) {
-                e.printStackTrace();
+                errorCode = e.getErrorCode();
             }
             return data;
         }
@@ -385,11 +428,17 @@ public class StorePaymentActivity extends BaseActivity {
             super.onPostExecute(response);
             hideLoading();
             if(response == null){
-                showServiceGenericError();
-                return;
+                //Hancdle invalid session error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if (error != null && error == ErrorMessages.INVALID_SESSION) {
+                    handleInvalidSessionError();
+                } else {
+                    showServiceGenericError();
+                }
+            } else {
+                preCheckoutData = response;
+                setLayouts();
             }
-            preCheckoutData = response;
-            setLayouts();
         }
 
     }
