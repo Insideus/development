@@ -237,6 +237,7 @@
                 android:paddingTop="15dp">
 
                 <TextView
+                    android:id="@+id/cart_price"
                     fontPath="fonts/MyriadPro-Semibold.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

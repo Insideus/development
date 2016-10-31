@@ -37,9 +37,9 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemHolder
     public void onBindViewHolder(CategoryItemHolder holder, int position) {
         final StoreProduct product = products.get(position);
         holder.name.setText(product.getAppDisplayName());
-        holder.price.setText(CurrencyUtils.getCurrencyForString(String.valueOf(product.getListPrice())));
         ImageUtils.loadImageFullURL(holder.image, product.getImage());
         if(fromStoreDetail) {
+            holder.price.setText(CurrencyUtils.getCurrencyForString(String.valueOf(product.getListPrice())));
             holder.container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -48,6 +48,8 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemHolder
                     activity.startActivityForResult(new Intent(activity, StoreItemDetailActivity.class).putExtras(bundle), StoreDetailActivity.ADD_ITEM_TO_CART);
                 }
             });
+        } else {
+            holder.price.setText(CurrencyUtils.getCurrencyForString(String.valueOf(product.getSelectedProductPrice())));
         }
     }
 

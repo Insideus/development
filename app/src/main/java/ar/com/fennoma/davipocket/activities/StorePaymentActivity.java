@@ -28,6 +28,7 @@ import ar.com.fennoma.davipocket.model.StoreProduct;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.adapters.CategoryItemAdapter;
+import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 import ar.com.fennoma.davipocket.utils.LocationUtils;
 
@@ -87,10 +88,23 @@ public class StorePaymentActivity extends BaseActivity {
         setStoreLayout();
         setRecycler();
         //setTipLayouts();
+        setPriceLayout();
         setMonthlyFleeLayouts();
         findCardLayouts();
         setPayButton();
         scrollUp();
+    }
+
+    private void setPriceLayout() {
+        TextView cartPrice = (TextView) findViewById(R.id.cart_price);
+        if(cart.getCartPrice() != null) {
+            cartPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(String.valueOf(cart.getCartPrice()))));
+
+        }
+    }
+
+    private void setDavipointsAndMoney() {
+
     }
 
     private void setStoreLayout() {
