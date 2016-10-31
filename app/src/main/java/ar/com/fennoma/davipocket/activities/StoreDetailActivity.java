@@ -168,6 +168,7 @@ public class StoreDetailActivity extends BaseActivity {
             if(data != null) {
                 StoreProduct product = data.getParcelableExtra(StoreItemDetailActivity.PRODUCT_KEY);
                 cart.getProducts().add(product);
+                cart.calculateCartPrice();
             } else {
                 showServiceGenericError();
             }

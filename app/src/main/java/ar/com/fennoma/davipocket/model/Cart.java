@@ -72,4 +72,12 @@ public class Cart implements Parcelable {
         }
     };
 
+    public void calculateCartPrice() {
+        Double price = 0d;
+        for(StoreProduct product : getProducts()) {
+            price += product.getSelectedProductPrice();
+        }
+        this.cartPrice = price;
+    }
+
 }
