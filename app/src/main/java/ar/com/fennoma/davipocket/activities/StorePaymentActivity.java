@@ -133,6 +133,7 @@ public class StorePaymentActivity extends BaseActivity {
             seekBar.setMin(0);
             seekBar.setMax(currentDaviPointAmount);
             seekBar.setProgress(cart.getCartDavipoints());
+            updatePriceAndDavipoints(cart.getCartDavipoints());
         } else {
             seekBar.setEnabled(false);
         }
