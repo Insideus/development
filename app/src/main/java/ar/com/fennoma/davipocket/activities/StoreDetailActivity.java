@@ -25,6 +25,7 @@ import ar.com.fennoma.davipocket.model.StoreProduct;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.adapters.CategoryAdapter;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 import ar.com.fennoma.davipocket.utils.LocationUtils;
 
@@ -47,6 +48,12 @@ public class StoreDetailActivity extends BaseActivity {
         setToolbar(R.id.toolbar, true, store.getName().toUpperCase());
         setLayout();
         setRecyclerView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateDaviPoints();
     }
 
     private void setLayout() {
@@ -150,6 +157,11 @@ public class StoreDetailActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.shop_button){
+            if(cart == null || cart.getProducts() == null || cart.getProducts().isEmpty()){
+                DialogUtil.toast(this, getString(R.string.generic_service_error_title), "",
+                        getString(R.string.store_detail_no_items_selected));
+                return true;
+            }
             Intent intent = new Intent(this, StorePaymentActivity.class);
             intent.putExtra(StorePaymentActivity.CART_KEY, cart);
             startActivity(intent);

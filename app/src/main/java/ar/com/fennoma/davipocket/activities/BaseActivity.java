@@ -97,12 +97,28 @@ public class BaseActivity extends AppCompatActivity {
         setNavigationDrawer(R.id.drawer_layout, toolbarId, !backButton);
     }
 
+    protected void setToolbarWOHomeButton(int toolbarId, String title){
+        Toolbar toolbar = (Toolbar) findViewById(toolbarId);
+        setSupportActionBar(toolbar);
+        hideTitle();
+        setTitle(toolbar, title);
+        if(getSupportActionBar() == null){
+            return;
+        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
+    }
+
     private void setTitle(Toolbar toolbar, String title) {
         TextView titleTextView = (TextView) toolbar.findViewById(R.id.toolbar_title);
         if (titleTextView == null) {
             return;
         }
         titleTextView.setText(title);
+    }
+
+    protected void updateDaviPoints() {
+        ((TextView) findViewById(R.id.davi_points_amount)).setText(SharedPreferencesUtils.getUser().getPoints());
     }
 
     protected void showLoading() {

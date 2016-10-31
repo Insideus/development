@@ -53,6 +53,7 @@ public class StorePaymentActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_payment_activity);
         handleIntent();
+        setToolbar(R.id.toolbar, true, getString(R.string.main_activity_title));
         if(cart != null && cart.getStore() != null) {
             new GetPreCheckoutData(cart.getStore().getId()).execute();
         }
@@ -66,6 +67,12 @@ public class StorePaymentActivity extends BaseActivity {
         if(cart == null) {
             cart = new Cart();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateDaviPoints();
     }
 
     @Override
@@ -83,8 +90,8 @@ public class StorePaymentActivity extends BaseActivity {
     }
 
     private void setLayouts() {
-        setToolbar(R.id.toolbar, true);
-        setTitle(getString(R.string.app_name));
+        //setToolbar(R.id.toolbar, true);
+        //setTitle(getString(R.string.main_activity_title));
         setStoreLayout();
         setRecycler();
         //setTipLayouts();
@@ -106,7 +113,7 @@ public class StorePaymentActivity extends BaseActivity {
     private void setDavipointsAndMoney() {
         TextView cashAmount = (TextView) findViewById(R.id.cash_amount);
         cashAmount.setText(CurrencyUtils.getCurrencyForString(String.valueOf(cart.getCartPrice())));
-        TextView davipointsAmount = (TextView) findViewById(R.id.davi_points_amount);
+        TextView davipointsAmount = (TextView) findViewById(R.id.store_davi_points_amount);
         davipointsAmount.setText("0");
     }
 
@@ -207,6 +214,8 @@ public class StorePaymentActivity extends BaseActivity {
     public void onBackPressed() {
         Bundle bundle = new Bundle();
         bundle.putBoolean(ActionDialogActivity.CANCEL_PURCHASE, true);
+        bundle.putString(ActionDialogActivity.TITLE_KEY, getString(R.string.configuration_not_added_title));
+        bundle.putString(ActionDialogActivity.TEXT_KEY, getString(R.string.store_payment_on_back_text_explanation));
         startActivityForResult(new Intent(this, ActionDialogActivity.class).putExtras(bundle), CANCEL_PURCHASE_REQUEST);
     }
 

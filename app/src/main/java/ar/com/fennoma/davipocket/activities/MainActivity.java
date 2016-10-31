@@ -39,8 +39,8 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         findFragment();
         checkLocationPermissions();
-        checkForTour();
         setToolbar();
+        checkForTour();
     }
 
     private void findFragment() {
@@ -58,6 +58,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        updateDaviPoints();
         fragment.setLocation(latLng);
     }
 

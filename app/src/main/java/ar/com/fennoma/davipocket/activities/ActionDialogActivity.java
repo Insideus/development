@@ -233,6 +233,8 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
     }
 
     private void setCancelPurchase(TextView acceptButton, TextView ignoreButton) {
+        acceptButton.setText(getString(R.string.my_cards_block_card_accept));
+        ignoreButton.setText(getString(R.string.my_cards_block_card_cancel));
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

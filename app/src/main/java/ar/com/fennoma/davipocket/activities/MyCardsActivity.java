@@ -246,10 +246,6 @@ public class MyCardsActivity extends BaseActivity {
         }
     }
 
-    private void updateDaviPoints() {
-        ((TextView) findViewById(R.id.davi_points_amount)).setText(SharedPreferencesUtils.getUser().getPoints());
-    }
-
     private class CardsAdapter extends RecyclerView.Adapter {
 
         private List<CardToShowOnList> cards;

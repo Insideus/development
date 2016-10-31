@@ -62,6 +62,12 @@ public class StoreItemDetailActivity extends BaseActivity{
         recyclerView.setAdapter(new StoreItemDetailAdapter(this, product));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateDaviPoints();
+    }
+
     private void setViews() {
         ImageView productImage = (ImageView) findViewById(R.id.image);
         if(product.getImage() != null && product.getImage().length() > 0) {
@@ -72,7 +78,7 @@ public class StoreItemDetailActivity extends BaseActivity{
         TextView description = (TextView) findViewById(R.id.description);
         description.setText(product.getAppDisplayName());
         amount = (TextView) findViewById(R.id.product_amount);
-        daviPointsAmount = (TextView) findViewById(R.id.davi_points_amount);
+        daviPointsAmount = (TextView) findViewById(R.id.store_davi_points_amount);
         setProductAmount();
     }
 

@@ -22,9 +22,11 @@ public class StoreReceiptActivity extends BaseActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bought_items_layout);
+        setToolbar(R.id.toolbar, false);
+        setToolbarWOHomeButton(R.id.toolbar, getString(R.string.store_receipt_title));
         hardcodeData();
         setRecycler();
-        setRaitingBar();
+        //setRaitingBar();
         setButtons();
         scrollUp();
     }
@@ -52,10 +54,10 @@ public class StoreReceiptActivity extends BaseActivity{
         scroll.smoothScrollTo(0, 0);
     }
 
-    private void setRaitingBar() {
+   /*private void setRaitingBar() {
         RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
         ratingBar.setActivity(this).setAmountOfStars(5).setAsClickable().setSelectedTill(1);
-    }
+    }*/
 
     private void setRecycler() {
         RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler);
@@ -73,5 +75,17 @@ public class StoreReceiptActivity extends BaseActivity{
             product.setImage("https://middleware-paymentez.s3.amazonaws.com/fca455ef6b32ad512033367e0d52e951.jpeg");
             selectedProducts.add(product);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateDaviPoints();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        goToHome();
     }
 }

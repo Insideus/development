@@ -367,6 +367,9 @@
     <string name="bought_items_thanks_title">GRACIAS POR SU COMPRA</string>
 
     <string name="configuration_not_added_title">ATENCIÓN</string>
+    <string name="store_payment_on_back_text_explanation">¿Está seguro que desea cancelar su compra?</string>
+    <string name="store_receipt_title">CONFIRMACIÓN DE COMPRA</string>
+    <string name="store_detail_no_items_selected">Debe agregar al menos un item para continuar.</string>
     <plurals name="configuration_not_added_text">
         <item quantity="one">Solo puedes agregar %1$d ítem de esta categoría.</item>
         <item quantity="other">Solo puedes agregar %1$d ítems de esta categoría.</item>
