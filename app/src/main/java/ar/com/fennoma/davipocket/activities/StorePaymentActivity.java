@@ -1,11 +1,14 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,25 +17,30 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Card;
-import ar.com.fennoma.davipocket.model.CardBin;
-import ar.com.fennoma.davipocket.model.StoreProduct;
+import ar.com.fennoma.davipocket.model.Cart;
+import ar.com.fennoma.davipocket.model.PreCheckout;
+import ar.com.fennoma.davipocket.model.ServiceException;
+import ar.com.fennoma.davipocket.service.Service;
+import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.adapters.CategoryItemAdapter;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
+import ar.com.fennoma.davipocket.utils.LocationUtils;
 
 public class StorePaymentActivity extends BaseActivity {
 
-    private List<StoreProduct> selectedProducts;
+    public static final String CART_KEY = "cart_key";
+    public static final String PRE_CHECKOUT_DATA_KEY = "pre_checkout_data_key";
+
+    private Cart cart;
+    private PreCheckout preCheckoutData;
+
     private List<String> tips;
     private int tipIndex = 0;
     private int monthlyFeeIndex;
-    private List<Integer> monthlyFees;
-    private List<Card> cards;
     private Card selectedCard;
     private ImageView cardLogo;
     private TextView fourDigits;
@@ -41,17 +49,68 @@ public class StorePaymentActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_payment_activity);
-        hardcodeData();
-        setLayouts();
+        handleIntent();
+        if(cart != null && cart.getStore() != null) {
+            new GetPreCheckoutData(cart.getStore().getId()).execute();
+        }
+    }
+
+    private void handleIntent() {
+        if(getIntent() == null || getIntent().getParcelableExtra(CART_KEY) == null){
+            return;
+        }
+        cart = getIntent().getParcelableExtra(CART_KEY);
+        if(cart == null) {
+            cart = new Cart();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        outState.putParcelable(CART_KEY, cart);
+        outState.putParcelable(PRE_CHECKOUT_DATA_KEY, preCheckoutData);
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        cart = savedInstanceState.getParcelable(CART_KEY);
+        preCheckoutData = savedInstanceState.getParcelable(PRE_CHECKOUT_DATA_KEY);
     }
 
     private void setLayouts() {
+        setStoreLayout();
         setRecycler();
         setTipLayouts();
         setMonthlyFleeLayouts();
         findCardLayouts();
         setPayButton();
         scrollUp();
+    }
+
+    private void setStoreLayout() {
+        ImageView storeImage = (ImageView) findViewById(R.id.image);
+        if(cart.getStore().getImage() != null && cart.getStore().getImage().length() > 0) {
+            ImageUtils.loadImageFullURL(storeImage, cart.getStore().getImage());
+        }
+        ImageView storeLogo = (ImageView) findViewById(R.id.brand_logo);
+        if(cart.getStore().getLogo() != null && cart.getStore().getLogo().length() > 0) {
+            ImageUtils.loadImageFullURL(storeLogo, cart.getStore().getLogo());
+        }
+        TextView storeName = (TextView) findViewById(R.id.name);
+        storeName.setText(cart.getStore().getName());
+        TextView storeAddress = (TextView) findViewById(R.id.address);
+        storeName.setText(cart.getStore().getName());
+        if(TextUtils.isEmpty(cart.getStore().getAddress())) {
+            storeAddress.setVisibility(View.GONE);
+        } else {
+            storeAddress.setVisibility(View.VISIBLE);
+            storeAddress.setText(cart.getStore().getAddress());
+        }
+        TextView storeDistance = (TextView) findViewById(R.id.distance);
+        storeDistance.setText(LocationUtils.calculateDistance(this, LocationUtils.getLastKnowLocation(this),
+                cart.getStore().getLatitude(), cart.getStore().getLongitude()));
     }
 
     private void setPayButton() {
@@ -127,17 +186,17 @@ public class StorePaymentActivity extends BaseActivity {
         final TextView monthlyFee = (TextView) findViewById(R.id.monthly_fee);
         final View plusMonthlyFee = findViewById(R.id.plus_monthly_fee);
         final View minusMonthlyFee = findViewById(R.id.minus_monthly_fee);
-        if(monthlyFees == null || monthlyFees.isEmpty()){
+        if(preCheckoutData.getInstallments() == null || preCheckoutData.getInstallments().isEmpty()){
             return;
         }
-        monthlyFee.setText(String.valueOf(monthlyFees.get(monthlyFeeIndex)));
+        monthlyFee.setText(String.valueOf(preCheckoutData.getInstallments().get(monthlyFeeIndex)));
         minusMonthlyFee.setEnabled(false);
         plusMonthlyFee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 monthlyFeeIndex++;
-                monthlyFee.setText(String.valueOf(monthlyFees.get(monthlyFeeIndex)));
-                if(monthlyFeeIndex + 1 == monthlyFees.size()){
+                monthlyFee.setText(String.valueOf(preCheckoutData.getInstallments().get(monthlyFeeIndex)));
+                if(monthlyFeeIndex + 1 == preCheckoutData.getInstallments().size()){
                     plusMonthlyFee.setEnabled(false);
                 }
                 if(monthlyFeeIndex > 0){
@@ -149,11 +208,11 @@ public class StorePaymentActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 monthlyFeeIndex--;
-                monthlyFee.setText(String.valueOf(monthlyFees.get(monthlyFeeIndex)));
+                monthlyFee.setText(String.valueOf(preCheckoutData.getInstallments().get(monthlyFeeIndex)));
                 if(monthlyFeeIndex == 0){
                     minusMonthlyFee.setEnabled(false);
                 }
-                if(monthlyFeeIndex + 1 < monthlyFees.size()){
+                if(monthlyFeeIndex + 1 < preCheckoutData.getInstallments().size()){
                     plusMonthlyFee.setEnabled(true);
                 }
             }
@@ -166,46 +225,7 @@ public class StorePaymentActivity extends BaseActivity {
             return;
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.setAdapter(new CategoryItemAdapter(this, selectedProducts, false));
-    }
-
-    private void hardcodeData() {
-        selectedProducts = new ArrayList<>();
-        StoreProduct product;
-        for(int i = 0; i < 3; i ++){
-            product = new StoreProduct();
-            product.setName("Coffee cup");
-            product.setListPrice(6300d);
-            product.setImage("https://middleware-paymentez.s3.amazonaws.com/fca455ef6b32ad512033367e0d52e951.jpeg");
-            selectedProducts.add(product);
-        }
-        tips = new ArrayList<>(Arrays.asList("0%", "10%", "20%", "30%", "40%", "50%"));
-        monthlyFees = new ArrayList<>();
-        for(int i = 0; i < 36; i++){
-            monthlyFees.add(i + 1);
-        }
-        monthlyFeeIndex = 0;
-
-        cards = new ArrayList<>();
-        Card card = new Card();
-        card.setLastDigits("1234");
-        CardBin cardBin = new CardBin();
-        cardBin.setImage("/uploads/images/master_clasica.png");
-        card.setBin(cardBin);
-        cards.add(card);
-        card = new Card();
-        card.setLastDigits("4321");
-        cardBin = new CardBin();
-        cardBin.setImage("/uploads/images/default.png");
-        card.setBin(cardBin);
-        cards.add(card);
-        card = new Card();
-        card.setLastDigits("1221");
-        cardBin = new CardBin();
-        cardBin.setImage("/uploads/images/diners_azul.png");
-        card.setBin(cardBin);
-        cards.add(card);
-        selectedCard = cards.get(0);
+        recyclerView.setAdapter(new CategoryItemAdapter(this, cart.getProducts(), false));
     }
 
     private class ComboAdapter extends BaseAdapter {
@@ -266,7 +286,7 @@ public class StorePaymentActivity extends BaseActivity {
     }
 
     public void showCombo(){
-        final ComboAdapter adapter = new ComboAdapter(cards, selectedCard);
+        final ComboAdapter adapter = new ComboAdapter(preCheckoutData.getCards(), selectedCard);
         showCombo(adapter, new IComboListener() {
             @Override
             public void onAccept() {
@@ -283,7 +303,50 @@ public class StorePaymentActivity extends BaseActivity {
     }
 
     private void setSelectedCardData() {
+        if(selectedCard == null) {
+            selectedCard = preCheckoutData.getCards().get(0);
+        }
         ImageUtils.loadCardImage(this, cardLogo, selectedCard.getBin().getImage());
         fourDigits.setText(selectedCard.getLastDigits());
     }
+
+    private class GetPreCheckoutData extends AsyncTask<Void, Void, PreCheckout> {
+
+        private String id;
+
+        public GetPreCheckoutData(long id) {
+            this.id = String.valueOf(id);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected PreCheckout doInBackground(Void... params) {
+            PreCheckout data = null;
+            try {
+                data = Service.preCheckout(Session.getCurrentSession(getApplicationContext()).getSid(), id);
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(PreCheckout response) {
+            super.onPostExecute(response);
+            hideLoading();
+            if(response == null){
+                showServiceGenericError();
+                return;
+            }
+            preCheckoutData = response;
+            setLayouts();
+        }
+
+    }
+
 }

@@ -90,6 +90,7 @@ public class StoreDetailActivity extends BaseActivity {
         store = getIntent().getParcelableExtra(STORE_KEY);
         if(cart == null) {
             cart = new Cart();
+            cart.setStore(store);
         }
         new GetCategoriesByStore(store.getId()).execute();
     }
@@ -149,7 +150,9 @@ public class StoreDetailActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.shop_button){
-            startActivity(new Intent(this, StorePaymentActivity.class));
+            Intent intent = new Intent(this, StorePaymentActivity.class);
+            intent.putExtra(StorePaymentActivity.CART_KEY, cart);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);

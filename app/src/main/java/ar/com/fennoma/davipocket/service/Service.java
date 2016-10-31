@@ -28,6 +28,7 @@ import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.MyCardsResponse;
 import ar.com.fennoma.davipocket.model.PaymentDetail;
+import ar.com.fennoma.davipocket.model.PreCheckout;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.Store;
 import ar.com.fennoma.davipocket.model.StoreCategory;
@@ -94,6 +95,9 @@ public class Service {
     //Store
     private static final String STORE_LIST = "/store/get_list";
     private static final String STORE_BY_ID = "/store/get_menu";
+
+    //Order
+    private static final String PRE_CHECKOUT = "/order/pre_checkout";
 
     public static JSONObject getPersonIdTypes() {
         HttpURLConnection urlConnection = null;
@@ -1830,6 +1834,49 @@ public class Service {
                 } else {
                     JSONObject data = dataArray.getJSONObject(0);
                     String errorCode = data.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static PreCheckout preCheckout(String sid, String id) throws ServiceException {
+        PreCheckout response = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(PRE_CHECKOUT, sid);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> idParam = new Pair("id", id);
+            params.add(idParam);
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                if (json.has("error") && !json.getBoolean("error")) {
+                    response = PreCheckout.fromJson(responseJson);
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     throw new ServiceException(errorCode);
                 }
             }
