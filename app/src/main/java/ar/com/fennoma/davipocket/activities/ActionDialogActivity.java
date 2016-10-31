@@ -54,6 +54,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
     public static final String SHOW_PAY_BUTTON_KEY = "show_pay_button_key";
 
     public static final String NEW_DEVICE_DETECTED = "new device detected";
+    public static final String CANCEL_PURCHASE = "cancel purchase";
 
     public static final String E_CARD_CREATE = "ecard create";
 
@@ -76,6 +77,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
     private Card card;
     private Boolean newDeviceDetected;
     private Boolean otpValidationNeeded;
+    private Boolean cancelPurchase;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,6 +101,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             eCardShowData = savedInstanceState.getBoolean(E_CARD_SHOW_DATA, false);
             newDeviceDetected = savedInstanceState.getBoolean(NEW_DEVICE_DETECTED, false);
             otpValidationNeeded = savedInstanceState.getBoolean(OTP_VALIDATION_DIALOG, false);
+            cancelPurchase = savedInstanceState.getBoolean(CANCEL_PURCHASE, false);
         } else {
             title = getIntent().getStringExtra(TITLE_KEY);
             subtitle = getIntent().getStringExtra(SUBTITLE_KEY);
@@ -117,6 +120,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             eCardShowData = getIntent().getBooleanExtra(E_CARD_SHOW_DATA, false);
             newDeviceDetected = getIntent().getBooleanExtra(NEW_DEVICE_DETECTED, false);
             otpValidationNeeded = getIntent().getBooleanExtra(OTP_VALIDATION_DIALOG, false);
+            cancelPurchase = getIntent().getBooleanExtra(CANCEL_PURCHASE, false);
         }
         setLayouts();
         animateOpening();
@@ -204,6 +208,10 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             otpInput.setVisibility(View.GONE);
         }
 
+        if(cancelPurchase){
+            setCancelPurchase(acceptButton, ignoreButton);
+        }
+
         TextView titleTv = (TextView) findViewById(R.id.toast_title);
         if (title != null && title.length() > 0) {
             titleTv.setText(title);
@@ -222,6 +230,23 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         } else {
             textTv.setVisibility(LinearLayout.GONE);
         }
+    }
+
+    private void setCancelPurchase(TextView acceptButton, TextView ignoreButton) {
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
+        ignoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
     }
 
     private void setNewDeviceDetectedLayouts(TextView acceptButton, TextView ignoreButton) {

@@ -24,6 +24,7 @@ import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.Cart;
 import ar.com.fennoma.davipocket.model.PreCheckout;
 import ar.com.fennoma.davipocket.model.ServiceException;
+import ar.com.fennoma.davipocket.model.StoreProduct;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.adapters.CategoryItemAdapter;
@@ -32,13 +33,14 @@ import ar.com.fennoma.davipocket.utils.LocationUtils;
 
 public class StorePaymentActivity extends BaseActivity {
 
+    private static final int CANCEL_PURCHASE_REQUEST = 10;
+    private List<StoreProduct> selectedProducts;
     public static final String CART_KEY = "cart_key";
     public static final String PRE_CHECKOUT_DATA_KEY = "pre_checkout_data_key";
 
     private Cart cart;
     private PreCheckout preCheckoutData;
 
-    private List<String> tips;
     private int tipIndex = 0;
     private int monthlyFeeIndex;
     private Card selectedCard;
@@ -80,9 +82,11 @@ public class StorePaymentActivity extends BaseActivity {
     }
 
     private void setLayouts() {
+        setToolbar(R.id.toolbar, true);
+        setTitle(getString(R.string.app_name));
         setStoreLayout();
         setRecycler();
-        setTipLayouts();
+        //setTipLayouts();
         setMonthlyFleeLayouts();
         findCardLayouts();
         setPayButton();
@@ -145,7 +149,7 @@ public class StorePaymentActivity extends BaseActivity {
         });
     }
 
-    private void setTipLayouts(){
+    /*private void setTipLayouts(){
         final TextView tip = (TextView) findViewById(R.id.tip);
         final View minusTip = findViewById(R.id.minus_tip);
         final View plusTip = findViewById(R.id.plus_tip);
@@ -180,6 +184,13 @@ public class StorePaymentActivity extends BaseActivity {
                 }
             }
         });
+    }*/
+
+    @Override
+    public void onBackPressed() {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ActionDialogActivity.CANCEL_PURCHASE, true);
+        startActivityForResult(new Intent(this, ActionDialogActivity.class).putExtras(bundle), CANCEL_PURCHASE_REQUEST);
     }
 
     private void setMonthlyFleeLayouts(){
@@ -310,6 +321,14 @@ public class StorePaymentActivity extends BaseActivity {
         fourDigits.setText(selectedCard.getLastDigits());
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == CANCEL_PURCHASE_REQUEST && resultCode == RESULT_OK){
+            finish();
+        }
+    }
+
     private class GetPreCheckoutData extends AsyncTask<Void, Void, PreCheckout> {
 
         private String id;
@@ -348,5 +367,4 @@ public class StorePaymentActivity extends BaseActivity {
         }
 
     }
-
 }
