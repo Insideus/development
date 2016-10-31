@@ -191,4 +191,17 @@ public class StoreProduct implements Parcelable{
         }
     };
 
+    public Double getSelectedProductPrice() {
+        Double currentAmount = getListPrice();
+        if (currentAmount == null) {
+            currentAmount = 0d;
+        }
+        for (StoreConfiguration config : getConfigurations()) {
+            for (StoreConfigurationItem item : config.getConfigurations()) {
+                currentAmount += item.getExtraPrice();
+            }
+        }
+        return currentAmount;
+    }
+
 }

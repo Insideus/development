@@ -21,6 +21,7 @@ import ar.com.fennoma.davipocket.model.Cart;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.Store;
 import ar.com.fennoma.davipocket.model.StoreCategory;
+import ar.com.fennoma.davipocket.model.StoreProduct;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.adapters.CategoryAdapter;
@@ -163,6 +164,14 @@ public class StoreDetailActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == ADD_ITEM_TO_CART && resultCode == RESULT_OK) {
+            if(data != null) {
+                StoreProduct product = data.getParcelableExtra(StoreItemDetailActivity.PRODUCT_KEY);
+                cart.getProducts().add(product);
+            } else {
+                showServiceGenericError();
+            }
+        }
     }
-    
+
 }

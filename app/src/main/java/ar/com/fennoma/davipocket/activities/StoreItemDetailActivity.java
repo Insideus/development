@@ -1,5 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -76,15 +77,7 @@ public class StoreItemDetailActivity extends BaseActivity{
     }
 
     public void setProductAmount() {
-        currentAmount = selectedProduct.getListPrice();
-        if(currentAmount == null) {
-            currentAmount = 0d;
-        }
-        for(StoreConfiguration config : selectedProduct.getConfigurations()) {
-            for(StoreConfigurationItem item : config.getConfigurations()) {
-                currentAmount += item.getExtraPrice();
-            }
-        }
+        currentAmount = selectedProduct.getSelectedProductPrice();
         currentDaviPointAmount = currentAmount.intValue() / DavipointUtils.getDavipointsEquivalence();
         daviPointsAmount.setText(String.valueOf(currentDaviPointAmount));
         amount.setText(CurrencyUtils.getCurrencyForString(String.valueOf(currentAmount)));
@@ -182,7 +175,16 @@ public class StoreItemDetailActivity extends BaseActivity{
                     getString(R.string.configuration_not_added_title),
                     "",
                     DialogUtil.concatMessages(errors));
+        } else {
+            setResultAndFinish();
         }
+    }
+
+    private void setResultAndFinish() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(PRODUCT_KEY, selectedProduct);
+        setResult(RESULT_OK, new Intent().putExtras(bundle));
+        finish();
     }
 
     private ArrayList<String> isValid() {
