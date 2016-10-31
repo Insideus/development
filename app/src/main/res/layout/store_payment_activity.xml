@@ -165,7 +165,8 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="3dp"
                 android:background="@drawable/white_rounded_corners_background"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/minus_tip"
@@ -241,7 +242,6 @@
                     fontPath="fonts/MyriadPro-Semibold.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$13.800"
                     android:textColor="@color/red_base_color"
                     android:textSize="23dp" />
 
@@ -407,7 +407,6 @@
                         android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12.500"
                         android:textSize="16dp"
                         android:textColor="@color/common_dark_gray_color"/>
 
@@ -449,7 +448,6 @@
                         android:layout_marginTop="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="190"
                         android:textSize="16dp"
                         android:textColor="@color/common_dark_gray_color"/>
 
@@ -517,6 +515,7 @@
             android:textAllCaps="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
+
     </RelativeLayout>
 
 </RelativeLayout>
