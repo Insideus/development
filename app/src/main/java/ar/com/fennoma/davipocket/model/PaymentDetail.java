@@ -15,47 +15,7 @@ public class PaymentDetail {
     private List<Account> accounts;
     private String minimumPaymentUsd;
     private String totalUsd;
-
-    public static PaymentDetail fromJsonObject(JSONObject json) {
-        PaymentDetail detail = new PaymentDetail();
-
-        if (json == null) {
-            return detail;
-        }
-        try {
-            if(json.has("detail")){
-                json = json.getJSONObject("detail");
-            }
-            if (json.has("minimum_payment")) {
-                detail.setMinimumPayment(json.getString("minimum_payment"));
-            }
-            if(json.has("available_amount")){
-                detail.setAvailableAmount(json.getString("available_amount"));
-            }
-            if (json.has("total")) {
-                detail.setTotal(json.getString("total"));
-            }
-            if (json.has("payment_date")) {
-                    detail.setPaymentDate(json.getString("payment_date"));
-            }
-            if(json.has("last_digits")){
-                detail.setCardLastDigits(json.getString("last_digits"));
-            }
-            if (json.has("minimum_payment_usd")) {
-                detail.setMinimumPaymentUsd(json.getString("minimum_payment_usd"));
-            }
-            if (json.has("total_usd")) {
-                detail.setTotalUsd(json.getString("total_usd"));
-            }
-            if(json.has("accounts")){
-                detail.setAccounts(Account.fromJSONArray(json.getJSONArray("accounts")));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return detail;
-    }
+    private String transactionCost;
 
     public String getMinimumPayment() {
         return minimumPayment;
@@ -119,6 +79,58 @@ public class PaymentDetail {
 
     public void setTotalUsd(String totalUsd) {
         this.totalUsd = totalUsd;
+    }
+
+    public String getTransactionCost() {
+        return transactionCost;
+    }
+
+    public void setTransactionCost(String transactionCost) {
+        this.transactionCost = transactionCost;
+    }
+
+    public static PaymentDetail fromJsonObject(JSONObject json) {
+        PaymentDetail detail = new PaymentDetail();
+
+        if (json == null) {
+            return detail;
+        }
+        try {
+            if(json.has("detail")){
+                json = json.getJSONObject("detail");
+            }
+            if (json.has("minimum_payment")) {
+                detail.setMinimumPayment(json.getString("minimum_payment"));
+            }
+            if(json.has("available_amount")){
+                detail.setAvailableAmount(json.getString("available_amount"));
+            }
+            if (json.has("total")) {
+                detail.setTotal(json.getString("total"));
+            }
+            if (json.has("payment_date")) {
+                detail.setPaymentDate(json.getString("payment_date"));
+            }
+            if(json.has("last_digits")){
+                detail.setCardLastDigits(json.getString("last_digits"));
+            }
+            if (json.has("minimum_payment_usd")) {
+                detail.setMinimumPaymentUsd(json.getString("minimum_payment_usd"));
+            }
+            if (json.has("total_usd")) {
+                detail.setTotalUsd(json.getString("total_usd"));
+            }
+            if(json.has("accounts")){
+                detail.setAccounts(Account.fromJSONArray(json.getJSONArray("accounts")));
+            }
+            if(json.has("transaction_cost")){
+                detail.setTransactionCost(json.getString("transaction_cost"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return detail;
     }
 
 }

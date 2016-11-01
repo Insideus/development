@@ -24,7 +24,6 @@ import ar.com.fennoma.davipocket.utils.DialogUtil;
 public class ECardRechargeActivity extends AbstractPayActivity implements BaseActivity.OtpCodeReceived {
 
     private EditText otherPaymentValue;
-    private View priceIndicatorView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,11 +53,13 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
             return;
         }
         TextView balance = (TextView) findViewById(R.id.balance);
-        balance.setText("$" + CurrencyUtils.getCurrencyForString(availableAmount).toUpperCase());
+        balance.setText("$".concat(CurrencyUtils.getCurrencyForString(availableAmount).toUpperCase()));
     }
 
     @Override
     protected void setLayoutData() {
+        TextView paymentExplanation = (TextView) findViewById(R.id.payment_description);
+        paymentExplanation.setText(getString(R.string.e_card_recharge_explanation, detail.getMinimumPayment(), detail.getTotal(), detail.getTransactionCost()));
         if (detail.getAccounts() != null && !detail.getAccounts().isEmpty()) {
             selectedAccount = detail.getAccounts().get(0);
             setSelectedIdAccountName();
@@ -74,7 +75,6 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
     private void setLayouts() {
         selectedAccountText = (TextView) findViewById(R.id.account_spinner);
         otherPaymentValue = (EditText) findViewById(R.id.other_payment_value);
-        priceIndicatorView = findViewById(R.id.price_indicator);
         View payButton = findViewById(R.id.pay_button);
         if(selectedAccountText == null || otherPaymentValue == null || payButton == null){
             return;
@@ -135,9 +135,9 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
 
     private boolean isAmountOnRange(String amount) {
         amount = amount.replace(".", "");
-        if(Integer.valueOf(amount) < Integer.valueOf(getString(R.string.e_card_recharge_min_value))
-                || Integer.valueOf(amount) > Integer.valueOf(getString(R.string.e_card_recharge_max_value))){
-            showErrorDialog(getString(R.string.e_card_recharge_explanation));
+        if(Integer.valueOf(amount) < Integer.valueOf(detail.getMinimumPayment())
+                || Integer.valueOf(amount) > Integer.valueOf(detail.getTotal())){
+            showErrorDialog(getString(R.string.e_card_recharge_explanation, detail.getMinimumPayment(), detail.getTotal(), detail.getTransactionCost()));
             return false;
         }
         return true;

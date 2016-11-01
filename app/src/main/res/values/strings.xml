@@ -294,7 +294,7 @@
     <string name="my_cards_e_card_show_data_subtitle">DE ECARD</string>
     <string name="my_cards_e_card_show_data_text">Se mostrarán los datos de su eCard y se enviará el CVV por SMS.</string>
     <string name="e_card_show_data_error">Ha ocurrido un error al solicitar los datos de su eCard. Reinténtelo nuevamente más tarde.</string>
-    <string name="e_card_recharge_explanation">Recuerde que puede recargar\ndesde $ 10.000 pesos\nhasta $ 50.000 pesos.</string>
+    <string name="e_card_recharge_explanation">Recuerde que puede recargar\ndesde $ %1$s pesos\nhasta $ %2$s pesos.\nSu recarga tiene un costo de $ %3$s</string>
     <string name="e_card_title">E-CARD</string>
     <string name="my_cards_activate_blocked_card_title">TARJETA</string>
     <string name="my_cards_activate_blocked_card_subtitle">BLOQUEADA</string>

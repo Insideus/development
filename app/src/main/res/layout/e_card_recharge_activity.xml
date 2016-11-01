@@ -108,11 +108,11 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/payment_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="@string/e_card_recharge_explanation"
             android:textAllCaps="true" />
 
         <ImageView
