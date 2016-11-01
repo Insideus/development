@@ -14,6 +14,8 @@ import ar.com.fennoma.davipocket.utils.DateUtils;
 
 public class Card implements Parcelable, CardToShowOnList {
 
+    private static int count = 0;
+
     private Boolean eCard;
     private String lastDigits;
     private String ownerName;
@@ -161,7 +163,13 @@ public class Card implements Parcelable, CardToShowOnList {
                 card.setMessage(json.getString("message"));
             }
             if(json.has("ecard")){
-                card.setECard(json.getBoolean("ecard"));
+                //card.setECard(json.getBoolean("ecard"));
+                if (count % 2 == 0) {
+                    card.setECard(true);
+                }else{
+                    card.setECard(false);
+                }
+                count++;
             } else {
                 card.setECard(false);
             }

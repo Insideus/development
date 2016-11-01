@@ -9,4 +9,11 @@ public class DavipointUtils {
         return 25;
     }
 
+    public static int toDavipoints(double amount){
+        return (int) amount / getDavipointsEquivalence();
+    }
+
+    public static double cashDifference(double cashAmount, int davipoints){
+        return cashAmount - davipoints * getDavipointsEquivalence();
+    }
 }

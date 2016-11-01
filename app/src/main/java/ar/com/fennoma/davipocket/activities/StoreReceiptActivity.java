@@ -70,9 +70,7 @@ public class StoreReceiptActivity extends BaseActivity{
         TextView daviPrice = (TextView) findViewById(R.id.davi_price);
         daviPrice.setText(String.valueOf(cart.getCartDavipoints()));
 
-        int davipointsEquivalence = DavipointUtils.getDavipointsEquivalence();
-        Integer davipointCashAmount = cart.getCartDavipoints() * davipointsEquivalence;
-        Double cashAmount = cart.getCartPrice() - davipointCashAmount;
+        Double cashAmount = DavipointUtils.cashDifference(cart.getCartPrice(), cart.getCartDavipoints());
         TextView cashPrice = (TextView) findViewById(R.id.cash_price);
         cashPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(String.valueOf(cashAmount))));
 

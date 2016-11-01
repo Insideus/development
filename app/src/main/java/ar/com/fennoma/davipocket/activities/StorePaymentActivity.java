@@ -38,7 +38,6 @@ import ar.com.fennoma.davipocket.utils.LocationUtils;
 
 public class StorePaymentActivity extends BaseActivity {
 
-    private static final int CANCEL_PURCHASE_REQUEST = 10;
     private List<StoreProduct> selectedProducts;
     public static final String CART_KEY = "cart_key";
     public static final String PRE_CHECKOUT_DATA_KEY = "pre_checkout_data_key";
@@ -50,6 +49,8 @@ public class StorePaymentActivity extends BaseActivity {
     private int monthlyFeeIndex;
     private ImageView cardLogo;
     private TextView fourDigits;
+    private TextView monthlyFee;
+    private View monthlyFeeDisabler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,7 +126,7 @@ public class StorePaymentActivity extends BaseActivity {
         });
         Double cartPrice = cart.getCartPrice();
         if(cartPrice != null) {
-            Integer currentDaviPointAmount = cartPrice.intValue() / DavipointUtils.getDavipointsEquivalence();
+            Integer currentDaviPointAmount = DavipointUtils.toDavipoints(cartPrice.intValue());
             seekBar.setMin(0);
             seekBar.setMax(currentDaviPointAmount);
             seekBar.setProgress(cart.getCartDavipoints());
@@ -254,17 +255,9 @@ public class StorePaymentActivity extends BaseActivity {
     }
     */
 
-    @Override
-    public void onBackPressed() {
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(ActionDialogActivity.CANCEL_PURCHASE, true);
-        bundle.putString(ActionDialogActivity.TITLE_KEY, getString(R.string.configuration_not_added_title));
-        bundle.putString(ActionDialogActivity.TEXT_KEY, getString(R.string.store_payment_on_back_text_explanation));
-        startActivityForResult(new Intent(this, ActionDialogActivity.class).putExtras(bundle), CANCEL_PURCHASE_REQUEST);
-    }
-
     private void setMonthlyFleeLayouts(){
-        final TextView monthlyFee = (TextView) findViewById(R.id.monthly_fee);
+        monthlyFeeDisabler = findViewById(R.id.monthly_fee_disabler);
+        monthlyFee = (TextView) findViewById(R.id.monthly_fee);
         final View plusMonthlyFee = findViewById(R.id.plus_monthly_fee);
         final View minusMonthlyFee = findViewById(R.id.minus_monthly_fee);
         if(preCheckoutData.getInstallments() == null || preCheckoutData.getInstallments().isEmpty()){
@@ -317,7 +310,7 @@ public class StorePaymentActivity extends BaseActivity {
 
         private Card selectedCard;
 
-        public ComboAdapter(List<Card> cards, Card selectedCard) {
+        ComboAdapter(List<Card> cards, Card selectedCard) {
             this.cards = cards;
             this.selectedCard = selectedCard;
         }
@@ -385,19 +378,22 @@ public class StorePaymentActivity extends BaseActivity {
         });
     }
 
+    //La tarjeta que seleccionás es un eCard, te deshabilite las cuotas
+
     private void setSelectedCardData() {
         if(cart.getSelectedCard() == null) {
             cart.setSelectedCard(preCheckoutData.getCards().get(0));
         }
         ImageUtils.loadCardImage(this, cardLogo, cart.getSelectedCard().getBin().getImage());
         fourDigits.setText(cart.getSelectedCard().getLastDigits());
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == CANCEL_PURCHASE_REQUEST && resultCode == RESULT_OK){
-            finish();
+        if(cart.getSelectedCard().getECard()){
+            monthlyFeeDisabler.setVisibility(View.VISIBLE);
+            monthlyFeeIndex = 0;
+            Integer integer = preCheckoutData.getInstallments().get(monthlyFeeIndex);
+            monthlyFee.setText(String.valueOf(integer));
+            cart.setSelectedInstallment(integer);
+        } else {
+            monthlyFeeDisabler.setVisibility(View.GONE);
         }
     }
 
@@ -406,7 +402,7 @@ public class StorePaymentActivity extends BaseActivity {
         private String id;
         String errorCode;
 
-        public GetPreCheckoutData(long id) {
+        GetPreCheckoutData(long id) {
             this.id = String.valueOf(id);
         }
 

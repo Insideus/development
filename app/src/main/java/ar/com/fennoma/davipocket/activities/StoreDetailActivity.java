@@ -31,6 +31,8 @@ import ar.com.fennoma.davipocket.utils.LocationUtils;
 
 public class StoreDetailActivity extends BaseActivity {
 
+    private static final int CANCEL_PURCHASE_REQUEST = 10;
+
     public static final String STORE_KEY = "store_key";
     public static final String CART_KEY = "cart_key";
 
@@ -155,6 +157,19 @@ public class StoreDetailActivity extends BaseActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if(cart == null || cart.getProducts() == null || cart.getProducts().isEmpty()) {
+            super.onBackPressed();
+            return;
+        }
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ActionDialogActivity.CANCEL_PURCHASE, true);
+        bundle.putString(ActionDialogActivity.TITLE_KEY, getString(R.string.configuration_not_added_title));
+        bundle.putString(ActionDialogActivity.TEXT_KEY, getString(R.string.store_payment_on_back_text_explanation));
+        startActivityForResult(new Intent(this, ActionDialogActivity.class).putExtras(bundle), CANCEL_PURCHASE_REQUEST);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.shop_button){
             if(cart == null || cart.getProducts() == null || cart.getProducts().isEmpty()){
@@ -188,6 +203,8 @@ public class StoreDetailActivity extends BaseActivity {
                 showServiceGenericError();
             }
         }
+        if(requestCode == CANCEL_PURCHASE_REQUEST && resultCode == RESULT_OK){
+            finish();
+        }
     }
-
 }
