@@ -214,10 +214,12 @@
                     android:paddingTop="10dp">
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/card_logo"
+                        android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
+                        android:scaleType="centerInside"
                         android:src="@drawable/hardcoded_mastercard_logo" />
 
                     <TextView

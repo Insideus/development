@@ -6,22 +6,17 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.fragments.WithoutDeliveryStoreFragment;
-import ar.com.fennoma.davipocket.ui.adapters.HomePagerAdapter;
-import ar.com.fennoma.davipocket.ui.controls.TypoTabLayout;
 import ar.com.fennoma.davipocket.utils.LocationUtils;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 
@@ -132,6 +127,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        /*
         if(item.getItemId() == R.id.maps){
             if(latLng == null){
                 Toast.makeText(this, "Locación no encontrada", Toast.LENGTH_SHORT).show();
@@ -141,6 +137,7 @@ public class MainActivity extends BaseActivity {
             bundle.putParcelable(MapActivity.LAT_LNG_KEY, latLng);
             startActivity(new Intent(this, MapActivity.class).putExtras(bundle));
         }
+        */
         return super.onOptionsItemSelected(item);
     }
 

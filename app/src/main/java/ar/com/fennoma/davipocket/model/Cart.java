@@ -15,6 +15,8 @@ public class Cart implements Parcelable {
     private ArrayList<StoreProduct> products = new ArrayList<>();
     private Double cartPrice;
     private int cartDavipoints;
+    private int selectedInstallment;
+    private Card selectedCard;
 
     public Store getStore() {
         return store;
@@ -48,6 +50,22 @@ public class Cart implements Parcelable {
         this.cartDavipoints = cartDavipoints;
     }
 
+    public int getSelectedInstallment() {
+        return selectedInstallment;
+    }
+
+    public void setSelectedInstallment(int selectedInstallment) {
+        this.selectedInstallment = selectedInstallment;
+    }
+
+    public Card getSelectedCard() {
+        return selectedCard;
+    }
+
+    public void setSelectedCard(Card selectedCard) {
+        this.selectedCard = selectedCard;
+    }
+
     public void calculateCartPrice() {
         Double price = 0d;
         for(StoreProduct product : getProducts()) {
@@ -67,6 +85,8 @@ public class Cart implements Parcelable {
         dest.writeTypedList(this.products);
         dest.writeValue(this.cartPrice);
         dest.writeInt(this.cartDavipoints);
+        dest.writeInt(this.selectedInstallment);
+        dest.writeParcelable(this.selectedCard, flags);
     }
 
     public Cart() {
@@ -77,6 +97,8 @@ public class Cart implements Parcelable {
         this.products = in.createTypedArrayList(StoreProduct.CREATOR);
         this.cartPrice = (Double) in.readValue(Double.class.getClassLoader());
         this.cartDavipoints = in.readInt();
+        this.selectedInstallment = in.readInt();
+        this.selectedCard = in.readParcelable(Card.class.getClassLoader());
     }
 
     public static final Creator<Cart> CREATOR = new Creator<Cart>() {
@@ -90,5 +112,5 @@ public class Cart implements Parcelable {
             return new Cart[size];
         }
     };
-    
+
 }

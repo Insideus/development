@@ -14,6 +14,7 @@ public class DateUtils {
     public static final String DDMMYYYY_FORMAT = "dd/MM/yyyy";
     public static final String DOTTED_DDMMMYY_FORMAT = "dd · MMM · yy";
     public static final String DOTTED_DDMMMMYY_FORMAT = "dd · MMMM · yy";
+    public static final String DOTTED_DDMMMMYYHHMM_FORMAT = "dd · MMMM · yy / HH:mm ";
 
     public static int getYearsFromDate(Date birthday){
         return getDiffYears(birthday, Calendar.getInstance(new Locale("es", "ES")).getTime());
@@ -89,4 +90,10 @@ public class DateUtils {
         }
         return expirationDate.substring(expirationDate.length() - 2, expirationDate.length());
     }
+
+    public static String getBuyDateFormated(Date date) {
+        SimpleDateFormat resultFormatter = new SimpleDateFormat(DOTTED_DDMMMMYYHHMM_FORMAT, new Locale("es", "ES"));
+        return  resultFormatter.format(date);
+    }
+
 }

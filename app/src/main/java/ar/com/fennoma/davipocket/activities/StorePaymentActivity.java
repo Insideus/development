@@ -48,7 +48,6 @@ public class StorePaymentActivity extends BaseActivity {
 
     private int tipIndex = 0;
     private int monthlyFeeIndex;
-    private Card selectedCard;
     private ImageView cardLogo;
     private TextView fourDigits;
 
@@ -94,12 +93,9 @@ public class StorePaymentActivity extends BaseActivity {
     }
 
     private void setLayouts() {
-        //setToolbar(R.id.toolbar, true);
-        //setTitle(getString(R.string.main_activity_title));
         setStoreLayout();
         setRecycler();
         setSeekBar();
-        //setTipLayouts();
         setPriceLayout();
         setMonthlyFleeLayouts();
         findCardLayouts();
@@ -147,6 +143,7 @@ public class StorePaymentActivity extends BaseActivity {
     }
 
     private void updatePriceAndDavipoints(int davipointsQuantitySelected) {
+        cart.setCartDavipoints(davipointsQuantitySelected);
         int davipointsEquivalence = DavipointUtils.getDavipointsEquivalence();
         Integer davipointCashAmount = davipointsQuantitySelected * davipointsEquivalence;
         Double cashAmount = cart.getCartPrice() - davipointCashAmount;
@@ -190,7 +187,9 @@ public class StorePaymentActivity extends BaseActivity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(StorePaymentActivity.this, StoreReceiptActivity.class));
+                Intent intent = new Intent(StorePaymentActivity.this, StoreReceiptActivity.class);
+                intent.putExtra(StoreReceiptActivity.CART_KEY, cart);
+                startActivity(intent);
             }
         });
     }
@@ -205,13 +204,15 @@ public class StorePaymentActivity extends BaseActivity {
         cardLogo = (ImageView) findViewById(R.id.card_logo);
         fourDigits = (TextView) findViewById(R.id.four_digits);
         View cardContainer = findViewById(R.id.card_container);
-        setSelectedCardData();
-        cardContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCombo();
-            }
-        });
+        if(preCheckoutData.getCards() != null && preCheckoutData.getCards().size() > 0) {
+            setSelectedCardData();
+            cardContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showCombo();
+                }
+            });
+        }
     }
 
     /*
@@ -282,6 +283,7 @@ public class StorePaymentActivity extends BaseActivity {
                 if(monthlyFeeIndex > 0){
                     minusMonthlyFee.setEnabled(true);
                 }
+                cart.setSelectedInstallment(preCheckoutData.getInstallments().get(monthlyFeeIndex));
             }
         });
         minusMonthlyFee.setOnClickListener(new View.OnClickListener() {
@@ -295,6 +297,7 @@ public class StorePaymentActivity extends BaseActivity {
                 if(monthlyFeeIndex + 1 < preCheckoutData.getInstallments().size()){
                     plusMonthlyFee.setEnabled(true);
                 }
+                cart.setSelectedInstallment(preCheckoutData.getInstallments().get(monthlyFeeIndex));
             }
         });
     }
@@ -366,11 +369,11 @@ public class StorePaymentActivity extends BaseActivity {
     }
 
     public void showCombo(){
-        final ComboAdapter adapter = new ComboAdapter(preCheckoutData.getCards(), selectedCard);
+        final ComboAdapter adapter = new ComboAdapter(preCheckoutData.getCards(), cart.getSelectedCard());
         showCombo(adapter, new IComboListener() {
             @Override
             public void onAccept() {
-                selectedCard = adapter.selectedCard;
+                cart.setSelectedCard(adapter.selectedCard);
                 setSelectedCardData();
                 dialogPlus.dismiss();
             }
@@ -383,11 +386,11 @@ public class StorePaymentActivity extends BaseActivity {
     }
 
     private void setSelectedCardData() {
-        if(selectedCard == null) {
-            selectedCard = preCheckoutData.getCards().get(0);
+        if(cart.getSelectedCard() == null) {
+            cart.setSelectedCard(preCheckoutData.getCards().get(0));
         }
-        ImageUtils.loadCardImage(this, cardLogo, selectedCard.getBin().getImage());
-        fourDigits.setText(selectedCard.getLastDigits());
+        ImageUtils.loadCardImage(this, cardLogo, cart.getSelectedCard().getBin().getImage());
+        fourDigits.setText(cart.getSelectedCard().getLastDigits());
     }
 
     @Override
