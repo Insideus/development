@@ -56,7 +56,7 @@ public class StoreItemDetailAdapter extends RecyclerView.Adapter<StoreItemDetail
                 price.setVisibility(View.GONE);
             } else {
                 price.setVisibility(View.VISIBLE);
-                String itemPrice = ("$ ").concat(CurrencyUtils.getCurrencyForString(String.valueOf(configurationItem.getExtraPrice())));
+                String itemPrice = ("$ ").concat(CurrencyUtils.getCurrencyForString(configurationItem.getExtraPrice()));
                 price.setText(itemPrice);
             }
             if(activity.isConfigurationAdded(configuration, configurationItem)) {

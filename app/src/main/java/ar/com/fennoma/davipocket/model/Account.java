@@ -12,7 +12,7 @@ public class Account {
     private String name;
     private String code;
     private String lastDigits;
-    private String balance;
+    private Double balance;
 
     public static List<Account> fromJSONArray(JSONArray jsonArray) {
         List<Account> accounts = new ArrayList<>();
@@ -45,7 +45,7 @@ public class Account {
                 account.setLastDigits(json.getString("last_digits"));
             }
             if(json.has("balance")){
-                account.setBalance(json.getString("balance"));
+                account.setBalance(json.getDouble("balance"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -71,11 +71,11 @@ public class Account {
         this.lastDigits = lastDigits;
     }
 
-    public String getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

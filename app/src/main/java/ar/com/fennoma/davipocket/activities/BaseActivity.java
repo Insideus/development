@@ -42,6 +42,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private static final int OTP_NEEDED = 181;
     public static final int SHOW_CREATED_ECARD_POPUP = 182;
+    protected static final int CLOSE_ACTIVITY_REQUEST = 100;
 
     protected DialogPlus dialogPlus;
     private Dialog loadingDialog = null;
@@ -155,8 +156,17 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showServiceGenericError() {
-        DialogUtil.toast(this, getString(R.string.generic_service_error_title), "",
-                getString(R.string.generic_service_error));
+        showServiceGenericError(false);
+    }
+
+    public void showServiceGenericError(boolean closeActivity) {
+        if(!closeActivity) {
+            DialogUtil.toast(this, getString(R.string.generic_service_error_title), "",
+                    getString(R.string.generic_service_error));
+        }else{
+            DialogUtil.toast(this, getString(R.string.generic_service_error_title), "",
+                    getString(R.string.generic_service_error), CLOSE_ACTIVITY_REQUEST);
+        }
     }
 
     public void handleInvalidSessionError() {

@@ -43,7 +43,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/white"
                         android:orientation="horizontal"
-                        android:padding="20dp">
+                        android:padding="@dimen/store_largest_spacing">
 
                         <FrameLayout
                             android:layout_width="0dp"
@@ -56,7 +56,7 @@
                                 android:layout_height="wrap_content"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/placeholder"
-                                app:riv_corner_radius="5dp"
+                                app:riv_corner_radius="@dimen/common_radius"
                                 app:scale="0.87"/>
 
                         </FrameLayout>
@@ -65,7 +65,7 @@
                             android:layout_weight="0.5"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginLeft="@dimen/store_largest_spacing"
                             android:orientation="vertical"
                             android:gravity="bottom">
 
@@ -86,7 +86,7 @@
                                 android:textAllCaps="true"
                                 android:textColor="@color/text_light_gray_color"
                                 android:textSize="@dimen/common_text_size"
-                                android:layout_marginBottom="10dp"/>
+                                android:layout_marginBottom="@dimen/store_medium_spacing"/>
 
                         </LinearLayout>
 
@@ -100,9 +100,9 @@
                 android:id="@+id/price_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="@dimen/store_small_spacing"
+                android:layout_marginRight="@dimen/store_small_spacing"
+                android:layout_marginTop="@dimen/store_small_spacing"
                 android:background="@drawable/white_rounded_corners_background"
                 android:orientation="horizontal">
 
@@ -111,9 +111,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.33"
-                    android:paddingBottom="20dp"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="20dp"
+                    android:paddingBottom="@dimen/store_largest_spacing"
+                    android:paddingLeft="@dimen/store_large_spacing"
+                    android:paddingTop="@dimen/store_largest_spacing"
                     android:text="@string/store_item_detail_price_title"
                     android:textAllCaps="true"
                     android:textColor="@color/text_light_gray_color"
@@ -130,12 +130,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.33"
                     android:drawableLeft="@drawable/davipoints_tiny_logo"
-                    android:drawablePadding="15dp"
+                    android:drawablePadding="@dimen/store_large_spacing"
                     android:gravity="end"
-                    android:paddingBottom="20dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="20dp"
+                    android:paddingBottom="@dimen/store_largest_spacing"
+                    android:paddingLeft="@dimen/store_large_spacing"
+                    android:paddingRight="@dimen/store_largest_spacing"
+                    android:paddingTop="@dimen/store_largest_spacing"
                     android:textAllCaps="true"
                     android:textColor="@color/common_dark_gray_color"
                     fontPath="fonts/MyriadPro-Semibold.otf"
@@ -153,11 +153,10 @@
                     android:layout_weight="0.33"
                     android:drawableLeft="@drawable/price_indicator"
                     android:gravity="end"
-                    android:paddingBottom="20dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="20dp"
-                    android:text="6.800"
+                    android:paddingBottom="@dimen/store_largest_spacing"
+                    android:paddingLeft="@dimen/store_large_spacing"
+                    android:paddingRight="@dimen/store_largest_spacing"
+                    android:paddingTop="@dimen/store_largest_spacing"
                     android:textAllCaps="true"
                     android:textColor="@color/common_dark_gray_color"
                     fontPath="fonts/MyriadPro-Semibold.otf"
@@ -210,7 +209,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/bottom_bar_davi_logo"
-            android:text="1.600"
             android:textAllCaps="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"

@@ -169,8 +169,9 @@ public class CardPayDetailActivity extends AbstractPayActivity {
                 }
                 String price = s.toString();
                 price = price.replace(".", "");
+                price = price.replace(",", "");
                 try {
-                    price = String.format("%,d", Long.parseLong(price));
+                    price = CurrencyUtils.getCurrencyForStringWithOutDecimal(Double.valueOf(price));
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
@@ -182,9 +183,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String amount = getAmount();
-                //amount = "100";
-                //amount = amount.replace(",", ".");
+                Double amount = getAmount();
                 if (validateAmount(amount)) {
                     Intent intent = new Intent(CardPayDetailActivity.this, ActionDialogActivity.class);
                     intent.putExtra(ActionDialogActivity.TITLE_KEY, "CONFIRMAR");
@@ -209,7 +208,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         return false;
     }
 
-    protected String getPayConfirmationText(String amount) {
+    protected String getPayConfirmationText(Double amount) {
         return getString(R.string.card_pay_confirmation_text_1).concat(" ").concat(card.getLastDigits()).concat(" ")
                 .concat(getString(R.string.card_pay_confirmation_text_2)).concat(" ").concat(selectedAccount.getName())
                 .concat(" ").concat(getString(R.string.card_pay_confirmation_text_3)).concat(" ")
@@ -217,7 +216,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
                 .concat(" $ ").concat(CurrencyUtils.getCurrencyForString(amount)).concat("?");
     }
 
-    private String getAmount() {
+    private Double getAmount() {
         if (totalPayment.isChecked()) {
             return detail.getTotal();
         } else if (minimumPayment.isChecked()) {
@@ -229,27 +228,31 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         } else {
             String amount = otherPaymentValue.getText().toString();
             amount = amount.replace(".", "");
-            return amount;
+            amount = amount.replace(",", "");
+            if(TextUtils.isEmpty(amount)){
+                return null;
+            }
+            return Double.valueOf(amount);
         }
     }
 
     protected void setBottomLayouts() {
         String paymentDay = null;
-        String availableAmount = null;
+        Double availableAmount = null;
         if(transactionDetails != null){
             paymentDay = transactionDetails.getPaymentDate();
             availableAmount = transactionDetails.getAvailableAmount();
         }
-        if(detail != null && !TextUtils.isEmpty(detail.getAvailableAmount()) && !TextUtils.isEmpty(detail.getPaymentDate())){
+        if(detail != null && detail.getAvailableAmount() == null && !TextUtils.isEmpty(detail.getPaymentDate())){
             paymentDay = detail.getPaymentDate();
             availableAmount = detail.getAvailableAmount();
         }
-        if(TextUtils.isEmpty(paymentDay) || TextUtils.isEmpty(availableAmount)){
+        if(TextUtils.isEmpty(paymentDay) || availableAmount == null){
             return;
         }
 
         TextView balance = (TextView) findViewById(R.id.balance);
-        balance.setText("$" + CurrencyUtils.getCurrencyForString(availableAmount).toUpperCase());
+        balance.setText("$".concat(CurrencyUtils.getCurrencyForString(availableAmount).toUpperCase()));
         TextView paymentDate = (TextView) findViewById(R.id.payment_date);
         final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, paymentDay).toUpperCase();
         if (date.length() > 0) {
@@ -281,10 +284,10 @@ public class CardPayDetailActivity extends AbstractPayActivity {
     private class PayTask extends AsyncTask<Void, Void, Void> {
 
         private String errorCode;
-        private String amount;
+        private Double amount;
         private boolean transactionMade;
 
-        public PayTask(String amount) {
+        PayTask(Double amount) {
             this.amount = amount;
         }
 
@@ -296,9 +299,6 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                if(this.amount != null) {
-                    this.amount = amount.replace(",", ".");
-                }
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
                 transactionMade = Service.payCard(sid, card.getLastDigits(), selectedAccount.getLastDigits(),
                         amount, isUsdPayment(), getTodo1Data(), selectedAccount.getCode());

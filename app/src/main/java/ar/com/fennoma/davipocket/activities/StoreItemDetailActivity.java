@@ -86,7 +86,7 @@ public class StoreItemDetailActivity extends BaseActivity{
         currentAmount = selectedProduct.getSelectedProductPrice();
         currentDaviPointAmount = currentAmount.intValue() / DavipointUtils.getDavipointsEquivalence();
         daviPointsAmount.setText(String.valueOf(currentDaviPointAmount));
-        amount.setText(CurrencyUtils.getCurrencyForString(String.valueOf(currentAmount)));
+        amount.setText(CurrencyUtils.getCurrencyForString(currentAmount));
     }
 
     @Override

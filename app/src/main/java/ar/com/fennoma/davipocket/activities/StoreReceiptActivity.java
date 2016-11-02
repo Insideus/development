@@ -72,10 +72,10 @@ public class StoreReceiptActivity extends BaseActivity{
 
         Double cashAmount = DavipointUtils.cashDifference(cart.getCartPrice(), cart.getCartDavipoints());
         TextView cashPrice = (TextView) findViewById(R.id.cash_price);
-        cashPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(String.valueOf(cashAmount))));
+        cashPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cashAmount)));
 
         TextView totalPrice = (TextView) findViewById(R.id.total_price);
-        totalPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(String.valueOf(cart.getCartPrice()))));
+        totalPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cart.getCartPrice())));
 
         TextView storeName = (TextView) findViewById(R.id.brand_name);
         storeName.setText(cart.getStore().getName());

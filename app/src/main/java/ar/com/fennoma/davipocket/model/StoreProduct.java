@@ -18,7 +18,7 @@ public class StoreProduct implements Parcelable{
     private String image;
     private Double listPrice;
     private String appDisplayName;
-    private String currencyPrice;
+    private Double currencyPrice;
     private List<StoreConfiguration> configurations = new ArrayList<>();
 
     public static List<StoreProduct> fromJSONArray(JSONArray jsonArray) {
@@ -117,11 +117,11 @@ public class StoreProduct implements Parcelable{
         this.appDisplayName = appDisplayName;
     }
 
-    public String getCurrencyPrice() {
+    public Double getCurrencyPrice() {
         return currencyPrice;
     }
 
-    public void setCurrencyPrice(String currencyPrice) {
+    public void setCurrencyPrice(Double currencyPrice) {
         this.currencyPrice = currencyPrice;
     }
 
@@ -148,48 +148,8 @@ public class StoreProduct implements Parcelable{
         return emptyProduct;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.id);
-        dest.writeString(this.name);
-        dest.writeString(this.description);
-        dest.writeString(this.image);
-        dest.writeValue(this.listPrice);
-        dest.writeString(this.appDisplayName);
-        dest.writeString(this.currencyPrice);
-        dest.writeTypedList(this.configurations);
-    }
-
     public StoreProduct() {
     }
-
-    protected StoreProduct(Parcel in) {
-        this.id = in.readString();
-        this.name = in.readString();
-        this.description = in.readString();
-        this.image = in.readString();
-        this.listPrice = (Double) in.readValue(Double.class.getClassLoader());
-        this.appDisplayName = in.readString();
-        this.currencyPrice = in.readString();
-        this.configurations = in.createTypedArrayList(StoreConfiguration.CREATOR);
-    }
-
-    public static final Creator<StoreProduct> CREATOR = new Creator<StoreProduct>() {
-        @Override
-        public StoreProduct createFromParcel(Parcel source) {
-            return new StoreProduct(source);
-        }
-
-        @Override
-        public StoreProduct[] newArray(int size) {
-            return new StoreProduct[size];
-        }
-    };
 
     public Double getSelectedProductPrice() {
         Double currentAmount = getListPrice();
@@ -204,4 +164,43 @@ public class StoreProduct implements Parcelable{
         return currentAmount;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.description);
+        dest.writeString(this.image);
+        dest.writeValue(this.listPrice);
+        dest.writeString(this.appDisplayName);
+        dest.writeValue(this.currencyPrice);
+        dest.writeTypedList(this.configurations);
+    }
+
+    protected StoreProduct(Parcel in) {
+        this.id = in.readString();
+        this.name = in.readString();
+        this.description = in.readString();
+        this.image = in.readString();
+        this.listPrice = (Double) in.readValue(Double.class.getClassLoader());
+        this.appDisplayName = in.readString();
+        this.currencyPrice = (Double) in.readValue(Double.class.getClassLoader());
+        this.configurations = in.createTypedArrayList(StoreConfiguration.CREATOR);
+    }
+
+    public static final Creator<StoreProduct> CREATOR = new Creator<StoreProduct>() {
+        @Override
+        public StoreProduct createFromParcel(Parcel source) {
+            return new StoreProduct(source);
+        }
+
+        @Override
+        public StoreProduct[] newArray(int size) {
+            return new StoreProduct[size];
+        }
+    };
 }

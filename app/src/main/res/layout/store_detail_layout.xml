@@ -51,10 +51,10 @@
                             android:id="@+id/brand_logo"
                             android:layout_width="100dp"
                             android:layout_height="80dp"
-                            android:paddingBottom="20dp"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:paddingTop="20dp"
+                            android:paddingBottom="@dimen/store_largest_spacing"
+                            android:paddingLeft="@dimen/store_large_spacing"
+                            android:paddingRight="@dimen/store_large_spacing"
+                            android:paddingTop="@dimen/store_largest_spacing"
                             android:scaleType="center"
                             android:src="@drawable/placeholder_small" />
 
@@ -64,30 +64,30 @@
                             android:layout_centerInParent="true"
                             android:layout_toEndOf="@id/brand_logo"
                             android:orientation="vertical"
-                            android:paddingLeft="10dp">
+                            android:paddingLeft="@dimen/store_medium_spacing">
 
                             <TextView
                                 android:id="@+id/name"
                                 fontPath="fonts/MyriadPro-Semibold.otf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="UNICENTRO"
-                                android:textColor="@color/common_dark_gray_color" />
+                                android:textColor="@color/common_dark_gray_color"
+                                android:textSize="@dimen/common_text_size" />
 
                             <TextView
                                 android:id="@+id/address"
                                 fontPath="fonts/MyriadPro-Regular.otf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="cra 15 # 127 32 · l 1-207"
-                                android:textColor="@color/text_light_gray_color" />
+                                android:textColor="@color/text_light_gray_color"
+                                android:textSize="@dimen/common_text_size" />
 
                             <TextView
                                 android:id="@+id/distance"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0,4 KM."
-                                android:textColor="@color/red_base_color" />
+                                android:textColor="@color/red_base_color"
+                                android:textSize="@dimen/common_text_size" />
 
                         </LinearLayout>
 
@@ -97,33 +97,33 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/white"
-                        android:orientation="horizontal"
                         android:gravity="center"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp">
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/store_largest_spacing"
+                        android:paddingRight="@dimen/store_largest_spacing">
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.2"
                             android:paddingBottom="20dp"
-                            android:paddingTop="20dp"
+                            android:paddingTop="@dimen/store_largest_spacing"
                             android:src="@drawable/store_upload_icon" />
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.2"
-                            android:paddingBottom="20dp"
-                            android:paddingTop="20dp"
+                            android:paddingBottom="@dimen/store_largest_spacing"
+                            android:paddingTop="@dimen/store_largest_spacing"
                             android:src="@drawable/store_phone_icon" />
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.2"
-                            android:paddingBottom="20dp"
-                            android:paddingTop="20dp"
+                            android:paddingBottom="@dimen/store_largest_spacing"
+                            android:paddingTop="@dimen/store_largest_spacing"
                             android:src="@drawable/store_location_icon" />
 
                         <!--ImageView
@@ -193,7 +193,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/bottom_bar_davi_logo"
-            android:text="1.600"
             android:textAllCaps="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"

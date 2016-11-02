@@ -55,4 +55,10 @@
 
     <dimen name="store_category_title_size">18dp</dimen>
     <dimen name="store_category_item_title_size">16dp</dimen>
+    <dimen name="store_largest_spacing">20dp</dimen>
+    <dimen name="common_radius">5dp</dimen>
+    <dimen name="store_medium_spacing">10dp</dimen>
+    <dimen name="store_small_spacing">5dp</dimen>
+    <dimen name="store_large_spacing">15dp</dimen>
+
 </resources>

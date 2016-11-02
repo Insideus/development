@@ -278,7 +278,7 @@
 
                         <EditText
                             android:id="@+id/other_payment_value"
-                            android:maxLength="25"
+                            android:maxLength="19"
                             fontPath="fonts/MyriadPro-Regular.otf"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

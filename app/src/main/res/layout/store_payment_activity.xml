@@ -63,10 +63,10 @@
                     android:id="@+id/brand_logo"
                     android:layout_width="100dp"
                     android:layout_height="80dp"
-                    android:paddingBottom="20dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="20dp"
+                    android:paddingBottom="@dimen/store_largest_spacing"
+                    android:paddingLeft="@dimen/store_large_spacing"
+                    android:paddingRight="@dimen/store_large_spacing"
+                    android:paddingTop="@dimen/store_largest_spacing"
                     android:scaleType="center"
                     android:src="@drawable/placeholder_small" />
 
@@ -76,14 +76,13 @@
                     android:layout_centerInParent="true"
                     android:layout_toEndOf="@id/brand_logo"
                     android:orientation="vertical"
-                    android:paddingLeft="10dp">
+                    android:paddingLeft="@dimen/store_medium_spacing">
 
                     <TextView
                         android:id="@+id/name"
                         fontPath="fonts/MyriadPro-Semibold.otf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="UNICENTRO"
                         android:textColor="@color/common_dark_gray_color" />
 
                     <TextView
@@ -91,14 +90,12 @@
                         fontPath="fonts/MyriadPro-Regular.otf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="cra 15 # 127 32 · l 1-207"
                         android:textColor="@color/text_light_gray_color" />
 
                     <TextView
                         android:id="@+id/distance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0,4 KM."
                         android:textColor="@color/red_base_color" />
 
                 </LinearLayout>
@@ -109,12 +106,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/store_medium_spacing"
                 android:background="@drawable/white_left_rounded_corners_background"
                 android:orientation="vertical"
-                android:paddingBottom="20dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp">
+                android:paddingBottom="@dimen/store_largest_spacing"
+                android:paddingLeft="@dimen/store_medium_spacing"
+                android:paddingTop="@dimen/store_medium_spacing">
 
                 <TextView
                     android:id="@+id/title"
@@ -140,7 +137,7 @@
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"/>
+                    android:layout_marginTop="@dimen/store_largest_spacing"/>
 
             </LinearLayout>
 
@@ -148,15 +145,15 @@
                 fontPath="fonts/MyriadPro-Semibold.otf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="@dimen/store_small_spacing"
+                android:layout_marginRight="@dimen/store_small_spacing"
+                android:layout_marginTop="@dimen/store_medium_spacing"
                 android:background="@drawable/white_rounded_corners_background"
                 android:gravity="center"
                 android:hint="@string/discount_coupon"
-                android:paddingBottom="15dp"
+                android:paddingBottom="@dimen/store_large_spacing"
                 android:textAllCaps="true"
-                android:paddingTop="15dp"
+                android:paddingTop="@dimen/store_large_spacing"
                 android:textColor="@color/red_base_color"
                 android:textColorHint="@color/common_dark_gray_color"
                 android:textSize="@dimen/store_category_title_size" />
@@ -164,8 +161,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="@dimen/store_small_spacing"
+                android:layout_marginRight="@dimen/store_small_spacing"
                 android:layout_marginTop="3dp"
                 android:background="@drawable/white_rounded_corners_background"
                 android:orientation="horizontal"
@@ -177,8 +174,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.2"
-                    android:paddingBottom="20dp"
-                    android:paddingTop="20dp"
+                    android:paddingBottom="@dimen/store_largest_spacing"
+                    android:paddingTop="@dimen/store_largest_spacing"
                     android:scaleType="centerInside"
                     android:src="@drawable/minus_gray_red_button_selector" />
 
@@ -206,7 +203,6 @@
                         fontPath="fonts/MyriadPro-Semibold.otf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10%"
                         android:textColor="@color/red_base_color"
                         android:textSize="15dp" />
 
@@ -222,8 +218,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"
-                    android:paddingBottom="20dp"
-                    android:paddingTop="20dp"
+                    android:paddingBottom="@dimen/store_largest_spacing"
+                    android:paddingTop="@dimen/store_largest_spacing"
                     android:src="@drawable/plus_gray_red_button_selector" />
 
             </LinearLayout>
@@ -298,7 +294,7 @@
                         fontPath="fonts/MyriadPro-Semibold.otf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="@dimen/store_small_spacing"
                         android:textColor="@color/common_dark_gray_color"
                         android:textSize="16dp" />
 
@@ -317,8 +313,8 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="@dimen/store_small_spacing"
+                android:layout_marginRight="@dimen/store_small_spacing"
                 android:layout_marginTop="3dp">
 
                 <LinearLayout
@@ -333,8 +329,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="0.2"
-                        android:paddingBottom="20dp"
-                        android:paddingTop="20dp"
+                        android:paddingBottom="@dimen/store_largest_spacing"
+                        android:paddingTop="@dimen/store_largest_spacing"
                         android:scaleType="centerInside"
                         android:src="@drawable/minus_gray_red_button_selector" />
 
@@ -362,7 +358,6 @@
                             fontPath="fonts/MyriadPro-Semibold.otf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="12"
                             android:textColor="@color/red_base_color"
                             android:textSize="15dp" />
 
@@ -378,8 +373,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.2"
-                        android:paddingBottom="20dp"
-                        android:paddingTop="20dp"
+                        android:paddingBottom="@dimen/store_largest_spacing"
+                        android:paddingTop="@dimen/store_largest_spacing"
                         android:src="@drawable/plus_gray_red_button_selector" />
 
                 </LinearLayout>
@@ -396,8 +391,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="@dimen/store_small_spacing"
+                android:layout_marginRight="@dimen/store_small_spacing"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
                 android:background="@drawable/white_rounded_corners_background"
@@ -435,7 +430,7 @@
                         <TextView
                             fontPath="fonts/MyriadPro-Semibold.otf"
                             android:id="@+id/cash_amount"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="@dimen/store_medium_spacing"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16dp"
@@ -445,7 +440,7 @@
                             fontPath="fonts/MyriadPro-Regular.otf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="COP"
+                            android:text="@string/store_payment_cop_subtitle"
                             android:textSize="@dimen/common_text_size"
                             android:textColor="@color/common_dark_gray_color"/>
 
@@ -457,7 +452,7 @@
                         android:layout_weight="0.5"
                         android:layout_height="wrap_content"
                         android:src="@drawable/card_payment_pay_button_selector"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="@dimen/store_medium_spacing"
                         android:layout_marginBottom="10dp"/>
 
                     <LinearLayout
@@ -476,7 +471,7 @@
                         <TextView
                             fontPath="fonts/MyriadPro-Semibold.otf"
                             android:id="@+id/davi_points_cart"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="@dimen/store_medium_spacing"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16dp"
@@ -486,7 +481,7 @@
                             fontPath="fonts/MyriadPro-Regular.otf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="DAVIPUNTOS"
+                            android:text="@string/store_payment_davipoints_subtitle"
                             android:textSize="@dimen/common_text_size"
                             android:textColor="@color/common_dark_gray_color"/>
 
@@ -533,7 +528,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/bottom_bar_davi_logo"
-            android:text="1.600"
             android:textAllCaps="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"

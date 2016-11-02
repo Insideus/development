@@ -39,7 +39,7 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemHolder
         holder.name.setText(product.getAppDisplayName());
         ImageUtils.loadImageFullURL(holder.image, product.getImage());
         if(fromStoreDetail) {
-            holder.price.setText(CurrencyUtils.getCurrencyForString(String.valueOf(product.getListPrice())));
+            holder.price.setText(CurrencyUtils.getCurrencyForString(product.getListPrice()));
             holder.container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -49,7 +49,7 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemHolder
                 }
             });
         } else {
-            holder.price.setText(CurrencyUtils.getCurrencyForString(String.valueOf(product.getSelectedProductPrice())));
+            holder.price.setText(CurrencyUtils.getCurrencyForString(product.getSelectedProductPrice()));
         }
     }
 

@@ -34,6 +34,7 @@ import ar.com.fennoma.davipocket.model.Store;
 import ar.com.fennoma.davipocket.model.StoreCategory;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
 import ar.com.fennoma.davipocket.model.User;
+import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 
 public class Service {
 
@@ -1439,7 +1440,7 @@ public class Service {
     }
 
     public static boolean payCard(String sid, String cardLastDigits, String accountLastDigits,
-                                  String amount, Boolean isUsdPayment, String todo1, String accountCode) throws ServiceException {
+                                  Double amount, Boolean isUsdPayment, String todo1, String accountCode) throws ServiceException {
         boolean response = false;
         HttpURLConnection urlConnection = null;
         try {
@@ -1456,7 +1457,7 @@ public class Service {
             params.add(lastDigitsParam);
             Pair<String, String> accountNumberParam = new Pair("account_number", accountLastDigits);
             params.add(accountNumberParam);
-            Pair<String, String> amountParam = new Pair("amount", amount);
+            Pair<String, String> amountParam = new Pair("amount", CurrencyUtils.getCurrencyForStringJustDecimal(amount));
             params.add(amountParam);
             if(isUsdPayment) {
                 Pair<String, String> usdParam = new Pair("is_usd_payment", isUsdPayment.toString());
@@ -1666,7 +1667,7 @@ public class Service {
     }
 
     public static boolean rechargeECard(String sid, String lastDigits, String accountLastDigits,
-                                        String amount, String todo1, String otpCode, String accountCode) throws ServiceException {
+                                        Double amount, String todo1, String otpCode, String accountCode) throws ServiceException {
         boolean response = false;
         HttpURLConnection urlConnection = null;
         try {
@@ -1683,7 +1684,7 @@ public class Service {
             params.add(lastDigitsParam);
             Pair<String, String> accountNumberParam = new Pair("account_number", accountLastDigits);
             params.add(accountNumberParam);
-            Pair<String, String> amountParam = new Pair("amount", amount);
+            Pair<String, String> amountParam = new Pair("amount", CurrencyUtils.getCurrencyForStringJustDecimal(amount));
             params.add(amountParam);
             Pair<String, String> todo1Param = new Pair("todo1", todo1);
             params.add(todo1Param);

@@ -3,6 +3,7 @@ package ar.com.fennoma.davipocket.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.renderscript.Double2;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.Selection;
@@ -45,11 +46,10 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
 
     @Override
     protected void setBottomLayouts() {
-        String availableAmount = null;
-        if(detail != null && !TextUtils.isEmpty(detail.getAvailableAmount())){
+        Double availableAmount;
+        if(detail != null && detail.getAvailableAmount() != null){
             availableAmount = detail.getAvailableAmount();
-        }
-        if(TextUtils.isEmpty(availableAmount)){
+        } else {
             return;
         }
         TextView balance = (TextView) findViewById(R.id.balance);
@@ -59,7 +59,10 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
     @Override
     protected void setLayoutData() {
         TextView paymentExplanation = (TextView) findViewById(R.id.payment_description);
-        paymentExplanation.setText(getString(R.string.e_card_recharge_explanation, detail.getMinimumPayment(), detail.getTotal(), detail.getTransactionCost()));
+        paymentExplanation.setText(getString(R.string.e_card_recharge_explanation,
+                CurrencyUtils.getCurrencyForString(detail.getMinimumPayment()),
+                CurrencyUtils.getCurrencyForString(detail.getTotal()),
+                CurrencyUtils.getCurrencyForString(detail.getTransactionCost())));
         if (detail.getAccounts() != null && !detail.getAccounts().isEmpty()) {
             selectedAccount = detail.getAccounts().get(0);
             setSelectedIdAccountName();
@@ -96,8 +99,9 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
                 }
                 String price = s.toString();
                 price = price.replace(".", "");
+                price = price.replace(",", "");
                 try {
-                    price = String.format("%,d", Long.parseLong(price));
+                    price = CurrencyUtils.getCurrencyForStringWithOutDecimal(Double.valueOf(price));
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
@@ -109,8 +113,7 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String amount = getAmount();
-                amount = amount.replace(".", "");
+                Double amount = getAmount();
                 if (validateAmount(amount) && isAmountOnRange(amount)) {
                     Intent intent = new Intent(ECardRechargeActivity.this, ActionDialogActivity.class);
                     intent.putExtra(ActionDialogActivity.TITLE_KEY, "CONFIRMAR");
@@ -125,7 +128,7 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
         });
     }
 
-    protected String getPayConfirmationText(String amount) {
+    protected String getPayConfirmationText(Double amount) {
         return getString(R.string.e_card_pay_confirmation_text_1).concat(" ").concat(card.getLastDigits()).concat(" ")
                 .concat(getString(R.string.card_pay_confirmation_text_2)).concat(" ").concat(selectedAccount.getName())
                 .concat(" ").concat(getString(R.string.card_pay_confirmation_text_3)).concat(" ")
@@ -133,11 +136,12 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
                 .concat(" $ ").concat(CurrencyUtils.getCurrencyForString(amount)).concat("?");
     }
 
-    private boolean isAmountOnRange(String amount) {
-        amount = amount.replace(".", "");
-        if(Integer.valueOf(amount) < Integer.valueOf(detail.getMinimumPayment())
-                || Integer.valueOf(amount) > Integer.valueOf(detail.getTotal())){
-            showErrorDialog(getString(R.string.e_card_recharge_explanation, detail.getMinimumPayment(), detail.getTotal(), detail.getTransactionCost()));
+    private boolean isAmountOnRange(Double amount) {
+        if(amount < detail.getMinimumPayment() || amount > detail.getTotal()){
+            showErrorDialog(getString(R.string.e_card_recharge_explanation,
+                    CurrencyUtils.getCurrencyForString(detail.getMinimumPayment()),
+                    CurrencyUtils.getCurrencyForString(detail.getTotal()),
+                    CurrencyUtils.getCurrencyForString(detail.getTransactionCost())));
             return false;
         }
         return true;
@@ -155,22 +159,22 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
         }
     }
 
-    private String getAmount() {
+    private Double getAmount() {
         String value = otherPaymentValue.getText().toString();
         value = value.replace(priceIndicator, "");
-        value = value.replace(" ", "");
+        value = value.replace(",", "");
         value = value.replace(".", "");
-        return value;
+        return Double.valueOf(value);
     }
 
     private class RechargeECardTask extends AsyncTask<Void, Void, Void> {
 
         private String errorCode;
-        private String amount;
+        private Double amount;
         private boolean transactionMade;
         private String otpCode;
 
-        public RechargeECardTask(String amount, String otpCode) {
+        RechargeECardTask(Double amount, String otpCode) {
             this.amount = amount;
             this.otpCode = otpCode;
         }

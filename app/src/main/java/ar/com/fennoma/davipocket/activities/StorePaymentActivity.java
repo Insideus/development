@@ -139,7 +139,7 @@ public class StorePaymentActivity extends BaseActivity {
     private void setPriceLayout() {
         TextView cartPrice = (TextView) findViewById(R.id.cart_price);
         if(cart.getCartPrice() != null) {
-            cartPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(String.valueOf(cart.getCartPrice()))));
+            cartPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cart.getCartPrice())));
         }
     }
 
@@ -150,7 +150,7 @@ public class StorePaymentActivity extends BaseActivity {
         Double cashAmount = cart.getCartPrice() - davipointCashAmount;
 
         TextView cashAmountTv = (TextView) findViewById(R.id.cash_amount);
-        cashAmountTv.setText(CurrencyUtils.getCurrencyForString(String.valueOf(cashAmount)));
+        cashAmountTv.setText(CurrencyUtils.getCurrencyForString(cashAmount));
 
         TextView davipointsAmountTv = (TextView) findViewById(R.id.davi_points_cart);
         davipointsAmountTv.setText(String.valueOf(davipointsQuantitySelected));

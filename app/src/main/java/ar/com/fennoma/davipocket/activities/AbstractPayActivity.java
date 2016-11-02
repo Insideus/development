@@ -1,5 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -48,16 +49,16 @@ public abstract class AbstractPayActivity extends BaseActivity{
         priceIndicator = getString(R.string.card_detail_item_transaction_price_indicator);
     }
 
-    protected boolean validateAmount(String amount) {
-        if(TextUtils.isEmpty(amount)){
+    protected boolean validateAmount(Double amount) {
+        if(amount == null){
             showErrorDialog(getString(R.string.card_pay_empty_amount));
             return false;
         }
-        if(Double.valueOf(amount) == 0){
+        if(amount == 0){
             showErrorDialog(getString(R.string.card_pay_zero_amount));
             return false;
         }
-        if(Double.valueOf(amount) > Double.valueOf(selectedAccount.getBalance())){
+        if(amount > selectedAccount.getBalance()){
             showErrorDialog(getString(R.string.card_pay_insuficient_balance));
             return false;
         }
@@ -99,7 +100,7 @@ public abstract class AbstractPayActivity extends BaseActivity{
                 if (error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
                 } else {
-                    showServiceGenericError();
+                    showServiceGenericError(true);
                 }
             } else {
                 setBottomLayouts();
@@ -118,7 +119,7 @@ public abstract class AbstractPayActivity extends BaseActivity{
         } else if (!TextUtils.isEmpty(result)) {
             result = result.concat(": ");
         }
-        if (!TextUtils.isEmpty(account.getBalance())) {
+        if (!TextUtils.isEmpty(CurrencyUtils.getCurrencyForString(account.getBalance()))) {
             result = result.concat("$" + CurrencyUtils.getCurrencyForString(account.getBalance()));
         }
         return result;
@@ -140,7 +141,7 @@ public abstract class AbstractPayActivity extends BaseActivity{
 
         private Account selectedAccount;
 
-        public ComboAdapter(List<Account> accounts, Account selectedAccount) {
+        ComboAdapter(List<Account> accounts, Account selectedAccount) {
             this.accounts = accounts;
             this.selectedAccount = selectedAccount;
         }
@@ -220,4 +221,11 @@ public abstract class AbstractPayActivity extends BaseActivity{
         return startingText.concat(" ").concat(date);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == CLOSE_ACTIVITY_REQUEST){
+            finish();
+        }
+    }
 }

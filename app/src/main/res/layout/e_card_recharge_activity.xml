@@ -98,6 +98,7 @@
                     android:layout_centerInParent="true"
                     android:layout_toRightOf="@id/price_indicator"
                     android:background="@android:color/transparent"
+                    android:maxLength="19"
                     android:inputType="number"
                     android:paddingRight="@dimen/card_pay_detail_items_horizonal_margin"
                     android:textColor="@color/input_text_color"

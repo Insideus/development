@@ -36,7 +36,7 @@ public class DavipocketApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        onConfigurationChanged(getBaseContext().getResources().getConfiguration());
+        //onConfigurationChanged(getBaseContext().getResources().getConfiguration());
         initFacebookSdk();
         Mint.initAndStartSession(this, "3cef664b");
         initImageLoader();

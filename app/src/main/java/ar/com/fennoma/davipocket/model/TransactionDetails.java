@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class TransactionDetails implements Parcelable {
 
-    private String availableAmount;
+    private Double availableAmount;
     private String paymentDate;
     private boolean loadMore;
     private boolean showPayButton;
@@ -18,11 +18,11 @@ public class TransactionDetails implements Parcelable {
 
     public TransactionDetails() {}
 
-    public String getAvailableAmount() {
+    public Double getAvailableAmount() {
         return availableAmount;
     }
 
-    public void setAvailableAmount(String availableAmount) {
+    public void setAvailableAmount(Double availableAmount) {
         this.availableAmount = availableAmount;
     }
 
@@ -56,7 +56,7 @@ public class TransactionDetails implements Parcelable {
             } else {
                 transactionDetails.setPaymentDate("No disponible");
             }
-            transactionDetails.setAvailableAmount(json.getString("available_amount"));
+            transactionDetails.setAvailableAmount(json.getDouble("available_amount"));
             transactionDetails.setTransactions(Transaction.fromJsonArray(json));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -83,6 +83,22 @@ public class TransactionDetails implements Parcelable {
         return true;
     }
 
+    public boolean isLoadMore() {
+        return loadMore;
+    }
+
+    public void setLoadMore(boolean loadMore) {
+        this.loadMore = loadMore;
+    }
+
+    public boolean isShowPayButton() {
+        return showPayButton;
+    }
+
+    public void setShowPayButton(boolean showPayButton) {
+        this.showPayButton = showPayButton;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -90,7 +106,7 @@ public class TransactionDetails implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.availableAmount);
+        dest.writeValue(this.availableAmount);
         dest.writeString(this.paymentDate);
         dest.writeByte(this.loadMore ? (byte) 1 : (byte) 0);
         dest.writeByte(this.showPayButton ? (byte) 1 : (byte) 0);
@@ -98,7 +114,7 @@ public class TransactionDetails implements Parcelable {
     }
 
     protected TransactionDetails(Parcel in) {
-        this.availableAmount = in.readString();
+        this.availableAmount = (Double) in.readValue(Double.class.getClassLoader());
         this.paymentDate = in.readString();
         this.loadMore = in.readByte() != 0;
         this.showPayButton = in.readByte() != 0;
@@ -116,21 +132,4 @@ public class TransactionDetails implements Parcelable {
             return new TransactionDetails[size];
         }
     };
-
-    public boolean isLoadMore() {
-        return loadMore;
-    }
-
-    public void setLoadMore(boolean loadMore) {
-        this.loadMore = loadMore;
-    }
-
-    public boolean isShowPayButton() {
-        return showPayButton;
-    }
-
-    public void setShowPayButton(boolean showPayButton) {
-        this.showPayButton = showPayButton;
-    }
-
 }
