@@ -1666,7 +1666,7 @@ public class Service {
     }
 
     public static boolean rechargeECard(String sid, String lastDigits, String accountLastDigits,
-                                        String amount, String todo1, String otpCode) throws ServiceException {
+                                        String amount, String todo1, String otpCode, String accountCode) throws ServiceException {
         boolean response = false;
         HttpURLConnection urlConnection = null;
         try {
@@ -1687,6 +1687,8 @@ public class Service {
             params.add(amountParam);
             Pair<String, String> todo1Param = new Pair("todo1", todo1);
             params.add(todo1Param);
+            Pair<String, String> codeParam = new Pair("account_code", accountCode);
+            params.add(codeParam);
             addOtpParamIsNeeded(params, otpCode);
 
             writer.write(getQuery(params));
