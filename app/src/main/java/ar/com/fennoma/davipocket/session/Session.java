@@ -82,7 +82,7 @@ public class Session {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(PREF_SESSION_KEY, sid);
         editor.putString(PENDING_STEP, pendingStep);
-        editor.commit();
+        editor.apply();
         this.sid = sid;
     }
 
@@ -90,13 +90,16 @@ public class Session {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(PREF_SESSION_KEY);
         editor.remove(PENDING_STEP);
-        editor.commit();
+        editor.apply();
         this.sid = null;
         this.pendingStep = null;
         LoginManager.getInstance().logOut();
     }
 
     public ArrayList<PersonIdType> getPersonIdTypes() {
+        if(instance.personIdTypes == null){
+            return new ArrayList<>();
+        }
         return instance.personIdTypes;
     }
 
@@ -104,7 +107,7 @@ public class Session {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(PERSON_ID_TYPES, typesJson);
         this.personIdTypes = types;
-        editor.commit();
+        editor.apply();
     }
 
     public ArrayList<Country> getCountries() {
@@ -115,7 +118,7 @@ public class Session {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(COUNTRIES, countriesJson);
         this.countries = countries;
-        editor.commit();
+        editor.apply();
     }
 
     public ArrayList<BankProduct> getBankProducts() {
@@ -126,7 +129,7 @@ public class Session {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(BANK_PRODUCTS, bankProductsJson);
         this.bankProducts = bankProducts;
-        editor.commit();
+        editor.apply();
     }
 
     public ArrayList<UserInterest> getUserInterests() {
@@ -137,7 +140,7 @@ public class Session {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(USER_INTERESTS, userInterestsJson);
         this.userInterests = userInterests;
-        editor.commit();
+        editor.apply();
     }
 
     public boolean isValid() {
@@ -152,7 +155,7 @@ public class Session {
         this.pendingStep = pendingStep;
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(PENDING_STEP, pendingStep);
-        editor.commit();
+        editor.apply();
     }
 
     public boolean hasPengingStep() {

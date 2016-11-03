@@ -40,7 +40,7 @@ public class SplashActivity extends BaseActivity {
 
     private void checkInternetConnection() {
         if(ConnectionUtils.checkInternetConnection()){
-            GetInitDataTask task = new GetInitDataTask(this, new TaskCallback() {
+            GetInitDataTask task = new GetInitDataTask(this, false, new TaskCallback() {
                 @Override
                 public void execute(Object result) {
                     goToLoginOrHome();

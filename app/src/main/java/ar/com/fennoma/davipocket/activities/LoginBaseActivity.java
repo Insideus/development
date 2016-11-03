@@ -144,7 +144,7 @@ public class LoginBaseActivity extends BaseActivity {
         ArrayList<PersonIdType> types;
         PersonIdType selectedType;
 
-        public ComboAdapter(ArrayList<PersonIdType> types, PersonIdType selectedType) {
+        ComboAdapter(ArrayList<PersonIdType> types, PersonIdType selectedType) {
             this.types = types;
             this.selectedType = selectedType;
         }

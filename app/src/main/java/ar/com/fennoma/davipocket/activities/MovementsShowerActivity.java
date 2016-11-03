@@ -19,15 +19,24 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
     protected TransactionDetails transactionDetails;
     protected int curPage = 1;
 
+    protected interface ITransactionDetailListener{
+        void onError();
+    }
+
     public class GetCardTransactionDetailsTask extends AsyncTask<Void, Void, TransactionDetails> {
 
-        String errorCode;
+        private ITransactionDetailListener listener;
+        private String errorCode;
         private String dateFrom = null;
         private String dateTo = null;
 
-        public GetCardTransactionDetailsTask(){}
+        GetCardTransactionDetailsTask(){}
 
-        public GetCardTransactionDetailsTask(String dateFrom, String dateTo){
+        GetCardTransactionDetailsTask(ITransactionDetailListener listener){
+            this.listener = listener;
+        }
+
+        GetCardTransactionDetailsTask(String dateFrom, String dateTo){
             this.dateFrom = dateFrom;
             this.dateTo = dateTo;
         }
@@ -60,7 +69,11 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
                 if(error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
                 } else {
-                    showServiceGenericError();
+                    if(listener != null){
+                        listener.onError();
+                    } else {
+                        showServiceGenericError();
+                    }
                 }
             } else {
                 if(response.getTransactions() != null) {

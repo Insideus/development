@@ -8,9 +8,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.util.ArrayList;
 
 import ar.com.fennoma.davipocket.R;
@@ -21,12 +18,16 @@ import ar.com.fennoma.davipocket.model.PersonIdType;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.GetInitDataTask;
+import ar.com.fennoma.davipocket.tasks.TaskCallback;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.EncryptionUtils;
 
 public class LoginActivity extends LoginBaseActivity {
 
-    private GoogleApiClient client;
+    private static final int ESSENTIAL_DATA_CHECK = 11;
+    private GetInitDataTask initDataTask;
+    private boolean finishingUpApp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,30 @@ public class LoginActivity extends LoginBaseActivity {
             getSupportActionBar().hide();
         }
         setActionToButtons();
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(finishingUpApp){
+            finishingUpApp = false;
+            return;
+        }
+        checkForEssentialData();
+    }
+
+    private void checkForEssentialData() {
+        if(initDataTask != null && initDataTask.isRunning()){
+            return;
+        }
+        if(Session.getCurrentSession(this).getPersonIdTypes().isEmpty()){
+            Intent intent = new Intent(this, ActionDialogActivity.class);
+            intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.generic_service_error_title));
+            intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.login_not_enough_data_text));
+            intent.putExtra(ActionDialogActivity.LOGIN_DATA_CHECK, true);
+            startActivityForResult(intent, ESSENTIAL_DATA_CHECK);
+            overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+        }
     }
 
     @Override
@@ -121,10 +145,29 @@ public class LoginActivity extends LoginBaseActivity {
         selectedIdTypeText.setText(selectedIdType.getName());
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == ESSENTIAL_DATA_CHECK){
+            if(resultCode == RESULT_OK || resultCode == RESULT_CANCELED){
+                initDataTask = new GetInitDataTask(this, true, new TaskCallback() {
+                    @Override
+                    public void execute(Object result) {
+                        checkForEssentialData();
+                    }
+                });
+                initDataTask.execute();
+            } else {
+                finishingUpApp = true;
+                onBackPressed();
+            }
+        }
+    }
+
     public class LoginTask extends AsyncTask<String, Void, LoginResponse> {
 
-        String errorCode;
-        String additionalData;
+        private String errorCode;
+        private String additionalData;
 
         @Override
         protected void onPreExecute() {

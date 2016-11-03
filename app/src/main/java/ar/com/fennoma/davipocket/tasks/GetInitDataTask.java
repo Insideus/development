@@ -1,12 +1,12 @@
 package ar.com.fennoma.davipocket.tasks;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import ar.com.fennoma.davipocket.activities.BaseActivity;
 import ar.com.fennoma.davipocket.model.BankProduct;
 import ar.com.fennoma.davipocket.model.Country;
 import ar.com.fennoma.davipocket.model.PersonIdType;
@@ -20,11 +20,27 @@ import ar.com.fennoma.davipocket.session.Session;
 public class GetInitDataTask extends AsyncTask<Void, Void, Boolean> {
 
     private TaskCallback callback;
-    private Activity act;
+    private BaseActivity act;
+    private boolean showLoading;
+    private boolean running;
 
-    public GetInitDataTask(Activity act, TaskCallback callback) {
+    public GetInitDataTask(BaseActivity act, boolean showLoading, TaskCallback callback) {
         this.act = act;
         this.callback = callback;
+        this.showLoading = showLoading;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        running = true;
+        if(showLoading){
+            act.showLoading();
+        }
+    }
+
+    public boolean isRunning(){
+        return running;
     }
 
     @Override
@@ -56,6 +72,10 @@ public class GetInitDataTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean success) {
         super.onPostExecute(success);
+        running = false;
+        if(showLoading){
+            act.hideLoading();
+        }
         if(callback != null) {
             callback.execute(success);
         }

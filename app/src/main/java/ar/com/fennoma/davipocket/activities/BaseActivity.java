@@ -42,6 +42,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private static final int OTP_NEEDED = 181;
     public static final int SHOW_CREATED_ECARD_POPUP = 182;
+    private static final int LOGOUT_REQUEST = 183;
     protected static final int CLOSE_ACTIVITY_REQUEST = 100;
 
     protected DialogPlus dialogPlus;
@@ -122,7 +123,7 @@ public class BaseActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.davi_points_amount)).setText(SharedPreferencesUtils.getUser().getPoints());
     }
 
-    protected void showLoading() {
+    public void showLoading() {
         loadingHandler = new Handler();
         loadingRunnable = new Runnable() {
             public void run() {
@@ -143,7 +144,7 @@ public class BaseActivity extends AppCompatActivity {
         loadingHandler.postDelayed(loadingRunnable, 500);
     }
 
-    protected void hideLoading() {
+    public void hideLoading() {
         if (loadingHandler != null) {
             loadingHandler.removeCallbacks(loadingRunnable);
             loadingHandler = null;
@@ -386,7 +387,13 @@ public class BaseActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new LogoutTask().execute();
+                Intent intent = new Intent(BaseActivity.this, ActionDialogActivity.class);
+                intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.logout_dialog_title));
+                intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.logout_dialog_subtitle));
+                intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.logout_dialog_text));
+                intent.putExtra(ActionDialogActivity.LOGOUT_REQUEST, true);
+                startActivityForResult(intent, LOGOUT_REQUEST);
+                overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
             }
         });
     }
@@ -395,7 +402,6 @@ public class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(BaseActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Bundle bundle = new Bundle();
-        //bundle.putBoolean(MainActivity.OPEN_TOUR, true);
         startActivity(intent.putExtras(bundle));
     }
 
@@ -519,12 +525,13 @@ public class BaseActivity extends AppCompatActivity {
                 showServiceGenericError();
             }
         }
+        if(requestCode == LOGOUT_REQUEST && resultCode == RESULT_OK){
+            new LogoutTask().execute();
+        }
     }
 
     public interface OtpCodeReceived {
-
-        public void onOtpCodeReceived(String otpCode);
-
+        void onOtpCodeReceived(String otpCode);
     }
 
     @Override

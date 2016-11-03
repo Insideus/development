@@ -18,6 +18,9 @@ import ar.com.fennoma.davipocket.ui.adapters.CardDetailAdapter;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
+
+import static ar.com.fennoma.davipocket.activities.AbstractPayActivity.ON_CLOSE_REQUEST;
 
 public class CardDetailActivity extends MovementsShowerActivity implements CardDetailAdapter.ICardDetailAdapterOwner {
 
@@ -48,7 +51,13 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
         cardTitle.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
         setRecycler();
         setSearcher();
-        new GetCardTransactionDetailsTask().execute();
+        new GetCardTransactionDetailsTask(new ITransactionDetailListener() {
+            @Override
+            public void onError() {
+                DialogUtil.toast(CardDetailActivity.this, getString(R.string.generic_service_error_title), "",
+                        getString(R.string.card_detail_get_transactions_error_text), CLOSE_ACTIVITY_REQUEST);
+            }
+        }).execute();
     }
 
     private void setSearcher() {
@@ -125,6 +134,9 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
         if (requestCode == CardPayDetailActivity.PAY_REQUEST && resultCode == RESULT_OK) {
             refresh = true;
             new GetCardTransactionDetailsTask().execute();
+        }
+        if(requestCode == CLOSE_ACTIVITY_REQUEST){
+            finish();
         }
     }
 

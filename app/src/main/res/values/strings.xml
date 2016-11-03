@@ -372,6 +372,13 @@
     <string name="store_detail_no_items_selected">Debe agregar al menos un item para continuar.</string>
     <string name="store_payment_davipoints_subtitle">DAVIPUNTOS</string>
     <string name="store_payment_cop_subtitle">COP</string>
+    <string name="login_retry_connection">Reintentar</string>
+    <string name="login_close_app">Cerrar apicación</string>
+    <string name="login_not_enough_data_text">No se pudo obtener la información necesaria para hacer login.</string>
+    <string name="card_detail_get_transactions_error_text">Se produjo un error obteniendo las transacciones.</string>
+    <string name="logout_dialog_title">CERRAR</string>
+    <string name="logout_dialog_subtitle">SESIÓN</string>
+    <string name="logout_dialog_text">¿Está seguro que desea salir?</string>
     <plurals name="configuration_not_added_text">
         <item quantity="one">Solo puedes agregar %1$d ítem de esta categoría.</item>
         <item quantity="other">Solo puedes agregar %1$d ítems de esta categoría.</item>

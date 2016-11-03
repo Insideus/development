@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.BoolRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -57,6 +58,8 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
     public static final String CANCEL_PURCHASE = "cancel purchase";
 
     public static final String E_CARD_CREATE = "ecard create";
+    public static final String LOGIN_DATA_CHECK = "login data check";
+    public static final String LOGOUT_REQUEST = "logout request";
 
     public static final int RESULT_FAILED = -2;
 
@@ -78,6 +81,8 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
     private Boolean newDeviceDetected;
     private Boolean otpValidationNeeded;
     private Boolean cancelPurchase;
+    private Boolean loginDataCheck;
+    private Boolean logoutRequest;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,6 +107,8 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             newDeviceDetected = savedInstanceState.getBoolean(NEW_DEVICE_DETECTED, false);
             otpValidationNeeded = savedInstanceState.getBoolean(OTP_VALIDATION_DIALOG, false);
             cancelPurchase = savedInstanceState.getBoolean(CANCEL_PURCHASE, false);
+            loginDataCheck = savedInstanceState.getBoolean(LOGIN_DATA_CHECK, false);
+            logoutRequest = savedInstanceState.getBoolean(LOGOUT_REQUEST, false);
         } else {
             title = getIntent().getStringExtra(TITLE_KEY);
             subtitle = getIntent().getStringExtra(SUBTITLE_KEY);
@@ -121,6 +128,8 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             newDeviceDetected = getIntent().getBooleanExtra(NEW_DEVICE_DETECTED, false);
             otpValidationNeeded = getIntent().getBooleanExtra(OTP_VALIDATION_DIALOG, false);
             cancelPurchase = getIntent().getBooleanExtra(CANCEL_PURCHASE, false);
+            loginDataCheck = getIntent().getBooleanExtra(LOGIN_DATA_CHECK, false);
+            logoutRequest = getIntent().getBooleanExtra(LOGOUT_REQUEST, false);
         }
         setLayouts();
         animateOpening();
@@ -212,6 +221,14 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             setCancelPurchase(acceptButton, ignoreButton);
         }
 
+        if(loginDataCheck){
+            setLoginDataCheck(acceptButton, ignoreButton);
+        }
+
+        if(logoutRequest){
+            setLogoutRequest(acceptButton, ignoreButton);
+        }
+
         TextView titleTv = (TextView) findViewById(R.id.toast_title);
         if (title != null && title.length() > 0) {
             titleTv.setText(title);
@@ -230,6 +247,44 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         } else {
             textTv.setVisibility(LinearLayout.GONE);
         }
+    }
+
+    private void setLogoutRequest(TextView acceptButton, TextView ignoreButton) {
+        acceptButton.setText(getString(R.string.my_cards_block_card_accept));
+        ignoreButton.setText(getString(R.string.my_cards_block_card_cancel));
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
+        ignoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
+    }
+
+    private void setLoginDataCheck(TextView acceptButton, TextView ignoreButton) {
+        acceptButton.setText(getString(R.string.login_retry_connection));
+        ignoreButton.setText(getString(R.string.login_close_app));
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
+        ignoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(RESULT_FAILED);
+                finish();
+            }
+        });
     }
 
     private void setCancelPurchase(TextView acceptButton, TextView ignoreButton) {
