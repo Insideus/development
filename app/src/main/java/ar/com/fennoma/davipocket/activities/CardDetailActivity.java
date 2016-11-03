@@ -95,7 +95,7 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
             adapter.addToList(transactionDetails.getTransactions());
         }
         TextView balance = (TextView) findViewById(R.id.balance);
-        balance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()));
+        balance.setText("$".concat(CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount())));
         if (card.getECard() != null && !card.getECard()) {
             TextView paymentDate = (TextView) findViewById(R.id.payment_date);
             String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate()).toUpperCase();

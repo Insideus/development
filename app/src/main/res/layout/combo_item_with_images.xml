@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:text="@string/card_numbers_replacement"
             android:textColor="@color/text_light_gray_color"
+            android:gravity="center_vertical"
             android:textSize="16dp" />
 
         <TextView
@@ -44,6 +45,7 @@
             android:layout_marginLeft="5dp"
             android:text="1234"
             android:textColor="@color/common_dark_gray_color"
+            android:gravity="center_vertical"
             android:textSize="16dp" />
 
     </LinearLayout>

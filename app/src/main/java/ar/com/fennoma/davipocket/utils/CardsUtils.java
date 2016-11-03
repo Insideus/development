@@ -7,7 +7,7 @@ import android.text.TextUtils;
  */
 public class CardsUtils {
 
-    private static String NUMBER_MASK = "○○○○    ○○○○    ○○○○    ";
+    private static String NUMBER_MASK = "●●●●    ●●●●    ●●●●    ";
     private static String DATE_MASK = "●● / ●●";
 
     public static String getMaskedCardNumber(String number) {
@@ -24,7 +24,7 @@ public class CardsUtils {
 
     public static String parseFullCardNumber(String fullNumber){
         if(TextUtils.isEmpty(fullNumber) || fullNumber.length() < 16){
-            return NUMBER_MASK + "○○○○";
+            return NUMBER_MASK + "●●●●";
         }
         String firstQuarter = fullNumber.substring(0, 4);
         String secondQuarter = fullNumber.substring(4, 8);
