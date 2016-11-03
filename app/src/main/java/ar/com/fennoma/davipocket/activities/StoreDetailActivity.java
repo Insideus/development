@@ -1,10 +1,15 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -37,6 +42,7 @@ public class StoreDetailActivity extends BaseActivity {
     public static final String CART_KEY = "cart_key";
 
     public static final int ADD_ITEM_TO_CART = 190;
+    private static final int CALL_PHONE_PERMISSION_REQUEST = 101;
 
     private Store store;
     private CategoryAdapter adapter;
@@ -50,6 +56,57 @@ public class StoreDetailActivity extends BaseActivity {
         setToolbar(R.id.toolbar, true, store.getName().toUpperCase());
         setLayout();
         setRecyclerView();
+        setStoreButtons();
+    }
+
+    private void setStoreButtons() {
+        View callButton = findViewById(R.id.call_button);
+        View locationButton = findViewById(R.id.location_button);
+        if (callButton == null || locationButton == null) {
+            return;
+        }
+        callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(TextUtils.isEmpty(store.getPhone())){
+                    DialogUtil.toast(StoreDetailActivity.this, getString(R.string.input_data_error_generic_title),
+                            "", getString(R.string.store_detail_no_phone_number_error));
+                    return;
+                }
+                if (!checkPermission(android.Manifest.permission.CALL_PHONE, getApplicationContext())) {
+                    requestPermission(android.Manifest.permission.CALL_PHONE, CALL_PHONE_PERMISSION_REQUEST);
+                }else {
+                    makeCall();
+                }
+            }
+        });
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(store.getLatitude() == null || store.getLongitude() == null){
+                    DialogUtil.toast(StoreDetailActivity.this, getString(R.string.input_data_error_generic_title),
+                            "", getString(R.string.store_detail_no_location_error));
+                    return;
+                }
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(String.format("%s%s%s%s%s%s%s",
+                        "geo:0,0?q=",
+                        String.valueOf(store.getLatitude()),
+                        ",",
+                        String.valueOf(store.getLongitude()),
+                        "(",
+                        store.getName(),
+                        ")")));
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void makeCall() {
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + store.getPhone()));
+        if (ActivityCompat.checkSelfPermission(StoreDetailActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        startActivity(intent);
     }
 
     @Override
@@ -154,6 +211,15 @@ public class StoreDetailActivity extends BaseActivity {
             adapter.setCategories(categories);
         }
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == CALL_PHONE_PERMISSION_REQUEST && grantResults.length > 0 &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                makeCall();
+        }
     }
 
     @Override

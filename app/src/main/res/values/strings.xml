@@ -379,6 +379,8 @@
     <string name="logout_dialog_title">CERRAR</string>
     <string name="logout_dialog_subtitle">SESIÓN</string>
     <string name="logout_dialog_text">¿Está seguro que desea salir?</string>
+    <string name="store_detail_no_phone_number_error">La tienda no tiene número de teléfono.</string>
+    <string name="store_detail_no_location_error">La tienda no ha especificado su locación.</string>
     <plurals name="configuration_not_added_text">
         <item quantity="one">Solo puedes agregar %1$d ítem de esta categoría.</item>
         <item quantity="other">Solo puedes agregar %1$d ítems de esta categoría.</item>

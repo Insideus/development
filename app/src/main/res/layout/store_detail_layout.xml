@@ -51,6 +51,7 @@
                             android:id="@+id/brand_logo"
                             android:layout_width="100dp"
                             android:layout_height="80dp"
+                            android:layout_marginLeft="@dimen/store_small_spacing"
                             android:paddingBottom="@dimen/store_largest_spacing"
                             android:paddingLeft="@dimen/store_large_spacing"
                             android:paddingRight="@dimen/store_large_spacing"
@@ -111,20 +112,24 @@
                             android:src="@drawable/store_upload_icon" />
 
                         <ImageView
+                            android:id="@+id/call_button"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.2"
+                            android:background="@drawable/store_button_background_selector"
                             android:paddingBottom="@dimen/store_largest_spacing"
                             android:paddingTop="@dimen/store_largest_spacing"
-                            android:src="@drawable/store_phone_icon" />
+                            android:src="@drawable/store_phone_icon_selector" />
 
                         <ImageView
+                            android:id="@+id/location_button"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.2"
+                            android:background="@drawable/store_button_background_selector"
                             android:paddingBottom="@dimen/store_largest_spacing"
                             android:paddingTop="@dimen/store_largest_spacing"
-                            android:src="@drawable/store_location_icon" />
+                            android:src="@drawable/store_location_icon_selector" />
 
                         <!--ImageView
                             android:layout_width="0dp"

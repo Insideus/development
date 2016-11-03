@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void checkLocationPermissions() {
-        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, getApplicationContext(), this)) {
+        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, getApplicationContext())) {
             requestPermission(android.Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_PERMISSION_CODE);
         } else {
             getLocation();

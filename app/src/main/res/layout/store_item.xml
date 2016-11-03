@@ -21,6 +21,7 @@
             android:id="@+id/brand_logo"
             android:layout_width="100dp"
             android:layout_height="80dp"
+            android:layout_marginLeft="@dimen/store_small_spacing"
             android:paddingBottom="20dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
@@ -40,7 +41,6 @@
                 fontPath="fonts/MyriadPro-Semibold.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="UNICENTRO"
                 android:textColor="@color/common_dark_gray_color" />
 
             <TextView
@@ -48,14 +48,12 @@
                 fontPath="fonts/MyriadPro-Regular.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="cra 15 # 127 32 · l 1-207"
                 android:textColor="@color/text_light_gray_color" />
 
             <TextView
                 android:id="@+id/distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0,4 KM."
                 android:textColor="@color/red_base_color" />
 
         </LinearLayout>

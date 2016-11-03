@@ -54,8 +54,8 @@ public class BaseActivity extends AppCompatActivity {
 
     public OtpCodeReceived otpCodeReceived;
 
-    public static boolean checkPermission(String strPermission, Context _c, Activity _a) {
-        int result = ContextCompat.checkSelfPermission(_c, strPermission);
+    public static boolean checkPermission(String strPermission, Context context) {
+        int result = ContextCompat.checkSelfPermission(context, strPermission);
         return result == PackageManager.PERMISSION_GRANTED;
     }
 
