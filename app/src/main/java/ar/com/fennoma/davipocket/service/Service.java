@@ -666,10 +666,10 @@ public class Service {
         return response;
     }
 
-    public static Boolean acceptPolicy(String sid, Boolean sms, Boolean phone, Boolean email,
+    public static LoginResponse acceptPolicy(String sid, Boolean sms, Boolean phone, Boolean email,
                                        Boolean acceptTerms, Boolean acceptPrivacy) throws ServiceException {
         HttpURLConnection urlConnection = null;
-        Boolean response = null;
+        LoginResponse response = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(UPDATE_USER_COMMUNICATIONS_INFO, sid);
             urlConnection.setRequestMethod("POST");
@@ -700,8 +700,14 @@ public class Service {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson;
+                if(json.has(DATA_TAG)) {
+                    responseJson = json.getJSONObject(DATA_TAG);
+                } else {
+                    responseJson = json;
+                }
                 if (json.has("error") && !json.getBoolean("error")) {
-                    response = true;
+                    response = LoginResponse.fromJson(responseJson);
+                    response.setSid(sid);
                 } else {
                     responseJson = json.getJSONObject(DATA_TAG);
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);

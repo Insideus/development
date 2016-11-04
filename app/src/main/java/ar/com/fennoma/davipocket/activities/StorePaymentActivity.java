@@ -87,6 +87,13 @@ public class StorePaymentActivity extends BaseActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(CART_KEY, cart);
+        outState.putParcelable(PRE_CHECKOUT_DATA_KEY, preCheckoutData);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         cart = savedInstanceState.getParcelable(CART_KEY);

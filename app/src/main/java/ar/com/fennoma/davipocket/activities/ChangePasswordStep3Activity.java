@@ -10,9 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginResponse;
@@ -66,11 +63,20 @@ public class ChangePasswordStep3Activity extends BaseActivity{
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
         outState.putString(ID_TYPE_KEY, personIdType);
         outState.putString(ID_NUMBER_KEY, personId);
         outState.putString(PASSWORD_TOKEN_KEY, passwordToken);
         outState.putBoolean(EXPIRED_PASSWORD_KEY, expiredPassword);
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(ID_TYPE_KEY, personIdType);
+        outState.putString(ID_NUMBER_KEY, personId);
+        outState.putString(PASSWORD_TOKEN_KEY, passwordToken);
+        outState.putBoolean(EXPIRED_PASSWORD_KEY, expiredPassword);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

@@ -162,6 +162,13 @@ public class StoreDetailActivity extends BaseActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(CART_KEY, cart);
+        outState.putParcelable(STORE_KEY, store);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         outState.putParcelable(CART_KEY, cart);
         outState.putParcelable(STORE_KEY, store);
@@ -262,9 +269,13 @@ public class StoreDetailActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == ADD_ITEM_TO_CART && resultCode == RESULT_OK) {
             if(data != null) {
-                StoreProduct product = data.getParcelableExtra(StoreItemDetailActivity.PRODUCT_KEY);
-                cart.getProducts().add(product);
-                cart.calculateCartPrice();
+                if(cart == null || cart.getProducts() == null) {
+                    showServiceGenericError();
+                } else {
+                    StoreProduct product = data.getParcelableExtra(StoreItemDetailActivity.PRODUCT_KEY);
+                    cart.getProducts().add(product);
+                    cart.calculateCartPrice();
+                }
             } else {
                 showServiceGenericError();
             }

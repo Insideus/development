@@ -34,8 +34,14 @@ public class ActivatedPasswordActivity extends BaseActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
         outState.putParcelable(LOGIN_RESPONSE_KEY, loginResponse);
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(LOGIN_RESPONSE_KEY, loginResponse);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

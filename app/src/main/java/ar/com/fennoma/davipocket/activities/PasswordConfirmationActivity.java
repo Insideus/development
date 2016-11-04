@@ -49,10 +49,18 @@ public class PasswordConfirmationActivity extends BaseActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
         outState.putString(ID_TYPE_KEY, personIdType);
         outState.putString(ID_NUMBER_KEY, personId);
         outState.putBoolean(EXPIRED_PASSWORD_KEY, expiredPassword);
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(ID_TYPE_KEY, personIdType);
+        outState.putString(ID_NUMBER_KEY, personId);
+        outState.putBoolean(EXPIRED_PASSWORD_KEY, expiredPassword);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

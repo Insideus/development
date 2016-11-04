@@ -1,18 +1,14 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.Manifest;
-import android.app.SearchManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -20,7 +16,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.fragments.WithoutDeliveryStoreFragment;
-import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.LocationUtils;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 
@@ -127,6 +122,7 @@ public class MainActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
         // Retrieve the SearchView and plug it into SearchManager
+        /*
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -148,6 +144,7 @@ public class MainActivity extends BaseActivity {
                 return false;
             }
         });
+        */
         return true;
     }
 

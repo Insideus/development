@@ -66,12 +66,22 @@ public class LoginTokenActivity extends LoginBaseActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
         outState.putParcelable(ID_TYPE_KEY, selectedIdType);
         outState.putString(ID_NUMBER_KEY, idNumberStr);
         outState.putString(PASSWORD_KEY, passwordStr);
         outState.putBoolean(NEXT_REQUIRED_TOKEN_KEY, nextToken);
         outState.putString(NEXT_TOKEN_KEY, nextTokenSession);
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(ID_TYPE_KEY, selectedIdType);
+        outState.putString(ID_NUMBER_KEY, idNumberStr);
+        outState.putString(PASSWORD_KEY, passwordStr);
+        outState.putBoolean(NEXT_REQUIRED_TOKEN_KEY, nextToken);
+        outState.putString(NEXT_TOKEN_KEY, nextTokenSession);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

@@ -57,6 +57,12 @@ public class StoreReceiptActivity extends BaseActivity{
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(CART_KEY, cart);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         cart = savedInstanceState.getParcelable(CART_KEY);

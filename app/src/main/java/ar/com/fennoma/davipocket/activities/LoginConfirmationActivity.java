@@ -353,7 +353,7 @@ public class LoginConfirmationActivity extends BaseActivity {
                 //Service error.
                 showServiceGenericError();
             } else {
-                goToAccountActivationActivity();
+                goToPolicyPickerActivity();
             }
         }
     }
@@ -389,8 +389,8 @@ public class LoginConfirmationActivity extends BaseActivity {
         return accessToken != null;
     }
 
-    private void goToAccountActivationActivity() {
-        startActivity(new Intent(LoginConfirmationActivity.this, AccountActivationActivity.class));
+    private void goToPolicyPickerActivity() {
+        startActivity(new Intent(LoginConfirmationActivity.this, PolicyPickerActivity.class));
         this.finish();
     }
 

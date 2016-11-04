@@ -5,6 +5,13 @@ package ar.com.fennoma.davipocket.model;
  */
 public enum LoginSteps {
 
+
+    /*
+    - facebook
+    - confirmacion de datos (email, cel, fecha nac)
+    - aceptar t&c y politicas de privacidad ****
+    - paso de ecard (opcional) ****
+     */
     FACEBOOK("registration_incomplete.facebook_connect", 1),
     ADDITIONAL_INFO("registration_incomplete.user_info", 2),
     ACCOUNT_VERIFICATION("registration_incomplete.phone_validation", 3),

@@ -23,7 +23,7 @@ import ar.com.fennoma.davipocket.utils.DavipointUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 
-public class StoreItemDetailActivity extends BaseActivity{
+public class StoreItemDetailActivity extends BaseActivity {
 
     public static final String PRODUCT_KEY = "product_key";
     private StoreProduct product;

@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.activities;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +11,7 @@ import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
+import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
@@ -52,7 +52,7 @@ public class PolicyPickerActivity extends BaseActivity{
         });
     }
 
-    public class AcceptPolicyTask extends AsyncTask<Boolean, Void, Boolean> {
+    public class AcceptPolicyTask extends AsyncTask<Boolean, Void, LoginResponse> {
 
         String errorCode;
 
@@ -63,8 +63,8 @@ public class PolicyPickerActivity extends BaseActivity{
         }
 
         @Override
-        protected Boolean doInBackground(Boolean... params) {
-            Boolean response = null;
+        protected LoginResponse doInBackground(Boolean... params) {
+            LoginResponse response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
                 response = Service.acceptPolicy(sid, params[0], params[1], params[2], params[3], params[4]);
@@ -75,7 +75,7 @@ public class PolicyPickerActivity extends BaseActivity{
         }
 
         @Override
-        protected void onPostExecute(Boolean response) {
+        protected void onPostExecute(LoginResponse response) {
             super.onPostExecute(response);
             hideLoading();
             if(response == null) {
@@ -86,11 +86,14 @@ public class PolicyPickerActivity extends BaseActivity{
                 } else {
                     showServiceGenericError();
                 }
-            } else if(!response) {
-                //Service error.
-                showServiceGenericError();
             } else {
-                goToInterestsActivity();
+                LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
+                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(),
+                        response.getAccountStatus());
+                if(step == null) {
+                    step = LoginSteps.REGISTRATION_COMPLETED;
+                }
+                goToRegistrationStep(step);
             }
         }
     }
@@ -121,9 +124,17 @@ public class PolicyPickerActivity extends BaseActivity{
         privacyPolicy = (CheckBox) findViewById(R.id.privacy_policy);
     }
 
-    private void goToInterestsActivity() {
-        startActivity(new Intent(this, InterestsPickerActivity.class));
+    /*
+    private void goToMainActivity() {
+        Session.getCurrentSession(this).setPendingStep(null);
+        startActivity(new Intent(this, MainActivity.class));
         this.finish();
     }
+
+    private void goToEcardActivity() {
+        startActivity(new Intent(this, EcardLoginActivity.class));
+        this.finish();
+    }
+    */
 
 }
