@@ -35,7 +35,7 @@
             android:text="@string/card_numbers_replacement"
             android:textColor="@color/text_light_gray_color"
             android:gravity="center_vertical"
-            android:textSize="16dp" />
+            android:textSize="@dimen/dotted_card_text_size" />
 
         <TextView
             android:id="@+id/four_digits"

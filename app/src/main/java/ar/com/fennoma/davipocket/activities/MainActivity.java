@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void goToHome() {
-        startTour();
+        //startTour();
     }
 
     @Override

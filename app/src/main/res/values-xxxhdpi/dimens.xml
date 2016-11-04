@@ -48,4 +48,7 @@
     <dimen name="card_detail_item_vertical_padding">20dp</dimen>
     <dimen name="card_detail_item_horizontal_padding">30dp</dimen>
     <dimen name="card_pay_detail_item_drawable_padding">15dp</dimen>
+
+    <dimen name="dotted_card_text_size">10dp</dimen>
+
 </resources>

@@ -106,8 +106,7 @@
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:padding="15dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/mocked_bought_items_brand" />
+                        android:scaleType="centerInside" />
 
                     <View
                         android:layout_width="1dp"
@@ -232,7 +231,7 @@
                         android:text="@string/card_numbers_replacement"
                         android:textColor="@color/gray_text_color"
                         android:gravity="center_vertical"
-                        android:textSize="@dimen/common_text_size" />
+                        android:textSize="@dimen/dotted_card_text_size" />
 
                     <TextView
                         android:id="@+id/last_card_digits"

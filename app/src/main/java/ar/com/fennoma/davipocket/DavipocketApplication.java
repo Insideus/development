@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket;
 
-import android.content.res.Configuration;
 import android.support.multidex.MultiDexApplication;
 
 import com.facebook.FacebookSdk;
@@ -12,8 +11,6 @@ import com.splunk.mint.Mint;
 
 import net.easysol.dsb.DSB;
 
-import java.util.Locale;
-
 import ar.com.fennoma.davipocket.constants.Constants;
 
 /**
@@ -24,6 +21,7 @@ public class DavipocketApplication extends MultiDexApplication {
     private static DavipocketApplication instance;
     private static ImageLoader imageManager;
 
+    /*
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         newConfig.locale = new Locale("es", "ES");
@@ -32,6 +30,7 @@ public class DavipocketApplication extends MultiDexApplication {
         getBaseContext().getResources().updateConfiguration(newConfig, getResources().getDisplayMetrics());
 
     }
+    */
 
     @Override
     public void onCreate() {
