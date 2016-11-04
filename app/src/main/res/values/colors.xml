@@ -21,6 +21,7 @@
     <color name="dark_translucent">#66000000</color>
 
     <color name="navigation_drawer_text_color">#454444</color>
+    <color name="navigation_drawer_item_pressed_color">#d1dae0</color>
     <color name="activity_background">#f0f3f5</color>
     <color name="input_text_color">#454444</color>
     <color name="translucent_white">#80FFFFFF</color>

@@ -165,10 +165,10 @@
 
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_title">Menú</string>
-    <string name="navigation_drawer_home_title">Ir al home</string>
-    <string name="navigation_drawer_my_cards_title">Mis tarjetas</string>
-    <string name="navigation_drawer_my_shopping_title">Mis compras</string>
-    <string name="navigation_drawer_my_addresses_title">Mis direcciones</string>
+    <string name="navigation_drawer_home_title">Ir Al Home</string>
+    <string name="navigation_drawer_my_cards_title">Mis Tarjetas</string>
+    <string name="navigation_drawer_my_shopping_title">Mis Compras</string>
+    <string name="navigation_drawer_my_addresses_title">Mis Direcciones</string>
     <string name="navigation_drawer_preferences_title">Preferencias</string>
     <string name="navigation_drawer_help_title">Ayuda</string>
     <string name="navigation_drawer_logout_title">Cerrar Sesión</string>
