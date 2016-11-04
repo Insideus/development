@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.activities;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -542,6 +541,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         //Todo1Utils.destroyMobileSdk(this);
+        hideLoading();
         super.onDestroy();
     }
 

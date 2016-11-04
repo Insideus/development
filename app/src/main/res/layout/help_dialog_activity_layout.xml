@@ -66,6 +66,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@color/gray_text_color"
+            fontPath="fonts/MyriadPro-Semibold.otf"
             android:text="@string/help_dialog_activity_text"/>
 
         <TextView

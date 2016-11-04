@@ -53,13 +53,17 @@ public class WithoutDeliveryStoreFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            String sid = Session.getCurrentSession(getActivity().getApplicationContext()).getSid();
-            try {
-                stores = Service.getStoresWithoutDelivery(sid,
-                        latLng != null ? String.valueOf(latLng.latitude) : "",
-                        latLng != null ? String.valueOf(latLng.longitude) : "");
-            } catch (ServiceException e) {
-                e.printStackTrace();
+            if(getActivity() != null) {
+                String sid = Session.getCurrentSession(getActivity().getApplicationContext()).getSid();
+                try {
+                    stores = Service.getStoresWithoutDelivery(sid,
+                            latLng != null ? String.valueOf(latLng.latitude) : "",
+                            latLng != null ? String.valueOf(latLng.longitude) : "");
+                } catch (ServiceException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                this.cancel(true);
             }
             return null;
         }
