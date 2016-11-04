@@ -1,11 +1,14 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.Manifest;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -122,23 +125,11 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
+        // Retrieve the SearchView and plug it into SearchManager
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        /*
-        if(item.getItemId() == R.id.maps){
-            if(latLng == null){
-                Toast.makeText(this, "Locación no encontrada", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(MapActivity.LAT_LNG_KEY, latLng);
-            startActivity(new Intent(this, MapActivity.class).putExtras(bundle));
-        }
-        */
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
