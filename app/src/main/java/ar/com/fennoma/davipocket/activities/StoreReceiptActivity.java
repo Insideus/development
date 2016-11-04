@@ -5,6 +5,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -15,6 +16,7 @@ import java.util.Date;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Cart;
 import ar.com.fennoma.davipocket.ui.adapters.CategoryItemAdapter;
+import ar.com.fennoma.davipocket.ui.controls.RatingBar;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
 import ar.com.fennoma.davipocket.utils.DavipointUtils;
@@ -23,27 +25,53 @@ import ar.com.fennoma.davipocket.utils.ImageUtils;
 public class StoreReceiptActivity extends BaseActivity{
 
     public static final String CART_KEY = "cart_key";
+    public static final String FROM_MADE_SHOP = "from made shop";
 
     private Cart cart;
+    private boolean fromMadeShop;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bought_items_layout);
         setToolbar(R.id.toolbar, false);
-        setToolbarWOHomeButton(R.id.toolbar, getString(R.string.store_receipt_title));
         handleIntent();
+        if(fromMadeShop){
+            setToolbar(R.id.toolbar, true, getString(R.string.store_receipt_title));
+            hideThanksForBuyingLabel();
+        } else {
+            setToolbarWOHomeButton(R.id.toolbar, getString(R.string.store_receipt_title));
+        }
         setLayoutData();
         setRecycler();
-        //setRaitingBar();
+        //setRatingBar();
+        //setCommentSection();
         setButtons();
         scrollUp();
     }
+
+    private void hideThanksForBuyingLabel() {
+        findViewById(R.id.thanks_for_buying).setVisibility(View.GONE);
+    }
+
+    /*private void setCommentSection() {
+        if(fromMadeShop){
+            if(TextUtils.isEmpty(cart.getComment())) {
+                findViewById(R.id.comment_container).setVisibility(View.GONE);
+                return;
+            }
+            findViewById(R.id.comment_input).setVisibility(View.GONE);
+            ((TextView)findViewById(R.id.comment_output)).setText(cart.getComment());
+            return;
+        }
+        findViewById(R.id.comment_output).setVisibility(View.GONE);
+    }*/
 
     private void handleIntent() {
         if(getIntent() == null || getIntent().getParcelableExtra(CART_KEY) == null){
             return;
         }
+        fromMadeShop = getIntent().getBooleanExtra(FROM_MADE_SHOP, false);
         cart = getIntent().getParcelableExtra(CART_KEY);
         if(cart == null) {
             cart = new Cart();
@@ -97,6 +125,17 @@ public class StoreReceiptActivity extends BaseActivity{
     }
 
     private void setButtons() {
+        if(fromMadeShop){
+            findViewById(R.id.new_buy_buttons).setVisibility(View.GONE);
+            findViewById(R.id.repeat_purchase_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+            return;
+        }
+        findViewById(R.id.older_purchase_button_container).setVisibility(View.GONE);
         View goHomeButton = findViewById(R.id.go_home_button);
         View repeatOrderButton = findViewById(R.id.repeat_order_button);
         goHomeButton.setOnClickListener(new View.OnClickListener() {
@@ -119,9 +158,14 @@ public class StoreReceiptActivity extends BaseActivity{
         scroll.smoothScrollTo(0, 0);
     }
 
-   /*private void setRaitingBar() {
-        RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
-        ratingBar.setActivity(this).setAmountOfStars(5).setAsClickable().setSelectedTill(1);
+   /*private void setRatingBar() {
+       RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+       ratingBar.setActivity(this).setAmountOfStars(5);
+       if(cart.getStarsGiven() != null){
+           ratingBar.setSelectedTill(cart.getStarsGiven());
+       }else{
+           ratingBar.setAsClickable().setSelectedTill(1);
+       }
     }*/
 
     private void setRecycler() {
@@ -138,6 +182,10 @@ public class StoreReceiptActivity extends BaseActivity{
 
     @Override
     public void onBackPressed() {
+        if(fromMadeShop){
+            super.onBackPressed();
+            return;
+        }
         finish();
         goToHome();
     }

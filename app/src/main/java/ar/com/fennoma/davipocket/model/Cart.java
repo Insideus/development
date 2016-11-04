@@ -5,10 +5,6 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-/**
- * Created by Julian Vega on 31/10/2016.
- */
-
 public class Cart implements Parcelable {
 
     private Store store;
@@ -17,6 +13,10 @@ public class Cart implements Parcelable {
     private int cartDavipoints;
     private int selectedInstallment;
     private Card selectedCard;
+
+    private Integer starsGiven;
+    private String deliveredTo;
+    private String comment;
 
     public Store getStore() {
         return store;
@@ -74,6 +74,33 @@ public class Cart implements Parcelable {
         this.cartPrice = price;
     }
 
+    public Cart() {
+    }
+
+    public String getDeliveredTo() {
+        return deliveredTo;
+    }
+
+    public void setDeliveredTo(String deliveredTo) {
+        this.deliveredTo = deliveredTo;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public Integer getStarsGiven() {
+        return starsGiven;
+    }
+
+    public void setStarsGiven(Integer starsGiven) {
+        this.starsGiven = starsGiven;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -87,9 +114,9 @@ public class Cart implements Parcelable {
         dest.writeInt(this.cartDavipoints);
         dest.writeInt(this.selectedInstallment);
         dest.writeParcelable(this.selectedCard, flags);
-    }
-
-    public Cart() {
+        dest.writeValue(this.starsGiven);
+        dest.writeString(this.deliveredTo);
+        dest.writeString(this.comment);
     }
 
     protected Cart(Parcel in) {
@@ -99,6 +126,9 @@ public class Cart implements Parcelable {
         this.cartDavipoints = in.readInt();
         this.selectedInstallment = in.readInt();
         this.selectedCard = in.readParcelable(Card.class.getClassLoader());
+        this.starsGiven = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.deliveredTo = in.readString();
+        this.comment = in.readString();
     }
 
     public static final Creator<Cart> CREATOR = new Creator<Cart>() {
@@ -112,5 +142,4 @@ public class Cart implements Parcelable {
             return new Cart[size];
         }
     };
-
 }

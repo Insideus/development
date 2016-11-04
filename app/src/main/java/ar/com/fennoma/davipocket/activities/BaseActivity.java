@@ -359,8 +359,9 @@ public class BaseActivity extends AppCompatActivity {
         View home = findViewById(R.id.home_shortcut);
         View logout = findViewById(R.id.logout_shortcut);
         View myCards = findViewById(R.id.my_cards_shortcut);
+        View myShops = findViewById(R.id.my_shopping_shortcut);
         View help = findViewById(R.id.help_shortcut);
-        if (home == null || logout == null || myCards == null || help == null) {
+        if (home == null || logout == null || myCards == null || help == null || myShops == null) {
             return;
         }
         help.setOnClickListener(new View.OnClickListener() {
@@ -381,6 +382,12 @@ public class BaseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 startActivity(new Intent(BaseActivity.this, MyCardsActivity.class));
                 closeDrawer();
+            }
+        });
+        myShops.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(BaseActivity.this, MyShopsActivity.class));
             }
         });
         logout.setOnClickListener(new View.OnClickListener() {

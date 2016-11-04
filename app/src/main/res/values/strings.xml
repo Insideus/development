@@ -384,6 +384,8 @@
     <string name="search_hint">Buscar…</string>
     <string name="qr_button_text">Escanear</string>
     <string name="search_button_text">Buscar</string>
+    <string name="my_shops_title">MIS COMPRAS</string>
+    <string name="my_shops_shop_item_delivery_title">ENTREGADO EN:</string>
     <plurals name="configuration_not_added_text">
         <item quantity="one">Solo puedes agregar %1$d ítem de esta categoría.</item>
         <item quantity="other">Solo puedes agregar %1$d ítems de esta categoría.</item>
