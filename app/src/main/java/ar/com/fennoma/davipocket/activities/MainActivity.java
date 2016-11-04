@@ -133,13 +133,18 @@ public class MainActivity extends BaseActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //TODO: Reemplazar por la acción real
-                DialogUtil.toast(MainActivity.this, "FUNCÓ", "", "");
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if(fragment != null) {
+                    if (!TextUtils.isEmpty(newText)) {
+                        fragment.doQuery(newText);
+                    }else{
+                        fragment.showAllResults();
+                    }
+                }
                 return false;
             }
         });

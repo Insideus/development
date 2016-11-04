@@ -47,6 +47,16 @@ public class WithoutDeliveryStoreFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
+    public void doQuery(String newText) {
+        if (adapter != null){
+            adapter.doQuery(newText);
+        }
+    }
+
+    public void showAllResults() {
+        adapter.showAllResults();
+    }
+
     private class GetStoresTask extends AsyncTask<Void, Void, Void>{
 
         private List<Store> stores;

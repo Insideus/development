@@ -23,11 +23,13 @@ import ar.com.fennoma.davipocket.utils.LocationUtils;
 public class WithoutDeliveryStoreAdapter extends RecyclerView.Adapter<WithoutDeliveryStoreHolder>{
 
     private Activity activity;
-    private List<Store> stores;
+    private List<Store> allStores;
+    private ArrayList<Store> stores;
     private LatLng latLng;
 
     public WithoutDeliveryStoreAdapter(Activity activity){
         this.activity = activity;
+        allStores = new ArrayList<>();
         stores = new ArrayList<>();
     }
 
@@ -36,7 +38,9 @@ public class WithoutDeliveryStoreAdapter extends RecyclerView.Adapter<WithoutDel
     }
 
     public void setStores(List<Store> stores){
-        this.stores = stores;
+        this.allStores = stores;
+        this.stores.clear();
+        this.stores.addAll(allStores);
         notifyDataSetChanged();
     }
 
@@ -80,5 +84,23 @@ public class WithoutDeliveryStoreAdapter extends RecyclerView.Adapter<WithoutDel
     @Override
     public int getItemCount() {
         return stores.size();
+    }
+
+    public void doQuery(String newText) {
+        List<Store> toShow = new ArrayList<>();
+        for(Store store : allStores){
+            if(store != null && store.getName().toLowerCase().contains(newText.toLowerCase())){
+                toShow.add(store);
+            }
+        }
+        stores.clear();
+        stores.addAll(toShow);
+        notifyDataSetChanged();
+    }
+
+    public void showAllResults() {
+        stores.clear();
+        stores.addAll(allStores);
+        notifyDataSetChanged();
     }
 }

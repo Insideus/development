@@ -381,8 +381,8 @@
     <string name="logout_dialog_text">¿Está seguro que desea salir?</string>
     <string name="store_detail_no_phone_number_error">La tienda no tiene número de teléfono.</string>
     <string name="store_detail_no_location_error">La tienda no ha especificado su locación.</string>
-    <string name="search_hint">Buscar...</string>
-    <string name="qr_button_text">QR</string>
+    <string name="search_hint">Buscar…</string>
+    <string name="qr_button_text">Escanear</string>
     <string name="search_button_text">Buscar</string>
     <plurals name="configuration_not_added_text">
         <item quantity="one">Solo puedes agregar %1$d ítem de esta categoría.</item>
