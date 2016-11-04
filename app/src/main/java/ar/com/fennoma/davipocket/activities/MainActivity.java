@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.fragments.WithoutDeliveryStoreFragment;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.LocationUtils;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 
@@ -129,6 +130,19 @@ public class MainActivity extends BaseActivity {
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //TODO: Reemplazar por la acción real
+                DialogUtil.toast(MainActivity.this, "FUNCÓ", "", "");
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 
