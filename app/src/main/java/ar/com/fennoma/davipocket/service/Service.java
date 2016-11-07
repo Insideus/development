@@ -1463,7 +1463,7 @@ public class Service {
             params.add(lastDigitsParam);
             Pair<String, String> accountNumberParam = new Pair("account_number", accountLastDigits);
             params.add(accountNumberParam);
-            Pair<String, String> amountParam = new Pair("amount", CurrencyUtils.getCurrencyForStringJustDecimal(amount));
+            Pair<String, String> amountParam = new Pair("amount", CurrencyUtils.getCurrencyForStringWithDecimal(amount));
             params.add(amountParam);
             if(isUsdPayment) {
                 Pair<String, String> usdParam = new Pair("is_usd_payment", isUsdPayment.toString());
@@ -1690,7 +1690,7 @@ public class Service {
             params.add(lastDigitsParam);
             Pair<String, String> accountNumberParam = new Pair("account_number", accountLastDigits);
             params.add(accountNumberParam);
-            Pair<String, String> amountParam = new Pair("amount", CurrencyUtils.getCurrencyForStringJustDecimal(amount));
+            Pair<String, String> amountParam = new Pair("amount", CurrencyUtils.getCurrencyForStringWithDecimal(amount));
             params.add(amountParam);
             Pair<String, String> todo1Param = new Pair("todo1", todo1);
             params.add(todo1Param);

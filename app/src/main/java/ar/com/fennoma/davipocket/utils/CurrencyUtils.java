@@ -12,7 +12,7 @@ public class CurrencyUtils {
         return df.format(number);
     }
 
-    public static String getCurrencyForStringJustDecimal(Double number){
+    public static String getCurrencyForStringWithDecimal(Double number){
         if (number == null) {
             return "";
         }
@@ -28,4 +28,5 @@ public class CurrencyUtils {
         DecimalFormat df = new DecimalFormat("#,###,###,###,###,###,###,###");
         return df.format(number);
     }
+
 }

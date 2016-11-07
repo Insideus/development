@@ -203,4 +203,23 @@ public class StoreProduct implements Parcelable{
             return new StoreProduct[size];
         }
     };
+
+    public JSONObject toCartJson() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("product_id", id);
+            JSONArray configurationsArray = new JSONArray();
+            for(StoreConfiguration c : configurations) {
+                for(StoreConfigurationItem item : c.getConfigurations()) {
+                    JSONObject configJson = new JSONObject();
+                    configJson.put("configuration_id", item.getId());
+                    configurationsArray.put(configJson);
+                }
+            }
+            json.put("configurations", configurationsArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
 }

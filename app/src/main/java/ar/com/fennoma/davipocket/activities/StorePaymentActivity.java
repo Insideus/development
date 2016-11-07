@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -192,6 +193,7 @@ public class StorePaymentActivity extends BaseActivity {
         if(payButton == null){
             return;
         }
+        Log.d("SHOP_JSON", cart.toJson());
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -270,13 +272,13 @@ public class StorePaymentActivity extends BaseActivity {
         if(preCheckoutData.getInstallments() == null || preCheckoutData.getInstallments().isEmpty()){
             return;
         }
-        monthlyFee.setText(String.valueOf(preCheckoutData.getInstallments().get(monthlyFeeIndex)));
+        monthlyFee.setText(setSelectedInstallments());
         minusMonthlyFee.setEnabled(false);
         plusMonthlyFee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 monthlyFeeIndex++;
-                monthlyFee.setText(String.valueOf(preCheckoutData.getInstallments().get(monthlyFeeIndex)));
+                monthlyFee.setText(setSelectedInstallments());
                 if(monthlyFeeIndex + 1 == preCheckoutData.getInstallments().size()){
                     plusMonthlyFee.setEnabled(false);
                 }
@@ -290,7 +292,7 @@ public class StorePaymentActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 monthlyFeeIndex--;
-                monthlyFee.setText(String.valueOf(preCheckoutData.getInstallments().get(monthlyFeeIndex)));
+                monthlyFee.setText(setSelectedInstallments());
                 if(monthlyFeeIndex == 0){
                     minusMonthlyFee.setEnabled(false);
                 }
@@ -300,6 +302,11 @@ public class StorePaymentActivity extends BaseActivity {
                 cart.setSelectedInstallment(preCheckoutData.getInstallments().get(monthlyFeeIndex));
             }
         });
+    }
+
+    private String setSelectedInstallments() {
+        cart.setSelectedInstallment(preCheckoutData.getInstallments().get(monthlyFeeIndex));
+        return String.valueOf(preCheckoutData.getInstallments().get(monthlyFeeIndex));
     }
 
     private void setRecycler() {
@@ -386,7 +393,6 @@ public class StorePaymentActivity extends BaseActivity {
     }
 
     //La tarjeta que seleccionás es un eCard, te deshabilite las cuotas
-
     private void setSelectedCardData() {
         if(cart.getSelectedCard() == null) {
             cart.setSelectedCard(preCheckoutData.getCards().get(0));

@@ -3,6 +3,10 @@ package ar.com.fennoma.davipocket.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class Cart implements Parcelable {
@@ -142,4 +146,28 @@ public class Cart implements Parcelable {
             return new Cart[size];
         }
     };
+
+    public String toJson() {
+        String cartJson = "";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("store_id", store.getId());
+            json.put("amount", getCartPrice());
+            json.put("davipoints", cartDavipoints);
+            json.put("installments", selectedInstallment);
+            json.put("card_number", selectedCard.getLastDigits());
+            JSONArray productsJson = new JSONArray();
+            for(StoreProduct p : products) {
+                JSONObject productJson = p.toCartJson();
+                productsJson.put(productJson);
+            }
+            json.put("products", productsJson);
+            cartJson = json.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return cartJson;
+    }
+
 }
