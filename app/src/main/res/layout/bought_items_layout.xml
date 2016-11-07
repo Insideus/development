@@ -140,7 +140,6 @@
                                 android:gravity="center"
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
-                                android:text="190"
                                 android:textColor="@color/gray_text_color"
                                 android:textSize="@dimen/common_text_size" />
 
@@ -151,7 +150,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.33"
                                 android:gravity="center"
-                                android:text="$ 41.000"
                                 android:textColor="@color/gray_text_color"
                                 android:textSize="@dimen/common_text_size" />
 
@@ -162,7 +160,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.33"
                                 android:gravity="right"
-                                android:text="$ 60.000"
                                 android:textColor="@color/red_base_color"
                                 android:textSize="@dimen/common_text_size" />
 
@@ -181,7 +178,6 @@
                             android:gravity="right"
                             android:paddingRight="20dp"
                             android:paddingTop="10dp"
-                            android:text="UNICENTRO"
                             android:textColor="@color/common_dark_gray_color"
                             android:textSize="@dimen/common_text_size" />
 
@@ -193,7 +189,6 @@
                             android:gravity="right"
                             android:paddingBottom="10dp"
                             android:paddingRight="20dp"
-                            android:text="06 . JUN . 2016 / 09 : 30 AM"
                             android:textColor="@color/gray_text_color"
                             android:textSize="@dimen/common_text_size" />
 
@@ -426,7 +421,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="CALIFICAR E IR"
+                            android:text="@string/bought_items_go_home_button_title_1"
                             android:textColor="@color/common_dark_gray_color"
                             android:textSize="17dp" />
 
@@ -435,7 +430,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="-5dp"
-                            android:text="A HOME"
+                            android:text="@string/bought_items_go_home_button_title_2"
                             android:textColor="@color/red_base_color"
                             android:textSize="20dp" />
                     </LinearLayout>
@@ -465,7 +460,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="CALIFICAR Y REPETIR"
+                            android:text="@string/bought_items_repeat_purchase_button_title_1"
                             android:textColor="@color/common_dark_gray_color"
                             android:textSize="17dp" />
 
@@ -474,7 +469,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="-5dp"
-                            android:text="PEDIDO"
+                            android:text="@string/bought_items_repeat_purchase_button_title_2"
                             android:textColor="@color/red_base_color"
                             android:textSize="20dp" />
                     </LinearLayout>
@@ -521,7 +516,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/bottom_bar_davi_logo"
-            android:text="1.600"
             android:textAllCaps="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"

@@ -381,11 +381,15 @@
     <string name="logout_dialog_text">¿Está seguro que desea salir?</string>
     <string name="store_detail_no_phone_number_error">La tienda no tiene número de teléfono.</string>
     <string name="store_detail_no_location_error">La tienda no ha especificado su locación.</string>
-    <string name="search_hint">Buscar…</string>
+    <string name="main_search_hint">Buscar tienda…</string>
     <string name="qr_button_text">Escanear</string>
     <string name="search_button_text">Buscar</string>
     <string name="my_shops_title">MIS COMPRAS</string>
     <string name="my_shops_shop_item_delivery_title">ENTREGADO EN:</string>
+    <string name="bought_items_go_home_button_title_1">CALIFICAR E IR</string>
+    <string name="bought_items_go_home_button_title_2">A HOME</string>
+    <string name="bought_items_repeat_purchase_button_title_1">CALIFICAR Y REPETIR</string>
+    <string name="bought_items_repeat_purchase_button_title_2">PEDIDO</string>
     <plurals name="configuration_not_added_text">
         <item quantity="one">Solo puedes agregar %1$d ítem de esta categoría.</item>
         <item quantity="other">Solo puedes agregar %1$d ítems de esta categoría.</item>

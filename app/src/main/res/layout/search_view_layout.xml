@@ -8,7 +8,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="left"
     app:iconifiedByDefault="false"
+    app:defaultQueryHint="@string/main_search_hint"
     app:queryBackground="@android:color/transparent"
-    app:queryHint="@string/search_hint"
+    app:queryHint="@string/main_search_hint"
     app:searchIcon="@drawable/white_search_button"
     app:theme="@style/AppTheme.WidgetTheme"/>

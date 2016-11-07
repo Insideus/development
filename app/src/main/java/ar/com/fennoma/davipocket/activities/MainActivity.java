@@ -1,14 +1,18 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.Manifest;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -119,13 +123,15 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
         // Retrieve the SearchView and plug it into SearchManager
-        /*
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setQueryHint(getString(R.string.main_search_hint));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -144,8 +150,27 @@ public class MainActivity extends BaseActivity {
                 return false;
             }
         });
-        */
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                setItemsVisibility(menu, searchItem, false);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                setItemsVisibility(menu, searchItem, true);
+                return true;
+            }
+        });
         return true;
+    }
+
+    private void setItemsVisibility(Menu menu, MenuItem exception, boolean visible) {
+        for (int i=0; i<menu.size(); ++i) {
+            MenuItem item = menu.getItem(i);
+            if (item != exception) item.setVisible(visible);
+        }
     }
 
     @Override
