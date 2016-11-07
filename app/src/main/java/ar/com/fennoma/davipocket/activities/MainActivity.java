@@ -76,6 +76,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void failedGettingLocation() {
+                fragment.setLocation(null);
                 hideLoading();
             }
         }).locUpdate(2000, 1);
