@@ -8,14 +8,16 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ar.com.fennoma.davipocket.activities.StoreReceiptActivity;
-import ar.com.fennoma.davipocket.model.Cart;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.activities.StoreReceiptActivity;
+import ar.com.fennoma.davipocket.model.Cart;
 import ar.com.fennoma.davipocket.model.MyShopHolder;
+import ar.com.fennoma.davipocket.utils.CurrencyUtils;
+import ar.com.fennoma.davipocket.utils.DavipointUtils;
+import ar.com.fennoma.davipocket.utils.ImageUtils;
 
 public class MyShopsAdapter extends RecyclerView.Adapter<MyShopHolder>{
 
@@ -35,6 +37,11 @@ public class MyShopsAdapter extends RecyclerView.Adapter<MyShopHolder>{
     @Override
     public void onBindViewHolder(MyShopHolder holder, int position) {
         final Cart cart = shops.get(position);
+        if(cart.getStore().getLogo() != null && cart.getStore().getLogo().length() > 0) {
+            ImageUtils.loadImageFullURL(holder.brandLogo, cart.getStore().getLogo());
+        } else {
+            holder.brandLogo.setImageResource(R.drawable.placeholder_small);
+        }
         if(TextUtils.isEmpty(cart.getDeliveredTo())){
             holder.deliveryContainer.setVisibility(View.GONE);
         }else{
@@ -50,6 +57,11 @@ public class MyShopsAdapter extends RecyclerView.Adapter<MyShopHolder>{
                 activity.startActivity(new Intent(activity, StoreReceiptActivity.class).putExtras(bundle));
             }
         });
+        holder.daviPrice.setText(String.valueOf(cart.getCartDavipoints()));
+        Double cashAmount = DavipointUtils.cashDifference(cart.getCartPrice(), cart.getCartDavipoints());
+        holder.cashPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cashAmount)));
+        holder.brandName.setText(cart.getStore().getName());
+        holder.totalPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cart.getCartPrice())));
     }
 
     @Override

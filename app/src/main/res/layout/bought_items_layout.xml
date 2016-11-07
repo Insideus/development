@@ -59,6 +59,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="10dp"
@@ -91,9 +92,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
                 android:background="@drawable/white_rounded_corners_background"
                 android:orientation="vertical">
 
@@ -253,8 +254,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="5dp"
                 android:background="@drawable/white_left_rounded_corners_background"
                 android:orientation="vertical"
                 android:paddingBottom="20dp"
@@ -293,9 +294,10 @@
                 android:id="@+id/older_purchase_button_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="5dp"
+
                 android:background="@drawable/white_rounded_corners_background"
                 android:gravity="center"
                 android:paddingBottom="20dp"
@@ -306,9 +308,9 @@
                 <ImageView
                     android:id="@+id/repeat_purchase_button"
                     android:layout_width="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/repeat_purchase_button"/>
+                    android:layout_gravity="center"
+                    android:src="@drawable/repeat_purchase_button" />
 
             </FrameLayout>
 
@@ -317,7 +319,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/white_rounded_corners_background"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -351,7 +353,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/white_rounded_corners_background"
                 android:gravity="center"
                 android:orientation="vertical"

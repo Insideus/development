@@ -91,7 +91,4 @@ public class MyShopsActivity extends BaseActivity {
         adapter = new MyShopsAdapter(this);
         recycler.setAdapter(adapter);
     }
-
-
-
 }
