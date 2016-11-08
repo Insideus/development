@@ -18,7 +18,6 @@
         android:layout_height="match_parent" />
     <!-- The navigation drawer -->
 
-
     <LinearLayout
         android:id="@+id/name_container"
         android:layout_width="match_parent"

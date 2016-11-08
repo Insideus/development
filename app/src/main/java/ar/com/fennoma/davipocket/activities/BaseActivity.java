@@ -361,7 +361,10 @@ public class BaseActivity extends AppCompatActivity {
         View myCards = findViewById(R.id.my_cards_shortcut);
         View myShops = findViewById(R.id.my_shopping_shortcut);
         View help = findViewById(R.id.help_shortcut);
-        if (home == null || logout == null || myCards == null || help == null || myShops == null) {
+        View myAddresses = findViewById(R.id.my_addresses_shortcut);
+        View preferences = findViewById(R.id.preferences_shortcut);
+        if (home == null || logout == null || myCards == null || help == null || myShops == null || myAddresses == null
+                || preferences == null) {
             return;
         }
         help.setOnClickListener(new View.OnClickListener() {
@@ -370,6 +373,8 @@ public class BaseActivity extends AppCompatActivity {
                 insecureDevice();
             }
         });
+        myAddresses.setOnClickListener(null);
+        preferences.setOnClickListener(null);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
