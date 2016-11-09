@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.Selection;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -159,6 +160,9 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
 
     private Double getAmount() {
         String value = otherPaymentValue.getText().toString();
+        if(TextUtils.isEmpty(value)){
+            return null;
+        }
         value = value.replace(priceIndicator, "");
         value = value.replace(",", "");
         value = value.replace(".", "");

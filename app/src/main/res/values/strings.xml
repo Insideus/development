@@ -308,6 +308,7 @@
     <string name="e_card_recharge_max_value">50000</string>
     <string name="e_card_recharge_success_text">Su recarga fue realizada con éxito el día</string>
     <string name="insecure_device_explanation">Su dispositivo es inseguro para el uso\nde la aplicación. Corrobore que su celular no tiene\nMalwares antes de volver a abrir la aplicación.</string>
+    <string name="not_permissions_explanation">Para utilizar la aplicación debe aceptar los permisos requeridos.</string>
     <string name="insecure_device_button">CERRAR APLICACIÓN</string>
     <string name="new_device_detected_title">NUEVO</string>
     <string name="new_device_detected_subtitle">DISPOSITIVO</string>
@@ -398,5 +399,10 @@
         <item quantity="one">Debes agregar al menos %1$d ítem de la categoría %2$s.</item>
         <item quantity="other">Debes agregar al menos %1$d ítems de la categoría %2$s.</item>
     </plurals>
+    <plurals name="configuration_quantity_required_text">
+        <item quantity="one">(Elegir %1$d ítem)</item>
+        <item quantity="other">(Elegir %1$d ítems)</item>
+    </plurals>
+    <string name="configuration_quantity_text">(MIN. %1$d, MAX. %2$d)</string>
 
 </resources>

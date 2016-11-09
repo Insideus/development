@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +24,12 @@ import android.widget.TextView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnBackPressListener;
 
+import net.easysol.dsb.device_protector.SIMChangeListener;
+import net.easysol.dsb.malware_protector.overlay.OverlapingApp;
+import net.easysol.dsb.malware_protector.overlay.OverlayListener;
+
+import java.util.Map;
+
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
@@ -34,10 +41,11 @@ import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.controls.ComboHolder;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
-import ar.com.fennoma.davipocket.utils.Todo1Utils;
+import ar.com.fennoma.davipocket.utils.risk.EasySolutionsUtils;
+import ar.com.fennoma.davipocket.utils.risk.Todo1Utils;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements OverlayListener, SIMChangeListener {
 
     private static final int OTP_NEEDED = 181;
     public static final int SHOW_CREATED_ECARD_POPUP = 182;
@@ -52,6 +60,13 @@ public class BaseActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
 
     public OtpCodeReceived otpCodeReceived;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EasySolutionsUtils.setMalwareDetectedListener(getApplicationContext(), this);
+        EasySolutionsUtils.setSimChangeListener(getApplicationContext(), this);
+    }
 
     public static boolean checkPermission(String strPermission, Context context) {
         int result = ContextCompat.checkSelfPermission(context, strPermission);
@@ -367,12 +382,14 @@ public class BaseActivity extends AppCompatActivity {
                 || preferences == null) {
             return;
         }
+        /*
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 insecureDevice();
             }
         });
+        */
         myAddresses.setOnClickListener(null);
         preferences.setOnClickListener(null);
         home.setOnClickListener(new View.OnClickListener() {
@@ -555,6 +572,17 @@ public class BaseActivity extends AppCompatActivity {
         //Todo1Utils.destroyMobileSdk(this);
         hideLoading();
         super.onDestroy();
+    }
+
+    @Override
+    public void onSuspiciousOverlay(OverlapingApp overlapingApp) {
+        //overlapingApp.appName
+        insecureDevice();
+    }
+
+    @Override
+    public void onChangedSIM(Map<String, String> map) {
+
     }
 
     public void insecureDevice(){

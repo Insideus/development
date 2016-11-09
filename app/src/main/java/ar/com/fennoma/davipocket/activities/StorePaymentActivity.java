@@ -9,7 +9,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,12 +71,6 @@ public class StorePaymentActivity extends BaseActivity {
         if(cart == null) {
             cart = new Cart();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateDaviPoints();
     }
 
     @Override
@@ -193,13 +186,11 @@ public class StorePaymentActivity extends BaseActivity {
         if(payButton == null){
             return;
         }
-        Log.d("SHOP_JSON", cart.toJson());
+        //Log.d("SHOP_JSON", cart.toServiceParams());
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StorePaymentActivity.this, StoreReceiptActivity.class);
-                intent.putExtra(StoreReceiptActivity.CART_KEY, cart);
-                startActivity(intent);
+                new PayOrderTask().execute();
             }
         });
     }
@@ -455,4 +446,58 @@ public class StorePaymentActivity extends BaseActivity {
         }
 
     }
+
+    private class PayOrderTask extends AsyncTask<Void, Void, String> {
+
+        String errorCode;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String data = null;
+            try {
+                data = Service.payOrder(Session.getCurrentSession(getApplicationContext()).getSid(), cart);
+            } catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            hideLoading();
+            if(response == null || response.length() < 1){
+                //Hancdle invalid session error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if (error != null && error == ErrorMessages.INVALID_SESSION) {
+                    handleInvalidSessionError();
+                } else {
+                    showServiceGenericError();
+                }
+            } else {
+                cart.setReceiptNumber(response);
+                goToReceiptActivity();
+            }
+        }
+
+    }
+
+    private void goToReceiptActivity() {
+        Intent intent = new Intent(StorePaymentActivity.this, StoreReceiptActivity.class);
+        intent.putExtra(StoreReceiptActivity.CART_KEY, cart);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateDaviPoints();
+    }
+
 }

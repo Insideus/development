@@ -2,12 +2,15 @@ package ar.com.fennoma.davipocket.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.util.Pair;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 
 public class Cart implements Parcelable {
 
@@ -21,6 +24,7 @@ public class Cart implements Parcelable {
     private Integer starsGiven;
     private String deliveredTo;
     private String comment;
+    private String receiptNumber;
 
     public Store getStore() {
         return store;
@@ -70,17 +74,6 @@ public class Cart implements Parcelable {
         this.selectedCard = selectedCard;
     }
 
-    public void calculateCartPrice() {
-        Double price = 0d;
-        for(StoreProduct product : getProducts()) {
-            price += product.getSelectedProductPrice();
-        }
-        this.cartPrice = price;
-    }
-
-    public Cart() {
-    }
-
     public String getDeliveredTo() {
         return deliveredTo;
     }
@@ -105,6 +98,25 @@ public class Cart implements Parcelable {
         this.starsGiven = starsGiven;
     }
 
+    public String getReceiptNumber() {
+        return receiptNumber;
+    }
+
+    public void setReceiptNumber(String receiptNumber) {
+        this.receiptNumber = receiptNumber;
+    }
+
+    public void calculateCartPrice() {
+        Double price = 0d;
+        for(StoreProduct product : getProducts()) {
+            price += product.getSelectedProductPrice();
+        }
+        this.cartPrice = price;
+    }
+
+    public Cart() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -121,6 +133,7 @@ public class Cart implements Parcelable {
         dest.writeValue(this.starsGiven);
         dest.writeString(this.deliveredTo);
         dest.writeString(this.comment);
+        dest.writeString(this.receiptNumber);
     }
 
     protected Cart(Parcel in) {
@@ -133,6 +146,7 @@ public class Cart implements Parcelable {
         this.starsGiven = (Integer) in.readValue(Integer.class.getClassLoader());
         this.deliveredTo = in.readString();
         this.comment = in.readString();
+        this.receiptNumber = in.readString();
     }
 
     public static final Creator<Cart> CREATOR = new Creator<Cart>() {
@@ -147,27 +161,26 @@ public class Cart implements Parcelable {
         }
     };
 
-    public String toJson() {
-        String cartJson = "";
-        JSONObject json = new JSONObject();
-        try {
-            json.put("store_id", store.getId());
-            json.put("amount", getCartPrice());
-            json.put("davipoints", cartDavipoints);
-            json.put("installments", selectedInstallment);
-            json.put("card_number", selectedCard.getLastDigits());
-            JSONArray productsJson = new JSONArray();
-            for(StoreProduct p : products) {
-                JSONObject productJson = p.toCartJson();
-                productsJson.put(productJson);
-            }
-            json.put("products", productsJson);
-            cartJson = json.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
+    public List<Pair<String, String>> toServiceParams() {
+        List<Pair<String, String>> params = new ArrayList<>();
+        Pair<String, String> storeIdParam = new Pair("store_id", String.valueOf(store.getId()));
+        params.add(storeIdParam);
+        Pair<String, String> amountParam = new Pair("amount", CurrencyUtils.getCurrencyForStringWithDecimal(getCartPrice()));
+        params.add(amountParam);
+        Pair<String, String> davipointsParam = new Pair("davipoints", String.valueOf(cartDavipoints));
+        params.add(davipointsParam);
+        Pair<String, String> installmentsParam = new Pair("installments", String.valueOf(selectedInstallment));
+        params.add(installmentsParam);
+        Pair<String, String> cardNumberParam = new Pair("last_digits", selectedCard.getLastDigits());
+        params.add(cardNumberParam);
+        JSONArray productsJson = new JSONArray();
+        for(StoreProduct p : products) {
+            JSONObject productJson = p.toCartJson();
+            productsJson.put(productJson);
         }
-
-        return cartJson;
+        Pair<String, String> productsParam = new Pair("products", productsJson.toString());
+        params.add(productsParam);
+        return params;
     }
 
 }

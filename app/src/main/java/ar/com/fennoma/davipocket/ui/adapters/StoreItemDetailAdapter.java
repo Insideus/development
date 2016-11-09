@@ -1,5 +1,6 @@
 package ar.com.fennoma.davipocket.ui.adapters;
 
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +36,15 @@ public class StoreItemDetailAdapter extends RecyclerView.Adapter<StoreItemDetail
     public void onBindViewHolder(StoreItemDetailHolder holder, int position) {
         final StoreConfiguration configuration = itemsToShow.get(position);
         holder.title.setText(configuration.getSubType());
+        Resources res = activity.getResources();
+        String text = "";
+        if(configuration.getMinConfiguration() == configuration.getMaxConfiguration()) {
+            text = res.getQuantityString(R.plurals.configuration_quantity_required_text, configuration.getMaxConfiguration(), configuration.getMaxConfiguration());
+            holder.quantity.setText(text);
+        } else {
+            text = res.getString(R.string.configuration_quantity_text, configuration.getMinConfiguration(), configuration.getMaxConfiguration());
+            holder.quantity.setText(text);
+        }
         if(holder.container.getChildCount() > 1) {
             holder.container.removeViews(1, holder.container.getChildCount() - 1);
         }

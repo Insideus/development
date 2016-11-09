@@ -9,9 +9,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.splunk.mint.Mint;
 
-import net.easysol.dsb.DSB;
-
-import ar.com.fennoma.davipocket.constants.Constants;
+import ar.com.fennoma.davipocket.utils.risk.EasySolutionsUtils;
 
 /**
  * Created by Julian Vega on 06/07/2016.
@@ -21,26 +19,13 @@ public class DavipocketApplication extends MultiDexApplication {
     private static DavipocketApplication instance;
     private static ImageLoader imageManager;
 
-    /*
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        newConfig.locale = new Locale("es", "ES");
-        super.onConfigurationChanged(newConfig);
-        Locale.setDefault(newConfig.locale);
-        getBaseContext().getResources().updateConfiguration(newConfig, getResources().getDisplayMetrics());
-
-    }
-    */
-
     @Override
     public void onCreate() {
         super.onCreate();
-        //onConfigurationChanged(getBaseContext().getResources().getConfiguration());
         initFacebookSdk();
         Mint.initAndStartSession(this, "3cef664b");
+        EasySolutionsUtils.initEasySolution(this, getApplicationContext());
         initImageLoader();
-        //initEasySolution();
-        //initEasySolutionMalwareProtection();
         instance = this;
     }
 
@@ -61,14 +46,6 @@ public class DavipocketApplication extends MultiDexApplication {
                 .build();
         imageManager = ImageLoader.getInstance();
         imageManager.init(config);
-    }
-
-    private void initEasySolution() {
-        DSB.sdk(this).init(Constants.EASY_SOLUTIONS_DESARROLLO_LICENCIA);
-    }
-
-    private void initEasySolutionMalwareProtection() {
-        DSB.sdk(this).MALWARE_PROTECTOR_API.startOverlappingProtection(this);
     }
 
     public static DavipocketApplication getInstance(){

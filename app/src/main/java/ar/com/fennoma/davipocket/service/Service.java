@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.model.Card;
+import ar.com.fennoma.davipocket.model.Cart;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.MyCardsResponse;
 import ar.com.fennoma.davipocket.model.PaymentDetail;
@@ -39,7 +40,7 @@ import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 public class Service {
 
     //private static String BASE_URL = "http://davipocket-stg.paymentez.com/api";
-    private final static String BASE_URL = "http://davipocket-dev.paymentez.com/api";
+    public final static String BASE_URL = "http://davipocket-dev.paymentez.com/api";
     //private static String BASE_URL = "http://davivienda.fennoma.com.ar/api";
     public final static String IMAGE_BASE_URL = "http://davipocket-dev.paymentez.com";
     private final static int CONNECTION_TIMEOUT = 30000;
@@ -99,6 +100,7 @@ public class Service {
 
     //Order
     private static final String PRE_CHECKOUT = "/order/pre_checkout";
+    private static final String PAY_ORDER = "/order/pay";
 
     public static JSONObject getPersonIdTypes() {
         HttpURLConnection urlConnection = null;
@@ -1726,44 +1728,6 @@ public class Service {
         return response;
     }
 
-    private static void addOtpParamIsNeeded(List<Pair<String, String>> params, String otpCode) {
-        if(otpCode != null && otpCode.length() > 0) {
-            Pair<String, String> otpParam = new Pair("otp_pin", otpCode);
-            params.add(otpParam);
-        }
-    }
-
-    @NonNull
-    private static HttpURLConnection getHttpURLConnection(String method) throws IOException {
-        URL url = new URL(BASE_URL + method);
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        if (Build.VERSION.SDK != null && Build.VERSION.SDK_INT > 13) {
-            urlConnection.setRequestProperty("Connection", "close");
-        }
-        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
-        urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
-        return urlConnection;
-    }
-
-    @NonNull
-    private static HttpURLConnection getHttpURLConnectionWithHeader(String method, String token) throws IOException {
-        URL url = new URL(BASE_URL + method);
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.setRequestProperty("sid", token);
-        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
-        urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
-        return urlConnection;
-    }
-
-    @NonNull
-    private static HttpURLConnection getHttpURLConnection(String sid, String getCardMovements) throws IOException {
-        HttpURLConnection urlConnection = getHttpURLConnectionWithHeader(getCardMovements, sid);
-        urlConnection.setRequestMethod("POST");
-        urlConnection.setDoInput(true);
-        urlConnection.setDoOutput(true);
-        return urlConnection;
-    }
-
     public static List<Store> getStoresWithoutDelivery(String sid, String latitude, String longitude) throws ServiceException {
         List<Store> response = null;
         HttpURLConnection urlConnection = null;
@@ -1898,4 +1862,84 @@ public class Service {
         }
         return response;
     }
+
+    public static String payOrder(String sid, Cart cart) throws ServiceException {
+        String response = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(PAY_ORDER, sid);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = cart.toServiceParams();
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                if (json.has("error") && !json.getBoolean("error")) {
+                    response = responseJson.getString("id");
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    private static void addOtpParamIsNeeded(List<Pair<String, String>> params, String otpCode) {
+        if(otpCode != null && otpCode.length() > 0) {
+            Pair<String, String> otpParam = new Pair("otp_pin", otpCode);
+            params.add(otpParam);
+        }
+    }
+
+    @NonNull
+    private static HttpURLConnection getHttpURLConnection(String method) throws IOException {
+        URL url = new URL(BASE_URL + method);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        if (Build.VERSION.SDK != null && Build.VERSION.SDK_INT > 13) {
+            urlConnection.setRequestProperty("Connection", "close");
+        }
+        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+        urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
+        return urlConnection;
+    }
+
+    @NonNull
+    private static HttpURLConnection getHttpURLConnectionWithHeader(String method, String token) throws IOException {
+        URL url = new URL(BASE_URL + method);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestProperty("sid", token);
+        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+        urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
+        return urlConnection;
+    }
+
+    @NonNull
+    private static HttpURLConnection getHttpURLConnection(String sid, String getCardMovements) throws IOException {
+        HttpURLConnection urlConnection = getHttpURLConnectionWithHeader(getCardMovements, sid);
+        urlConnection.setRequestMethod("POST");
+        urlConnection.setDoInput(true);
+        urlConnection.setDoOutput(true);
+        return urlConnection;
+    }
+
 }

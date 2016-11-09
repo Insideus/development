@@ -1,7 +1,9 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -14,7 +16,8 @@ import ar.com.fennoma.davipocket.tasks.GetInitDataTask;
 import ar.com.fennoma.davipocket.tasks.TaskCallback;
 import ar.com.fennoma.davipocket.utils.ConnectionUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
-import ar.com.fennoma.davipocket.utils.Todo1Utils;
+import ar.com.fennoma.davipocket.utils.risk.EasySolutionsUtils;
+import ar.com.fennoma.davipocket.utils.risk.RiskUtils;
 
 public class SplashActivity extends BaseActivity {
 
@@ -31,25 +34,39 @@ public class SplashActivity extends BaseActivity {
         }
         splashLoading = findViewById(R.id.splash_loading);
         startAnimating();
-        checkInternetConnection();
-        //String deviceId = EasySolutionsUtils.getDeviceId(this);
-        //EasySolutionsUtils.scanDeviceStatus(this);
-        //EasySolutionsUtils.scanDeviceHosts(this);
-        Todo1Utils.initMobileSdk(this);
+        if(RiskUtils.requestPermissions(this)) {
+            checkInternetConnection();
+        }
     }
 
     private void checkInternetConnection() {
-        if(ConnectionUtils.checkInternetConnection()){
-            GetInitDataTask task = new GetInitDataTask(this, false, new TaskCallback() {
-                @Override
-                public void execute(Object result) {
-                    goToLoginOrHome();
-                }
-            });
-            task.execute();
+        if(isInsecureDevice()) {
+            insecureDevice();
         } else {
-            DialogUtil.noConnectionDialog(this, RETRY_CONNECTION_REQUEST);
+            if (ConnectionUtils.checkInternetConnection()) {
+                GetInitDataTask task = new GetInitDataTask(this, false, new TaskCallback() {
+                    @Override
+                    public void execute(Object result) {
+                        goToLoginOrHome();
+                    }
+                });
+                task.execute();
+            } else {
+                DialogUtil.noConnectionDialog(this, RETRY_CONNECTION_REQUEST);
+            }
         }
+    }
+
+    private boolean isInsecureDevice() {
+        if(!EasySolutionsUtils.isSecure(getApplicationContext())) {
+            return true;
+        }
+        /*
+        if(!EasySolutionsUtils.isSecureCertificate(getApplicationContext())) {
+            return true;
+        }
+        */
+        return false;
     }
 
     private void goToLoginOrHome() {
@@ -77,6 +94,38 @@ public class SplashActivity extends BaseActivity {
         an.setFillAfter(false);
         an.setInterpolator(new LinearInterpolator());
         splashLoading.setAnimation(an);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == RiskUtils.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS) {
+            if(checkPermissionsResult(grantResults)) {
+                checkInternetConnection();
+            } else {
+                noPermissionGranteed();
+            }
+        }
+    }
+
+    private boolean checkPermissionsResult(int[] grantResults) {
+        boolean result = false;
+        for(int i = 0; i < grantResults.length; i++) {
+            if(grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                result = true;
+            } else {
+                return false;
+            }
+        }
+        return result;
+    }
+
+    private void noPermissionGranteed() {
+        Intent intent = new Intent(this, InsecureDeviceActivity.class);
+        intent.putExtra(InsecureDeviceActivity.PERMISSIONS_KEY, true);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     @Override

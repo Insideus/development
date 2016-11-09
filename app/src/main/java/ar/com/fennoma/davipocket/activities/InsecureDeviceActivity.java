@@ -3,22 +3,42 @@ package ar.com.fennoma.davipocket.activities;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.TextView;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.session.Session;
 
 public class InsecureDeviceActivity extends BaseActivity {
+
+    public static final String PERMISSIONS_KEY = "permissions_key";
+
+    private Boolean permissionsProblem = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            permissionsProblem = savedInstanceState.getBoolean(PERMISSIONS_KEY, false);
+        } else {
+            permissionsProblem = getIntent().getBooleanExtra(PERMISSIONS_KEY, false);
+        }
         setContentView(R.layout.insecure_device_layout);
+        setToolbar(R.id.toolbar_layout, true, getString(R.string.app_name).toUpperCase());
+        setLayoutText();
         setButton();
+    }
+
+    private void setLayoutText() {
+        if(permissionsProblem) {
+            TextView text = (TextView) findViewById(R.id.text);
+            text.setText(getString(R.string.not_permissions_explanation));
+        }
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Session.getCurrentSession(this).logout();
+        //super.onBackPressed();
+        new LogoutAndCloseApp().execute();
     }
 
     private void setButton() {

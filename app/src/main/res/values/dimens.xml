@@ -60,5 +60,7 @@
     <dimen name="store_medium_spacing">10dp</dimen>
     <dimen name="store_small_spacing">5dp</dimen>
     <dimen name="store_large_spacing">15dp</dimen>
+    <dimen name="configuration_quantity_text_size">10dp</dimen>
+    <dimen name="configuration_name_text_size">14dp</dimen>
 
 </resources>

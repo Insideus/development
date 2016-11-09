@@ -120,6 +120,8 @@ public class StoreReceiptActivity extends BaseActivity{
         ImageUtils.loadCardImage(this, cardLogo, cart.getSelectedCard().getBin().getImage());
         fourDigits.setText(cart.getSelectedCard().getLastDigits());
 
+        TextView receiptNumber = (TextView) findViewById(R.id.receipt_number);
+        receiptNumber.setText(cart.getReceiptNumber());
     }
 
     private void setButtons() {
