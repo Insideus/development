@@ -1,5 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ public class NewEcardDialogActivity extends BaseActivity {
     public static final int RESULT_FAILED = -2;
 
     private Card card;
+    private Intent intent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class NewEcardDialogActivity extends BaseActivity {
         TextView textTv = (TextView) findViewById(R.id.new_ecard_text);
         if(card.getAvailableNow()) {
             textTv.setText(getString(R.string.new_ecard_text));
+            intent = new Intent();
+            intent.putExtra(FIRST_LOGIN_WITH_E_CARD, card);
         } else {
             textTv.setText(getString(R.string.new_ecard_24hs_text));
         }
@@ -77,7 +81,11 @@ public class NewEcardDialogActivity extends BaseActivity {
     }
 
     private void closeDialog() {
-        setResult(RESULT_OK);
+        if(intent == null) {
+            setResult(RESULT_OK);
+        } else {
+            setResult(RESULT_OK, intent);
+        }
         finish();
     }
 

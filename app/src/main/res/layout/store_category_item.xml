@@ -25,6 +25,7 @@
         android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
         android:text="FLAT WHITE"
+        android:lines="2"
         android:textAllCaps="true"
         android:textColor="@color/common_dark_gray_color"
         android:textSize="@dimen/store_category_item_title_size" />

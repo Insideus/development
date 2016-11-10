@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.fragments.WithoutDeliveryStoreFragment;
+import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.utils.LocationUtils;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 
@@ -31,9 +32,25 @@ public class MainActivity extends BaseActivity {
     private WithoutDeliveryStoreFragment fragment;
     private LatLng latLng;
 
+    private boolean shouldRecreate = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getIntent() != null && getIntent().getParcelableExtra(FIRST_LOGIN_WITH_E_CARD) != null){
+            handleIntent();
+            shouldRecreate = true;
+            return;
+        }
+        createScreen();
+    }
+
+    private void handleIntent() {
+        Card eCard = getIntent().getParcelableExtra(FIRST_LOGIN_WITH_E_CARD);
+        startActivity(new Intent(this, ECardRechargeActivity.class).putExtra(FIRST_LOGIN_WITH_E_CARD, eCard));
+    }
+
+    private void createScreen(){
         setContentView(R.layout.activity_main);
         findFragment();
         checkLocationPermissions();
@@ -56,6 +73,10 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(shouldRecreate){
+            createScreen();
+            shouldRecreate = false;
+        }
         updateDaviPoints();
         fragment.setLocation(latLng);
     }

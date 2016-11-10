@@ -24,16 +24,13 @@ import ar.com.fennoma.davipocket.utils.DialogUtil;
 public class ECardRechargeActivity extends AbstractPayActivity implements BaseActivity.OtpCodeReceived {
 
     private EditText otherPaymentValue;
+    private boolean justCreatedECard = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.e_card_recharge_activity);
-        if (savedInstanceState != null) {
-            card = savedInstanceState.getParcelable(CARD_KEY);
-        } else {
-            card = getIntent().getParcelableExtra(CARD_KEY);
-        }
+        handleIntent(savedInstanceState);
         priceIndicator = getString(R.string.card_detail_item_transaction_price_indicator);
         setToolbar(R.id.toolbar_layout, true, getString(R.string.e_card_title));
         TextView cardTitle = (TextView) findViewById(R.id.card_title);
@@ -41,6 +38,22 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
         setLayouts();
         setOtpCodeReceived(this);
         new GetCardPayDetail().execute();
+    }
+
+    private void handleIntent(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            card = savedInstanceState.getParcelable(CARD_KEY);
+        } else {
+            card = getIntent().getParcelableExtra(CARD_KEY);
+        }
+        if (card == null) {
+            justCreatedECard = true;
+            if(savedInstanceState != null){
+                card = savedInstanceState.getParcelable(FIRST_LOGIN_WITH_E_CARD);
+            } else {
+                card = getIntent().getParcelableExtra(FIRST_LOGIN_WITH_E_CARD);
+            }
+        }
     }
 
     @Override
@@ -153,6 +166,11 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
             new RechargeECardTask(getAmount(), null).execute();
         }
         if (requestCode == ON_CLOSE_REQUEST && resultCode == RESULT_OK) {
+            if(justCreatedECard){
+                finish();
+                goToHome();
+                return;
+            }
             setResult(RESULT_OK);
             finish();
         }

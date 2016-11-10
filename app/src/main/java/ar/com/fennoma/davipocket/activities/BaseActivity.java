@@ -52,6 +52,9 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     private static final int LOGOUT_REQUEST = 183;
     protected static final int CLOSE_ACTIVITY_REQUEST = 100;
 
+    protected static final String FIRST_LOGIN_WITH_E_CARD = "first login with eCard";
+
+
     protected DialogPlus dialogPlus;
     private Dialog loadingDialog = null;
     private Handler loadingHandler = null;
