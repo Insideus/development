@@ -405,4 +405,9 @@
     </plurals>
     <string name="configuration_quantity_text">(MIN. %1$d, MAX. %2$d)</string>
 
+    <string name="otp_payment_subtitle">GENERAR CÓDIGO DE PAGO</string>
+    <string name="otp_payment_receipt_title">INFORME ESTE CÓDIGO AL ESTRABLECIMIENTO</string>
+    <string name="otp_payment_start_counter_text">0:00</string>
+    <string name="otp_payment_end_counter_text">4:00</string>
+
 </resources>

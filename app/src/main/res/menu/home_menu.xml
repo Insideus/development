@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item android:id="@+id/action_search"
         android:title="@string/search_button_text"
         android:icon="@drawable/white_search_button"
@@ -8,7 +9,7 @@
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView"/>
 
-    <item android:id="@+id/phone"
+    <item android:id="@+id/otp_pay"
         android:orderInCategory="0"
         android:icon="@drawable/home_phone_context_button"
         android:title="@string/qr_button_text"

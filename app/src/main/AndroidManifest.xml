@@ -327,6 +327,14 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar.DarkTranslucent">
         </activity>
 
+        <activity
+            android:name=".activities.OtpPaymentActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <!-- Easy Solutions Services and activities-->
         <service android:name="net.easysol.dsb.UpdateService"/>
 

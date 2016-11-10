@@ -188,6 +188,15 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.otp_pay) {
+            startActivity(new Intent(this, OtpPaymentActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setItemsVisibility(Menu menu, MenuItem exception, boolean visible) {
         for (int i=0; i<menu.size(); ++i) {
             MenuItem item = menu.getItem(i);

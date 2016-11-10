@@ -80,6 +80,7 @@ public class Service {
     private final static String ACCEPT_NEW_DEVICE = "/user/accept_new_device";
     private final static String RESEND_NEW_DEVICE_OTP = "/user/generate_otp_new_device"; //<<<
     private final static String ECARD_STEP = "/user/ecard_step";
+    private final static String CARDS_TO_PAY = "/user/cards_to_pay";
 
     //Card services
     private final static String ACTIVATE_CARD = "/card/activate";
@@ -1889,6 +1890,37 @@ public class Service {
                 JSONObject responseJson = json.getJSONObject(DATA_TAG);
                 if (json.has("error") && !json.getBoolean("error")) {
                     response = responseJson.getString("id");
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static ArrayList<Card> cardsToPay(String sid) throws ServiceException {
+        ArrayList<Card> response = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(CARDS_TO_PAY, sid);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                if (json.has("error") && !json.getBoolean("error")) {
+                    response = Card.fromJsonArray(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     throw new ServiceException(errorCode);
