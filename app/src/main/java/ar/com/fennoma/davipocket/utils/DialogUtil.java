@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.activities.LoginConfirmationActivity;
 import ar.com.fennoma.davipocket.activities.ToastDialogActivity;
 
 public class DialogUtil {
@@ -148,4 +149,11 @@ public class DialogUtil {
         activity.overridePendingTransition(0, 0);
     }
 
+    public static void showKeyBoard(Activity activity) {
+        View currentFocus = activity.getCurrentFocus();
+        if(currentFocus == null){
+            return;
+        }
+        ((InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(currentFocus, 0);
+    }
 }

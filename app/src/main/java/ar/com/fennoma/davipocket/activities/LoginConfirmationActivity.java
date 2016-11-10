@@ -74,9 +74,7 @@ public class LoginConfirmationActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(dialogPlus != null && dialogPlus.isShowing()) {
-
-        } else {
+        if (dialogPlus == null || !dialogPlus.isShowing()) {
             super.onBackPressed();
         }
     }
@@ -84,6 +82,14 @@ public class LoginConfirmationActivity extends BaseActivity {
     private void setInputLayouts() {
         mail = (EditText) findViewById(R.id.mail);
         phone = (EditText) findViewById(R.id.phone);
+        phone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b){
+                    DialogUtil.showKeyBoard(LoginConfirmationActivity.this);
+                }
+            }
+        });
         if(isFacebookLoggedIn()) {
             getUserDataFromFacebook();
         }
@@ -210,9 +216,16 @@ public class LoginConfirmationActivity extends BaseActivity {
         selectedCountryText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                DialogUtil.hideKeyboard(LoginConfirmationActivity.this);
-                showCombo();
+                showCountriesCombo();
                 return false;
+            }
+        });
+        selectedCountryText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if(hasFocus){
+                    showCountriesCombo();
+                }
             }
         });
         ArrayList<Country> countries = Session.getCurrentSession(this).getCountries();
@@ -220,6 +233,11 @@ public class LoginConfirmationActivity extends BaseActivity {
             selectedCountry = countries.get(0);
             setSelectedCountryName();
         }
+    }
+
+    private void showCountriesCombo() {
+        DialogUtil.hideKeyboard(LoginConfirmationActivity.this);
+        showCombo();
     }
 
     public void showCombo() {
@@ -244,12 +262,14 @@ public class LoginConfirmationActivity extends BaseActivity {
                 selectedCountry = adapter.selectedType;
                 setSelectedCountryName();
                 dialog.dismiss();
+                phone.requestFocus();
             }
         });
         footerView.findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                phone.requestFocus();
             }
         });
         dialog.show();
