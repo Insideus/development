@@ -13,91 +13,105 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
-    <ImageView
-        android:id="@+id/login_header"
+    <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/toolbar_layout"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/login_header" />
+        android:fillViewport="true"
+        android:layout_above="@+id/login_footer">
 
-    <ImageView
-        android:id="@+id/login_app_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar_layout"
-        android:layout_marginTop="@dimen/title_fixed_margin_top"
-        android:adjustViewBounds="true"
-        android:paddingLeft="@dimen/login_side_padding"
-        android:paddingRight="@dimen/login_side_padding"
-        android:scaleType="fitXY"
-        android:src="@drawable/login_app_name" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/login_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/login_header" />
+
+            <ImageView
+                android:id="@+id/login_app_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/title_fixed_margin_top"
+                android:adjustViewBounds="true"
+                android:paddingLeft="@dimen/login_side_padding"
+                android:paddingRight="@dimen/login_side_padding"
+                android:scaleType="fitXY"
+                android:src="@drawable/login_app_name" />
 
 
-    <EditText
-        android:id="@+id/code"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:padding="10dp"
-        android:layout_below="@+id/login_app_name"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/code_number_background"
-        android:inputType="number"
-        android:maxLength="6"
-        android:gravity="center"
-        android:singleLine="true"
-        android:textColor="@color/red_base_color"
-        android:textSize="@dimen/number_code_text_size" />
+            <EditText
+                android:id="@+id/code"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:padding="10dp"
+                android:layout_below="@+id/login_app_name"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/code_number_background"
+                android:inputType="number"
+                android:maxLength="6"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/red_base_color"
+                android:textSize="@dimen/number_code_text_size" />
 
-    <TextView
-        fontPath="fonts/MyriadPro-Regular.otf"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_below="@id/code"
-        android:layout_above="@id/send_button"
-        android:text="@string/otp_confirmation_subtitle_hint"
-        android:textColor="@color/gray_text_color"
-        android:textSize="@dimen/common_text_size" />
+            <TextView
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_below="@id/code"
+                android:layout_above="@id/send_button"
+                android:text="@string/otp_confirmation_subtitle_hint"
+                android:textColor="@color/gray_text_color"
+                android:textSize="@dimen/common_text_size" />
 
-    <TextView
-        android:id="@+id/resend_sms"
-        fontPath="fonts/MyriadPro-Regular.otf"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginLeft="@dimen/button_without_cardview_padding"
-        android:layout_marginRight="@dimen/button_without_cardview_padding"
-        android:background="@drawable/white_center_red_border_selector"
-        android:gravity="center_vertical|start"
-        android:padding="15dp"
-        android:layout_above="@+id/login_footer"
-        android:layout_marginBottom="@dimen/login_input_margin_top"
-        android:text="@string/otp_resend_sms"
-        android:textColor="@color/login_button_color"
-        android:textSize="@dimen/login_input_text_size" />
+            <TextView
+                android:id="@+id/resend_sms"
+                fontPath="fonts/MyriadPro-Regular.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginLeft="@dimen/button_without_cardview_padding"
+                android:layout_marginRight="@dimen/button_without_cardview_padding"
+                android:background="@drawable/white_center_red_border_selector"
+                android:gravity="center_vertical|start"
+                android:padding="15dp"
+                android:layout_marginBottom="@dimen/login_input_margin_top"
+                android:text="@string/otp_resend_sms"
+                android:textColor="@color/login_button_color"
+                android:layout_alignParentBottom="true"
+                android:textSize="@dimen/login_input_text_size" />
 
-    <TextView
-        android:id="@+id/send_button"
-        fontPath="fonts/MyriadPro-Semibold.otf"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_above="@+id/resend_sms"
-        android:layout_marginBottom="@dimen/login_input_margin_top"
-        android:layout_marginLeft="@dimen/button_without_cardview_padding"
-        android:layout_marginRight="@dimen/button_without_cardview_padding"
-        android:layout_marginTop="@dimen/login_input_margin_top"
-        android:background="@drawable/red_button_background"
-        android:padding="15dp"
-        android:text="@string/password_confirmation_send_button"
-        android:textColor="@color/login_button_text_color"
-        android:textSize="@dimen/login_input_text_size"
-        android:textStyle="bold" />
+            <TextView
+                android:id="@+id/send_button"
+                fontPath="fonts/MyriadPro-Semibold.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_above="@+id/resend_sms"
+                android:layout_marginBottom="@dimen/login_input_margin_top"
+                android:layout_marginLeft="@dimen/button_without_cardview_padding"
+                android:layout_marginRight="@dimen/button_without_cardview_padding"
+                android:layout_marginTop="@dimen/login_input_margin_top"
+                android:background="@drawable/red_button_background"
+                android:padding="15dp"
+                android:text="@string/password_confirmation_send_button"
+                android:textColor="@color/login_button_text_color"
+                android:textSize="@dimen/login_input_text_size"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
     <ImageView
         android:id="@+id/login_footer"

@@ -21,11 +21,6 @@ public class EasySolutionsUtils extends RiskUtils {
         initEasySolutionMalwareProtection(app, ctx);
     }
 
-    /*
-    private void setEventReportingEnabled(Context ctx) {
-    }
-    */
-
     public static void initEasySolutionMalwareProtection(Application application, Context ctx) {
         DSB.sdk(ctx).MALWARE_PROTECTOR_API.startOverlappingProtection(application);
     }
@@ -39,7 +34,11 @@ public class EasySolutionsUtils extends RiskUtils {
     }
 
     public static boolean isSecureCertificate(Context ctx) {
-        return DSB.sdk(ctx).CONNECTION_PROTECTOR_API.isSecureCertificate(Service.BASE_URL);
+        if(Service.BASE_URL.startsWith("https")) {
+            return DSB.sdk(ctx).CONNECTION_PROTECTOR_API.isSecureCertificate(Service.BASE_URL);
+        } else {
+            return true;
+        }
     }
 
     public static void setSimChangeListener(Context ctx, SIMChangeListener listener) {

@@ -61,11 +61,9 @@ public class SplashActivity extends BaseActivity {
         if(!EasySolutionsUtils.isSecure(getApplicationContext())) {
             return true;
         }
-        /*
         if(!EasySolutionsUtils.isSecureCertificate(getApplicationContext())) {
             return true;
         }
-        */
         return false;
     }
 

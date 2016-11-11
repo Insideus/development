@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.BoolRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -502,7 +501,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cardNumberInput.getText().length() != 16) {
+                if (cardNumberInput.getText().length() > 13 && cardNumberInput.getText().length() < 17) {
                     Bundle bundle = new Bundle();
                     bundle.putString(ERROR_MESSAGE, getString(R.string.card_action_not_valid_card_number_error));
                     setResult(RESULT_FAILED, new Intent().putExtras(bundle));

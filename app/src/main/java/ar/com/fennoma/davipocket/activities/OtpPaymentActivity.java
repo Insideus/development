@@ -6,7 +6,6 @@ import android.os.CountDownTimer;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,19 +24,20 @@ import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 
 public class OtpPaymentActivity extends BaseActivity {
 
     public static final String CARDS_KEY = "cards_key";
     public static final String SELECTED_CARD_KEY = "selected_card_key";
+    private static int TIME_TO_USE = 240000;
 
     private ArrayList<Card> cards = new ArrayList<>();
     private Card selectedCard;
 
     private ImageView cardLogo;
     private TextView fourDigits;
-    //private ProgressBar progressBar;
     private MyCountDownTimer myCountDownTimer;
     private MagicProgressBar progressBar;
 
@@ -84,8 +84,7 @@ public class OtpPaymentActivity extends BaseActivity {
         getOtpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //progressBar.setMax(240000);
-                myCountDownTimer = new MyCountDownTimer(240000, 1000);
+                myCountDownTimer = new MyCountDownTimer(TIME_TO_USE, 1000);
                 myCountDownTimer.start();
                 //new PayOrderTask().execute();
             }
@@ -277,23 +276,33 @@ public class OtpPaymentActivity extends BaseActivity {
 
         public MyCountDownTimer(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
+            findViewById(R.id.receipt_number_layout).setVisibility(View.VISIBLE);
+            findViewById(R.id.card_container).setEnabled(false);
+            findViewById(R.id.get_otp_button).setEnabled(false);
         }
 
         @Override
         public void onTick(long millisUntilFinished) {
-            float total = 240000;
             float division = 240000;
-            float progress = ((total - Float.valueOf(millisUntilFinished)) / division);
-            Log.d("Progress", String.valueOf(progress));
-            //progressBar.setProgress(progressBar.getMax() - progress);
+            float progress = ((TIME_TO_USE - Float.valueOf(millisUntilFinished)) / division);
             progressBar.setPercent(progress);
         }
 
         @Override
         public void onFinish() {
-            finish();
+            findViewById(R.id.receipt_number_layout).setVisibility(View.GONE);
+            findViewById(R.id.card_container).setEnabled(true);
+            findViewById(R.id.get_otp_button).setEnabled(true);
+            showNotUsedMessage();
         }
 
+    }
+
+    private void showNotUsedMessage() {
+        DialogUtil.toast(this,
+                getString(R.string.otp_payment_not_use_title),
+                "",
+                getString(R.string.otp_payment_not_use_text));
     }
 
     @Override
