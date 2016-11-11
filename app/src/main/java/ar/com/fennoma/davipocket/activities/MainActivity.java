@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         findFragment();
         checkLocationPermissions();
-        setToolbar();
+        setToolbar(R.id.toolbar, false, getString(R.string.main_activity_title));
         checkForTour();
     }
 
@@ -101,18 +101,6 @@ public class MainActivity extends BaseActivity {
                 hideLoading();
             }
         }).locUpdate(2000, 1);
-    }
-
-    private void setToolbar(){
-        View toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar((Toolbar) toolbar);
-        hideTitle();
-        setNavigationDrawer(R.id.drawer_layout, R.id.toolbar, true);
-        ImageView logo = (ImageView) toolbar.findViewById(R.id.toolbar_logo);
-        if(logo == null){
-            return;
-        }
-        logo.setImageResource(R.drawable.home_toolbar_logo);
     }
 
     private void checkForTour() {

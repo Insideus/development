@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Davipocket</string>
+    <string name="app_name">DaviPay</string>
     <string name="facebook_app_id">631326240376633</string>
     <string name="google_maps_api_key">AIzaSyDprT-uMwe012dmqLQ3RiisRj82ujcK4VA</string>
 
@@ -15,7 +15,7 @@
     <string name="token_login_header">Header</string>
 
     <!-- Main Activity -->
-    <string name="main_activity_title">DAVIPOCKET</string>
+    <string name="main_activity_title">DAVIPAY</string>
     <string name="logout_button_text">LOGOUT</string>
 
     <!-- Facebook Login -->
@@ -138,11 +138,11 @@
     <string name="help_dialog_title_1">AYUDA</string>
     <string name="help_dialog_title_2">CLAVE VIRTUAL</string>
     <string name="rate_app_dialog_title_1">VALORAR</string>
-    <string name="rate_app_dialog_title_2">DAVIPOCKET</string>
-    <string name="rate_app_dialog_text">!Gracias! Nos alegra saber que su\nexperiencia con DaviPocket ha sido\nbuena. Sería muy útil contar con sus\ncomentarios y sugerencias.</string>
+    <string name="rate_app_dialog_title_2">DAVIPAY</string>
+    <string name="rate_app_dialog_text">!Gracias! Nos alegra saber que su\nexperiencia con DaviPay ha sido\nbuena. Sería muy útil contar con sus\ncomentarios y sugerencias.</string>
     <string name="rate_app_dialog_cancel_button">NO, GRACIAS</string>
     <string name="rate_app_dialog_remember_later_button">RECORDÁRMELO MÁS TARDE</string>
-    <string name="rate_app_dialog_rate_button">VALORAR DAVIPOCKET</string>
+    <string name="rate_app_dialog_rate_button">VALORAR DAVIPAY</string>
 
     <string name="invalid_session_title">ERROR</string>
     <string name="invalid_session_subtitle">SESIÓN INVÁLIDA</string>
