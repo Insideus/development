@@ -250,8 +250,8 @@ public class StoreDetailActivity extends BaseActivity {
                         getString(R.string.store_detail_no_items_selected));
                 return true;
             }
-            Intent intent = new Intent(this, StorePaymentActivity.class);
-            intent.putExtra(StorePaymentActivity.CART_KEY, cart);
+            Intent intent = new Intent(this, OrderPaymentActivity.class);
+            intent.putExtra(OrderPaymentActivity.CART_KEY, cart);
             startActivity(intent);
             return true;
         }

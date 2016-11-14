@@ -412,4 +412,14 @@
     <string name="otp_payment_not_use_title">CANCELADO</string>
     <string name="otp_payment_not_use_text">Se ha vencido su código de pago, por favor vuelva a solicitar uno para pagar.</string>
 
+    <string name="payment_error_order_refund_title">PAGO</string>
+    <string name="payment_error_order_refund_subtitle">NO REALIZADO</string>
+    <string name="payment_error_order_refund_text">No se ha podido realizar su pago, por favor comuníquese con el banco para solucionar este problema.</string>
+    <string name="payment_error_order_pay_title">PAGO</string>
+    <string name="payment_error_order_pay_subtitle">NO REALIZADO</string>
+    <string name="payment_error_order_pay_text">No se ha podido realizar su pago, por favor seleccione otra tarjeta y reintente nuevamente.</string>
+    <string name="payment_error_order_title">ÓRDEN</string>
+    <string name="payment_error_order_subtitle">INCORRECTA</string>
+    <string name="payment_error_order_text">No se ha podido procesar su compra, por favor vuelva a configurar sus productos y reinténtelo nuevamente.</string>
+
 </resources>

@@ -311,4 +311,12 @@ public class OtpPaymentActivity extends BaseActivity {
         updateDaviPoints();
     }
 
+    @Override
+    protected void onDestroy() {
+        if(myCountDownTimer != null) {
+            myCountDownTimer.cancel();
+        }
+        super.onDestroy();
+    }
+
 }

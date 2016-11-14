@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.activities.StoreReceiptActivity;
+import ar.com.fennoma.davipocket.activities.OrderReceiptActivity;
 import ar.com.fennoma.davipocket.model.Cart;
 import ar.com.fennoma.davipocket.model.MyShopHolder;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
@@ -52,9 +52,9 @@ public class MyShopsAdapter extends RecyclerView.Adapter<MyShopHolder>{
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(StoreReceiptActivity.CART_KEY, cart);
-                bundle.putBoolean(StoreReceiptActivity.FROM_MADE_SHOP, true);
-                activity.startActivity(new Intent(activity, StoreReceiptActivity.class).putExtras(bundle));
+                bundle.putParcelable(OrderReceiptActivity.CART_KEY, cart);
+                bundle.putBoolean(OrderReceiptActivity.FROM_MADE_SHOP, true);
+                activity.startActivity(new Intent(activity, OrderReceiptActivity.class).putExtras(bundle));
             }
         });
         holder.daviPrice.setText(String.valueOf(cart.getCartDavipoints()));

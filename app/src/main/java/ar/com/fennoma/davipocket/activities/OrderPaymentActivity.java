@@ -27,18 +27,18 @@ import ar.com.fennoma.davipocket.model.Cart;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.PreCheckout;
 import ar.com.fennoma.davipocket.model.ServiceException;
-import ar.com.fennoma.davipocket.model.StoreProduct;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.ui.adapters.CategoryItemAdapter;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DavipointUtils;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 import ar.com.fennoma.davipocket.utils.LocationUtils;
 
-public class StorePaymentActivity extends BaseActivity {
+public class OrderPaymentActivity extends BaseActivity {
 
-    private List<StoreProduct> selectedProducts;
+    //private List<StoreProduct> selectedProducts;
     public static final String CART_KEY = "cart_key";
     public static final String PRE_CHECKOUT_DATA_KEY = "pre_checkout_data_key";
 
@@ -347,12 +347,12 @@ public class StorePaymentActivity extends BaseActivity {
             final Card card = getItem(position);
             TextView cardNumber = (TextView) row.findViewById(R.id.four_digits);
             ImageView cardLogo = (ImageView) row.findViewById(R.id.card_logo);
-            ImageUtils.loadCardImage(StorePaymentActivity.this, cardLogo, card.getBin().getImage());
+            ImageUtils.loadCardImage(OrderPaymentActivity.this, cardLogo, card.getBin().getImage());
             cardNumber.setText(card.getLastDigits());
             if (selectedCard != null && selectedCard.getLastDigits().equals(card.getLastDigits())) {
-                cardNumber.setTextColor(ContextCompat.getColor(StorePaymentActivity.this, R.color.combo_item_text_color_selected));
+                cardNumber.setTextColor(ContextCompat.getColor(OrderPaymentActivity.this, R.color.combo_item_text_color_selected));
             } else {
-                cardNumber.setTextColor(ContextCompat.getColor(StorePaymentActivity.this, R.color.combo_item_text_color));
+                cardNumber.setTextColor(ContextCompat.getColor(OrderPaymentActivity.this, R.color.combo_item_text_color));
             }
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -475,8 +475,18 @@ public class StorePaymentActivity extends BaseActivity {
             if(response == null || response.length() < 1){
                 //Hancdle invalid session error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
+                if (error != null) {
+                    if(error == ErrorMessages.INVALID_SESSION) {
+                        handleInvalidSessionError();
+                    } else if(error == ErrorMessages.ORDER_ERROR) {
+                        showOrderErrorMessage();
+                    } else if(error == ErrorMessages.ORDER_PAY_ERROR) {
+                        showOrderPayErrorMessage();
+                    }  else if(error == ErrorMessages.ORDER_REFUND_ERROR) {
+                        showOrderRefundErrorMessage();
+                    } else {
+                        showServiceGenericError();
+                    }
                 } else {
                     showServiceGenericError();
                 }
@@ -488,9 +498,30 @@ public class StorePaymentActivity extends BaseActivity {
 
     }
 
+    private void showOrderRefundErrorMessage() {
+        DialogUtil.toast(this,
+                getString(R.string.payment_error_order_refund_title),
+                getString(R.string.payment_error_order_refund_subtitle),
+                getString(R.string.payment_error_order_refund_text));
+    }
+
+    private void showOrderPayErrorMessage() {
+        DialogUtil.toast(this,
+                getString(R.string.payment_error_order_pay_title),
+                getString(R.string.payment_error_order_pay_subtitle),
+                getString(R.string.payment_error_order_pay_text));
+    }
+
+    private void showOrderErrorMessage() {
+        DialogUtil.toast(this,
+                getString(R.string.payment_error_order_title),
+                getString(R.string.payment_error_order_subtitle),
+                getString(R.string.payment_error_order_text));
+    }
+
     private void goToReceiptActivity() {
-        Intent intent = new Intent(StorePaymentActivity.this, StoreReceiptActivity.class);
-        intent.putExtra(StoreReceiptActivity.CART_KEY, cart);
+        Intent intent = new Intent(OrderPaymentActivity.this, OrderReceiptActivity.class);
+        intent.putExtra(OrderReceiptActivity.CART_KEY, cart);
         startActivity(intent);
     }
 

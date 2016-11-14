@@ -20,7 +20,7 @@ import ar.com.fennoma.davipocket.utils.DateUtils;
 import ar.com.fennoma.davipocket.utils.DavipointUtils;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 
-public class StoreReceiptActivity extends BaseActivity{
+public class OrderReceiptActivity extends BaseActivity{
 
     public static final String CART_KEY = "cart_key";
     public static final String FROM_MADE_SHOP = "from made shop";

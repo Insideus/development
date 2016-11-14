@@ -200,21 +200,12 @@
                             android:textColor="@color/red_base_color"
                             android:textSize="14dp" />
 
-                        <!--ProgressBar
-                            android:id="@+id/progress_bar"
-                            style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="5dp"
-                            android:indeterminate="false"
-                            android:layout_below="@+id/otp_pay_start_count"
-                            android:max="10"
-                            android:progress="0" /-->
-
                         <com.liulishuo.magicprogresswidget.MagicProgressBar
                             android:id="@+id/progress_bar"
                             android:layout_width="match_parent"
-                            android:layout_height="10dp"
+                            android:layout_height="15dp"
                             app:mpb_fill_color="@color/red_base_color"
+                            android:layout_marginTop="5dp"
                             app:mpb_background_color="@color/activity_background"
                             app:mpb_flat="true"
                             android:layout_below="@+id/otp_pay_start_count"/>
