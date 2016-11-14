@@ -25,56 +25,9 @@ public class Store implements Parcelable {
     private String phone;
     private String logo;
     private String image;
+    private Boolean acceptDavipoints;
 
-    public static Store fromJson(JSONObject json){
-        Store store = new Store();
-        if(json == null){
-            return store;
-        }
-        try{
-            if(json.has("id")) {
-                store.setId(json.getLong("id"));
-            }
-            if(json.has("name")){
-                store.setName(json.getString("name"));
-            }
-            if(json.has("address")){
-                store.setAddress(json.getString("address"));
-            }
-            if(json.has("country")){
-                store.setCountry(json.getString("country"));
-            }
-            if(json.has("city")){
-                store.setCity(json.getString("city"));
-            }
-            if(json.has("latitude")){
-                store.setLatitude(json.getDouble("latitude"));
-            }
-            if(json.has("longitude")){
-                store.setLongitude(json.getDouble("longitude"));
-            }
-            if(json.has("website")){
-                store.setWebsite(json.getString("website"));
-            }
-            if(json.has("company_name")){
-                store.setCompanyName(json.getString("company_name"));
-            }
-            if(json.has("zip_code")){
-                store.setZipCode(json.getString("zip_code"));
-            }
-            if(json.has("phone")){
-                store.setPhone(json.getString("phone"));
-            }
-            if(json.has("logo")){
-                store.setLogo(json.getString("logo"));
-            }
-            if(json.has("image")){
-                store.setImage(json.getString("image"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return store;
+    public Store() {
     }
 
     public long getId() {
@@ -181,6 +134,22 @@ public class Store implements Parcelable {
         this.image = image;
     }
 
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Boolean getAcceptDavipoints() {
+        return acceptDavipoints;
+    }
+
+    public void setAcceptDavipoints(Boolean acceptDavipoints) {
+        this.acceptDavipoints = acceptDavipoints;
+    }
+
     public static List<Store> fromJsonArray(JSONArray jsonArray) {
         List<Store> stores = new ArrayList<>();
         if(jsonArray == null){
@@ -194,6 +163,60 @@ public class Store implements Parcelable {
             }
         }
         return stores;
+    }
+
+    public static Store fromJson(JSONObject json){
+        Store store = new Store();
+        if(json == null){
+            return store;
+        }
+        try{
+            if(json.has("id")) {
+                store.setId(json.getLong("id"));
+            }
+            if(json.has("name")){
+                store.setName(json.getString("name"));
+            }
+            if(json.has("address")){
+                store.setAddress(json.getString("address"));
+            }
+            if(json.has("country")){
+                store.setCountry(json.getString("country"));
+            }
+            if(json.has("city")){
+                store.setCity(json.getString("city"));
+            }
+            if(json.has("latitude")){
+                store.setLatitude(json.getDouble("latitude"));
+            }
+            if(json.has("longitude")){
+                store.setLongitude(json.getDouble("longitude"));
+            }
+            if(json.has("website")){
+                store.setWebsite(json.getString("website"));
+            }
+            if(json.has("company_name")){
+                store.setCompanyName(json.getString("company_name"));
+            }
+            if(json.has("zip_code")){
+                store.setZipCode(json.getString("zip_code"));
+            }
+            if(json.has("phone")){
+                store.setPhone(json.getString("phone"));
+            }
+            if(json.has("logo")){
+                store.setLogo(json.getString("logo"));
+            }
+            if(json.has("image")){
+                store.setImage(json.getString("image"));
+            }
+            if(json.has("accept_points")){
+                store.setAcceptDavipoints(json.getBoolean("accept_points"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return store;
     }
 
     @Override
@@ -216,9 +239,7 @@ public class Store implements Parcelable {
         dest.writeString(this.phone);
         dest.writeString(this.logo);
         dest.writeString(this.image);
-    }
-
-    public Store() {
+        dest.writeValue(this.acceptDavipoints);
     }
 
     protected Store(Parcel in) {
@@ -235,6 +256,7 @@ public class Store implements Parcelable {
         this.phone = in.readString();
         this.logo = in.readString();
         this.image = in.readString();
+        this.acceptDavipoints = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
     public static final Creator<Store> CREATOR = new Creator<Store>() {

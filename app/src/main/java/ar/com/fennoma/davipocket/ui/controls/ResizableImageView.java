@@ -57,4 +57,5 @@ public class ResizableImageView extends RoundedImageView {
         }
         return width / scale;
     }
+
 }
