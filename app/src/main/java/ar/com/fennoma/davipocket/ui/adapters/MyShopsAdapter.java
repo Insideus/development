@@ -1,10 +1,10 @@
 package ar.com.fennoma.davipocket.ui.adapters;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,29 +16,30 @@ import ar.com.fennoma.davipocket.activities.OrderReceiptActivity;
 import ar.com.fennoma.davipocket.model.Cart;
 import ar.com.fennoma.davipocket.model.MyShopHolder;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
+import ar.com.fennoma.davipocket.utils.DateUtils;
 import ar.com.fennoma.davipocket.utils.DavipointUtils;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 
 public class MyShopsAdapter extends RecyclerView.Adapter<MyShopHolder>{
 
-    private Activity activity;
-    private List<Cart> shops;
+    private Context context;
+    private List<Cart> ordersList;
 
-    public MyShopsAdapter(Activity activity){
-        this.activity = activity;
-        this.shops = new ArrayList<>();
+    public MyShopsAdapter(Context context){
+        this.context = context;
+        this.ordersList = new ArrayList<>();
     }
 
     @Override
     public MyShopHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyShopHolder(activity.getLayoutInflater().inflate(R.layout.my_shops_shop_item, parent, false));
+        return new MyShopHolder(LayoutInflater.from(context).inflate(R.layout.my_shops_shop_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(MyShopHolder holder, int position) {
-        final Cart cart = shops.get(position);
-        if(cart.getStore().getLogo() != null && cart.getStore().getLogo().length() > 0) {
-            ImageUtils.loadImageFullURL(holder.brandLogo, cart.getStore().getLogo());
+        final Cart curCart = ordersList.get(position);
+        if(curCart.getStore().getLogo() != null && curCart.getStore().getLogo().length() > 0) {
+            ImageUtils.loadImageFullURL(holder.brandLogo, curCart.getStore().getLogo());
         } else {
             holder.brandLogo.setImageResource(R.drawable.placeholder_small);
         }
@@ -55,25 +56,27 @@ public class MyShopsAdapter extends RecyclerView.Adapter<MyShopHolder>{
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(OrderReceiptActivity.CART_KEY, cart);
+                bundle.putParcelable(OrderReceiptActivity.CART_KEY, curCart);
                 bundle.putBoolean(OrderReceiptActivity.FROM_MADE_SHOP, true);
-                activity.startActivity(new Intent(activity, OrderReceiptActivity.class).putExtras(bundle));
+                context.startActivity(new Intent(context, OrderReceiptActivity.class).putExtras(bundle));
             }
         });
-        holder.daviPrice.setText(String.valueOf(cart.getCartDavipoints()));
-        Double cashAmount = DavipointUtils.cashDifference(cart.getCartPrice(), cart.getCartDavipoints());
+
+        holder.daviPrice.setText(String.valueOf(curCart.getCartDavipoints()));
+        Double cashAmount = DavipointUtils.cashDifference(curCart.getCartPrice(), curCart.getCartDavipoints());
         holder.cashPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cashAmount)));
-        holder.brandName.setText(cart.getStore().getName());
-        holder.totalPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cart.getCartPrice())));
+        holder.brandName.setText(curCart.getStore().getName());
+        holder.totalPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(curCart.getCartPrice())));
+        holder.buyDate.setText(DateUtils.formatDate(DateUtils.DEFAULT_FORMAT, DateUtils.DOTTED_DDMMMMYYHHMM_FORMAT, curCart.getDate()));
     }
 
     @Override
     public int getItemCount() {
-        return shops.size();
+        return ordersList.size();
     }
 
-    public void setShops(List<Cart> shops) {
-        this.shops = shops;
+    public void setOrdersList(List<Cart> ordersList) {
+        this.ordersList = ordersList;
         notifyDataSetChanged();
     }
 }

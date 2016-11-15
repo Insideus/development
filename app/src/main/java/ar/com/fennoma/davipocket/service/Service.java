@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.service;
 
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
@@ -81,6 +80,7 @@ public class Service {
     private final static String RESEND_NEW_DEVICE_OTP = "/user/generate_otp_new_device"; //<<<
     private final static String ECARD_STEP = "/user/ecard_step";
     private final static String CARDS_TO_PAY = "/user/cards_to_pay";
+    private final static String ORDERS = "/user/orders";
 
     //Card services
     private final static String ACTIVATE_CARD = "/card/activate";
@@ -1936,6 +1936,36 @@ public class Service {
         return response;
     }
 
+    public static ArrayList<Cart> getOrders(String sid) throws ServiceException {
+        ArrayList<Cart> response = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(ORDERS, sid);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                if (json.has("error") && !json.getBoolean("error")) {
+                    response = Cart.fromJson(json.getJSONArray(DATA_TAG));
+                } else {
+                    String errorCode = json.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
     private static void addOtpParamIsNeeded(List<Pair<String, String>> params, String otpCode) {
         if(otpCode != null && otpCode.length() > 0) {
             Pair<String, String> otpParam = new Pair("otp_pin", otpCode);
@@ -1947,9 +1977,7 @@ public class Service {
     private static HttpURLConnection getHttpURLConnection(String method) throws IOException {
         URL url = new URL(BASE_URL + method);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        if (Build.VERSION.SDK != null && Build.VERSION.SDK_INT > 13) {
-            urlConnection.setRequestProperty("Connection", "close");
-        }
+        urlConnection.setRequestProperty("Connection", "close");
         urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
         urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
         return urlConnection;

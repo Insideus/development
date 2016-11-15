@@ -21,8 +21,8 @@ public class StoreProduct implements Parcelable{
     private Double currencyPrice;
     private List<StoreConfiguration> configurations = new ArrayList<>();
 
-    public static List<StoreProduct> fromJSONArray(JSONArray jsonArray) {
-        List<StoreProduct> products = new ArrayList<>();
+    public static ArrayList<StoreProduct> fromJSONArray(JSONArray jsonArray) {
+        ArrayList<StoreProduct> products = new ArrayList<>();
         if(jsonArray == null){
             return products;
         }

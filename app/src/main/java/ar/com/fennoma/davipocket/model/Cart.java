@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.v4.util.Pair;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -13,7 +14,6 @@ import java.util.List;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 
 public class Cart implements Parcelable {
-
     private Store store;
     private ArrayList<StoreProduct> products = new ArrayList<>();
     private Double cartPrice;
@@ -22,6 +22,7 @@ public class Cart implements Parcelable {
     private Card selectedCard;
 
     private Integer starsGiven;
+    private String date;
     private String deliveredTo;
     private String comment;
     private String receiptNumber;
@@ -106,6 +107,14 @@ public class Cart implements Parcelable {
         this.receiptNumber = receiptNumber;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public void calculateCartPrice() {
         Double price = 0d;
         for(StoreProduct product : getProducts()) {
@@ -183,4 +192,23 @@ public class Cart implements Parcelable {
         return params;
     }
 
+    public static ArrayList<Cart> fromJson(JSONArray jsonArray) throws JSONException {
+        ArrayList<Cart> cartList = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            Cart cart = Cart.fromJson(jsonArray.getJSONObject(i));
+            cartList.add(cart);
+        }
+
+        return cartList;
+    }
+
+    private static Cart fromJson(JSONObject jsonObject) throws JSONException {
+        Cart cart = new Cart();
+        cart.setReceiptNumber(jsonObject.getString("id"));
+        cart.setStore(Store.fromJson(jsonObject.getJSONObject("store")));
+        cart.setProducts(StoreProduct.fromJSONArray(jsonObject.getJSONArray("products")));
+        cart.setCartPrice(jsonObject.getDouble("total"));
+        cart.setDate(jsonObject.getString("date"));
+        return cart;
+    }
 }
