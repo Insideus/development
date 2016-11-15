@@ -42,12 +42,15 @@ public class MyShopsAdapter extends RecyclerView.Adapter<MyShopHolder>{
         } else {
             holder.brandLogo.setImageResource(R.drawable.placeholder_small);
         }
-        if(TextUtils.isEmpty(cart.getDeliveredTo())){
-            holder.deliveryContainer.setVisibility(View.GONE);
-        }else{
-            holder.deliveryContainer.setVisibility(View.VISIBLE);
-            holder.deliveredTo.setText(cart.getDeliveredTo());
-        }
+
+//        Hidden by definition
+//        if(TextUtils.isEmpty(cart.getDeliveredTo())){
+//            holder.deliveryContainer.setVisibility(View.GONE);
+//        }else{
+//            holder.deliveryContainer.setVisibility(View.VISIBLE);
+//            holder.deliveredTo.setText(cart.getDeliveredTo());
+//        }
+
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

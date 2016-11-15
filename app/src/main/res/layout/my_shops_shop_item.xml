@@ -126,7 +126,8 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+        android:paddingTop="10dp"
+        android:visibility="gone">
 
         <TextView
             fontPath="fonts/MyriadPro-Regular.otf"
