@@ -98,6 +98,8 @@ public class OrderReceiptActivity extends BaseActivity{
         ImageView logo = (ImageView) findViewById(R.id.brand_logo);
         if(cart.getStore().getLogo() != null && cart.getStore().getLogo().length() > 0) {
             ImageUtils.loadImageFullURL(logo, cart.getStore().getLogo());
+        } else {
+            logo.setImageResource(R.drawable.placeholder_small);
         }
         TextView daviPrice = (TextView) findViewById(R.id.davi_price);
         daviPrice.setText(String.valueOf(cart.getCartDavipoints()));

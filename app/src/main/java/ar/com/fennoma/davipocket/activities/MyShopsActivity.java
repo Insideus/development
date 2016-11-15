@@ -24,8 +24,8 @@ public class MyShopsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_shops_activity);
         setToolbar(R.id.toolbar, false, getString(R.string.my_shops_title));
-        setRecycler();
         showLoading();
+        setRecycler();
         new GetOrderTask().execute();
     }
 

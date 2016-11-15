@@ -106,7 +106,7 @@
                     <ImageView
                         android:id="@+id/brand_logo"
                         android:layout_width="80dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:padding="15dp"
                         android:scaleType="centerInside" />
 
