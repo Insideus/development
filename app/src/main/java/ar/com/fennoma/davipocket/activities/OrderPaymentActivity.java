@@ -38,7 +38,6 @@ import ar.com.fennoma.davipocket.utils.LocationUtils;
 
 public class OrderPaymentActivity extends BaseActivity {
 
-    //private List<StoreProduct> selectedProducts;
     public static final String CART_KEY = "cart_key";
     public static final String PRE_CHECKOUT_DATA_KEY = "pre_checkout_data_key";
 
@@ -103,6 +102,15 @@ public class OrderPaymentActivity extends BaseActivity {
         findCardLayouts();
         setPayButton();
         scrollUp();
+        setDavipointsLayout();
+    }
+
+    private void setDavipointsLayout() {
+        if(cart.getStore() != null && !cart.getStore().getAcceptDavipoints()) {
+            findViewById(R.id.price_cart_layout).setVisibility(View.GONE);
+            findViewById(R.id.davi_points_cart_layout).setVisibility(View.GONE);
+            findViewById(R.id.davipoints_cash_seekbar).setVisibility(View.GONE);
+        }
     }
 
     private void setSeekBar() {
@@ -306,7 +314,7 @@ public class OrderPaymentActivity extends BaseActivity {
             return;
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.setAdapter(new CategoryItemAdapter(this, cart.getProducts(), false));
+        recyclerView.setAdapter(new CategoryItemAdapter(this, cart.getProducts(), false, cart.getStore()));
     }
 
     private class ComboAdapter extends BaseAdapter {

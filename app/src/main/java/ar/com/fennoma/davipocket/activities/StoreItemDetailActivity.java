@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,12 +27,15 @@ import ar.com.fennoma.davipocket.utils.ImageUtils;
 public class StoreItemDetailActivity extends BaseActivity {
 
     public static final String PRODUCT_KEY = "product_key";
+    public static final String ACCEPT_DAVIPOINTS_KEY = "accept_davipoints_key";
+
     private StoreProduct product;
     private StoreProduct selectedProduct;
     private TextView daviPointsAmount;
     private TextView amount;
     private Double currentAmount;
     private Integer currentDaviPointAmount;
+    private Boolean acceptDavipoints;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +51,7 @@ public class StoreItemDetailActivity extends BaseActivity {
         if(getIntent() == null || getIntent().getParcelableExtra(PRODUCT_KEY) == null){
             return;
         }
+        acceptDavipoints = getIntent().getBooleanExtra(ACCEPT_DAVIPOINTS_KEY, false);
         product = getIntent().getParcelableExtra(PRODUCT_KEY);
         selectedProduct = product.createEmptyProduct();
         setViews();
@@ -80,6 +85,9 @@ public class StoreItemDetailActivity extends BaseActivity {
         amount = (TextView) findViewById(R.id.product_amount);
         daviPointsAmount = (TextView) findViewById(R.id.store_davi_points_amount);
         setProductAmount();
+        if(!acceptDavipoints) {
+            daviPointsAmount.setVisibility(View.GONE);
+        }
     }
 
     public void setProductAmount() {

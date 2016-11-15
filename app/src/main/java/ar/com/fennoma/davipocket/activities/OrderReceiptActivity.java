@@ -171,7 +171,7 @@ public class OrderReceiptActivity extends BaseActivity{
     private void setRecycler() {
         RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recycler.setAdapter(new CategoryItemAdapter(this, cart.getProducts(), false));
+        recycler.setAdapter(new CategoryItemAdapter(this, cart.getProducts(), false, cart.getStore()));
     }
 
     @Override

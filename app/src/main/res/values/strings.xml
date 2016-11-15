@@ -410,7 +410,7 @@
     <string name="otp_payment_start_counter_text">0:00</string>
     <string name="otp_payment_end_counter_text">4:00</string>
     <string name="otp_payment_not_use_title">CANCELADO</string>
-    <string name="otp_payment_not_use_text">Se ha vencido su código de pago, por favor vuelva a solicitar uno para pagar.</string>
+    <string name="otp_payment_not_use_text">Se ha vencido su código de pago, por favor solicítelo nuevamente para pagar.</string>
 
     <string name="payment_error_order_refund_title">PAGO</string>
     <string name="payment_error_order_refund_subtitle">NO REALIZADO</string>

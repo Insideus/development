@@ -10,16 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.Store;
 import ar.com.fennoma.davipocket.model.StoreCategory;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryHolder>{
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryHolder> {
 
     private final Activity activity;
     private List<StoreCategory> categories;
+    private Store store;
 
-    public CategoryAdapter(Activity activity){
+    public CategoryAdapter(Activity activity, Store store){
         this.activity = activity;
         categories = new ArrayList<>();
+        this.store = store;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryHolder>{
         holder.title.setVisibility(View.GONE);
         holder.categoryTitle.setText(category.getName());
         holder.recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
-        holder.recyclerView.setAdapter(new CategoryItemAdapter(activity, category.getProducts(), true));
+        holder.recyclerView.setAdapter(new CategoryItemAdapter(activity, category.getProducts(), true, store));
         holder.recyclerView.setNestedScrollingEnabled(false);
     }
 

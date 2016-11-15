@@ -145,7 +145,7 @@ public class StoreDetailActivity extends BaseActivity {
             return;
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CategoryAdapter(this);
+        adapter = new CategoryAdapter(this, store);
         recyclerView.setAdapter(adapter);
     }
 

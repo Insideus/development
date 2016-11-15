@@ -10,7 +10,7 @@ import ar.com.fennoma.davipocket.R;
 
 public class ResizableImageView extends RoundedImageView {
 
-    private static final int PROPORTION_4__3 = -1;
+    private static final int PROPORTION_4_3 = -1;
 
     private float scale;
 
@@ -52,7 +52,7 @@ public class ResizableImageView extends RoundedImageView {
         if(scale == 0){
             return 0;
         }
-        if (scale == PROPORTION_4__3) {
+        if (scale == PROPORTION_4_3) {
             return width * 3 / 4;
         }
         return width / scale;

@@ -12,6 +12,7 @@ import java.util.List;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.activities.StoreDetailActivity;
 import ar.com.fennoma.davipocket.activities.StoreItemDetailActivity;
+import ar.com.fennoma.davipocket.model.Store;
 import ar.com.fennoma.davipocket.model.StoreProduct;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
@@ -20,12 +21,14 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemHolder
 
     private Activity activity;
     private List<StoreProduct> products;
+    private Store store;
     private boolean fromStoreDetail;
 
-    public CategoryItemAdapter(Activity activity, List<StoreProduct> products, boolean fromStoreDetail) {
+    public CategoryItemAdapter(Activity activity, List<StoreProduct> products, boolean fromStoreDetail, Store store) {
         this.activity = activity;
         this.products = products;
         this.fromStoreDetail = fromStoreDetail;
+        this.store = store;
     }
 
     @Override
@@ -45,6 +48,7 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemHolder
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable(StoreItemDetailActivity.PRODUCT_KEY, product);
+                    bundle.putBoolean(StoreItemDetailActivity.ACCEPT_DAVIPOINTS_KEY, store.getAcceptDavipoints());
                     activity.startActivityForResult(new Intent(activity, StoreItemDetailActivity.class).putExtras(bundle), StoreDetailActivity.ADD_ITEM_TO_CART);
                 }
             });
@@ -57,4 +61,5 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemHolder
     public int getItemCount() {
         return products.size();
     }
+
 }
