@@ -205,10 +205,13 @@ public class Cart implements Parcelable {
     private static Cart fromJson(JSONObject jsonObject) throws JSONException {
         Cart cart = new Cart();
         cart.setReceiptNumber(jsonObject.getString("id"));
-        cart.setStore(Store.fromJson(jsonObject.getJSONObject("store")));
-        cart.setProducts(StoreProduct.fromJSONArray(jsonObject.getJSONArray("products")));
         cart.setCartPrice(jsonObject.getDouble("total"));
         cart.setDate(jsonObject.getString("date"));
+
+        // Objects and arrays
+        cart.setStore(Store.fromJson(jsonObject.getJSONObject("store")));
+        cart.setProducts(StoreProduct.fromJSONArray(jsonObject.getJSONArray("products")));
+        cart.setSelectedCard(Card.fromJson(jsonObject.getJSONObject("card")));
         return cart;
     }
 }
