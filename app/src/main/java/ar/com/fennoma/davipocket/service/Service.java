@@ -80,6 +80,7 @@ public class Service {
     private final static String RESEND_NEW_DEVICE_OTP = "/user/generate_otp_new_device"; //<<<
     private final static String ECARD_STEP = "/user/ecard_step";
     private final static String ORDERS = "/user/orders";
+    private final static String SET_GCM_TOKEN = "/user/set_android_token";
 
     //Card services
     private final static String ACTIVATE_CARD = "/card/activate";
@@ -2005,6 +2006,52 @@ public class Service {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static Boolean setGcmToken(String sid, String token) throws ServiceException {
+        Boolean response = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(SET_GCM_TOKEN, sid);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> lastDigitsParam = new Pair("android_token", token);
+            params.add(lastDigitsParam);
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                if (json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                    response = false;
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+            response = false;
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

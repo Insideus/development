@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        jcenter();
+    }
+
+    dependencies {
+        classpath 'com.google.gms:google-services:3.0.0'
+    }
+}
+
 apply plugin: 'com.android.application'
 
 android {
@@ -44,6 +54,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.0.1'
     compile 'com.android.support:design:25.0.1'
     compile 'com.google.android.gms:play-services:9.8.0'
+    compile "com.google.android.gms:play-services-gcm:9.8.0"
 
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     compile('com.lsjwzh:materialloadingprogressbar:0.5.8-RELEASE')
@@ -60,3 +71,5 @@ dependencies {
     compile 'org.adw.library:discrete-seekbar:1.0.1'
     compile 'com.liulishuo.magicprogresswidget:library:1.0.9'
 }
+
+apply plugin: 'com.google.gms.google-services'

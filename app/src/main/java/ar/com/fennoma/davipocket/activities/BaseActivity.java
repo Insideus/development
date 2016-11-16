@@ -31,6 +31,7 @@ import net.easysol.dsb.malware_protector.overlay.OverlayListener;
 import java.util.Map;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.gcm.RegistrationIntentService;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginSteps;
@@ -658,6 +659,10 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         listener.setSelectedItem();
         dialog.show();
         dialogPlus = dialog;
+    }
+
+    public void startGcmService() {
+        startService(new Intent(this, RegistrationIntentService.class));
     }
 
 }

@@ -23,8 +23,8 @@ public class Session {
     private static String BANK_PRODUCTS = "BankProducts";
     private static String USER_INTERESTS = "UserInterests";
     private static String PREF_SESSION_KEY = "SessionKey";
-    private static String USER_INFORMATION = "UserInformation";
     private static String PENDING_STEP = "PendingStep";
+    private static String PREF_GCM_TOKEN_KEY = "GcmTokenKey";
 
     private static Session instance = null;
     private SharedPreferences sharedPreferences;
@@ -34,6 +34,7 @@ public class Session {
     private ArrayList<UserInterest> userInterests;
     private String sid;
     private String pendingStep;
+    private String gcmToken;
 
     private Session() {
 
@@ -45,6 +46,7 @@ public class Session {
             instance.sharedPreferences = context.getSharedPreferences(PREFERENCES, 0);
             instance.sid = instance.sharedPreferences.getString(PREF_SESSION_KEY, null);
             instance.pendingStep = instance.sharedPreferences.getString(PENDING_STEP, null);
+            instance.gcmToken = instance.sharedPreferences.getString(PREF_GCM_TOKEN_KEY, null);
             try {
                 String jsonIdTypes = instance.sharedPreferences.getString(PERSON_ID_TYPES, null);
                 if (jsonIdTypes != null) {
@@ -77,6 +79,17 @@ public class Session {
         return instance.sid;
     }
 
+    public String getGcmToken() {
+        return instance.gcmToken;
+    }
+
+    public void setGcmToken(String gcmToken) {
+        this.gcmToken = gcmToken;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_GCM_TOKEN_KEY, gcmToken);
+        editor.apply();
+    }
+
     public void loginUser(String sid, String pendingStep) {
         this.sid = sid;
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -90,9 +103,11 @@ public class Session {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(PREF_SESSION_KEY);
         editor.remove(PENDING_STEP);
+        editor.remove(PREF_GCM_TOKEN_KEY);
         editor.apply();
         this.sid = null;
         this.pendingStep = null;
+        this.gcmToken = null;
         LoginManager.getInstance().logOut();
     }
 
