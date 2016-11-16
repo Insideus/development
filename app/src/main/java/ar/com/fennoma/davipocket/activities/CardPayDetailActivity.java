@@ -199,13 +199,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
     }
 
     private Boolean isUsdPayment() {
-        if (minimumPaymentUsd.isChecked()) {
-            return true;
-        }
-        if (totalPaymentUsd.isChecked()) {
-            return true;
-        }
-        return false;
+        return minimumPaymentUsd.isChecked() || totalPaymentUsd.isChecked();
     }
 
     protected String getPayConfirmationText(Double amount) {
@@ -254,7 +248,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         TextView balance = (TextView) findViewById(R.id.balance);
         balance.setText("$".concat(CurrencyUtils.getCurrencyForString(availableAmount).toUpperCase()));
         TextView paymentDate = (TextView) findViewById(R.id.payment_date);
-        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, paymentDay).toUpperCase();
+        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, paymentDay).toLowerCase();
         if (date.length() > 0) {
             paymentDate.setText(date);
         } else {

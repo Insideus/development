@@ -142,7 +142,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/card_pay_detail_e_card_balance_title"
-                android:textAllCaps="true"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
 

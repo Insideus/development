@@ -102,7 +102,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/card_pay_detail_balance_title"
-            android:textAllCaps="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
 
@@ -112,7 +111,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/card_pay_detail_e_card_balance_title"
-            android:textAllCaps="true"
             android:visibility="gone"
             android:textColor="@android:color/black"
             android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
@@ -134,7 +132,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:text="@string/card_pay_detail_payment_date_title"
-            android:textAllCaps="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
 

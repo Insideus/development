@@ -18,7 +18,6 @@ import java.util.List;
 import ar.com.fennoma.davipocket.DavipocketApplication;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.activities.AbstractPayActivity;
-import ar.com.fennoma.davipocket.activities.CardDetailActivity;
 import ar.com.fennoma.davipocket.activities.CardPayDetailActivity;
 import ar.com.fennoma.davipocket.activities.ECardRechargeActivity;
 import ar.com.fennoma.davipocket.model.Card;

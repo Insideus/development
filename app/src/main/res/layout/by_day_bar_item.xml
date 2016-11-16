@@ -22,7 +22,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/filtered_movements_from_date_title"
-            android:textAllCaps="true"
             android:textColor="@color/combo_item_text_color" />
 
         <LinearLayout
@@ -82,11 +81,6 @@
 
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/activity_background" />
-
     <RelativeLayout
         android:id="@+id/date_to_filter"
         android:layout_width="match_parent"
@@ -102,7 +96,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/filtered_movements_to_date_title"
-            android:textAllCaps="true"
             android:textColor="@color/combo_item_text_color" />
 
         <LinearLayout
@@ -161,6 +154,11 @@
             android:src="@drawable/filter_drawable_right" />
 
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/activity_background" />
 
     <View
         android:layout_width="match_parent"

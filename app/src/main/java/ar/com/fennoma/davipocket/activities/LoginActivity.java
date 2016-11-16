@@ -143,6 +143,7 @@ public class LoginActivity extends LoginBaseActivity {
         }
         selectedIdType = personIdTypes.get(0);
         selectedIdTypeText.setText(selectedIdType.getName());
+        personIdNumber.requestFocus();
     }
 
     @Override

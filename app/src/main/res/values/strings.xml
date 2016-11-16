@@ -181,14 +181,14 @@
     <!-- Card Pay Detail -->
     <string name="card_pay_detail_mocked_spinner">AHORROS · 002200165529</string>
     <string name="card_pay_detail_mocked_total_payment">$ 2.314.200</string>
-    <string name="card_pay_detail_total_payment_title">Valor Total</string>
-    <string name="card_pay_detail_minimum_payment_title">Pago mínimo</string>
-    <string name="card_pay_detail_total_payment_title_usd">Valor Total (USD)</string>
-    <string name="card_pay_detail_minimum_payment_title_usd">Pago mínimo (USD)</string>
+    <string name="card_pay_detail_total_payment_title">Pago total (Cartera pesos)</string>
+    <string name="card_pay_detail_minimum_payment_title">Pago mínimo (Cartera pesos)</string>
+    <string name="card_pay_detail_total_payment_title_usd">Pago total (Cartera dólares)</string>
+    <string name="card_pay_detail_minimum_payment_title_usd">Pago mínimo (Cartera dólares)</string>
     <string name="card_pay_detail_mocked_minimum_payment">$ 843.000</string>
-    <string name="card_pay_detail_other_payment_title">Otro valor</string>
-    <string name="card_pay_detail_payment_date_title">Fecha pago</string>
-    <string name="card_pay_detail_balance_title">Cupo disp.</string>
+    <string name="card_pay_detail_other_payment_title">Otro valor (El valor excedente será abonado a capital)</string>
+    <string name="card_pay_detail_payment_date_title">Fecha de Pago</string>
+    <string name="card_pay_detail_balance_title">Cupo Disp.</string>
 
     <!-- New Card -->
     <string name="new_card_detail_number_hint">NÚMERO</string>
@@ -243,7 +243,7 @@
     <string name="card_pay_confirmation_text_3">terminada en</string>
     <string name="card_pay_confirmation_text_4">por un valor de </string>
 
-    <string name="load_more_button_text">CARGAR MAS MOVIMIENTOS</string>
+    <string name="load_more_button_text">Cargar más movimientos</string>
     <string name="close_button_text">cerrar</string>
     <string name="tour_title">TOUR</string>
     <string name="card_pay_success_title">PAGO</string>
@@ -256,7 +256,7 @@
     <string name="filtered_movements_dot_separator">.</string>
     <string name="filtered_movements_middle_dot_separator">·</string>
     <string name="filtered_movements_to_date_title">Hasta</string>
-    <string name="filtered_movements_filter_button">FILTRAR POR FECHAS</string>
+    <string name="filtered_movements_filter_button">Filtrar por fecha</string>
     <string name="card_pay_empty_amount">El importe a pagar no puede estar vacío.</string>
     <string name="card_pay_zero_amount">El importe a pagar no puede ser cero.</string>
     <string name="card_pay_insuficient_balance">El balance de la cuenta no es suficiente.</string>
@@ -294,7 +294,7 @@
     <string name="my_cards_e_card_show_data_subtitle">DE ECARD</string>
     <string name="my_cards_e_card_show_data_text">Se mostrarán los datos de su eCard y se enviará el CVV por SMS.</string>
     <string name="e_card_show_data_error">Ha ocurrido un error al solicitar los datos de su eCard. Reinténtelo nuevamente más tarde.</string>
-    <string name="e_card_recharge_explanation">Recuerde que puede recargar\ndesde $ %1$s pesos\nhasta $ %2$s pesos.\nSu recarga tiene un costo de $ %3$s</string>
+    <string name="e_card_recharge_explanation">Recuerde que puede hacer recargas\ndesde $ %1$s pesos\nhasta $ %2$s pesos.\nCosto de la recarga: $ %3$s</string>
     <string name="e_card_title">E-CARD</string>
     <string name="my_cards_activate_blocked_card_title">TARJETA</string>
     <string name="my_cards_activate_blocked_card_subtitle">BLOQUEADA</string>
@@ -303,7 +303,7 @@
     <string name="card_24hr_blocked_title">TARJETA</string>
     <string name="card_24hr_blocked_subtitle">BLOQUEADA</string>
     <string name="card_24hr_blocked_text">Su tarjeta ha sido bloqueada por 24hs.</string>
-    <string name="card_pay_detail_e_card_balance_title">Saldo disponible</string>
+    <string name="card_pay_detail_e_card_balance_title">Saldo Disponible</string>
     <string name="e_card_recharge_min_value">10000</string>
     <string name="e_card_recharge_max_value">50000</string>
     <string name="e_card_recharge_success_text">Su recarga fue realizada con éxito el día</string>
