@@ -202,7 +202,7 @@
     <string name="card_detail_item_transaction_product_title">Productos</string>
     <string name="card_detail_item_transaction_price_indicator">$</string>
     <string name="mocked_master_card_title">MASTERCARD BLACK</string>
-    <string name="card_detail_search_bar_hint">BUSCAR MOVIMIENTO</string>
+    <string name="card_detail_search_bar_hint">[Search] Buscar movimientos</string>
 
     <!-- My Cards -->
     <string name="my_cards_activity_title">MIS TARJETAS</string>

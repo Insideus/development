@@ -64,15 +64,33 @@
                 android:textSize="@dimen/number_code_text_size" />
 
             <TextView
+                android:id="@+id/explanation_text"
                 fontPath="fonts/MyriadPro-Regular.otf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_below="@id/code"
-                android:layout_above="@id/send_button"
                 android:text="@string/otp_confirmation_subtitle_hint"
                 android:textColor="@color/gray_text_color"
                 android:textSize="@dimen/common_text_size" />
+
+            <TextView
+                android:id="@+id/send_button"
+                fontPath="fonts/MyriadPro-Semibold.otf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_below="@id/explanation_text"
+                android:layout_marginBottom="@dimen/login_input_margin_top"
+                android:layout_marginLeft="@dimen/button_without_cardview_padding"
+                android:layout_marginRight="@dimen/button_without_cardview_padding"
+                android:layout_marginTop="@dimen/login_input_margin_top"
+                android:background="@drawable/red_button_background"
+                android:padding="15dp"
+                android:text="@string/password_confirmation_send_button"
+                android:textColor="@color/login_button_text_color"
+                android:textSize="@dimen/login_input_text_size"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/resend_sms"
@@ -88,26 +106,8 @@
                 android:layout_marginBottom="@dimen/login_input_margin_top"
                 android:text="@string/otp_resend_sms"
                 android:textColor="@color/login_button_color"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@id/send_button"
                 android:textSize="@dimen/login_input_text_size" />
-
-            <TextView
-                android:id="@+id/send_button"
-                fontPath="fonts/MyriadPro-Semibold.otf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_above="@+id/resend_sms"
-                android:layout_marginBottom="@dimen/login_input_margin_top"
-                android:layout_marginLeft="@dimen/button_without_cardview_padding"
-                android:layout_marginRight="@dimen/button_without_cardview_padding"
-                android:layout_marginTop="@dimen/login_input_margin_top"
-                android:background="@drawable/red_button_background"
-                android:padding="15dp"
-                android:text="@string/password_confirmation_send_button"
-                android:textColor="@color/login_button_text_color"
-                android:textSize="@dimen/login_input_text_size"
-                android:textStyle="bold" />
 
         </RelativeLayout>
 

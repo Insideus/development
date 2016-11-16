@@ -18,7 +18,7 @@ public class DateUtils {
     public static final String DEFAULT_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZZZZZ";
 
     public static int getYearsFromDate(Date birthday){
-        return getDiffYears(birthday, Calendar.getInstance(new Locale("es", "ES")).getTime());
+        return getDiffYears(birthday, Calendar.getInstance(Locale.getDefault()).getTime());
     }
 
     public static int getDiffYears(Date first, Date last) {
@@ -36,14 +36,14 @@ public class DateUtils {
     }
 
     public static Calendar getCalendar(Date date) {
-        Calendar cal = Calendar.getInstance(new Locale("es", "ES"));
+        Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.setTime(date);
         return cal;
     }
 
     public static Date getDate(String date, String dateFormat) {
         try {
-            return new SimpleDateFormat(dateFormat, new Locale("es", "ES")).parse(date);
+            return new SimpleDateFormat(dateFormat, Locale.getDefault()).parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
@@ -51,8 +51,8 @@ public class DateUtils {
     }
 
     public static String formatDate(String originalFormat, String outputFormat, String originalDate) {
-        SimpleDateFormat formatter = new SimpleDateFormat(originalFormat, new Locale("es", "ES"));
-        SimpleDateFormat resultFormatter = new SimpleDateFormat(outputFormat, new Locale("es", "ES"));
+        SimpleDateFormat formatter = new SimpleDateFormat(originalFormat, Locale.getDefault());
+        SimpleDateFormat resultFormatter = new SimpleDateFormat(outputFormat, Locale.getDefault());
         String result = "";
         try{
             Date date = formatter.parse(originalDate);
@@ -93,8 +93,30 @@ public class DateUtils {
     }
 
     public static String getBuyDateFormated(Date date) {
-        SimpleDateFormat resultFormatter = new SimpleDateFormat(DOTTED_DDMMMMYYHHMM_FORMAT, new Locale("es", "ES"));
+        SimpleDateFormat resultFormatter = new SimpleDateFormat(DOTTED_DDMMMMYYHHMM_FORMAT, Locale.getDefault());
         return  resultFormatter.format(date);
     }
 
+    public static String toCamelCase(String string) {
+        String result = "";
+        if(TextUtils.isEmpty(string)){
+            return result;
+        }
+        char toAdd;
+        boolean foundLetter = false;
+        for(int i = 0; i < string.length(); i++){
+            toAdd = string.charAt(i);
+            if(Character.isLetter(toAdd)){
+                if(foundLetter){
+                    result = result.concat(String.valueOf(toAdd).toLowerCase());
+                }else{
+                    foundLetter = true;
+                    result = result.concat(String.valueOf(toAdd).toUpperCase());
+                }
+            }else{
+                result = result.concat(String.valueOf(toAdd));
+            }
+        }
+        return string;
+    }
 }

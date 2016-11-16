@@ -20,8 +20,6 @@ import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
-import static ar.com.fennoma.davipocket.activities.AbstractPayActivity.ON_CLOSE_REQUEST;
-
 public class CardDetailActivity extends MovementsShowerActivity implements CardDetailAdapter.ICardDetailAdapterOwner {
 
     public static String CARD_KEY = "card_key";
