@@ -84,9 +84,7 @@ public class OtpPaymentActivity extends BaseActivity {
         getOtpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myCountDownTimer = new MyCountDownTimer(TIME_TO_USE, 1000);
-                myCountDownTimer.start();
-                //new PayOrderTask().execute();
+                new GetOttTokenTask().execute();
             }
         });
     }
@@ -200,13 +198,13 @@ public class OtpPaymentActivity extends BaseActivity {
 
         @Override
         protected ArrayList<Card> doInBackground(Void... params) {
-            ArrayList<Card> data = null;
+            ArrayList<Card> cards = null;
             try {
-                data = Service.cardsToPay(Session.getCurrentSession(getApplicationContext()).getSid());
+                cards = Service.getOttCards(Session.getCurrentSession(getApplicationContext()).getSid());
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
-            return data;
+            return cards;
         }
 
         @Override
@@ -229,8 +227,7 @@ public class OtpPaymentActivity extends BaseActivity {
 
     }
 
-    /*
-    private class PayOrderTask extends AsyncTask<Void, Void, String> {
+    private class GetOttTokenTask extends AsyncTask<Void, Void, String> {
 
         String errorCode;
 
@@ -244,7 +241,7 @@ public class OtpPaymentActivity extends BaseActivity {
         protected String doInBackground(Void... params) {
             String data = null;
             try {
-                data = Service.payOrder(Session.getCurrentSession(getApplicationContext()).getSid(), cart);
+                data = Service.getOttToken(Session.getCurrentSession(getApplicationContext()).getSid(), selectedCard.getLastDigits());
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -264,19 +261,20 @@ public class OtpPaymentActivity extends BaseActivity {
                     showServiceGenericError();
                 }
             } else {
-                cart.setReceiptNumber(response);
-                //goToReceiptActivity();
+                myCountDownTimer = new MyCountDownTimer(TIME_TO_USE, 1000, response);
+                myCountDownTimer.start();
             }
         }
 
     }
-    */
 
     public class MyCountDownTimer extends CountDownTimer {
 
-        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+        public MyCountDownTimer(long millisInFuture, long countDownInterval, String ottToken) {
             super(millisInFuture, countDownInterval);
             findViewById(R.id.receipt_number_layout).setVisibility(View.VISIBLE);
+            TextView receiptNumber = (TextView) findViewById(R.id.receipt_number);
+            receiptNumber.setText(ottToken);
             findViewById(R.id.card_container).setEnabled(false);
             findViewById(R.id.get_otp_button).setEnabled(false);
         }
@@ -300,9 +298,9 @@ public class OtpPaymentActivity extends BaseActivity {
 
     private void showNotUsedMessage() {
         DialogUtil.toast(this,
-                getString(R.string.otp_payment_not_use_title),
+                getString(R.string.otp_payment_not_used_title),
                 "",
-                getString(R.string.otp_payment_not_use_text));
+                getString(R.string.otp_payment_not_used_text));
     }
 
     @Override

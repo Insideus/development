@@ -214,4 +214,5 @@ public class Cart implements Parcelable {
         cart.setSelectedCard(Card.fromJson(jsonObject.getJSONObject("card")));
         return cart;
     }
+
 }

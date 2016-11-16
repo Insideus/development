@@ -31,7 +31,6 @@ import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
-import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 
 public class MyCardsActivity extends BaseActivity {
 
@@ -613,6 +612,7 @@ public class MyCardsActivity extends BaseActivity {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
                 response = Service.getUserCards(sid, getTodo1Data());
             } catch (ServiceException e) {
+                e.printStackTrace();
                 errorCode = e.getErrorCode();
             }
             return response;

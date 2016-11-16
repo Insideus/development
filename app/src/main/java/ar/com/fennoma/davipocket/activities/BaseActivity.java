@@ -412,7 +412,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         myShops.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(BaseActivity.this, MyShopsActivity.class));
+                startActivity(new Intent(BaseActivity.this, MyOrdersActivity.class));
             }
         });
         logout.setOnClickListener(new View.OnClickListener() {

@@ -20,12 +20,12 @@ import ar.com.fennoma.davipocket.utils.DateUtils;
 import ar.com.fennoma.davipocket.utils.DavipointUtils;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 
-public class MyShopsAdapter extends RecyclerView.Adapter<MyShopHolder>{
+public class MyOrdersAdapter extends RecyclerView.Adapter<MyShopHolder>{
 
     private Context context;
     private List<Cart> ordersList;
 
-    public MyShopsAdapter(Context context){
+    public MyOrdersAdapter(Context context){
         this.context = context;
         this.ordersList = new ArrayList<>();
     }

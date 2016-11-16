@@ -79,7 +79,6 @@ public class Service {
     private final static String ACCEPT_NEW_DEVICE = "/user/accept_new_device";
     private final static String RESEND_NEW_DEVICE_OTP = "/user/generate_otp_new_device"; //<<<
     private final static String ECARD_STEP = "/user/ecard_step";
-    private final static String CARDS_TO_PAY = "/user/cards_to_pay";
     private final static String ORDERS = "/user/orders";
 
     //Card services
@@ -102,6 +101,10 @@ public class Service {
     //Order
     private static final String PRE_CHECKOUT = "/order/pre_checkout";
     private static final String PAY_ORDER = "/order/pay";
+
+    //OTT
+    private final static String OTT_CARDS = "/ott/cards";
+    private final static String OTT_GET_TOKEN = "/ott/get_token";
 
     public static JSONObject getPersonIdTypes() {
         HttpURLConnection urlConnection = null;
@@ -1905,11 +1908,11 @@ public class Service {
         return response;
     }
 
-    public static ArrayList<Card> cardsToPay(String sid) throws ServiceException {
+    public static ArrayList<Card> getOttCards(String sid) throws ServiceException {
         ArrayList<Card> response = null;
         HttpURLConnection urlConnection = null;
         try {
-            urlConnection = getHttpURLConnectionWithHeader(CARDS_TO_PAY, sid);
+            urlConnection = getHttpURLConnectionWithHeader(OTT_CARDS, sid);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
@@ -1921,6 +1924,50 @@ public class Service {
                 JSONObject responseJson = json.getJSONObject(DATA_TAG);
                 if (json.has("error") && !json.getBoolean("error")) {
                     response = Card.fromJsonArray(responseJson);
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    public static String getOttToken(String sid, String lastDigits) throws ServiceException {
+        String response = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(OTT_GET_TOKEN, sid);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> lastDigitsParam = new Pair("last_digits", lastDigits);
+            params.add(lastDigitsParam);
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                if (json.has("error") && !json.getBoolean("error")) {
+                    response = responseJson.getString("ott");
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     throw new ServiceException(errorCode);
