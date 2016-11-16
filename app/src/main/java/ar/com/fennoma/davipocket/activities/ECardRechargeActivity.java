@@ -129,7 +129,7 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
                 if (validateAmount(amount) && isAmountOnRange(amount)) {
                     Intent intent = new Intent(ECardRechargeActivity.this, ActionDialogActivity.class);
                     intent.putExtra(ActionDialogActivity.TITLE_KEY, "CONFIRMAR");
-                    intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, "RECARGA DE ECARD");
+                    intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, "RECARGA");
                     intent.putExtra(ActionDialogActivity.TEXT_KEY, getPayConfirmationText(amount));
                     intent.putExtra(ActionDialogActivity.IS_CARD_PAY, true);
                     intent.putExtra(ActionDialogActivity.CARD_KEY, card);
