@@ -204,36 +204,36 @@
 
     <!-- My Cards -->
     <string name="my_cards_activity_title">MIS TARJETAS</string>
-    <string name="my_cards_continue_button_text">CONTINUAR</string>
-    <string name="my_cards_cancel_button_text">CANCELAR</string>
+    <string name="my_cards_continue_button_text">Continuar</string>
+    <string name="my_cards_cancel_button_text">Cancelar</string>
 
     <string name="my_cards_enrole_card_title">ACTIVE SUS TARJETAS</string>
     <string name="my_cards_enrole_card_subtitle">EN DAVIPAY</string>
     <string name="my_cards_enrole_card_text">Ingrese el código de seguridad o CVV, son los tres números que aparecen detrás de su tarjeta.</string>
 
-    <string name="my_cards_block_card_title">BLOQUEAR TARJETA</string>
+    <string name="my_cards_block_card_title">CONFIRMAR BLOQUEO</string>
     <string name="my_cards_block_card_subtitle">Ingrese el CCV</string>
-    <string name="my_cards_block_card_text">¿Está seguro que desea bloquear esta tarjeta?</string>
+    <string name="my_cards_block_card_text">Este es un bloqueo definitivo y se reexpedirá la tarjeta ¿Está seguro que desea bloquearla?</string>
 
     <string name="my_cards_activate_card_title">ACTIVAR</string>
     <string name="my_cards_activate_card_subtitle">TARJETA</string>
-    <string name="my_cards_activate_card_text">Ingrese el número completo de su tarjeta tal como figura en el plástico.</string>
+    <string name="my_cards_activate_card_text">Digite el número completo de su tarjeta de crédito, tal como aparece en el plástico.</string>
 
     <string name="my_cards_blocked_call_card_title">TARJETA BLOQUEADA</string>
-    <string name="my_cards_blocked_call__card_subtitle">Su tarjeta se encuentra bloqueada</string>
-    <string name="my_cards_blocked_call__card_text">Para desbloquearla por favor comuníquese con el call center del banco.</string>
+    <string name="my_cards_blocked_call_card_subtitle">Su tarjeta se encuentra bloqueada</string>
+    <string name="my_cards_blocked_call_card_text">Para desbloquearla por favor comuníquese con el call center del banco.</string>
     <string name="my_cards_blocked_call__phone">+5713383838</string>
 
-    <string name="my_cards_pay_button_text">PAGAR</string>
-    <string name="my_cards_pay_continue_button_text">CONTINUAR</string>
+    <string name="my_cards_pay_button_text">Continuar</string>
+    <string name="my_cards_pay_continue_button_text">Cancelar</string>
 
-    <string name="my_cards_pay_card_title">PAGAR TARJETA</string>
-    <string name="my_cards_pay_card_subtitle">Debe pagar su tarjeta para seguir operando</string>
-    <string name="my_cards_pay_card_text_1">Su tarjeta tiene sobrecupo.\n ¿Desea pagarla ahora para poder utilizarla en su billetera?</string>
-    <string name="my_cards_pay_card_text_2">Su tarjeta presenta bloqueo de rediferido.\n ¿Desea pagarla ahora para poder utilizarla en su billetera?</string>
+    <string name="my_cards_pay_card_title">PAGAR</string>
+    <string name="my_cards_pay_card_subtitle">TARJETA</string>
+    <string name="my_cards_pay_card_text_1">Su tarjeta tiene sobrecupo.\nUsted puede pagarla y utilizarla a través de DaviPay.</string>
+    <string name="my_cards_pay_card_text_2">Su tarjeta tiene bloqueo de rediferido.\nUsted puede pagarla y utilizarla a través de DaviPay.</string>
 
-    <string name="card_pay_pay_button_text">CONFIRMAR</string>
-    <string name="card_pay_cancel_pay_button_text">CANCELAR</string>
+    <string name="card_pay_pay_button_text">Confirmar</string>
+    <string name="card_pay_cancel_pay_button_text">Cancelar</string>
 
     <string name="card_pay_confirmation_text_1">¿Usted confirma que desea realizar el pago de su tarjeta terminada en</string>
     <string name="e_card_pay_confirmation_text_1">¿Usted confirma que desea recargar su eCard terminada en</string>
@@ -422,5 +422,8 @@
 
     <string name="payment_layout_account_balance_selector">%1$s**%2$s ($%3$s)</string>
     <string name="card_pay_confirmation_text">¿Confirma que desea recargar su eCard Davivienda terminada en %1$s con su cuenta terminada en %2$s por $%3$s? Costo de la recarga $%4$s</string>
+    <string name="my_cards_next_to_expire_card_title">PRÓXIMO A</string>
+    <string name="my_cards_next_to_expire_card_subtitle">EXPIRACIÓN</string>
+    <string name="my_cards_next_to_expire_card_text">Su tarjeta está próxima a vencer, en los próximos días nos comunicaremos con usted para agendar la entrega de su nueva tarjeta.</string>
 
 </resources>

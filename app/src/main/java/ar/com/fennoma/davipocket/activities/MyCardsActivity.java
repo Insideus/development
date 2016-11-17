@@ -104,8 +104,8 @@ public class MyCardsActivity extends BaseActivity {
         intent.putExtra(ActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
         intent.putExtra(ActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.login_web_password_phone));
         startOperationPopUp(intent, getString(R.string.my_cards_blocked_call_card_title),
-                getString(R.string.my_cards_blocked_call__card_subtitle),
-                getString(R.string.my_cards_blocked_call__card_text));
+                getString(R.string.my_cards_blocked_call_card_subtitle),
+                getString(R.string.my_cards_blocked_call_card_text));
     }
 
     private void createECard() {
@@ -437,7 +437,7 @@ public class MyCardsActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     if (card.getPay() && card.getMessage() != null) {
-                        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+                            Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
                         intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_pay_card_title));
                         intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_pay_card_subtitle));
                         if (card.getMessage().equalsIgnoreCase("card_status.blocked_sobrecupo")) {
@@ -452,16 +452,27 @@ public class MyCardsActivity extends BaseActivity {
                         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
                         return;
                     }
-                    if (!TextUtils.isEmpty(card.getMessage()) && card.getMessage().equals("card_status.blocked_call_center")) {
+                    if (!TextUtils.isEmpty(card.getMessage())) {
                         Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
-                        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_blocked_call_card_title));
-                        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_blocked_call__card_subtitle));
-                        intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_blocked_call__card_text));
-                        intent.putExtra(ActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
-                        intent.putExtra(ActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.my_cards_blocked_call__phone));
-                        startActivityForResult(intent, EXPLAINING_DIALOG);
-                        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
-                        return;
+                        if(card.getMessage().equals("card_status.blocked_call_center")) {
+                            intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_blocked_call_card_title));
+                            intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_blocked_call_card_subtitle));
+                            intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_blocked_call_card_text));
+                            intent.putExtra(ActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
+                            intent.putExtra(ActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.my_cards_blocked_call__phone));
+                            startActivityForResult(intent, EXPLAINING_DIALOG);
+                            overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+                            return;
+                        }else if(card.getMessage().equals("card_status.next_to_expire")){
+                            intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_next_to_expire_card_title));
+                            intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_next_to_expire_card_subtitle));
+                            intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_next_to_expire_card_text));
+                            intent.putExtra(ActionDialogActivity.NEXT_TO_EXPIRE, true);
+                            intent.putExtra(CardDetailActivity.CARD_KEY, card);
+                            startActivityForResult(intent, EXPLAINING_DIALOG);
+                            overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+                            return;
+                        }
                     }
                     if (card.getActivate()) {
                         blockedActivableCardDialog(card);

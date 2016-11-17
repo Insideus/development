@@ -59,6 +59,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
     public static final String E_CARD_CREATE = "ecard create";
     public static final String LOGIN_DATA_CHECK = "login data check";
     public static final String LOGOUT_REQUEST = "logout request";
+    public static final String NEXT_TO_EXPIRE = "next to expire";
 
     public static final int RESULT_FAILED = -2;
 
@@ -82,6 +83,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
     private Boolean cancelPurchase;
     private Boolean loginDataCheck;
     private Boolean logoutRequest;
+    private boolean nextToExpire;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,6 +110,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             cancelPurchase = savedInstanceState.getBoolean(CANCEL_PURCHASE, false);
             loginDataCheck = savedInstanceState.getBoolean(LOGIN_DATA_CHECK, false);
             logoutRequest = savedInstanceState.getBoolean(LOGOUT_REQUEST, false);
+            nextToExpire = savedInstanceState.getBoolean(NEXT_TO_EXPIRE, false);
         } else {
             title = getIntent().getStringExtra(TITLE_KEY);
             subtitle = getIntent().getStringExtra(SUBTITLE_KEY);
@@ -129,6 +132,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             cancelPurchase = getIntent().getBooleanExtra(CANCEL_PURCHASE, false);
             loginDataCheck = getIntent().getBooleanExtra(LOGIN_DATA_CHECK, false);
             logoutRequest = getIntent().getBooleanExtra(LOGOUT_REQUEST, false);
+            nextToExpire = getIntent().getBooleanExtra(NEXT_TO_EXPIRE, false);
         }
         setLayouts();
         animateOpening();
@@ -227,6 +231,9 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         if(logoutRequest){
             setLogoutRequest(acceptButton, ignoreButton);
         }
+        if(nextToExpire){
+            setNextToExpireLabel(acceptButton, ignoreButton);
+        }
 
         TextView titleTv = (TextView) findViewById(R.id.toast_title);
         if (title != null && title.length() > 0) {
@@ -246,6 +253,12 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         } else {
             textTv.setVisibility(LinearLayout.GONE);
         }
+    }
+
+    private void setNextToExpireLabel(TextView acceptButton, TextView ignoreButton) {
+        acceptButton.setText(getString(R.string.my_cards_pay_button_text));
+        ignoreButton.setVisibility(View.GONE);
+        acceptButton.setOnClickListener(getGoToCardDetailsActivity());
     }
 
     private void setLogoutRequest(TextView acceptButton, TextView ignoreButton) {
@@ -391,7 +404,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
     }
 
     private void showBlockLayouts(TextView acceptButton, TextView ignoreButton) {
-        acceptButton.setText(getString(R.string.my_cards_block_card_accept));
+        acceptButton.setText(getString(R.string.card_pay_pay_button_text));
         ignoreButton.setText(getString(R.string.my_cards_block_card_cancel));
         ignoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
