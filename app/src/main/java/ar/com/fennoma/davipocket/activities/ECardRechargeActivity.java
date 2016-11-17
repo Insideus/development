@@ -141,11 +141,8 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
     }
 
     protected String getPayConfirmationText(Double amount) {
-        return getString(R.string.e_card_pay_confirmation_text_1).concat(" ").concat(card.getLastDigits()).concat(" ")
-                .concat(getString(R.string.card_pay_confirmation_text_2)).concat(" ").concat(selectedAccount.getName())
-                .concat(" ").concat(getString(R.string.card_pay_confirmation_text_3)).concat(" ")
-                .concat(selectedAccount.getLastDigits()).concat(" ").concat(getString(R.string.card_pay_confirmation_text_4))
-                .concat(" $ ").concat(CurrencyUtils.getCurrencyForString(amount)).concat("?");
+        return getString(R.string.card_pay_confirmation_text, card.getLastDigits(), selectedAccount.getLastDigits(),
+                CurrencyUtils.getCurrencyForString(amount), CurrencyUtils.getCurrencyForString(detail.getTransactionCost()));
     }
 
     private boolean isAmountOnRange(Double amount) {

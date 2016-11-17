@@ -179,8 +179,6 @@
     <string name="last_authenticating_title">Última autenticación</string>
 
     <!-- Card Pay Detail -->
-    <string name="card_pay_detail_mocked_spinner">AHORROS · 002200165529</string>
-    <string name="card_pay_detail_mocked_total_payment">$ 2.314.200</string>
     <string name="card_pay_detail_total_payment_title">Pago total (Cartera pesos)</string>
     <string name="card_pay_detail_minimum_payment_title">Pago mínimo (Cartera pesos)</string>
     <string name="card_pay_detail_total_payment_title_usd">Pago total (Cartera dólares)</string>
@@ -209,9 +207,9 @@
     <string name="my_cards_continue_button_text">CONTINUAR</string>
     <string name="my_cards_cancel_button_text">CANCELAR</string>
 
-    <string name="my_cards_enrole_card_title">ENRROLAR TARJETA</string>
-    <string name="my_cards_enrole_card_subtitle">Ingrese el CCV</string>
-    <string name="my_cards_enrole_card_text">Es el número de 3 dígitos que está al reverso de su tarjeta.</string>
+    <string name="my_cards_enrole_card_title">ACTIVE SUS TARJETAS</string>
+    <string name="my_cards_enrole_card_subtitle">EN DAVIPAY</string>
+    <string name="my_cards_enrole_card_text">Ingrese el código de seguridad o CVV, son los tres números que aparecen detrás de su tarjeta.</string>
 
     <string name="my_cards_block_card_title">BLOQUEAR TARJETA</string>
     <string name="my_cards_block_card_subtitle">Ingrese el CCV</string>
@@ -421,5 +419,8 @@
     <string name="payment_error_order_title">ÓRDEN</string>
     <string name="payment_error_order_subtitle">INCORRECTA</string>
     <string name="payment_error_order_text">No se ha podido procesar su compra, por favor vuelva a configurar sus productos y reinténtelo nuevamente.</string>
+
+    <string name="payment_layout_account_balance_selector">%1$s**%2$s ($%3$s)</string>
+    <string name="card_pay_confirmation_text">¿Confirma que desea recargar su eCard Davivienda terminada en %1$s con su cuenta terminada en %2$s por $%3$s? Costo de la recarga $%4$s</string>
 
 </resources>

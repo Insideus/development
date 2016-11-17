@@ -1,5 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -109,25 +110,19 @@ public abstract class AbstractPayActivity extends BaseActivity{
         }
     }
 
-    protected static String getAccountInfoToShow(Account account) {
+    protected static String getAccountInfoToShow(Activity activity, Account account) {
         String result = "";
-        if (!TextUtils.isEmpty(account.getName())) {
-            result = result.concat(account.getName()).concat(" ");
+        if (TextUtils.isEmpty(account.getName()) || TextUtils.isEmpty(account.getLastDigits()) || TextUtils.isEmpty(CurrencyUtils.getCurrencyForString(account.getBalance()))) {
+            return result;
         }
-        if (!TextUtils.isEmpty(account.getLastDigits())) {
-            result = result.concat(account.getLastDigits()).concat(": ");
-        } else if (!TextUtils.isEmpty(result)) {
-            result = result.concat(": ");
-        }
-        if (!TextUtils.isEmpty(CurrencyUtils.getCurrencyForString(account.getBalance()))) {
-            result = result.concat("$" + CurrencyUtils.getCurrencyForString(account.getBalance()));
-        }
+        result = activity.getString(R.string.payment_layout_account_balance_selector, account.getName(),
+                account.getLastDigits(), CurrencyUtils.getCurrencyForString(account.getBalance()));
         return result;
     }
 
     public void setSelectedIdAccountName() {
         if (selectedAccount != null) {
-            selectedAccountText.setText(getAccountInfoToShow(selectedAccount));
+            selectedAccountText.setText(getAccountInfoToShow(this, selectedAccount));
         }
     }
 
@@ -171,7 +166,7 @@ public abstract class AbstractPayActivity extends BaseActivity{
                 row = (TextView) convertView;
             }
             final Account account = getItem(position);
-            row.setText(getAccountInfoToShow(account));
+            row.setText(getAccountInfoToShow(AbstractPayActivity.this, account));
             if (selectedAccount != null && selectedAccount.getLastDigits().equals(account.getLastDigits())
                     && selectedAccount.getCode().equals(account.getCode())) {
                 row.setTextColor(ContextCompat.getColor(AbstractPayActivity.this, R.color.combo_item_text_color_selected));
