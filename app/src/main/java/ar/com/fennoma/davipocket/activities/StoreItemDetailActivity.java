@@ -182,7 +182,7 @@ public class StoreItemDetailActivity extends BaseActivity {
                 text);
     }
 
-    private void validateProductAndAddToCart() {
+    public void validateProductAndAddToCart() {
         ArrayList<String> errors = isValid();
         if(errors.size() > 0) {
             DialogUtil.toast(this,

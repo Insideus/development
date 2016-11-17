@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoreConfiguration implements Parcelable {
+public class StoreConfiguration implements Parcelable, IShowableItem {
 
     private String type;
     private String subType;
@@ -160,4 +160,8 @@ public class StoreConfiguration implements Parcelable {
         return emptyConf;
     }
 
+    @Override
+    public int getKindOfItem() {
+        return IShowableItem.STORE_CONFIGURATION;
+    }
 }

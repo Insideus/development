@@ -7,6 +7,7 @@ public interface IShowableItem extends Parcelable {
     int TITLE = 1;
     int BUTTON = 2;
     int BY_DAY_BAR = 3;
+    int STORE_CONFIGURATION = 4;
 
     int getKindOfItem();
 }
