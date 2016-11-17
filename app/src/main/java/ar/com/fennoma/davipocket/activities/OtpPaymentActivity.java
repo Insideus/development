@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.activities;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.PersistableBundle;
@@ -20,10 +19,10 @@ import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Card;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 
@@ -46,7 +45,7 @@ public class OtpPaymentActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.otp_payment_activity);
         setToolbar(R.id.toolbar, true, getString(R.string.main_activity_title));
-        new GetCardsToPay().execute();
+        new GetCardsToPay(this).execute();
     }
 
     @Override
@@ -84,7 +83,7 @@ public class OtpPaymentActivity extends BaseActivity {
         getOtpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetOttTokenTask().execute();
+                new GetOttTokenTask(OtpPaymentActivity.this).execute();
             }
         });
     }
@@ -186,9 +185,11 @@ public class OtpPaymentActivity extends BaseActivity {
         fourDigits.setText(selectedCard.getLastDigits());
     }
 
-    private class GetCardsToPay extends AsyncTask<Void, Void, ArrayList<Card>> {
+    private class GetCardsToPay extends DaviPayTask<ArrayList<Card>> {
 
-        String errorCode;
+        public GetCardsToPay(BaseActivity activity) {
+            super(activity);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -210,16 +211,7 @@ public class OtpPaymentActivity extends BaseActivity {
         @Override
         protected void onPostExecute(ArrayList<Card> response) {
             super.onPostExecute(response);
-            hideLoading();
-            if(response == null){
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
-                    showServiceGenericError();
-                }
-            } else {
+            if(!processedError) {
                 cards = response;
                 setLayouts();
             }
@@ -227,9 +219,11 @@ public class OtpPaymentActivity extends BaseActivity {
 
     }
 
-    private class GetOttTokenTask extends AsyncTask<Void, Void, String> {
+    private class GetOttTokenTask extends DaviPayTask<String> {
 
-        String errorCode;
+        public GetOttTokenTask(BaseActivity activity) {
+            super(activity);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -251,16 +245,7 @@ public class OtpPaymentActivity extends BaseActivity {
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
-            hideLoading();
-            if(response == null || response.length() < 1){
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
-                    showServiceGenericError();
-                }
-            } else {
+            if(!processedError) {
                 myCountDownTimer = new MyCountDownTimer(TIME_TO_USE, 1000, response);
                 myCountDownTimer.start();
             }

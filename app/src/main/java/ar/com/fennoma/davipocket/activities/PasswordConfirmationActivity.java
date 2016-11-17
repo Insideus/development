@@ -1,7 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -10,9 +9,9 @@ import android.view.View;
 import android.widget.EditText;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class PasswordConfirmationActivity extends BaseActivity {
@@ -84,8 +83,7 @@ public class PasswordConfirmationActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if(code != null && !TextUtils.isEmpty(code.getText())) {
-                    //startActivity(new Intent(PasswordConfirmationActivity.this, ActivatedPasswordActivity.class));
-                    new ValidateOtpTask().execute(personId, personIdType, code.getText().toString());
+                    new ValidateOtpTask(PasswordConfirmationActivity.this, personId, personIdType, code.getText().toString()).execute();
                 } else {
                     DialogUtil.toast(PasswordConfirmationActivity.this,
                             getString(R.string.input_data_error_generic_title),
@@ -96,9 +94,18 @@ public class PasswordConfirmationActivity extends BaseActivity {
         });
     }
 
-    public class ValidateOtpTask extends AsyncTask<String, Void, String> {
+    public class ValidateOtpTask extends DaviPayTask<String> {
 
-        String errorCode;
+        String personId;
+        String personIdType;
+        String pin;
+
+        public ValidateOtpTask(BaseActivity activity, String personId, String personIdType, String pin) {
+            super(activity);
+            this.personId = personId;
+            this.personIdType = personIdType;
+            this.pin = pin;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -107,10 +114,10 @@ public class PasswordConfirmationActivity extends BaseActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(Void... params) {
             String response = null;
             try {
-                response = Service.validateOtp(params[0], params[1], params[2]);
+                response = Service.validateOtp(personId, personIdType, pin);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -120,20 +127,13 @@ public class PasswordConfirmationActivity extends BaseActivity {
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
-            if(response == null && errorCode != null) {
-                //Expected error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, "");
-            } else if(response == null && errorCode == null) {
-                //Service error.
-                showServiceGenericError();
-            } else {
+            if(!processedError) {
                 //Success.
                 //Change Password Session Token.
                 goToSetNewPasswordActivity(response);
             }
-            hideLoading();
         }
+
     }
 
     private void goToSetNewPasswordActivity(String passwordToken) {

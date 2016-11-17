@@ -1452,9 +1452,9 @@ public class Service {
         return new User();
     }
 
-    public static boolean payCard(String sid, String cardLastDigits, String accountLastDigits,
+    public static Boolean payCard(String sid, String cardLastDigits, String accountLastDigits,
                                   Double amount, Boolean isUsdPayment, String todo1, String accountCode) throws ServiceException {
-        boolean response = false;
+        Boolean response = null;
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(PAY_CARD, sid);
@@ -1679,9 +1679,9 @@ public class Service {
         return response;
     }
 
-    public static boolean rechargeECard(String sid, String lastDigits, String accountLastDigits,
+    public static Boolean rechargeECard(String sid, String lastDigits, String accountLastDigits,
                                         Double amount, String todo1, String otpCode, String accountCode) throws ServiceException {
-        boolean response = false;
+        Boolean response = null;
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(RECHARGE_E_CARD, sid);

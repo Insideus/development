@@ -1,7 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +19,8 @@ import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.User;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
-import ar.com.fennoma.davipocket.utils.EncryptionUtils;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 
 public class LoginBaseActivity extends BaseActivity {
@@ -45,64 +44,17 @@ public class LoginBaseActivity extends BaseActivity {
         }
     }
 
-    public class LoginTask extends AsyncTask<String, Void, LoginResponse> {
+    public class GetUserTask extends DaviPayTask<User> {
 
-        String errorCode;
-        String additionalData;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showLoading();
-        }
-
-        @Override
-        protected LoginResponse doInBackground(String... params) {
-            LoginResponse response = null;
-            try {
-                String encryptedPassword = EncryptionUtils.encryptPassword(LoginBaseActivity.this, params[2]);
-                response = Service.login(params[0], params[1], encryptedPassword, getTodo1Data());
-            }  catch (ServiceException e) {
-                errorCode = e.getErrorCode();
-                additionalData = e.getAdditionalData();
-            }
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(LoginResponse response) {
-            super.onPostExecute(response);
-            if(response == null && errorCode != null) {
-                //Expected error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, additionalData);
-            } else if(response == null && errorCode == null) {
-                //Service error.
-                showServiceGenericError();
-            } else {
-                //Success login.
-                LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
-                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(),
-                        response.getAccountStatus());
-                if(step == null) {
-                    step = LoginSteps.REGISTRATION_COMPLETED;
-                }
-                new GetUserTask(response.getSid()).execute();
-                goToRegistrationStep(step);
-            }
-            hideLoading();
-        }
-    }
-
-    public class GetUserTask extends AsyncTask<String, Void, User> {
         private String sid;
 
-        GetUserTask(String sid) {
+        GetUserTask(BaseActivity activity, String sid) {
+            super(activity);
             this.sid = sid;
         }
 
         @Override
-        protected User doInBackground(String... params) {
+        protected User doInBackground(Void... params) {
             try {
                 return Service.getUser(sid);
             }  catch (ServiceException e) {
@@ -192,7 +144,7 @@ public class LoginBaseActivity extends BaseActivity {
 
     }
 
-    void processErrorAndContinue(ErrorMessages error, String additionalParam) {
+    public void processErrorAndContinue(ErrorMessages error, String additionalParam) {
         if(error != null) {
             switch(error) {
                 case INVALID_TOKEN:
@@ -221,7 +173,6 @@ public class LoginBaseActivity extends BaseActivity {
                case SET_VIRTUAL_PASSWORD:
                     this.additionalParam = additionalParam;
                     Intent setVirtualPasswordIntent = new Intent(this, AssignPasswordRecommendationActivity.class);
-                    //setVirtualPasswordIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     setVirtualPasswordIntent.putExtra(AssignPasswordRecommendationActivity.ID_TYPE_KEY,
                             String.valueOf(selectedIdType.getId()));
                     setVirtualPasswordIntent.putExtra(AssignPasswordRecommendationActivity.ID_NUMBER_KEY,
@@ -305,7 +256,10 @@ public class LoginBaseActivity extends BaseActivity {
     }
 
     private void registerDevice() {
-        new RegisterDeviceTask().execute(additionalParam, null);
+        RegisterDeviceTask registerDeviceTask = new RegisterDeviceTask(this);
+        registerDeviceTask.pin = null;
+        registerDeviceTask.newDeviceToken = additionalParam;
+        registerDeviceTask.execute();
     }
 
     protected void showErrorAndGoToLoginActivity() {
@@ -346,11 +300,14 @@ public class LoginBaseActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    public class RegisterDeviceTask extends AsyncTask<String, Void, LoginResponse> {
+    public class RegisterDeviceTask extends DaviPayTask<LoginResponse> {
 
-        String errorCode;
-        String additionalData;
         String pin;
+        String newDeviceToken;
+
+        public RegisterDeviceTask(BaseActivity activity) {
+            super(activity);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -359,11 +316,10 @@ public class LoginBaseActivity extends BaseActivity {
         }
 
         @Override
-        protected LoginResponse doInBackground(String... params) {
+        protected LoginResponse doInBackground(Void... params) {
             LoginResponse response = null;
             try {
-                pin = params[1];
-                response = Service.acceptNewDevice(params[0], pin, getTodo1Data());
+                response = Service.acceptNewDevice(newDeviceToken, pin, getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 additionalData = e.getAdditionalData();
@@ -374,26 +330,19 @@ public class LoginBaseActivity extends BaseActivity {
         @Override
         protected void onPostExecute(LoginResponse response) {
             super.onPostExecute(response);
-            if(response == null && errorCode != null) {
-                //Expected error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, additionalData);
-            } else if(response == null && errorCode == null) {
-                //Service error.
-                showServiceGenericError();
-            } else {
+            if(!processedError) {
                 //Success login.
                 LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
                 Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(),
                         response.getAccountStatus());
-                if(step == null) {
+                if (step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
-                new GetUserTask(response.getSid()).execute();
+                new GetUserTask(LoginBaseActivity.this, response.getSid()).execute();
                 goToRegistrationStep(step);
             }
-            hideLoading();
         }
+
     }
 
 }

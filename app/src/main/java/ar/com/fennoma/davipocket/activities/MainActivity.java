@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -24,10 +25,12 @@ import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
 public class MainActivity extends BaseActivity {
 
     public static final String OPEN_TOUR = "tour open";
+    public static final String SHOULD_RECREATE_KEY = "should_recreate_key";
     public static int LOCATION_PERMISSION_CODE = 169;
 
     private WithoutDeliveryStoreFragment fragment;
     private LatLng latLng;
+    private LocationUtils locationUtils;
 
     private boolean shouldRecreate = false;
 
@@ -47,6 +50,24 @@ public class MainActivity extends BaseActivity {
     private void handleIntent() {
         Card eCard = getIntent().getParcelableExtra(FIRST_LOGIN_WITH_E_CARD);
         startActivity(new Intent(this, ECardRechargeActivity.class).putExtra(FIRST_LOGIN_WITH_E_CARD, eCard));
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        outState.putBoolean(SHOULD_RECREATE_KEY, shouldRecreate);
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(SHOULD_RECREATE_KEY, shouldRecreate);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        shouldRecreate = savedInstanceState.getBoolean(SHOULD_RECREATE_KEY, true);
     }
 
     private void createScreen(){
@@ -82,7 +103,7 @@ public class MainActivity extends BaseActivity {
 
     private void getLocation() {
         showLoading();
-        new LocationUtils(this, new LocationUtils.ILocationListener() {
+        locationUtils = new LocationUtils(this, new LocationUtils.ILocationListener() {
             @Override
             public void onGotLocation(Location location) {
                 if(location == null){
@@ -99,7 +120,8 @@ public class MainActivity extends BaseActivity {
                 fragment.setLocation(null);
                 hideLoading();
             }
-        }).locUpdate(2000, 1);
+        });
+        locationUtils.locUpdate(2000, 1);
     }
 
     private void checkForTour() {
@@ -202,6 +224,12 @@ public class MainActivity extends BaseActivity {
                 fragment.setLocation(null);
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        locationUtils.cancelListening();
+        super.onPause();
     }
 
 }

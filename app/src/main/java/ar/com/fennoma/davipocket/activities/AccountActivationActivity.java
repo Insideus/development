@@ -1,7 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -15,6 +14,7 @@ import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class AccountActivationActivity extends BaseActivity{
@@ -30,7 +30,7 @@ public class AccountActivationActivity extends BaseActivity{
         findCodeBoxContainer();
         setRequestCodeButton();
         Session.getCurrentSession(this).setPendingStep(LoginSteps.ACCOUNT_VERIFICATION.getStep());
-        new ResendValidationCodeTask().execute();
+        new ResendValidationCodeTask(this).execute();
     }
 
     private void setRequestCodeButton() {
@@ -41,7 +41,7 @@ public class AccountActivationActivity extends BaseActivity{
         requestCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ResendValidationCodeTask().execute();
+                new ResendValidationCodeTask(AccountActivationActivity.this).execute();
             }
         });
     }
@@ -72,12 +72,17 @@ public class AccountActivationActivity extends BaseActivity{
                     getString(R.string.account_activation_incomplete_code_error));
             return;
         }
-        new AccountValidationTask().execute(code.getText().toString());
+        new AccountValidationTask(this, code.getText().toString()).execute();
     }
 
-    public class AccountValidationTask extends AsyncTask<String, Void, Boolean> {
+    public class AccountValidationTask extends DaviPayTask<Boolean> {
 
-        String errorCode;
+        String activationCode;
+
+        public AccountValidationTask(BaseActivity activity, String activationCode) {
+            super(activity);
+            this.activationCode = activationCode;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -86,11 +91,11 @@ public class AccountActivationActivity extends BaseActivity{
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.accountValidation(sid, params[0]);
+                response = Service.accountValidation(sid, activationCode);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -100,29 +105,22 @@ public class AccountActivationActivity extends BaseActivity{
         @Override
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
-            hideLoading();
-            if(response == null) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if(error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else if(error != null && error == ErrorMessages.CONFIRMATION_ERROR) {
-                    showConfirmationError();
-                } else {
+            if(!processedError) {
+                if (!response) {
+                    //Service error.
                     showServiceGenericError();
+                } else {
+                    goToConfirmationActivity();
                 }
-            } else if(!response) {
-                //Service error.
-                showServiceGenericError();
-            } else {
-                goToConfirmationActivity();
             }
         }
     }
 
-    public class ResendValidationCodeTask extends AsyncTask<String, Void, Boolean> {
+    public class ResendValidationCodeTask extends DaviPayTask<Boolean> {
 
-        private String errorCode;
+        public ResendValidationCodeTask(BaseActivity activity) {
+            super(activity);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -131,7 +129,7 @@ public class AccountActivationActivity extends BaseActivity{
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
@@ -145,22 +143,16 @@ public class AccountActivationActivity extends BaseActivity{
         @Override
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
-            hideLoading();
-            if(response == null) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if(error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
+            if(!processedError) {
+                if (!response) {
+                    //Service error.
                     showServiceGenericError();
+                } else {
+                    showResendMessage();
                 }
-            } else if(!response) {
-                //Service error.
-                showServiceGenericError();
-            } else {
-               showResendMessage();
             }
         }
+
     }
 
     private void showResendMessage() {
@@ -177,6 +169,20 @@ public class AccountActivationActivity extends BaseActivity{
     private void goToConfirmationActivity() {
         startActivity(new Intent(this, PolicyPickerActivity.class));
         this.finish();
+    }
+
+    public void processErrorAndContinue(ErrorMessages error, String additionalParam) {
+        if(error != null) {
+            switch(error) {
+                case CONFIRMATION_ERROR:
+                    showConfirmationError();
+                    break;
+                default:
+                    super.processErrorAndContinue(error, additionalParam);
+            }
+        } else {
+            showServiceGenericError();
+        }
     }
 
 }

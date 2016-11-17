@@ -49,7 +49,7 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
         cardTitle.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
         setRecycler();
         setSearcher();
-        new GetCardTransactionDetailsTask(new ITransactionDetailListener() {
+        new GetCardTransactionDetailsTask(this, new ITransactionDetailListener() {
             @Override
             public void onError() {
                 DialogUtil.toast(CardDetailActivity.this, getString(R.string.generic_service_error_title), "",
@@ -131,7 +131,7 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CardPayDetailActivity.PAY_REQUEST && resultCode == RESULT_OK) {
             refresh = true;
-            new GetCardTransactionDetailsTask().execute();
+            new GetCardTransactionDetailsTask(this).execute();
         }
         if(requestCode == CLOSE_ACTIVITY_REQUEST){
             finish();

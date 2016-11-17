@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.activities;
 
-import android.os.AsyncTask;
 import android.view.View;
 
 import ar.com.fennoma.davipocket.R;
@@ -10,6 +9,7 @@ import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.ui.adapters.CardDetailAdapter;
 
 public abstract class MovementsShowerActivity extends BaseActivity implements CardDetailAdapter.ICardDetailAdapterOwner{
@@ -23,20 +23,23 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
         void onError();
     }
 
-    public class GetCardTransactionDetailsTask extends AsyncTask<Void, Void, TransactionDetails> {
+    public class GetCardTransactionDetailsTask extends DaviPayTask<TransactionDetails> {
 
         private ITransactionDetailListener listener;
-        private String errorCode;
         private String dateFrom = null;
         private String dateTo = null;
 
-        GetCardTransactionDetailsTask(){}
+        GetCardTransactionDetailsTask(BaseActivity activity){
+            super(activity);
+        }
 
-        GetCardTransactionDetailsTask(ITransactionDetailListener listener){
+        GetCardTransactionDetailsTask(BaseActivity activity, ITransactionDetailListener listener) {
+            super(activity);
             this.listener = listener;
         }
 
-        GetCardTransactionDetailsTask(String dateFrom, String dateTo){
+        GetCardTransactionDetailsTask(BaseActivity activity, String dateFrom, String dateTo) {
+            super(activity);
             this.dateFrom = dateFrom;
             this.dateTo = dateTo;
         }
@@ -61,7 +64,6 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
 
         @Override
         protected void onPostExecute(TransactionDetails response) {
-            super.onPostExecute(response);
             hideLoading();
             if(response == null) {
                 //Hancdle invalid session error.
@@ -129,6 +131,6 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
     @Override
     public void loadMore() {
         curPage++;
-        new CardDetailActivity.GetCardTransactionDetailsTask().execute();
+        new CardDetailActivity.GetCardTransactionDetailsTask(this).execute();
     }
 }

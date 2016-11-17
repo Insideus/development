@@ -1,7 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -9,12 +8,11 @@ import android.widget.CheckBox;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Card;
-import ar.com.fennoma.davipocket.model.CardBin;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class EcardLoginActivity extends BaseActivity {
@@ -48,16 +46,19 @@ public class EcardLoginActivity extends BaseActivity {
                             "",
                             getString(R.string.assign_password_recommendation_terms_and_conditions));
                 } else {
-                    new EcardCreateTask().execute();
+                    new EcardCreateTask(EcardLoginActivity.this).execute();
                 }
             }
         });
     }
 
-    private class EcardCreateTask extends AsyncTask<Void, Void, Void> {
+    private class EcardCreateTask extends DaviPayTask<Void> {
 
         private Card response;
-        private String errorCode;
+
+        public EcardCreateTask(BaseActivity activity) {
+            super(activity);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -79,24 +80,18 @@ public class EcardLoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            hideLoading();
-            if (response == null) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
-                    showServiceGenericError();
-                }
-            } else {
+            if(!processedError) {
                 showEcardCreatedPopup(response);
             }
         }
+
     }
 
-    public class SetEcardStepTask extends AsyncTask<String, Void, Boolean> {
+    public class SetEcardStepTask extends DaviPayTask<Boolean> {
 
-        String errorCode;
+        public SetEcardStepTask(BaseActivity activity) {
+            super(activity);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -105,7 +100,7 @@ public class EcardLoginActivity extends BaseActivity {
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
@@ -119,26 +114,20 @@ public class EcardLoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
-            hideLoading();
-            if(response == null) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if(error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
+            if(!processedError) {
+                if (!response) {
+                    //Service error.
                     showServiceGenericError();
+                } else {
+                    goToMainActivity();
                 }
-            } else if(!response) {
-                //Service error.
-                showServiceGenericError();
-            } else {
-                goToMainActivity();
             }
         }
+
     }
 
     private void excecuteEcardStepTask() {
-        new SetEcardStepTask().execute();
+        new SetEcardStepTask(this).execute();
     }
 
     @Override

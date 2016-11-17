@@ -38,7 +38,7 @@ public class InsecureDeviceActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        new LogoutAndCloseApp().execute();
+        new LogoutAndCloseApp(this).execute();
     }
 
     private void setButton() {
@@ -49,12 +49,17 @@ public class InsecureDeviceActivity extends BaseActivity {
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new LogoutAndCloseApp().execute();
+                new LogoutAndCloseApp(InsecureDeviceActivity.this).execute();
             }
         });
     }
 
-    private class LogoutAndCloseApp extends BaseLogoutTask{
+    private class LogoutAndCloseApp extends BaseLogoutTask {
+
+        public LogoutAndCloseApp(BaseActivity activity) {
+            super(activity);
+        }
+
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
@@ -63,4 +68,5 @@ public class InsecureDeviceActivity extends BaseActivity {
             finish();
         }
     }
+
 }

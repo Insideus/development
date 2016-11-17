@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.activities;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -10,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class PolicyPickerActivity extends BaseActivity{
@@ -45,16 +44,30 @@ public class PolicyPickerActivity extends BaseActivity{
             @Override
             public void onClick(View v) {
                 if(validateRequirements()){
-                    new AcceptPolicyTask().execute(smsSend.isChecked(), phoneContact.isChecked(), emailSend.isChecked(),
-                            termsAndConditions.isChecked(), privacyPolicy.isChecked());
+                    new AcceptPolicyTask(PolicyPickerActivity.this, smsSend.isChecked(), phoneContact.isChecked(),
+                            emailSend.isChecked(), termsAndConditions.isChecked(), privacyPolicy.isChecked()).execute();
                 }
             }
         });
     }
 
-    public class AcceptPolicyTask extends AsyncTask<Boolean, Void, LoginResponse> {
+    public class AcceptPolicyTask extends DaviPayTask<LoginResponse> {
 
-        String errorCode;
+        Boolean sms;
+        Boolean phone;
+        Boolean email;
+        Boolean acceptTerms;
+        Boolean acceptPrivacy;
+
+        public AcceptPolicyTask(BaseActivity activity, Boolean sms, Boolean phone, Boolean email,
+                                Boolean acceptTerms, Boolean acceptPrivacy) {
+            super(activity);
+            this.sms = sms;
+            this.phone = phone;
+            this.email = email;
+            this.acceptTerms = acceptTerms;
+            this.acceptPrivacy = acceptPrivacy;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -63,11 +76,11 @@ public class PolicyPickerActivity extends BaseActivity{
         }
 
         @Override
-        protected LoginResponse doInBackground(Boolean... params) {
+        protected LoginResponse doInBackground(Void... params) {
             LoginResponse response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.acceptPolicy(sid, params[0], params[1], params[2], params[3], params[4]);
+                response = Service.acceptPolicy(sid, sms, phone, email, acceptTerms, acceptPrivacy);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -77,20 +90,10 @@ public class PolicyPickerActivity extends BaseActivity{
         @Override
         protected void onPostExecute(LoginResponse response) {
             super.onPostExecute(response);
-            hideLoading();
-            if(response == null) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if(error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
-                    showServiceGenericError();
-                }
-            } else {
+            if(!processedError) {
                 LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
-                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(),
-                        response.getAccountStatus());
-                if(step == null) {
+                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(), response.getAccountStatus());
+                if (step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
                 goToRegistrationStep(step);

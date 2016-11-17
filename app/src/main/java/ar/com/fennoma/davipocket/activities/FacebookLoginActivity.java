@@ -1,7 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -18,11 +17,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 
 public class FacebookLoginActivity extends BaseActivity {
 
@@ -59,7 +58,7 @@ public class FacebookLoginActivity extends BaseActivity {
                     public void onSuccess(LoginResult loginResult) {
                         Log.d("facebook_login" , loginResult.toString());
                         AccessToken accessToken = loginResult.getAccessToken();
-                        new FacebookLoginTask().execute(accessToken.getToken());
+                        new FacebookLoginTask(FacebookLoginActivity.this, accessToken.getToken()).execute();
                     }
 
                     @Override
@@ -84,7 +83,7 @@ public class FacebookLoginActivity extends BaseActivity {
     private class WithoutFacebookOnClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            new FacebookLoginTask().execute(CONTINUE_WITHOUT_LOGIN_TOKEN);
+            new FacebookLoginTask(FacebookLoginActivity.this, CONTINUE_WITHOUT_LOGIN_TOKEN).execute();
         }
     }
 
@@ -93,9 +92,14 @@ public class FacebookLoginActivity extends BaseActivity {
         this.finish();
     }
 
-    public class FacebookLoginTask extends AsyncTask<String, Void, Boolean> {
+    public class FacebookLoginTask extends DaviPayTask<Boolean> {
 
-        String errorCode;
+        String facebookToken;
+
+        public FacebookLoginTask(BaseActivity activity, String facebookToken) {
+            super(activity);
+            this.facebookToken = facebookToken;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -104,11 +108,11 @@ public class FacebookLoginActivity extends BaseActivity {
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.facebookConnect(sid, params[0]);
+                response = Service.facebookConnect(sid, facebookToken);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -118,22 +122,16 @@ public class FacebookLoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
-            hideLoading();
-            if(response == null) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if(error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
+            if(!processedError) {
+                if (!response) {
+                    //Service error.
                     showServiceGenericError();
+                } else {
+                    goToConfirmationActivity();
                 }
-            } else if(!response) {
-                //Service error.
-                showServiceGenericError();
-            } else {
-                goToConfirmationActivity();
             }
         }
+
     }
 
     private void performFacebookLogin() {

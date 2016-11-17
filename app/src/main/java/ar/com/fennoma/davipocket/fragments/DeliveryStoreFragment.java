@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.fragments;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,10 +14,12 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.activities.BaseActivity;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.Store;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.ui.adapters.WithoutDeliveryStoreAdapter;
 
 public class DeliveryStoreFragment extends Fragment {
@@ -29,7 +30,7 @@ public class DeliveryStoreFragment extends Fragment {
     public void setLocation(LatLng latLng) {
         this.latLng = latLng;
         adapter.setLatLng(latLng);
-        new GetStoresTask().execute();
+        new GetStoresTask((BaseActivity) getActivity()).execute();
     }
 
     @Nullable
@@ -47,12 +48,15 @@ public class DeliveryStoreFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    private class GetStoresTask extends AsyncTask<Void, Void, Void> {
+    private class GetStoresTask extends DaviPayTask<List<Store>> {
 
-        private List<Store> stores;
+        public GetStoresTask(BaseActivity activity) {
+            super(activity);
+        }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected List<Store> doInBackground(Void... params) {
+            List<Store> stores = null;
             String sid = Session.getCurrentSession(getActivity().getApplicationContext()).getSid();
             try {
                 stores = Service.getStoresWithoutDelivery(sid,
@@ -61,16 +65,17 @@ public class DeliveryStoreFragment extends Fragment {
             } catch (ServiceException e) {
                 e.printStackTrace();
             }
-            return null;
+            return stores;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            if(stores == null){
-                return;
+        protected void onPostExecute(List<Store> stores) {
+            super.onPostExecute(stores);
+            if(!processedError) {
+                adapter.setStores(stores);
             }
-            adapter.setStores(stores);
         }
+
     }
+
 }

@@ -1,7 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,12 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.UserInterest;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 
 public class InterestsPickerActivity extends BaseActivity{
 
@@ -51,7 +50,7 @@ public class InterestsPickerActivity extends BaseActivity{
         findViewById(R.id.send_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SetUserInterestsTask().execute(getSelectedInterests());
+                new SetUserInterestsTask(InterestsPickerActivity.this, getSelectedInterests()).execute();
             }
         });
     }
@@ -107,9 +106,14 @@ public class InterestsPickerActivity extends BaseActivity{
         }
     }
 
-    public class SetUserInterestsTask extends AsyncTask<String, Void, Boolean> {
+    public class SetUserInterestsTask extends DaviPayTask<Boolean> {
 
-        String errorCode;
+        private String interestsArray;
+
+        public SetUserInterestsTask(BaseActivity activity, String interestsArray) {
+            super(activity);
+            this.interestsArray = interestsArray;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -118,11 +122,11 @@ public class InterestsPickerActivity extends BaseActivity{
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.setUserInterests(sid, params[0]);
+                response = Service.setUserInterests(sid, interestsArray);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -132,22 +136,16 @@ public class InterestsPickerActivity extends BaseActivity{
         @Override
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
-            hideLoading();
-            if(response == null) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if(error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
+            if(!processedError) {
+                if (!response) {
+                    //Service error.
                     showServiceGenericError();
+                } else {
+                    goToEcardActivity();
                 }
-            } else if(!response) {
-                //Service error.
-                showServiceGenericError();
-            } else {
-                goToEcardActivity();
             }
         }
+
     }
 
     private String getSelectedInterests() {

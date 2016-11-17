@@ -25,7 +25,9 @@ public enum  ErrorMessages {
     OTP_VALIDATION_NEEDED("error.otp_validation_needed"),
     ORDER_ERROR("error.order_error"),
     ORDER_REFUND_ERROR("error.refund_error"),
-    ORDER_PAY_ERROR("error.pay_error");
+    ORDER_PAY_ERROR("error.pay_error"),
+    ECARD_NOT_CREATED("error.ecard_not_created"),
+    ECARD_DATA_NOT_SENT("error.ecard_data_not_sent");
 
     ErrorMessages(String errorCode) {
         this.errorCode = errorCode;

@@ -1,7 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -11,13 +10,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.PersonIdType;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.tasks.GetInitDataTask;
 import ar.com.fennoma.davipocket.tasks.TaskCallback;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
@@ -117,9 +116,8 @@ public class LoginActivity extends LoginBaseActivity {
                     getString(R.string.login_invalid_inputs_error_subtitle),
                     getString(R.string.login_invalid_inputs_error_text));
         } else {
-            new LoginTask().execute(personIdNumber.getText().toString(),
-                    String.valueOf(selectedIdType.getId()),
-                    virtualPasswordText.getText().toString());
+            new LoginTask(this, personIdNumber.getText().toString(), String.valueOf(selectedIdType.getId()),
+                    virtualPasswordText.getText().toString()).execute();
         }
     }
 
@@ -165,10 +163,18 @@ public class LoginActivity extends LoginBaseActivity {
         }
     }
 
-    public class LoginTask extends AsyncTask<String, Void, LoginResponse> {
+    public class LoginTask extends DaviPayTask<LoginResponse> {
 
-        private String errorCode;
-        private String additionalData;
+        String personId;
+        String personIdType;
+        String password;
+
+        public LoginTask(BaseActivity activity, String personId, String personIdType, String password) {
+            super(activity);
+            this.personId = personId;
+            this.personIdType = personIdType;
+            this.password = password;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -177,11 +183,11 @@ public class LoginActivity extends LoginBaseActivity {
         }
 
         @Override
-        protected LoginResponse doInBackground(String... params) {
+        protected LoginResponse doInBackground(Void... params) {
             LoginResponse response = null;
             try {
-                String encryptedPassword = EncryptionUtils.encryptPassword(LoginActivity.this, params[2]);
-                response = Service.login(params[0], params[1], encryptedPassword, getTodo1Data());
+                String encryptedPassword = EncryptionUtils.encryptPassword(LoginActivity.this, password);
+                response = Service.login(personId, personIdType, encryptedPassword, getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 additionalData = e.getAdditionalData();
@@ -191,29 +197,20 @@ public class LoginActivity extends LoginBaseActivity {
 
         @Override
         protected void onPostExecute(LoginResponse response) {
+            resetLayouts();
             super.onPostExecute(response);
-            if(response == null && errorCode != null) {
-                //Expected error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, additionalData);
-                resetLayouts();
-            } else if(response == null && errorCode == null) {
-                //Service error.
-                showServiceGenericError();
-                resetLayouts();
-            } else {
+            if(!processedError) {
                 //Success login.
                 LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
-                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(),
-                        response.getAccountStatus());
-                if(step == null) {
+                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(), response.getAccountStatus());
+                if (step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
-                new GetUserTask(response.getSid()).execute();
+                new GetUserTask(LoginActivity.this, response.getSid()).execute();
                 goToRegistrationStep(step);
             }
-            hideLoading();
         }
+
     }
 
 }

@@ -3,7 +3,6 @@ package ar.com.fennoma.davipocket.activities;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,7 +21,7 @@ import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
-import ar.com.fennoma.davipocket.utils.DialogUtil;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 
 public class ActionDialogActivity extends BaseActivity implements BaseActivity.OtpCodeReceived {
 
@@ -353,7 +352,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                 if(TextUtils.isEmpty(lastFourDigits)){
                     eCardFailed(getString(R.string.my_cards_failed_opperation_message));
                 }
-                new ECardShowData(lastFourDigits, null).execute();
+                new ECardShowData(ActionDialogActivity.this, lastFourDigits, null).execute();
             }
         });
     }
@@ -374,7 +373,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                 if(TextUtils.isEmpty(lastFourDigits)){
                     eCardFailed(getString(R.string.my_cards_failed_opperation_message));
                 }
-                new ECardGetCVV(lastFourDigits).execute();
+                new ECardGetCVV(ActionDialogActivity.this, lastFourDigits).execute();
             }
         });
     }
@@ -395,7 +394,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             @Override
             public void onClick(View v) {
                 if (termsAndConditions.isChecked()) {
-                    new eCardCreateTask().execute();
+                    new eCardCreateTask(ActionDialogActivity.this).execute();
                 } else {
                     eCardFailed(getString(R.string.card_action_terms_and_conditions_not_accepted_error));
                 }
@@ -416,7 +415,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new BlockCardTask().execute("");
+                new BlockCardTask(ActionDialogActivity.this, "").execute();
             }
         });
     }
@@ -521,7 +520,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                     finish();
                     return;
                 }
-                new ActivateCardTask().execute(cardNumberInput.getText().toString(), null);
+                new ActivateCardTask(ActionDialogActivity.this, cardNumberInput.getText().toString(), null).execute();
             }
         };
     }
@@ -537,7 +536,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                     finish();
                     return;
                 }
-                new AddCardTask().execute(ccvInput.getText().toString(), null);
+                new AddCardTask(ActionDialogActivity.this, ccvInput.getText().toString(), null).execute();
             }
         };
     }
@@ -590,9 +589,16 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         };
     }
 
-    public class ActivateCardTask extends AsyncTask<String, Void, Boolean> {
+    public class ActivateCardTask extends DaviPayTask<Boolean> {
 
-        String errorCode;
+        String cardNumber;
+        String otpCode;
+
+        public ActivateCardTask(BaseActivity activity, String cardNumber, String otpCode) {
+            super(activity);
+            this.cardNumber = cardNumber;
+            this.otpCode = otpCode;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -601,7 +607,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
@@ -609,7 +615,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                 if(card != null) {
                     cardLastDigits = card.getLastDigits();
                 }
-                response = Service.activateCard(sid, params[0], getTodo1Data(), params[1], cardLastDigits);
+                response = Service.activateCard(sid, cardNumber, getTodo1Data(), otpCode, cardLastDigits);
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -619,29 +625,26 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         @Override
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
-            hideLoading();
-            if (response == null || !response) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else if (error != null && error == ErrorMessages.OTP_VALIDATION_NEEDED) {
-                    processErrorAndContinue(error, null);
-                } else {
-                    //showServiceGenericError();
+            if(!processedError) {
+                if (!response) {
                     setResult(RESULT_FAILED);
                     finish();
+                } else {
+                    setResult(RESULT_OK);
+                    finish();
                 }
-            } else {
-                setResult(RESULT_OK);
-                finish();
             }
         }
     }
 
-    public class BlockCardTask extends AsyncTask<String, Void, Boolean> {
+    public class BlockCardTask  extends DaviPayTask<Boolean> {
 
-        String errorCode;
+        String otpCode;
+
+        public BlockCardTask(BaseActivity activity, String otpCode) {
+            super(activity);
+            this.otpCode = otpCode;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -650,11 +653,11 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.blockCard(sid, card.getLastDigits(), getTodo1Data(), params[0]);
+                response = Service.blockCard(sid, card.getLastDigits(), getTodo1Data(), otpCode);
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -664,29 +667,28 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         @Override
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
-            hideLoading();
-            if (response == null || !response) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else if (error != null && error == ErrorMessages.OTP_VALIDATION_NEEDED) {
-                    processErrorAndContinue(error, null);
-                } else {
-                    //showServiceGenericError();
+            if(!processedError) {
+                if (!response) {
                     setResult(RESULT_FAILED);
                     finish();
+                } else {
+                    setResult(RESULT_OK);
+                    finish();
                 }
-            } else {
-                setResult(RESULT_OK);
-                finish();
             }
         }
     }
 
-    public class AddCardTask extends AsyncTask<String, Void, Boolean> {
+    public class AddCardTask extends DaviPayTask<Boolean> {
 
-        private String errorCode;
+        String ccv;
+        String otpCode;
+
+        public AddCardTask(BaseActivity activity, String ccv, String otpCode) {
+            super(activity);
+            this.ccv = ccv;
+            this.otpCode = otpCode;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -695,11 +697,11 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.addCard(sid, card.getLastDigits(), params[0], getTodo1Data(), params[1]);
+                response = Service.addCard(sid, card.getLastDigits(), ccv, getTodo1Data(), otpCode);
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -709,34 +711,26 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         @Override
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
-            hideLoading();
-            if (response == null || !response) {
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else if (error != null && error == ErrorMessages.CARD_BLOCKED_24) {
-                    DialogUtil.toast(ActionDialogActivity.this,
-                            getString(R.string.card_24hr_blocked_title),
-                            getString(R.string.card_24hr_blocked_subtitle),
-                            getString(R.string.card_24hr_blocked_text));
-                    finish();
-                } else if (error != null && error == ErrorMessages.OTP_VALIDATION_NEEDED) {
-                    processErrorAndContinue(error, null);
-                } else {
+            if(!processedError) {
+                if (!response) {
                     setResult(RESULT_FAILED);
                     finish();
+                } else {
+                    setResult(RESULT_OK);
+                    finish();
                 }
-            } else {
-                setResult(RESULT_OK);
-                finish();
             }
         }
+
     }
 
-    private class eCardCreateTask extends AsyncTask<Void, Void, Void> {
+    private class eCardCreateTask extends DaviPayTask<Void> {
 
         private Card response;
-        private String errorCode;
+
+        public eCardCreateTask(BaseActivity activity) {
+            super(activity);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -757,20 +751,16 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            ErrorMessages error = ErrorMessages.getError(errorCode);
+            if(error == null) {
+                errorCode = ErrorMessages.ECARD_NOT_CREATED.getErrorCode();
+            }
             super.onPostExecute(aVoid);
-            hideLoading();
-            if (response == null) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
-                    eCardFailed(getString(R.string.my_cards_e_card_create_failed_text));
-                }
-            } else {
+            if(!processedError) {
                 createECardSuccess(response);
             }
         }
+
     }
 
     private void createECardSuccess(Card card) {
@@ -794,13 +784,12 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         finish();
     }
 
-    private class ECardGetCVV extends AsyncTask<Void, Void, Void> {
+    private class ECardGetCVV extends DaviPayTask<Boolean> {
 
-        private Boolean response;
-        private String errorCode;
         private String lastDigits;
 
-        public ECardGetCVV(String lastDigits) {
+        public ECardGetCVV(BaseActivity activity, String lastDigits) {
+            super(activity);
             this.lastDigits = lastDigits;
         }
 
@@ -811,32 +800,30 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
+            Boolean response = false;
             try {
                 response = Service.getCVV(Session.getCurrentSession(getApplicationContext()).getSid(), lastDigits, getTodo1Data());
             } catch (ServiceException e) {
                 e.printStackTrace();
                 errorCode = e.getErrorCode();
             }
-            return null;
+            return response;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            hideLoading();
-            if (response == null || !response) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
+        protected void onPostExecute(Boolean response) {
+            super.onPostExecute(response);
+            if(!processedError) {
+                if (!response) {
+                    //Hancdle invalid session error.
                     eCardFailed(getString(R.string.e_card_get_cvv_error));
+                } else {
+                    eCardGetCVVSuccess();
                 }
-            } else {
-                eCardGetCVVSuccess();
             }
         }
+
     }
 
     private void eCardGetCVVSuccess() {
@@ -848,14 +835,14 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         finish();
     }
 
-    private class ECardShowData extends AsyncTask<Void, Void, Void>{
+    private class ECardShowData  extends DaviPayTask<Void> {
 
         private Card response;
-        private String errorCode;
         private String lastDigits;
         private String otpCode;
 
-        public ECardShowData(String lastFourDigits, String otpCode) {
+        public ECardShowData(BaseActivity activity, String lastFourDigits, String otpCode) {
+            super(activity);
             this.lastDigits = lastFourDigits;
             this.otpCode = otpCode;
         }
@@ -880,21 +867,16 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            ErrorMessages error = ErrorMessages.getError(errorCode);
+            if(error == null) {
+                errorCode = ErrorMessages.ECARD_DATA_NOT_SENT.getErrorCode();
+            }
             super.onPostExecute(aVoid);
-            hideLoading();
-            if (response == null) {
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else if (error != null && error == ErrorMessages.OTP_VALIDATION_NEEDED) {
-                    processErrorAndContinue(error, null);
-                }  else {
-                    eCardFailed(getString(R.string.e_card_show_data_error));
-                }
-            } else {
+            if(!processedError) {
                 eCardShowDataSuccess(response);
             }
         }
+
     }
 
     @Override
@@ -902,31 +884,48 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         if(isCardNumberDialog) {
             EditText cardNumberInput = (EditText) findViewById(R.id.card_number);
             if(cardNumberInput != null) {
-                new ActivateCardTask().execute(cardNumberInput.getText().toString(), otpCode);
+                new ActivateCardTask(this, cardNumberInput.getText().toString(), otpCode).execute();
                 return;
             }
         }
         if(isCcvDialog) {
             EditText ccvInput = (EditText) findViewById(R.id.ccv_code);
             if(ccvInput != null) {
-                new AddCardTask().execute(ccvInput.getText().toString(), otpCode);
+                new AddCardTask(this, ccvInput.getText().toString(), otpCode).execute();
                 return;
             }
         }
         if(isBlockCardDialog) {
             if(card != null) {
-                new BlockCardTask().execute(otpCode);
+                new BlockCardTask(this, otpCode).execute();
                 return;
             }
         }
         if(eCardShowData) {
             TextView cvv = (TextView) findViewById(R.id.ccv_code);
             if(cvv != null) {
-                new ECardShowData(lastFourDigits, otpCode).execute();
+                new ECardShowData(this, lastFourDigits, otpCode).execute();
                 return;
             }
         }
         showServiceGenericError();
+    }
+
+    public void processErrorAndContinue(ErrorMessages error, String additionalParam) {
+        if(error != null) {
+            switch(error) {
+                case ECARD_NOT_CREATED:
+                    eCardFailed(getString(R.string.my_cards_e_card_create_failed_text));
+                    break;
+                case ECARD_DATA_NOT_SENT:
+                    eCardFailed(getString(R.string.e_card_show_data_error));
+                    break;
+                default:
+                    super.processErrorAndContinue(error, additionalParam);
+            }
+        } else {
+            showServiceGenericError();
+        }
     }
 
 }

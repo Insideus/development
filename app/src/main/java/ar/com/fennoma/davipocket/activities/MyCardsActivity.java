@@ -3,7 +3,6 @@ package ar.com.fennoma.davipocket.activities;
 import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,11 +22,11 @@ import ar.com.fennoma.davipocket.model.ButtonCard;
 import ar.com.fennoma.davipocket.model.Card;
 import ar.com.fennoma.davipocket.model.CardState;
 import ar.com.fennoma.davipocket.model.CardToShowOnList;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.MyCardsResponse;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
@@ -147,7 +146,7 @@ public class MyCardsActivity extends BaseActivity {
     }
 
     private void refreshCardList() {
-        new GetUserCardsTask().execute();
+        new GetUserCardsTask(this).execute();
     }
 
     @Override
@@ -358,7 +357,7 @@ public class MyCardsActivity extends BaseActivity {
             return new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new SetFavouriteCardTask().execute(card != null ? card.getLastDigits() : "");
+                    new SetFavouriteCardTask(MyCardsActivity.this, card != null ? card.getLastDigits() : "").execute();
                 }
             };
         }
@@ -565,9 +564,14 @@ public class MyCardsActivity extends BaseActivity {
         }
     }
 
-    public class SetFavouriteCardTask extends AsyncTask<String, Void, Boolean> {
+    public class SetFavouriteCardTask extends DaviPayTask<Boolean> {
 
-        String errorCode;
+        String cardNumber;
+
+        public SetFavouriteCardTask(BaseActivity activity, String cardNumber) {
+            super(activity);
+            this.cardNumber = cardNumber;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -576,11 +580,11 @@ public class MyCardsActivity extends BaseActivity {
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.setFavouriteCard(sid, params[0].isEmpty() ? null : params[0]);
+                response = Service.setFavouriteCard(sid, cardNumber.isEmpty() ? null : cardNumber);
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -590,25 +594,18 @@ public class MyCardsActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
-            if (response == null || !response) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
-                    showServiceGenericError();
-                }
-                hideLoading();
-            } else {
+            if(!processedError) {
                 refreshCardList();
             }
-
         }
+
     }
 
-    public class GetUserCardsTask extends AsyncTask<Void, Void, MyCardsResponse> {
+    public class GetUserCardsTask extends DaviPayTask<MyCardsResponse> {
 
-        String errorCode;
+        public GetUserCardsTask(BaseActivity activity) {
+            super(activity);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -632,16 +629,7 @@ public class MyCardsActivity extends BaseActivity {
         @Override
         protected void onPostExecute(MyCardsResponse response) {
             super.onPostExecute(response);
-            hideLoading();
-            if (response == null) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
-                    showServiceGenericError();
-                }
-            } else {
+            if(!processedError) {
                 cardsAdapter.setList(addButtons(response));
             }
         }

@@ -123,7 +123,7 @@ public class MovementsByDayActivity extends MovementsShowerActivity implements C
             return;
         }
         replaceList = true;
-        new GetCardTransactionDetailsTask(dateFrom, dateTo).execute();
+        new GetCardTransactionDetailsTask(this, dateFrom, dateTo).execute();
     }
 
 }

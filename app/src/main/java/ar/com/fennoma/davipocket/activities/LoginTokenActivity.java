@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.activities;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
@@ -11,13 +10,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.PersonIdType;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class LoginTokenActivity extends LoginBaseActivity {
@@ -142,9 +141,8 @@ public class LoginTokenActivity extends LoginBaseActivity {
                     getString(R.string.login_token_invalid_inputs_subtitle),
                     getString(R.string.login_token_invalid_inputs_text));
         } else {
-            new LoginWithTokenTask().execute(personIdNumber.getText().toString(),
-                    String.valueOf(selectedIdType.getId()),
-                    virtualPasswordText.getText().toString(), token.getText().toString());
+            new LoginWithTokenTask(this, personIdNumber.getText().toString(), String.valueOf(selectedIdType.getId()),
+                    virtualPasswordText.getText().toString(), token.getText().toString()).execute();
         }
     }
 
@@ -156,9 +154,8 @@ public class LoginTokenActivity extends LoginBaseActivity {
                     getString(R.string.input_data_error_generic_subtitle),
                     errors);
         } else {
-            new LoginWithNextTokenTask().execute(personIdNumber.getText().toString(),
-                    String.valueOf(selectedIdType.getId()),
-                    virtualPasswordText.getText().toString(), token.getText().toString(), nextTokenSession);
+            new LoginWithNextTokenTask(this, personIdNumber.getText().toString(), String.valueOf(selectedIdType.getId()),
+                    virtualPasswordText.getText().toString(), token.getText().toString(), nextTokenSession).execute();
         }
     }
 
@@ -179,10 +176,23 @@ public class LoginTokenActivity extends LoginBaseActivity {
         return errors;
     }
 
-    public class LoginWithNextTokenTask extends AsyncTask<String, Void, LoginResponse> {
+    public class LoginWithNextTokenTask extends DaviPayTask<LoginResponse> {
 
-        String errorCode;
+        String personId;
+        String personIdType;
+        String password;
+        String token;
         String nextTokenSession;
+
+        public LoginWithNextTokenTask(BaseActivity activity, String personId, String personIdType, String password,
+                                      String token, String nextTokenSession) {
+            super(activity);
+            this.personId = personId;
+            this.personIdType = personIdType;
+            this.password = password;
+            this.token = token;
+            this.nextTokenSession = nextTokenSession;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -191,52 +201,53 @@ public class LoginTokenActivity extends LoginBaseActivity {
         }
 
         @Override
-        protected LoginResponse doInBackground(String... params) {
+        protected LoginResponse doInBackground(Void... params) {
             LoginResponse response = null;
             try {
-                response = Service.loginWithNextToken(params[0], params[1], params[2], params[3], params[4], getTodo1Data());
+                response = Service.loginWithNextToken(personId, personIdType, password, token, nextTokenSession, getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
-                nextTokenSession = e.getAdditionalData();
+                additionalData = e.getAdditionalData();
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(LoginResponse response) {
+            resetLayoutOnFail();
             super.onPostExecute(response);
-            if(response == null && errorCode != null) {
-                //Expected error.
-                //ErrorMessages error = ErrorMessages.getError(errorCode);
-                //processErrorAndContinue(error, nextTokenSession);
-                showErrorAndGoToLoginActivity();
-                resetLayoutOnFail();
-            } else if(response == null && errorCode == null) {
-                //Service error.
-                showServiceGenericError();
-                resetLayoutOnFail();
-            } else {
+            if(!processedError) {
                 //Success login.
                 LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
                 Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(),
                         response.getAccountStatus());
-                if(step == null) {
+                if (step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
                 goToRegistrationStep(step);
             }
-            hideLoading();
         }
+
     }
 
     private void resetLayoutOnFail() {
         token.setText("");
     }
 
-    public class LoginWithTokenTask extends AsyncTask<String, Void, LoginResponse> {
+    public class LoginWithTokenTask extends DaviPayTask<LoginResponse> {
 
-        String errorCode;
-        String nextTokenSession;
+        String personId;
+        String personIdType;
+        String password;
+        String token;
+
+        public LoginWithTokenTask(BaseActivity activity, String personId, String personIdType, String password, String token) {
+            super(activity);
+            this.personId = personId;
+            this.personIdType = personIdType;
+            this.password = password;
+            this.token = token;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -245,40 +256,31 @@ public class LoginTokenActivity extends LoginBaseActivity {
         }
 
         @Override
-        protected LoginResponse doInBackground(String... params) {
+        protected LoginResponse doInBackground(Void... params) {
             LoginResponse response = null;
             try {
-                response = Service.loginWithToken(params[0], params[1], params[2], params[3], getTodo1Data());
+                response = Service.loginWithToken(personId, personIdType, password, token, getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
-                nextTokenSession = e.getAdditionalData();
+                additionalData = e.getAdditionalData();
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(LoginResponse response) {
+            resetLayoutOnFail();
             super.onPostExecute(response);
-            if(response == null && errorCode != null) {
-                //Expected error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, nextTokenSession);
-                resetLayoutOnFail();
-            } else if(response == null) {
-                //Service error.
-                showServiceGenericError();
-                resetLayoutOnFail();
-            } else {
+            if(!processedError) {
                 //Success login.
                 LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
                 Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(),
                         response.getAccountStatus());
-                if(step == null) {
+                if (step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
                 goToRegistrationStep(step);
             }
-            hideLoading();
         }
     }
 

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -39,6 +38,7 @@ import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.User;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.ui.controls.ComboHolder;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.SharedPreferencesUtils;
@@ -192,7 +192,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         DialogUtil.invalidSessionToast(this);
     }
 
-    void processErrorAndContinue(ErrorMessages error, String additionalParam) {
+    public void processErrorAndContinue(ErrorMessages error, String additionalParam) {
         if (error != null) {
             switch (error) {
                 case LOGIN_ERROR:
@@ -474,8 +474,11 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
-    protected class BaseLogoutTask extends AsyncTask<Void, Void, Boolean>{
-        String errorCode;
+    protected class BaseLogoutTask  extends DaviPayTask<Boolean> {
+
+        public BaseLogoutTask(BaseActivity activity) {
+            super(activity);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -494,26 +497,20 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
             }
             return response;
         }
+
     }
 
     public class LogoutTask extends BaseLogoutTask {
 
+        public LogoutTask(BaseActivity activity) {
+            super(activity);
+        }
+
         @Override
         protected void onPostExecute(Boolean response) {
-            super.onPostExecute(response);
-            if (response == null && errorCode != null) {
-                //Expected error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, "");
-            } else if (response == null) {
-                //Service error.
-                showServiceGenericError();
-            } else {
-                //Success login.
-                goLoginActivity();
-            }
-            hideLoading();
+            goLoginActivity();
         }
+
     }
 
     public void goLoginActivity() {
@@ -558,7 +555,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
             }
         }
         if(requestCode == LOGOUT_REQUEST && resultCode == RESULT_OK){
-            new LogoutTask().execute();
+            new LogoutTask(this).execute();
         }
     }
 

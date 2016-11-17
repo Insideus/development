@@ -1,7 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -11,10 +10,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.EncryptionUtils;
 
@@ -108,11 +107,11 @@ public class ChangePasswordStep3Activity extends BaseActivity{
             public void onClick(View v) {
                 if(validateFields()){
                     if(expiredPassword) {
-                        new SetExpiredPasswordTask().execute(personId, personIdType, oldPassword.getText().toString(),
-                                virtualPassword.getText().toString(), passwordToken);
+                        new SetExpiredPasswordTask(ChangePasswordStep3Activity.this, personId, personIdType, oldPassword.getText().toString(),
+                                virtualPassword.getText().toString(), passwordToken).execute();
                     } else {
-                        new SetPasswordTask().execute(personId, personIdType,
-                                virtualPassword.getText().toString(), passwordToken);
+                        new SetPasswordTask(ChangePasswordStep3Activity.this, personId, personIdType, virtualPassword.getText().toString(),
+                                passwordToken).execute();
                     }
                 }
             }
@@ -237,10 +236,20 @@ public class ChangePasswordStep3Activity extends BaseActivity{
         }
     }
 
-    public class SetPasswordTask extends AsyncTask<String, Void, LoginResponse> {
+    public class SetPasswordTask extends DaviPayTask<LoginResponse> {
 
-        String errorCode;
-        String errorMessage;
+        String personId;
+        String personIdType;
+        String password;
+        String passwordToken;
+
+        public SetPasswordTask(BaseActivity activity, String personId, String personIdType, String password, String passwordToken) {
+            super(activity);
+            this.personId = personId;
+            this.personIdType = personIdType;
+            this.password = password;
+            this.passwordToken = passwordToken;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -249,14 +258,14 @@ public class ChangePasswordStep3Activity extends BaseActivity{
         }
 
         @Override
-        protected LoginResponse doInBackground(String... params) {
+        protected LoginResponse doInBackground(Void... params) {
             LoginResponse response = null;
             try {
-                String encryptedPassword = EncryptionUtils.encryptPassword(ChangePasswordStep3Activity.this, params[2]);
-                response = Service.setPassword(params[0], params[1], encryptedPassword, params[3]);
+                String encryptedPassword = EncryptionUtils.encryptPassword(ChangePasswordStep3Activity.this, password);
+                response = Service.setPassword(personId, personIdType, encryptedPassword, passwordToken);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
-                errorMessage = e.getAdditionalData();
+                additionalData = e.getAdditionalData();
             }
             return response;
         }
@@ -264,25 +273,30 @@ public class ChangePasswordStep3Activity extends BaseActivity{
         @Override
         protected void onPostExecute(LoginResponse response) {
             super.onPostExecute(response);
-            if(response == null && errorCode != null) {
-                //Expected error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, errorMessage);
-            } else if(response == null && errorCode == null) {
-                //Service error.
-                showServiceGenericError();
-            } else {
+            if(!processedError) {
                 //Success login.
                 goToActivatedPasswordActivity(response);
             }
-            hideLoading();
         }
     }
 
-    public class SetExpiredPasswordTask extends AsyncTask<String, Void, LoginResponse> {
+    public class SetExpiredPasswordTask extends DaviPayTask<LoginResponse> {
 
-        String errorCode;
-        String errorMessage;
+        String personId;
+        String personIdType;
+        String oldPassword;
+        String password;
+        String passwordToken;
+
+        public SetExpiredPasswordTask(BaseActivity activity, String personId, String personIdType,
+                                      String oldPassword, String password, String passwordToken) {
+            super(activity);
+            this.personId = personId;
+            this.personIdType = personIdType;
+            this.oldPassword = oldPassword;
+            this.password = password;
+            this.passwordToken = passwordToken;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -291,15 +305,15 @@ public class ChangePasswordStep3Activity extends BaseActivity{
         }
 
         @Override
-        protected LoginResponse doInBackground(String... params) {
+        protected LoginResponse doInBackground(Void... params) {
             LoginResponse response = null;
             try {
-                String encryptedOldPassword = EncryptionUtils.encryptPassword(ChangePasswordStep3Activity.this, params[2]);
-                String encryptedPassword = EncryptionUtils.encryptPassword(ChangePasswordStep3Activity.this, params[3]);
-                response = Service.setExpiredPassword(params[0], params[1], encryptedOldPassword, encryptedPassword, params[4]);
+                String encryptedOldPassword = EncryptionUtils.encryptPassword(ChangePasswordStep3Activity.this, oldPassword);
+                String encryptedPassword = EncryptionUtils.encryptPassword(ChangePasswordStep3Activity.this, password);
+                response = Service.setExpiredPassword(personId, personIdType, encryptedOldPassword, encryptedPassword, passwordToken);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
-                errorMessage = e.getAdditionalData();
+                additionalData = e.getAdditionalData();
             }
             return response;
         }
@@ -307,19 +321,12 @@ public class ChangePasswordStep3Activity extends BaseActivity{
         @Override
         protected void onPostExecute(LoginResponse response) {
             super.onPostExecute(response);
-            if(response == null && errorCode != null) {
-                //Expected error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, errorMessage);
-            } else if(response == null && errorCode == null) {
-                //Service error.
-                showServiceGenericError();
-            } else {
+            if(!processedError) {
                 //Success login.
                 goToActivatedPasswordActivity(response);
             }
-            hideLoading();
         }
+
     }
 
     private void goToActivatedPasswordActivity(LoginResponse response) {

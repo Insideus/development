@@ -1,7 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -13,10 +12,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
@@ -38,7 +37,7 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
         cardTitle.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
         setLayouts();
         setOtpCodeReceived(this);
-        new GetCardPayDetail().execute();
+        new GetCardPayDetail(this).execute();
     }
 
     private void handleIntent(Bundle savedInstanceState) {
@@ -169,7 +168,7 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PAY_REQUEST && resultCode == RESULT_OK) {
-            new RechargeECardTask(getAmount(), null).execute();
+            new RechargeECardTask(this, getAmount(), null).execute();
         }
         if (requestCode == ON_CLOSE_REQUEST && resultCode == RESULT_OK) {
             if(justCreatedECard){
@@ -193,58 +192,53 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
         return Double.valueOf(value);
     }
 
-    private class RechargeECardTask extends AsyncTask<Void, Void, Void> {
+    private class RechargeECardTask extends DaviPayTask<Boolean> {
 
-        private String errorCode;
         private Double amount;
-        private boolean transactionMade;
         private String otpCode;
 
-        RechargeECardTask(Double amount, String otpCode) {
+        RechargeECardTask(BaseActivity activity, Double amount, String otpCode) {
+            super(activity);
             this.amount = amount;
             this.otpCode = otpCode;
         }
 
         @Override
         protected void onPreExecute() {
+            super.onPreExecute();
             showLoading();
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
+            Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                transactionMade = Service.rechargeECard(sid, card.getLastDigits(), selectedAccount.getLastDigits(),
+                response = Service.rechargeECard(sid, card.getLastDigits(), selectedAccount.getLastDigits(),
                         amount, getTodo1Data(), otpCode, selectedAccount.getCode());
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 e.printStackTrace();
             }
-            return null;
+            return response;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            hideLoading();
-            if (!transactionMade) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null) {
-                    processErrorAndContinue(error, null);
-                } else {
-                    showServiceGenericError();
+        protected void onPostExecute(Boolean response) {
+            super.onPostExecute(response);
+            if(!processedError) {
+                if (response) {
+                    DialogUtil.toast(ECardRechargeActivity.this, getString(R.string.card_pay_success_title),
+                            getString(R.string.card_pay_success_subtitle),
+                            getSuccessText(getString(R.string.e_card_recharge_success_text)), ON_CLOSE_REQUEST);
                 }
-            } else {
-                DialogUtil.toast(ECardRechargeActivity.this, getString(R.string.card_pay_success_title),
-                        getString(R.string.card_pay_success_subtitle),
-                        getSuccessText(getString(R.string.e_card_recharge_success_text)), ON_CLOSE_REQUEST);
             }
         }
     }
 
     @Override
     public void onOtpCodeReceived(String otpCode) {
-        new RechargeECardTask(getAmount(), otpCode).execute();
+        new RechargeECardTask(this, getAmount(), otpCode).execute();
     }
 
 }

@@ -2,7 +2,6 @@ package ar.com.fennoma.davipocket.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -22,11 +21,11 @@ import java.util.Locale;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Account;
 import ar.com.fennoma.davipocket.model.Card;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.PaymentDetail;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
@@ -71,9 +70,11 @@ public abstract class AbstractPayActivity extends BaseActivity{
                 error);
     }
 
-    protected class GetCardPayDetail extends AsyncTask<Void, Void, Void> {
+    protected class GetCardPayDetail extends DaviPayTask<Void> {
 
-        private String errorCode;
+        public GetCardPayDetail(BaseActivity activity) {
+            super(activity);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -93,17 +94,9 @@ public abstract class AbstractPayActivity extends BaseActivity{
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            hideLoading();
-            if (detail == null) {
-                //Handle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
-                    showServiceGenericError(true);
-                }
-            } else {
+        protected void onPostExecute(Void response) {
+            super.onPostExecute(response);
+            if(!processedError) {
                 setBottomLayouts();
                 setLayoutData();
             }

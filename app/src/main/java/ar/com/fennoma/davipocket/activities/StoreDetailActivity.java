@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -29,6 +28,7 @@ import ar.com.fennoma.davipocket.model.StoreCategory;
 import ar.com.fennoma.davipocket.model.StoreProduct;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.ui.adapters.CategoryAdapter;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
@@ -158,7 +158,7 @@ public class StoreDetailActivity extends BaseActivity {
             cart = new Cart();
             cart.setStore(store);
         }
-        new GetCategoriesByStore(store.getId()).execute();
+        new GetCategoriesByStore(this, store.getId()).execute();
     }
 
     @Override
@@ -182,12 +182,12 @@ public class StoreDetailActivity extends BaseActivity {
         cart = savedInstanceState.getParcelable(CART_KEY);
     }
 
-    private class GetCategoriesByStore extends AsyncTask<Void, Void, Void> {
+    private class GetCategoriesByStore extends DaviPayTask<List<StoreCategory>> {
 
         private String id;
-        private List<StoreCategory> categories;
 
-        public GetCategoriesByStore(long id) {
+        public GetCategoriesByStore(BaseActivity activity, long id) {
+            super(activity);
             this.id = String.valueOf(id);
         }
 
@@ -198,24 +198,23 @@ public class StoreDetailActivity extends BaseActivity {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected List<StoreCategory> doInBackground(Void... params) {
+            List<StoreCategory> categories = null;
             String sid = Session.getCurrentSession(getApplicationContext()).getSid();
             try {
                 categories = Service.getStoreById(sid, id);
             } catch (ServiceException e) {
                 e.printStackTrace();
             }
-            return null;
+            return categories;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            hideLoading();
-            if(categories == null){
-                return;
+        protected void onPostExecute(List<StoreCategory> categories) {
+            super.onPostExecute(categories);
+            if(!processedError) {
+                adapter.setCategories(categories);
             }
-            adapter.setCategories(categories);
         }
 
     }

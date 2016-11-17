@@ -1,7 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -15,11 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.model.TransactionDetails;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.utils.CardsUtils;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
@@ -54,7 +53,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         setContentView(R.layout.activity_card_pay_detail);
         setToolbar(R.id.toolbar_layout, true, card.getBin().getFranchise().toUpperCase());
         setLayouts();
-        new GetCardPayDetail().execute();
+        new GetCardPayDetail(this).execute();
     }
 
     @Override
@@ -281,7 +280,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PAY_REQUEST && resultCode == RESULT_OK) {
-            new PayTask(getAmount()).execute();
+            new PayTask(this, getAmount()).execute();
         }
         if (requestCode == ON_CLOSE_REQUEST && resultCode == RESULT_OK) {
             setResult(RESULT_OK);
@@ -289,13 +288,12 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         }
     }
 
-    private class PayTask extends AsyncTask<Void, Void, Void> {
+    private class PayTask extends DaviPayTask<Boolean> {
 
-        private String errorCode;
         private Double amount;
-        private boolean transactionMade;
 
-        PayTask(Double amount) {
+        PayTask(BaseActivity activity, Double amount) {
+            super(activity);
             this.amount = amount;
         }
 
@@ -305,34 +303,29 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
+            Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                transactionMade = Service.payCard(sid, card.getLastDigits(), selectedAccount.getLastDigits(),
+                response = Service.payCard(sid, card.getLastDigits(), selectedAccount.getLastDigits(),
                         amount, isUsdPayment(), getTodo1Data(), selectedAccount.getCode());
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 e.printStackTrace();
             }
-            return null;
+            return response;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            hideLoading();
-            if (!transactionMade) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
-                    showServiceGenericError();
-                }
-            } else {
+        protected void onPostExecute(Boolean response) {
+            super.onPostExecute(response);
+            if(!processedError) {
                 DialogUtil.toast(CardPayDetailActivity.this, getString(R.string.card_pay_success_title),
                         getString(R.string.card_pay_success_subtitle),
                         getSuccessText(getString(R.string.card_pay_success_text)), ON_CLOSE_REQUEST);
             }
         }
+
     }
+
 }

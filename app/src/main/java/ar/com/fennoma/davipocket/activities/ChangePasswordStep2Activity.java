@@ -1,7 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -23,10 +22,10 @@ import java.util.List;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.BankProduct;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.ui.controls.ComboHolder;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.EncryptionUtils;
@@ -274,11 +273,11 @@ public class ChangePasswordStep2Activity extends BaseActivity {
             public void onClick(View v) {
                 if(validateFields()){
                     if(isTdBankProduct()) {
-                        new ValidateProductTask().execute(personId, personIdType, atmPassword.getText().toString(),
-                                productCode, lastCardDigits.getText().toString());
+                        new ValidateProductTask(ChangePasswordStep2Activity.this, personId, personIdType, atmPassword.getText().toString(),
+                                productCode, lastCardDigits.getText().toString()).execute();
                     } else {
-                        new ValidateProductTask().execute(personId, personIdType, "",
-                                selectedBankProduct.getCode(), bankProductNumberText.getText().toString());
+                        new ValidateProductTask(ChangePasswordStep2Activity.this, personId, personIdType, "",
+                                selectedBankProduct.getCode(), bankProductNumberText.getText().toString()).execute();
                     }
                 }
             }
@@ -316,9 +315,23 @@ public class ChangePasswordStep2Activity extends BaseActivity {
         return true;
     }
 
-    public class ValidateProductTask extends AsyncTask<String, Void, String> {
+    public class ValidateProductTask extends DaviPayTask<String> {
 
-        String errorCode;
+        String personId;
+        String personIdType;
+        String productPassword;
+        String productCode;
+        String productNumber;
+
+        public ValidateProductTask(BaseActivity activity, String personId, String personIdType,
+                                   String productPassword, String productCode, String productNumber) {
+            super(activity);
+            this.personId = personId;
+            this.personIdType = personIdType;
+            this.productPassword = productPassword;
+            this.productCode = productCode;
+            this.productNumber = productNumber;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -327,11 +340,11 @@ public class ChangePasswordStep2Activity extends BaseActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(Void... params) {
             String response = null;
             try {
-                String encryptedPin = EncryptionUtils.encryptPin(ChangePasswordStep2Activity.this, params[2]);
-                response = Service.validateProduct(params[0], params[1], encryptedPin, params[3], params[4], getTodo1Data());
+                String encryptedPin = EncryptionUtils.encryptPin(ChangePasswordStep2Activity.this, productPassword);
+                response = Service.validateProduct(personId, personIdType, encryptedPin, productCode, productNumber, getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -341,24 +354,17 @@ public class ChangePasswordStep2Activity extends BaseActivity {
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
-            if(response == null && errorCode != null) {
-                //Expected error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, "");
-            } else if(response == null && errorCode == null) {
-                //Service error.
-                showServiceGenericError();
-            } else {
+            if(!processedError) {
                 //Success.
-                if(response.equals(GO_TO_OTP_KEY)) {
+                if (response.equals(GO_TO_OTP_KEY)) {
                     goToPasswordConfirmationActivity();
                 } else {
                     //Change Password Session Token.
                     goToSetNewPasswordActivity(response);
                 }
             }
-            hideLoading();
         }
+
     }
 
     private void goToPasswordConfirmationActivity() {

@@ -1,6 +1,5 @@
 package ar.com.fennoma.davipocket.activities;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,10 +9,10 @@ import java.util.ArrayList;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Cart;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.ui.adapters.MyOrdersAdapter;
 
 public class MyOrdersActivity extends BaseActivity {
@@ -26,7 +25,7 @@ public class MyOrdersActivity extends BaseActivity {
         setContentView(R.layout.my_shops_activity);
         setToolbar(R.id.toolbar, false, getString(R.string.my_shops_title));
         setRecycler();
-        new GetOrderTask().execute();
+        new GetOrderTask(this).execute();
     }
 
     private void setRecycler() {
@@ -39,9 +38,11 @@ public class MyOrdersActivity extends BaseActivity {
         recycler.setAdapter(adapter);
     }
 
-    private class GetOrderTask extends AsyncTask<Void, Void, ArrayList<Cart>> {
+    private class GetOrderTask extends DaviPayTask<ArrayList<Cart>> {
 
-        String errorCode;
+        public GetOrderTask(BaseActivity activity) {
+            super(activity);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -64,16 +65,7 @@ public class MyOrdersActivity extends BaseActivity {
         @Override
         protected void onPostExecute(ArrayList<Cart> orders) {
             super.onPostExecute(orders);
-            hideLoading();
-            if (orders == null) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
-                    showServiceGenericError();
-                }
-            } else {
+            if(!processedError) {
                 adapter.setOrdersList(orders);
             }
         }

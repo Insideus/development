@@ -1,7 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -29,6 +28,7 @@ import ar.com.fennoma.davipocket.model.PreCheckout;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.ui.adapters.CategoryItemAdapter;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DavipointUtils;
@@ -58,7 +58,7 @@ public class OrderPaymentActivity extends BaseActivity {
         handleIntent();
         setToolbar(R.id.toolbar, true, getString(R.string.main_activity_title));
         if(cart != null && cart.getStore() != null) {
-            new GetPreCheckoutData(cart.getStore().getId()).execute();
+            new GetPreCheckoutData(this, cart.getStore().getId()).execute();
         }
     }
 
@@ -198,7 +198,7 @@ public class OrderPaymentActivity extends BaseActivity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new PayOrderTask().execute();
+                new PayOrderTask(OrderPaymentActivity.this).execute();
             }
         });
     }
@@ -409,12 +409,12 @@ public class OrderPaymentActivity extends BaseActivity {
         }
     }
 
-    private class GetPreCheckoutData extends AsyncTask<Void, Void, PreCheckout> {
+    private class GetPreCheckoutData extends DaviPayTask<PreCheckout> {
 
         private String id;
-        String errorCode;
 
-        GetPreCheckoutData(long id) {
+        GetPreCheckoutData(BaseActivity activity, long id) {
+            super(activity);
             this.id = String.valueOf(id);
         }
 
@@ -438,16 +438,7 @@ public class OrderPaymentActivity extends BaseActivity {
         @Override
         protected void onPostExecute(PreCheckout response) {
             super.onPostExecute(response);
-            hideLoading();
-            if(response == null){
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
-                    showServiceGenericError();
-                }
-            } else {
+            if(!processedError) {
                 preCheckoutData = response;
                 setLayouts();
             }
@@ -455,9 +446,11 @@ public class OrderPaymentActivity extends BaseActivity {
 
     }
 
-    private class PayOrderTask extends AsyncTask<Void, Void, String> {
+    private class PayOrderTask extends DaviPayTask<String> {
 
-        String errorCode;
+        public PayOrderTask(BaseActivity activity) {
+            super(activity);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -473,32 +466,16 @@ public class OrderPaymentActivity extends BaseActivity {
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
+            if(data != null && data.length() < 1) {
+                data = null;
+            }
             return data;
         }
 
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
-            hideLoading();
-            if(response == null || response.length() < 1){
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if (error != null) {
-                    if(error == ErrorMessages.INVALID_SESSION) {
-                        handleInvalidSessionError();
-                    } else if(error == ErrorMessages.ORDER_ERROR) {
-                        showOrderErrorMessage();
-                    } else if(error == ErrorMessages.ORDER_PAY_ERROR) {
-                        showOrderPayErrorMessage();
-                    }  else if(error == ErrorMessages.ORDER_REFUND_ERROR) {
-                        showOrderRefundErrorMessage();
-                    } else {
-                        showServiceGenericError();
-                    }
-                } else {
-                    showServiceGenericError();
-                }
-            } else {
+            if(!processedError) {
                 cart.setReceiptNumber(response);
                 goToReceiptActivity();
             }
@@ -531,6 +508,26 @@ public class OrderPaymentActivity extends BaseActivity {
         Intent intent = new Intent(OrderPaymentActivity.this, OrderReceiptActivity.class);
         intent.putExtra(OrderReceiptActivity.CART_KEY, cart);
         startActivity(intent);
+    }
+
+    public void processErrorAndContinue(ErrorMessages error, String additionalParam) {
+        if(error != null) {
+            switch(error) {
+                case ORDER_ERROR:
+                    showOrderErrorMessage();
+                    break;
+                case ORDER_PAY_ERROR:
+                    showOrderPayErrorMessage();
+                    break;
+                case ORDER_REFUND_ERROR:
+                    showOrderRefundErrorMessage();
+                    break;
+                default:
+                    super.processErrorAndContinue(error, additionalParam);
+            }
+        } else {
+            showServiceGenericError();
+        }
     }
 
     @Override

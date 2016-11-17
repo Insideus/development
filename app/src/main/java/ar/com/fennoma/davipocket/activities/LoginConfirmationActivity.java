@@ -2,7 +2,6 @@ package ar.com.fennoma.davipocket.activities;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -35,11 +34,11 @@ import java.util.Locale;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Country;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.ui.controls.ComboHolder;
 import ar.com.fennoma.davipocket.utils.DateUtils;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
@@ -136,8 +135,8 @@ public class LoginConfirmationActivity extends BaseActivity {
     }
 
     private void submitData() {
-        new ConfirmationTask().execute(mail.getText().toString(), phone.getText().toString(),
-                String.valueOf(selectedCountry.getId()), birthday.getText().toString());
+        new ConfirmationTask(this, mail.getText().toString(), phone.getText().toString(),
+                String.valueOf(selectedCountry.getId()), birthday.getText().toString()).execute();
     }
 
     private boolean validateFields() {
@@ -335,9 +334,20 @@ public class LoginConfirmationActivity extends BaseActivity {
 
     }
 
-    public class ConfirmationTask extends AsyncTask<String, Void, Boolean> {
+    public class ConfirmationTask extends DaviPayTask<Boolean> {
 
-        String errorCode;
+        String email;
+        String phone;
+        String countryId;
+        String birthDate;
+
+        public ConfirmationTask(BaseActivity activity, String email, String phone, String countryId, String birthDate) {
+            super(activity);
+            this.email = email;
+            this.phone = phone;
+            this.countryId = countryId;
+            this.birthDate = birthDate;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -346,11 +356,11 @@ public class LoginConfirmationActivity extends BaseActivity {
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Void... params) {
             Boolean response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                response = Service.updateUserInfo(sid, params[0], params[1], params[2], params[3]);
+                response = Service.updateUserInfo(sid, email, phone, countryId, birthDate);
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -360,22 +370,16 @@ public class LoginConfirmationActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
-            hideLoading();
-            if(response == null) {
-                //Hancdle invalid session error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                if(error != null && error == ErrorMessages.INVALID_SESSION) {
-                    handleInvalidSessionError();
-                } else {
+            if(!processedError) {
+                if (!response) {
+                    //Service error.
                     showServiceGenericError();
+                } else {
+                    goToPolicyPickerActivity();
                 }
-            } else if(!response) {
-                //Service error.
-                showServiceGenericError();
-            } else {
-                goToPolicyPickerActivity();
             }
         }
+
     }
 
     private void getUserDataFromFacebook(){

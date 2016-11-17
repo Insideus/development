@@ -1,7 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -13,11 +12,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ar.com.fennoma.davipocket.R;
-import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.PersonIdType;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public class ChangePasswordStep1Activity extends LoginBaseActivity {
@@ -64,17 +63,22 @@ public class ChangePasswordStep1Activity extends LoginBaseActivity {
                             getString(R.string.change_password_step_1_empty_id_number_error));
                     return;
                 }
-                new ForgotPasswordTask().execute(
-                        personIdNumber.getText().toString(),
-                        String.valueOf(selectedIdType.getId()));
+                new ForgotPasswordTask(ChangePasswordStep1Activity.this, personIdNumber.getText().toString(),
+                        String.valueOf(selectedIdType.getId())).execute();
             }
         });
     }
 
-    public class ForgotPasswordTask extends AsyncTask<String, Void, String> {
+    public class ForgotPasswordTask extends DaviPayTask<String> {
 
-        String errorCode;
-        String additionalData;
+        String personId;
+        String selectedIdType;
+
+        public ForgotPasswordTask(BaseActivity activity, String personId, String selectedIdType) {
+            super(activity);
+            this.personId = personId;
+            this.selectedIdType = selectedIdType;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -83,10 +87,10 @@ public class ChangePasswordStep1Activity extends LoginBaseActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(Void... params) {
             String response = null;
             try {
-                response = Service.forgotPassword(params[0], params[1], getTodo1Data());
+                response = Service.forgotPassword(personId, selectedIdType, getTodo1Data());
             }  catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
@@ -96,19 +100,11 @@ public class ChangePasswordStep1Activity extends LoginBaseActivity {
         @Override
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
-            if(response == null && errorCode != null) {
-                //Expected error.
-                ErrorMessages error = ErrorMessages.getError(errorCode);
-                processErrorAndContinue(error, additionalData);
-            } else if(response == null && errorCode == null) {
-                //Service error.
-                showServiceGenericError();
-            } else {
-                //Success.
+            if(!processedError) {
                 goToNextStep(response);
             }
-            hideLoading();
         }
+
     }
 
     private void goToNextStep(String validationProduct) {
