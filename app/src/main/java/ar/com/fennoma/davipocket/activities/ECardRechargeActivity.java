@@ -25,6 +25,7 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
 
     private EditText otherPaymentValue;
     private boolean justCreatedECard = false;
+    private View payButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,22 +76,30 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
                 CurrencyUtils.getCurrencyForString(detail.getMinimumPayment()),
                 CurrencyUtils.getCurrencyForString(detail.getTotal()),
                 CurrencyUtils.getCurrencyForString(detail.getTransactionCost())));
-        if (detail.getAccounts() != null && !detail.getAccounts().isEmpty()) {
-            selectedAccount = detail.getAccounts().get(0);
-            setSelectedIdAccountName();
-            selectedAccountText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showCombo();
-                }
-            });
+        if (detail.getAccounts() == null || detail.getAccounts().isEmpty()) {
+            disableScreen();
+            return;
         }
+        selectedAccount = detail.getAccounts().get(0);
+        setSelectedIdAccountName();
+        selectedAccountText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCombo();
+            }
+        });
+    }
+
+    private void disableScreen() {
+        selectedAccountText.setText(getString(R.string.card_pay_detail_no_accounts_label));
+        payButton.setVisibility(View.GONE);
+        otherPaymentValue.setEnabled(false);
     }
 
     private void setLayouts() {
         selectedAccountText = (TextView) findViewById(R.id.account_spinner);
         otherPaymentValue = (EditText) findViewById(R.id.other_payment_value);
-        View payButton = findViewById(R.id.pay_button);
+        payButton = findViewById(R.id.pay_button);
         if(selectedAccountText == null || otherPaymentValue == null || payButton == null){
             return;
         }

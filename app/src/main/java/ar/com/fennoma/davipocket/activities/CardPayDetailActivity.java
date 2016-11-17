@@ -39,6 +39,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
 
     private EditText otherPaymentValue;
     private View priceIndicatorView;
+    private View payButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,16 +74,29 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         TextView minimumPaymentLabel = (TextView) findViewById(R.id.minimum_payment_label);
         totalPaymentLabel.setText(String.format("$%s", CurrencyUtils.getCurrencyForString(detail.getTotal())));
         minimumPaymentLabel.setText(String.format("$%s", CurrencyUtils.getCurrencyForString(detail.getMinimumPayment())));
-        if (detail.getAccounts() != null && !detail.getAccounts().isEmpty()) {
-            selectedAccount = detail.getAccounts().get(0);
-            setSelectedIdAccountName();
-            selectedAccountText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showCombo();
-                }
-            });
+        if(detail.getAccounts() == null || detail.getAccounts().isEmpty()){
+            disableScreen();
+            return;
         }
+        selectedAccount = detail.getAccounts().get(0);
+        setSelectedIdAccountName();
+        selectedAccountText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCombo();
+            }
+        });
+    }
+
+    private void disableScreen() {
+        selectedAccountText.setText(getString(R.string.card_pay_detail_no_accounts_label));
+        payButton.setVisibility(View.GONE);
+        minimumPaymentUsd.setEnabled(false);
+        totalPaymentUsd.setEnabled(false);
+        totalPayment.setChecked(false);
+        totalPayment.setEnabled(false);
+        minimumPayment.setEnabled(false);
+        otherPayment.setEnabled(false);
     }
 
     private void setLayouts() {
@@ -98,7 +112,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         final View otherPaymentContainer = findViewById(R.id.other_payment_container);
         otherPaymentValue = (EditText) findViewById(R.id.other_payment_value);
 
-        View payButton = findViewById(R.id.pay_button);
+        payButton = findViewById(R.id.pay_button);
         if (totalPayment == null || minimumPayment == null || otherPayment == null || otherPaymentContainer == null
                 || otherPaymentValue == null || cardTitle == null || payButton == null) {
             return;

@@ -425,5 +425,6 @@
     <string name="my_cards_next_to_expire_card_title">PRÓXIMO A</string>
     <string name="my_cards_next_to_expire_card_subtitle">EXPIRACIÓN</string>
     <string name="my_cards_next_to_expire_card_text">Su tarjeta está próxima a vencer, en los próximos días nos comunicaremos con usted para agendar la entrega de su nueva tarjeta.</string>
+    <string name="card_pay_detail_no_accounts_label">(Sin cuentas)</string>
 
 </resources>
