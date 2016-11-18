@@ -1,5 +1,6 @@
 package ar.com.fennoma.davipocket.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -23,14 +24,16 @@ import ar.com.fennoma.davipocket.ui.adapters.CategoryItemAdapter;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
 import ar.com.fennoma.davipocket.utils.DavipointUtils;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 import ar.com.fennoma.davipocket.utils.ImageUtils;
 
 public class OrderReceiptActivity extends BaseActivity{
 
     public static final String CART_KEY = "cart_key";
-    public static final String FROM_MADE_SHOP = "from made shop";
-    public static final String FROM_OTT_NOTIFICATION = "from made shop";
+    public static final String FROM_MADE_SHOP = "from_made_shop";
+    public static final String FROM_OTT_NOTIFICATION = "from_ott_notification";
     public static final String FROM_ORDER_READY_NOTIFICATION_KEY = "from_order_ready_notification";
+    private static final int PAY_REQUEST = 2003;
 
     private Cart cart;
     private boolean fromMadeShop;
@@ -165,10 +168,27 @@ public class OrderReceiptActivity extends BaseActivity{
         } else {
             receiptNumber.setText(cart.getReceiptNumber());
         }
+        findViewById(R.id.pay_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPaymentDetails();
+            }
+        });
+
+    }
+
+    private void showPaymentDetails() {
+        Intent intent = new Intent(this, ActionDialogActivity.class);
+        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.ott_payment_confirmation_title));
+        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.ott_payment_confirmation_subtitle));
+        intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.ott_payment_confirmation_text, cart.getSelectedCard().getLastDigits(), CurrencyUtils.getCurrencyForString(cart.getCartPrice())));
+        intent.putExtra(ActionDialogActivity.IS_CARD_PAY, true);
+        startActivityForResult(intent, PAY_REQUEST);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
     private void setButtons() {
-        if(fromMadeShop){
+        if(fromMadeShop || fromOttNotification){
             findViewById(R.id.new_buy_buttons).setVisibility(View.GONE);
             findViewById(R.id.repeat_purchase_button).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -244,10 +264,22 @@ public class OrderReceiptActivity extends BaseActivity{
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
             if(!processedError) {
-
+                findViewById(R.id.pay_ott_button_container).setVisibility(View.GONE);
+                DialogUtil.toast(OrderReceiptActivity.this,
+                        getString(R.string.ott_payment_title),
+                        getString(R.string.ott_payment_subtitle),
+                        getString(R.string.ott_payment_text, cart.getSelectedCard().getLastDigits(), CurrencyUtils.getCurrencyForString(cart.getCartPrice())));
             }
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PAY_REQUEST && resultCode == RESULT_OK) {
+            new PayOttTask(this).execute();
+        }
     }
 
     @Override

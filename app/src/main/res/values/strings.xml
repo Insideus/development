@@ -437,4 +437,16 @@
 
     <string name="order_ready_notification_text">Su pedido número %1$s está listo.</string>
 
+    <string name="ott_pay_notification_text">Solicitud de pago.</string>
+    <string name="ott_payment_confirmation_title">ACEPTAR</string>
+    <string name="ott_payment_confirmation_subtitle">PAGO</string>
+    <string name="ott_payment_confirmation_text">¿Usted confirma que desea realizar el pago con su tarjeta terminada en %1$s por un monto de $%2$s?</string>
+
+    <string name="ott_payment_title">PAGO</string>
+    <string name="ott_payment_subtitle">REALIZADO</string>
+    <string name="ott_payment_text">Se realizó el pago con su tarjeta terminada en %1$s por un monto de $%2$s</string>
+
 </resources>
+
+
+

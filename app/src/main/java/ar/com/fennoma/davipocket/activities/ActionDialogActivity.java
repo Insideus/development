@@ -752,7 +752,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         @Override
         protected void onPostExecute(Card response) {
             ErrorMessages error = ErrorMessages.getError(errorCode);
-            if(error == null && response == null) {
+            if(error == null) {
                 errorCode = ErrorMessages.ECARD_NOT_CREATED.getErrorCode();
             }
             super.onPostExecute(response);
