@@ -188,6 +188,18 @@ public class MyCardsActivity extends BaseActivity {
                 refresh = false;
                 cardsAdapter.updateCardData(selectedCard, cardData.getFullNumber(), cardData.getExpirationMonth(),
                         cardData.getExpirationYear());
+                if(cardData.getMessage() != null && cardData.getMessage().length() > 0) {
+                    if(cardData.getMessage().equals("error.show_three_times")) {
+                        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+                        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_show_ecard_three_times_card_title));
+                        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_show_ecard_three_times_card_subtitle));
+                        intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_show_ecard_three_times_card_text));
+                        intent.putExtra(ActionDialogActivity.SHOW_CALL_BUTTON_KEY, true);
+                        intent.putExtra(ActionDialogActivity.CALL_BUTTON_NUMBER_KEY, getString(R.string.my_cards_show_ecard_three_times_card_phone));
+                        startActivityForResult(intent, EXPLAINING_DIALOG);
+                        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+                    }
+                }
             } else if (resultCode == ActionDialogActivity.RESULT_FAILED) {
                 generateErrorDialog(data);
             }
@@ -462,7 +474,7 @@ public class MyCardsActivity extends BaseActivity {
                             startActivityForResult(intent, EXPLAINING_DIALOG);
                             overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
                             return;
-                        }else if(card.getMessage().equals("card_status.next_to_expire")){
+                        } else if(card.getMessage().equals("card_status.next_to_expire")){
                             intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_next_to_expire_card_title));
                             intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_next_to_expire_card_subtitle));
                             intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_next_to_expire_card_text));

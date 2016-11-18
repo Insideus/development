@@ -474,7 +474,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
-    protected class BaseLogoutTask  extends DaviPayTask<Boolean> {
+    protected class BaseLogoutTask extends DaviPayTask<Boolean> {
 
         public BaseLogoutTask(BaseActivity activity) {
             super(activity);

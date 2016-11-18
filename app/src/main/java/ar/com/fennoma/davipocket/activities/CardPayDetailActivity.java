@@ -299,6 +299,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
 
         @Override
         protected void onPreExecute() {
+            super.onPreExecute();
             showLoading();
         }
 

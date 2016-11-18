@@ -52,9 +52,7 @@ public class EcardLoginActivity extends BaseActivity {
         });
     }
 
-    private class EcardCreateTask extends DaviPayTask<Void> {
-
-        private Card response;
+    private class EcardCreateTask extends DaviPayTask<Card> {
 
         public EcardCreateTask(BaseActivity activity) {
             super(activity);
@@ -67,19 +65,20 @@ public class EcardLoginActivity extends BaseActivity {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Card doInBackground(Void... params) {
+            Card response = null;
             try {
                 response = Service.newECard(Session.getCurrentSession(getApplicationContext()).getSid(), getTodo1Data());
             } catch (ServiceException e) {
                 e.printStackTrace();
                 errorCode = e.getErrorCode();
             }
-            return null;
+            return response;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(Card response) {
+            super.onPostExecute(response);
             if(!processedError) {
                 showEcardCreatedPopup(response);
             }

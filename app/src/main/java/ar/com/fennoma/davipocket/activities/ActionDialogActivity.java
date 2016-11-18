@@ -724,9 +724,8 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
 
     }
 
-    private class eCardCreateTask extends DaviPayTask<Void> {
+    private class eCardCreateTask extends DaviPayTask<Card> {
 
-        private Card response;
 
         public eCardCreateTask(BaseActivity activity) {
             super(activity);
@@ -739,23 +738,24 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Card doInBackground(Void... params) {
+            Card response = null;
             try {
                 response = Service.newECard(Session.getCurrentSession(getApplicationContext()).getSid(), getTodo1Data());
             } catch (ServiceException e) {
                 e.printStackTrace();
                 errorCode = e.getErrorCode();
             }
-            return null;
+            return response;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPostExecute(Card response) {
             ErrorMessages error = ErrorMessages.getError(errorCode);
-            if(error == null) {
+            if(error == null && response == null) {
                 errorCode = ErrorMessages.ECARD_NOT_CREATED.getErrorCode();
             }
-            super.onPostExecute(aVoid);
+            super.onPostExecute(response);
             if(!processedError) {
                 createECardSuccess(response);
             }
@@ -835,9 +835,8 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         finish();
     }
 
-    private class ECardShowData  extends DaviPayTask<Void> {
+    private class ECardShowData  extends DaviPayTask<Card> {
 
-        private Card response;
         private String lastDigits;
         private String otpCode;
 
@@ -854,7 +853,8 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Card doInBackground(Void... params) {
+            Card response = null;
             try {
                 response = Service.getECardData(Session.getCurrentSession(getApplicationContext()).getSid(),
                         lastDigits, getTodo1Data(), otpCode);
@@ -862,16 +862,16 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                 e.printStackTrace();
                 errorCode = e.getErrorCode();
             }
-            return null;
+            return response;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPostExecute(Card response) {
             ErrorMessages error = ErrorMessages.getError(errorCode);
-            if(error == null) {
+            if(error == null && response == null) {
                 errorCode = ErrorMessages.ECARD_DATA_NOT_SENT.getErrorCode();
             }
-            super.onPostExecute(aVoid);
+            super.onPostExecute(response);
             if(!processedError) {
                 eCardShowDataSuccess(response);
             }

@@ -70,7 +70,7 @@ public abstract class AbstractPayActivity extends BaseActivity{
                 error);
     }
 
-    protected class GetCardPayDetail extends DaviPayTask<Void> {
+    protected class GetCardPayDetail extends DaviPayTask<PaymentDetail> {
 
         public GetCardPayDetail(BaseActivity activity) {
             super(activity);
@@ -83,20 +83,22 @@ public abstract class AbstractPayActivity extends BaseActivity{
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected PaymentDetail doInBackground(Void... params) {
+            PaymentDetail response = null;
             try {
                 String sid = Session.getCurrentSession(getApplicationContext()).getSid();
-                detail = Service.balanceDetail(sid, card.getLastDigits(), getTodo1Data());
+                response = Service.balanceDetail(sid, card.getLastDigits(), getTodo1Data());
             } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
             }
-            return null;
+            return response;
         }
 
         @Override
-        protected void onPostExecute(Void response) {
+        protected void onPostExecute(PaymentDetail response) {
             super.onPostExecute(response);
             if(!processedError) {
+                detail = response;
                 setBottomLayouts();
                 setLayoutData();
             }

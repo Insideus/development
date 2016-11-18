@@ -232,6 +232,11 @@
     <string name="my_cards_pay_card_text_1">Su tarjeta tiene sobrecupo.\nUsted puede pagarla y utilizarla a través de DaviPay.</string>
     <string name="my_cards_pay_card_text_2">Su tarjeta tiene bloqueo de rediferido.\nUsted puede pagarla y utilizarla a través de DaviPay.</string>
 
+    <string name="my_cards_show_ecard_three_times_card_title">NECESITA </string>
+    <string name="my_cards_show_ecard_three_times_card_subtitle">AYUDA</string>
+    <string name="my_cards_show_ecard_three_times_card_text">¿Tiene algún inconveniente con su tarjeta virtual?\nComuníquese con nosotros para ayudarlo en el proceso.</string>
+    <string name="my_cards_show_ecard_three_times_card_phone">+0313383838</string>
+
     <string name="card_pay_pay_button_text">Confirmar</string>
     <string name="card_pay_cancel_pay_button_text">Cancelar</string>
 
