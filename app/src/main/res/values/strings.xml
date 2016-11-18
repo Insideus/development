@@ -172,7 +172,7 @@
     <string name="navigation_drawer_preferences_title">Preferencias</string>
     <string name="navigation_drawer_help_title">Ayuda</string>
     <string name="navigation_drawer_logout_title">Cerrar Sesión</string>
-    <string name="navigation_drawer_bottom_bar_first_text">Ud. dispone de</string>
+    <string name="navigation_drawer_bottom_bar_first_text">Usted dispone de</string>
     <string name="navigation_drawer_bottom_bar_second_text">Davipuntos</string>
     <string name="drawer_open">Nav Open</string>
     <string name="drawer_close">Nav Close</string>
