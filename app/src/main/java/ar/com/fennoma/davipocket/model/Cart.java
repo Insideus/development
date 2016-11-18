@@ -14,6 +14,7 @@ import java.util.List;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 
 public class Cart implements Parcelable {
+
     private Store store;
     private ArrayList<StoreProduct> products = new ArrayList<>();
     private Double cartPrice;
@@ -26,6 +27,8 @@ public class Cart implements Parcelable {
     private String deliveredTo;
     private String comment;
     private String receiptNumber;
+    private String cartType;
+    private String ottTransaccionId;
 
     public Store getStore() {
         return store;
@@ -115,6 +118,22 @@ public class Cart implements Parcelable {
         this.date = date;
     }
 
+    public String getCartType() {
+        return cartType;
+    }
+
+    public void setCartType(String cartType) {
+        this.cartType = cartType;
+    }
+
+    public String getOttTransaccionId() {
+        return ottTransaccionId;
+    }
+
+    public void setOttTransaccionId(String ottTransaccionId) {
+        this.ottTransaccionId = ottTransaccionId;
+    }
+
     public void calculateCartPrice() {
         Double price = 0d;
         for(StoreProduct product : getProducts()) {
@@ -143,6 +162,8 @@ public class Cart implements Parcelable {
         dest.writeString(this.deliveredTo);
         dest.writeString(this.comment);
         dest.writeString(this.receiptNumber);
+        dest.writeString(this.cartType);
+        dest.writeString(this.ottTransaccionId);
     }
 
     protected Cart(Parcel in) {
@@ -156,6 +177,8 @@ public class Cart implements Parcelable {
         this.deliveredTo = in.readString();
         this.comment = in.readString();
         this.receiptNumber = in.readString();
+        this.cartType = in.readString();
+        this.ottTransaccionId = in.readString();
     }
 
     public static final Creator<Cart> CREATOR = new Creator<Cart>() {
@@ -192,26 +215,47 @@ public class Cart implements Parcelable {
         return params;
     }
 
-    public static ArrayList<Cart> fromJson(JSONArray jsonArray) throws JSONException {
+    public static ArrayList<Cart> fromJsonArray(JSONArray jsonArray) {
         ArrayList<Cart> cartList = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            Cart cart = Cart.fromJson(jsonArray.getJSONObject(i));
-            cartList.add(cart);
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                Cart cart = Cart.fromJson(jsonArray.getJSONObject(i));;
+                if(cart != null) {
+                    cartList.add(cart);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
         return cartList;
     }
 
-    private static Cart fromJson(JSONObject jsonObject) throws JSONException {
+    public static Cart fromJson(JSONObject jsonObject) {
         Cart cart = new Cart();
-        cart.setReceiptNumber(jsonObject.getString("id"));
-        cart.setCartPrice(jsonObject.getDouble("total"));
-        cart.setDate(jsonObject.getString("date"));
+        try {
+            if(jsonObject.has("type")) {
+                cart.setCartType(jsonObject.getString("type"));
+            }
+            cart.setReceiptNumber(jsonObject.getString("id"));
+            cart.setCartPrice(jsonObject.getDouble("total"));
+            cart.setDate(jsonObject.getString("date"));
 
-        // Objects and arrays
-        cart.setStore(Store.fromJson(jsonObject.getJSONObject("store")));
-        cart.setProducts(StoreProduct.fromJSONArray(jsonObject.getJSONArray("products")));
-        cart.setSelectedCard(Card.fromJson(jsonObject.getJSONObject("card")));
+            // Objects and arrays
+            if(CartType.getType(cart.getCartType()) == CartType.ORDER) {
+                cart.setStore(Store.fromJson(jsonObject.getJSONObject("store")));
+                cart.setProducts(StoreProduct.fromJSONArray(jsonObject.getJSONArray("products")));
+            } else {
+                cart.setProducts(new ArrayList<StoreProduct>());
+                Store store = new Store();
+                store.setName(jsonObject.getString("ott_store_name"));
+                cart.setStore(store);
+                cart.setOttTransaccionId(jsonObject.getString("ott_transaccion_id"));
+            }
+            cart.setSelectedCard(Card.fromJson(jsonObject.getJSONObject("card")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
         return cart;
     }
 

@@ -67,6 +67,7 @@ public class InsecureDeviceActivity extends BaseActivity {
             Session.getCurrentSession(InsecureDeviceActivity.this).logout();
             finish();
         }
+
     }
 
 }

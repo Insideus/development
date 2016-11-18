@@ -14,6 +14,11 @@ import java.util.Date;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Cart;
+import ar.com.fennoma.davipocket.model.CartType;
+import ar.com.fennoma.davipocket.model.ServiceException;
+import ar.com.fennoma.davipocket.service.Service;
+import ar.com.fennoma.davipocket.session.Session;
+import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.ui.adapters.CategoryItemAdapter;
 import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 import ar.com.fennoma.davipocket.utils.DateUtils;
@@ -24,9 +29,13 @@ public class OrderReceiptActivity extends BaseActivity{
 
     public static final String CART_KEY = "cart_key";
     public static final String FROM_MADE_SHOP = "from made shop";
+    public static final String FROM_OTT_NOTIFICATION = "from made shop";
+    public static final String FROM_ORDER_READY_NOTIFICATION_KEY = "from_order_ready_notification";
 
     private Cart cart;
     private boolean fromMadeShop;
+    private boolean fromOttNotification;
+    private boolean fromOrderReadyNotification;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,9 +43,9 @@ public class OrderReceiptActivity extends BaseActivity{
         setContentView(R.layout.bought_items_layout);
         setToolbar(R.id.toolbar, false);
         handleIntent();
-        if(fromMadeShop){
-            setToolbar(R.id.toolbar, true, getString(R.string.store_receipt_title));
-            hideThanksForBuyingLabel();
+        if(fromMadeShop || fromOttNotification || fromOrderReadyNotification){
+            setToolbar(R.id.toolbar, true, getString(R.string.store_made_receipt_title));
+            hideNeededLabel();
         } else {
             setToolbarWOHomeButton(R.id.toolbar, getString(R.string.store_receipt_title));
         }
@@ -48,8 +57,65 @@ public class OrderReceiptActivity extends BaseActivity{
         scrollUp();
     }
 
-    private void hideThanksForBuyingLabel() {
+    private void handleIntent() {
+        if(getIntent() == null || getIntent().getParcelableExtra(CART_KEY) == null){
+            return;
+        }
+        fromMadeShop = getIntent().getBooleanExtra(FROM_MADE_SHOP, false);
+        fromOttNotification = getIntent().getBooleanExtra(FROM_OTT_NOTIFICATION, false);
+        fromOrderReadyNotification = getIntent().getBooleanExtra(FROM_ORDER_READY_NOTIFICATION_KEY, false);
+        cart = getIntent().getParcelableExtra(CART_KEY);
+        if(cart == null) {
+            cart = new Cart();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        outState.putParcelable(CART_KEY, cart);
+        outState.putBoolean(FROM_MADE_SHOP, fromMadeShop);
+        outState.putBoolean(FROM_OTT_NOTIFICATION, fromOttNotification);
+        outState.putBoolean(FROM_ORDER_READY_NOTIFICATION_KEY, fromOrderReadyNotification);
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(CART_KEY, cart);
+        outState.putBoolean(FROM_MADE_SHOP, fromMadeShop);
+        outState.putBoolean(FROM_OTT_NOTIFICATION, fromOttNotification);
+        outState.putBoolean(FROM_ORDER_READY_NOTIFICATION_KEY, fromOrderReadyNotification);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        cart = savedInstanceState.getParcelable(CART_KEY);
+        fromMadeShop = savedInstanceState.getBoolean(FROM_MADE_SHOP, false);
+        fromOttNotification = savedInstanceState.getBoolean(FROM_OTT_NOTIFICATION, false);
+        fromOrderReadyNotification = savedInstanceState.getBoolean(FROM_ORDER_READY_NOTIFICATION_KEY, false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(fromMadeShop){
+            super.onBackPressed();
+            return;
+        }
+        finish();
+        goToHome();
+    }
+
+    private void hideNeededLabel() {
         findViewById(R.id.thanks_for_buying).setVisibility(View.GONE);
+        if(CartType.getType(cart.getCartType()) ==  CartType.OTT) {
+            findViewById(R.id.products_container).setVisibility(View.GONE);
+            findViewById(R.id.older_purchase_button_container).setVisibility(View.GONE);
+            if(fromOttNotification) {
+                findViewById(R.id.pay_ott_button_container).setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     /*private void setCommentSection() {
@@ -64,35 +130,6 @@ public class OrderReceiptActivity extends BaseActivity{
         }
         findViewById(R.id.comment_output).setVisibility(View.GONE);
     }*/
-
-    private void handleIntent() {
-        if(getIntent() == null || getIntent().getParcelableExtra(CART_KEY) == null){
-            return;
-        }
-        fromMadeShop = getIntent().getBooleanExtra(FROM_MADE_SHOP, false);
-        cart = getIntent().getParcelableExtra(CART_KEY);
-        if(cart == null) {
-            cart = new Cart();
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        outState.putParcelable(CART_KEY, cart);
-        super.onSaveInstanceState(outState, outPersistentState);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(CART_KEY, cart);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        cart = savedInstanceState.getParcelable(CART_KEY);
-    }
 
     private void setLayoutData() {
         ImageView logo = (ImageView) findViewById(R.id.brand_logo);
@@ -123,7 +160,11 @@ public class OrderReceiptActivity extends BaseActivity{
         fourDigits.setText(cart.getSelectedCard().getLastDigits());
 
         TextView receiptNumber = (TextView) findViewById(R.id.receipt_number);
-        receiptNumber.setText(cart.getReceiptNumber());
+        if(CartType.getType(cart.getCartType()) ==  CartType.OTT) {
+            receiptNumber.setText(cart.getOttTransaccionId());
+        } else {
+            receiptNumber.setText(cart.getReceiptNumber());
+        }
     }
 
     private void setButtons() {
@@ -176,19 +217,43 @@ public class OrderReceiptActivity extends BaseActivity{
         recycler.setAdapter(new CategoryItemAdapter(this, cart.getProducts(), false, cart.getStore()));
     }
 
+    private class PayOttTask extends DaviPayTask<Boolean> {
+
+        public PayOttTask(BaseActivity activity) {
+            super(activity);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Boolean response = null;
+            try {
+                response = Service.acceptOttPay(Session.getCurrentSession(getApplicationContext()).getSid(), cart.getReceiptNumber());
+            } catch (ServiceException e) {
+                errorCode = e.getErrorCode();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean response) {
+            super.onPostExecute(response);
+            if(!processedError) {
+
+            }
+        }
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         updateDaviPoints();
     }
 
-    @Override
-    public void onBackPressed() {
-        if(fromMadeShop){
-            super.onBackPressed();
-            return;
-        }
-        finish();
-        goToHome();
-    }
 }

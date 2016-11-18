@@ -76,6 +76,7 @@ public class MainActivity extends BaseActivity {
         checkLocationPermissions();
         setToolbar(R.id.toolbar, false, getString(R.string.main_activity_title));
         checkForTour();
+        fragment.setLocation(latLng);
     }
 
     private void findFragment() {
@@ -98,7 +99,6 @@ public class MainActivity extends BaseActivity {
             shouldRecreate = false;
         }
         updateDaviPoints();
-        fragment.setLocation(latLng);
     }
 
     private void getLocation() {

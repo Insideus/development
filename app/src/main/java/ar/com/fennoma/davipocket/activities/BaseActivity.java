@@ -414,6 +414,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(BaseActivity.this, MyOrdersActivity.class));
+                closeDrawer();
             }
         });
         logout.setOnClickListener(new View.OnClickListener() {
@@ -498,6 +499,10 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
             return response;
         }
 
+        @Override
+        protected void onPostExecute(Boolean response) {
+            //Do nothing.
+        }
     }
 
     public class LogoutTask extends BaseLogoutTask {

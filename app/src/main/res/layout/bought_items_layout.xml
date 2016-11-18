@@ -247,6 +247,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/products_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -306,6 +307,31 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:src="@drawable/repeat_purchase_button_selector" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/pay_ott_button_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/white_rounded_corners_background"
+                android:gravity="center"
+                android:paddingBottom="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/pay_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/card_payment_pay_button_selector"/>
 
             </FrameLayout>
 
@@ -532,6 +558,7 @@
             android:textAllCaps="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
+
     </RelativeLayout>
 
 </RelativeLayout>

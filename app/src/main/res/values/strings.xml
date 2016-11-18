@@ -373,6 +373,7 @@
     <string name="configuration_not_added_title">ATENCIÓN</string>
     <string name="store_payment_on_back_text_explanation">¿Está seguro que desea cancelar su compra?</string>
     <string name="store_receipt_title">CONFIRMACIÓN DE COMPRA</string>
+    <string name="store_made_receipt_title">COMPRA</string>
     <string name="store_detail_no_items_selected">Debe agregar al menos un item para continuar.</string>
     <string name="store_payment_davipoints_subtitle">DAVIPUNTOS</string>
     <string name="store_payment_cop_subtitle">COP</string>
@@ -433,5 +434,7 @@
     <string name="card_pay_detail_no_accounts_label">(Sin cuentas)</string>
     <string name="store_item_buy_button_text_1">AÑADIR AL</string>
     <string name="store_item_buy_button_text_2">CARRITO</string>
+
+    <string name="order_ready_notification_text">Su pedido número %1$s está listo.</string>
 
 </resources>

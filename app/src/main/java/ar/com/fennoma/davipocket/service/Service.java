@@ -106,6 +106,7 @@ public class Service {
     //OTT
     private final static String OTT_CARDS = "/ott/cards";
     private final static String OTT_GET_TOKEN = "/ott/get_token";
+    private final static String OTT_CONFIRM_PAY = "/ott/confirm_pay";
 
     public static JSONObject getPersonIdTypes() {
         HttpURLConnection urlConnection = null;
@@ -1984,6 +1985,52 @@ public class Service {
         return response;
     }
 
+    public static Boolean acceptOttPay(String sid, String id) throws ServiceException {
+        Boolean response = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(OTT_CONFIRM_PAY, sid);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = new ArrayList<>();
+            Pair<String, String> lastDigitsParam = new Pair("id", id);
+            params.add(lastDigitsParam);
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                if (json.has("error") && !json.getBoolean("error")) {
+                    response = true;
+                } else {
+                    JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    response = false;
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+            response = false;
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
     public static ArrayList<Cart> getOrders(String sid) throws ServiceException {
         ArrayList<Cart> response = null;
         HttpURLConnection urlConnection = null;
@@ -1998,7 +2045,7 @@ public class Service {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 JSONObject json = getJsonFromResponse(in);
                 if (json.has("error") && !json.getBoolean("error")) {
-                    response = Cart.fromJson(json.getJSONArray(DATA_TAG));
+                    response = Cart.fromJsonArray(json.getJSONArray(DATA_TAG));
                 } else {
                     String errorCode = json.getString(ERROR_CODE_TAG);
                     throw new ServiceException(errorCode);
