@@ -2,6 +2,7 @@ package ar.com.fennoma.davipocket.utils;
 
 import android.text.TextUtils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -11,11 +12,13 @@ import java.util.Locale;
 public class DateUtils {
 
     public static final String DDMMYY_FORMAT = "dd/MM/yy";
+    public static final String SPACED_DDMMMMYY_FORMAT = "dd MMMM yy";
     public static final String DDMMYYYY_FORMAT = "dd/MM/yyyy";
     public static final String DOTTED_DDMMMYY_FORMAT = "dd · MMM · yy";
     public static final String DOTTED_DDMMMMYY_FORMAT = "dd · MMMM · yy";
     public static final String DOTTED_DDMMMMYYHHMM_FORMAT = "dd · MMMM · yy / HH:mm ";
     public static final String DEFAULT_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZZZZZ";
+    public static final String DOTTED_DDMMYY_FORMAT = "dd·MM·yy";
 
     public static int getYearsFromDate(Date birthday){
         return getDiffYears(birthday, Calendar.getInstance(Locale.getDefault()).getTime());
@@ -118,5 +121,22 @@ public class DateUtils {
             }
         }
         return string;
+    }
+
+    public static String getUserLastLogin(String lastLogin){
+        DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", Locale.getDefault());
+        fromFormat.setLenient(false);
+        DateFormat toFormat = new SimpleDateFormat("dd MMM yy / hh:mm", Locale.getDefault());
+        DateFormat lastPartFormat = new SimpleDateFormat("a", Locale.getDefault());
+        toFormat.setLenient(false);
+        try {
+            Date fromDate = fromFormat.parse(lastLogin);
+            String firstPart = toCamelCase(toFormat.format(fromDate));
+            String lastPart = lastPartFormat.format(fromDate).toUpperCase();
+            return firstPart.concat(" ").concat(lastPart);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "N/A";
+        }
     }
 }

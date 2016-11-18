@@ -232,6 +232,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     }
 
     void goToRegistrationStep(LoginSteps step) {
+        step = LoginSteps.GET_E_CARD;
         if (step != null) {
             switch (step) {
                 case FACEBOOK:

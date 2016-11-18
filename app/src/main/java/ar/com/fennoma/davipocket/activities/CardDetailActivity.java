@@ -105,7 +105,7 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
         balance.setText("$".concat(CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount())));
         if (card.getECard() != null && !card.getECard()) {
             TextView paymentDate = (TextView) findViewById(R.id.payment_date);
-            String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate()).toLowerCase();
+            String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMYY_FORMAT, transactionDetails.getPaymentDate()).toLowerCase();
             if (date.length() > 0) {
                 paymentDate.setText(date);
             } else {

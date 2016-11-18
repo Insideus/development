@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Card;
+import ar.com.fennoma.davipocket.utils.ImageUtils;
 
 public class NewEcardDialogActivity extends BaseActivity {
 
@@ -57,6 +60,10 @@ public class NewEcardDialogActivity extends BaseActivity {
             }
         });
         TextView textTv = (TextView) findViewById(R.id.new_ecard_text);
+        if(card.getBin() != null && !TextUtils.isEmpty(card.getBin().getImage())) {
+            ImageView cardImage = (ImageView) findViewById(R.id.card);
+            ImageUtils.loadCardImage(this, cardImage, card.getBin().getImage());
+        }
         if(card.getAvailableNow()) {
             textTv.setText(getString(R.string.new_ecard_text));
             intent = new Intent();

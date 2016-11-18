@@ -99,7 +99,7 @@ public class MovementsByDayActivity extends MovementsShowerActivity implements C
         TextView balance = (TextView) findViewById(R.id.balance);
         balance.setText("$" + CurrencyUtils.getCurrencyForString(transactionDetails.getAvailableAmount()));
         TextView paymentDate = (TextView) findViewById(R.id.payment_date);
-        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMMYY_FORMAT, transactionDetails.getPaymentDate()).toLowerCase();
+        final String date = DateUtils.formatDate(DateUtils.DDMMYY_FORMAT, DateUtils.DOTTED_DDMMYY_FORMAT, transactionDetails.getPaymentDate()).toLowerCase();
         if (date.length() > 0) {
             paymentDate.setText(date);
         } else {

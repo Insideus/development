@@ -235,7 +235,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                     DateTitleHolder holder = (DateTitleHolder) genericHolder;
                     Transaction transaction = (Transaction) showableItem;
                     holder.title.setText(DateUtils.toCamelCase(DateUtils.formatDate(DateUtils.DDMMYY_FORMAT,
-                            DateUtils.DOTTED_DDMMMMYY_FORMAT, transaction.getDate())));
+                            DateUtils.SPACED_DDMMMMYY_FORMAT, transaction.getDate())));
                 }
                 break;
             }

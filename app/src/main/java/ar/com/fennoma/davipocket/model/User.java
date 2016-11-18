@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import ar.com.fennoma.davipocket.DavipocketApplication;
+import ar.com.fennoma.davipocket.utils.DateUtils;
 
 public class User implements Parcelable {
 
@@ -97,21 +98,8 @@ public class User implements Parcelable {
         return lastLogin;
     }
 
-    @SuppressLint("SimpleDateFormat")
     public void setLastLogin(String lastLogin) {
-        //TODO: mover esto a DateUtils
-        DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
-        fromFormat.setLenient(false);
-        DateFormat toFormat = new SimpleDateFormat("dd · MMM · yyyy / hh:mm a");
-        toFormat.setLenient(false);
-        try {
-            final Date fromDate = fromFormat.parse(lastLogin);
-            final String toDate = toFormat.format(fromDate).toUpperCase();
-            this.lastLogin = toDate;
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.lastLogin = "N/A";
-        }
+        this.lastLogin = DateUtils.getUserLastLogin(lastLogin);
     }
 
     public String getPoints() {

@@ -300,13 +300,12 @@
                 android:paddingRight="10dp"
                 android:paddingTop="10dp">
 
-                <!-- TODO: selector con hover decente pls -->
                 <ImageView
                     android:id="@+id/repeat_purchase_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/repeat_purchase_button" />
+                    android:src="@drawable/repeat_purchase_button_selector" />
 
             </FrameLayout>
 
