@@ -338,8 +338,8 @@
 
     <string name="new_ecard_title">eCARD APROBADA</string>
     <string name="new_ecard_subtitle">E-CARD</string>
-    <string name="new_ecard_text">Esta es su nueva tarjeta de prepago eCard.</string>
-    <string name="new_ecard_24hs_text">Podrá realizar compras por internet o usarla en cualquier aplicación. Enviaremos el código de seguridad por SMS al realizar la primera recarga.\nPodrá consultar el número y código de seguridad en la opción "Mis Tarjetas".</string>
+    <string name="new_ecard_text">Podrá realizar compras por internet o usarla en cualquier aplicación. Enviaremos el código de seguridad por SMS al realizar la primera recarga.\nPodrá consultar el número y código de seguridad en la opción "Mis Tarjetas".</string>
+    <string name="new_ecard_24hs_text">Podrá realizar compras por internet o usarla en cualquier aplicación. Enviaremos el código de seguridad por SMS al realizar la primera recarga.\nPodrá consultar el número y código de seguridad en la opción "Mis Tarjetas".\nSu tarjeta estará disponible en 24hs.</string>
     <string name="new_ecard_button_text">CONTINUAR</string>
     <string name="home_store_tab_title">Ir a Tienda</string>
     <string name="home_domicile_tab_title">Domicilio</string>
