@@ -197,7 +197,6 @@ public class LoginActivity extends LoginBaseActivity {
 
         @Override
         protected void onPostExecute(LoginResponse response) {
-            resetLayouts();
             super.onPostExecute(response);
             if(!processedError) {
                 //Success login.
@@ -208,6 +207,8 @@ public class LoginActivity extends LoginBaseActivity {
                 }
                 new GetUserTask(LoginActivity.this, response.getSid()).execute();
                 goToRegistrationStep(step);
+            } else {
+                resetLayouts();
             }
         }
 
