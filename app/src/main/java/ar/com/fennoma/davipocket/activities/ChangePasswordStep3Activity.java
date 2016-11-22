@@ -54,7 +54,7 @@ public class ChangePasswordStep3Activity extends BaseActivity{
             expiredPassword = getIntent().getBooleanExtra(EXPIRED_PASSWORD_KEY, false);
         }
 
-        setActionBar(getString(R.string.change_password_title), false);
+        setActionBar(getString(R.string.change_password_title), true);
         findFields();
         setHelpIcons();
         setContinueButton();

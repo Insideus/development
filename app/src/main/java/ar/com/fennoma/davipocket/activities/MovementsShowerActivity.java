@@ -11,6 +11,7 @@ import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
 import ar.com.fennoma.davipocket.tasks.DaviPayTask;
 import ar.com.fennoma.davipocket.ui.adapters.CardDetailAdapter;
+import ar.com.fennoma.davipocket.utils.DialogUtil;
 
 public abstract class MovementsShowerActivity extends BaseActivity implements CardDetailAdapter.ICardDetailAdapterOwner{
 
@@ -70,11 +71,18 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 if(error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
+                } if(error != null && error == ErrorMessages.BLOCKED_CARD) {
+                    DialogUtil.toast(MovementsShowerActivity.this,
+                            getString(R.string.blocked_card_error_title),
+                            getString(R.string.blocked_card_error_subtitle),
+                            getString(R.string.blocked_card_error_text),
+                            CLOSE_ACTIVITY_REQUEST);
                 } else {
                     if(listener != null){
                         listener.onError();
                     } else {
-                        showServiceGenericError();
+                        DialogUtil.toast(MovementsShowerActivity.this, getString(R.string.generic_service_error_title), "",
+                                getString(R.string.card_detail_get_transactions_error_text), CLOSE_ACTIVITY_REQUEST);
                     }
                 }
             } else {
@@ -85,6 +93,12 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
                 }
                 transactionDetails = response;
                 setDataToShow();
+                if(transactionDetails.getTransactions() != null && transactionDetails.getTransactions().size() < 1 && curPage == 1) {
+                    DialogUtil.toast(MovementsShowerActivity.this,
+                            getString(R.string.card_without_movements_error_title),
+                            getString(R.string.card_without_movements_error_subtitle),
+                            getString(R.string.card_without_movements_error_text));
+                }
             }
         }
     }

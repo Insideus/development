@@ -117,6 +117,7 @@ public class MyCardsActivity extends BaseActivity {
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
+    /*
     private void eCardGetCVV(String lastDigits){
         Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
         intent.putExtra(ActionDialogActivity.E_CARD_GET_CVV, true);
@@ -125,6 +126,7 @@ public class MyCardsActivity extends BaseActivity {
                 getString(R.string.my_cards_e_card_get_cvv_subtitle),
                 getString(R.string.my_cards_e_card_get_cvv_text));
     }
+    */
 
     private void eCardShowData(String lastDigits) {
         Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);

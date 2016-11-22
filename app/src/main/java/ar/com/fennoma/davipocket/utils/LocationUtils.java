@@ -105,31 +105,24 @@ public class LocationUtils implements LocationListener {
     private Location getBestLastLocation() {
         Location gpsLocation = getLocationByProvider(LocationManager.GPS_PROVIDER);
         Location networkLocation = getLocationByProvider(LocationManager.NETWORK_PROVIDER);
-        // if we have only one location available, the choice is easy
         if (gpsLocation == null) {
             return networkLocation;
         }
         if (networkLocation == null) {
             return gpsLocation;
         }
-        // a locationupdate is considered 'old' if its older than the configured
-        // update interval. this means, we didn't get a
-        // update from this provider since the last check
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, -3);
         long currentTime = System.currentTimeMillis();
         long old = currentTime - (currentTime - calendar.getTimeInMillis());
         boolean gpsIsOld = (gpsLocation.getTime() < old);
         boolean networkIsOld = (networkLocation.getTime() < old);
-        // gps is current and available, gps is better than network
         if (!gpsIsOld) {
             return gpsLocation;
         }
-        // gps is old, we can't trust it. use network location
         if (!networkIsOld) {
             return networkLocation;
         }
-        // both are old return the newer of those two
         if (gpsLocation.getTime() > networkLocation.getTime()) {
             return gpsLocation;
         } else {
@@ -172,7 +165,7 @@ public class LocationUtils implements LocationListener {
         }
         Location locationA = new Location("Location A");
         locationA.setLatitude(latitude);
-        locationA.setLatitude(longitude);
+        locationA.setLongitude(longitude);
         Location locationB = new Location("Location B");
         locationB.setLatitude(latLng.latitude);
         locationB.setLongitude(latLng.longitude);

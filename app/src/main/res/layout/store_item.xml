@@ -14,19 +14,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@android:color/white"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/brand_logo"
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginLeft="@dimen/store_small_spacing"
-            android:paddingBottom="20dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="20dp"
-            android:scaleType="center" />
+            android:layout_margin="10dp"
+            android:scaleType="centerInside"
+            android:layout_centerVertical="true"/>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -106,13 +106,13 @@ public class MainActivity extends BaseActivity {
         locationUtils = new LocationUtils(this, new LocationUtils.ILocationListener() {
             @Override
             public void onGotLocation(Location location) {
+                hideLoading();
                 if(location == null){
                     failedGettingLocation();
                     return;
                 }
                 latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 fragment.setLocation(latLng);
-                hideLoading();
             }
 
             @Override
@@ -229,6 +229,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         locationUtils.cancelListening();
+        hideLoading();
         super.onPause();
     }
 

@@ -14,6 +14,7 @@ public class CardBin implements Parcelable {
     private String image;
     private String name;
     private String franchise;
+    private String logo;
 
     public CardBin() {
 
@@ -43,12 +44,29 @@ public class CardBin implements Parcelable {
         this.franchise = franchise;
     }
 
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
     public static CardBin fromJson(JSONObject json) {
         CardBin cardBin = new CardBin();
         try {
-            cardBin.setImage(json.getString("image"));
-            cardBin.setName(json.getString("name"));
-            cardBin.setFranchise(json.getString("franchise"));
+            if(json.has("image")) {
+                cardBin.setImage(json.getString("image"));
+            }
+            if(json.has("name")) {
+                cardBin.setName(json.getString("name"));
+            }
+            if(json.has("franchise")) {
+                cardBin.setFranchise(json.getString("franchise"));
+            }
+            if(json.has("logo")) {
+                cardBin.setLogo(json.getString("logo"));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
@@ -66,12 +84,14 @@ public class CardBin implements Parcelable {
         dest.writeString(this.image);
         dest.writeString(this.name);
         dest.writeString(this.franchise);
+        dest.writeString(this.logo);
     }
 
     protected CardBin(Parcel in) {
         this.image = in.readString();
         this.name = in.readString();
         this.franchise = in.readString();
+        this.logo = in.readString();
     }
 
     public static final Parcelable.Creator<CardBin> CREATOR = new Parcelable.Creator<CardBin>() {

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ar.com.fennoma.davipocket.R;
+import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.LoginResponse;
 import ar.com.fennoma.davipocket.model.LoginSteps;
 import ar.com.fennoma.davipocket.model.PersonIdType;
@@ -207,6 +208,12 @@ public class LoginActivity extends LoginBaseActivity {
                 }
                 new GetUserTask(LoginActivity.this, response.getSid()).execute();
                 goToRegistrationStep(step);
+            } else if(errorCode != null) {
+                //Expected error.
+                ErrorMessages error = ErrorMessages.getError(errorCode);
+                if(error == ErrorMessages.LOGIN_ERROR || error == ErrorMessages.WEB_PASSWORD_ERROR) {
+                    resetLayouts();
+                }
             } else {
                 resetLayouts();
             }

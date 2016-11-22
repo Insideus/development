@@ -141,7 +141,7 @@ public class OtpPaymentActivity extends BaseActivity {
             final Card card = getItem(position);
             TextView cardNumber = (TextView) row.findViewById(R.id.four_digits);
             ImageView cardLogo = (ImageView) row.findViewById(R.id.card_logo);
-            ImageUtils.loadCardImage(OtpPaymentActivity.this, cardLogo, card.getBin().getImage());
+            ImageUtils.loadCardImage(OtpPaymentActivity.this, cardLogo, card.getBin().getLogo());
             cardNumber.setText(card.getLastDigits());
             if (selectedCard != null && selectedCard.getLastDigits().equals(card.getLastDigits())) {
                 cardNumber.setTextColor(ContextCompat.getColor(OtpPaymentActivity.this, R.color.combo_item_text_color_selected));
@@ -181,7 +181,7 @@ public class OtpPaymentActivity extends BaseActivity {
         if(selectedCard == null) {
             selectedCard = cards.get(0);
         }
-        ImageUtils.loadCardImage(this, cardLogo, selectedCard.getBin().getImage());
+        ImageUtils.loadCardImage(this, cardLogo, selectedCard.getBin().getLogo());
         fourDigits.setText(selectedCard.getLastDigits());
     }
 

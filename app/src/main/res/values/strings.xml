@@ -124,8 +124,9 @@
     <string name="person_in_number_error_text">Debe ingresar su número de documento.</string>
     <string name="virtual_password_error_text">Debe ingresar su clave virtual o segunda clave.</string>
     <string name="token_error_text">Debe ingresar su token.</string>
-    <string name="generic_service_error_title">ERROR</string>
-    <string name="generic_service_error">Se ha producido un error, por favor intentelo nuevamente mas tarde.</string>
+    <string name="generic_service_error_title">ERROR EN</string>
+    <string name="generic_service_error_subtitle">LA CONSULTA</string>
+    <string name="generic_service_error">Se ha generado un error. Por favor intente más tarde.</string>
     <string name="confirmation_service_error">Código de verificación incorrecto.</string>
 
     <string name="login_error_message_title">ERROR</string>
@@ -445,6 +446,14 @@
     <string name="ott_payment_title">PAGO</string>
     <string name="ott_payment_subtitle">REALIZADO</string>
     <string name="ott_payment_text">Se realizó el pago con su tarjeta terminada en %1$s por un monto de $%2$s</string>
+
+    <string name="blocked_card_error_title">TARJETA</string>
+    <string name="blocked_card_error_subtitle">BLOQUEADA</string>
+    <string name="blocked_card_error_text">Tarjeta de crédito Bloqueada.</string>
+
+    <string name="card_without_movements_error_title">NO TIENE</string>
+    <string name="card_without_movements_error_subtitle">MOVIMIENTOS</string>
+    <string name="card_without_movements_error_text">No se encontraron movimientos para la fecha seleccionada.</string>
 
 </resources>
 

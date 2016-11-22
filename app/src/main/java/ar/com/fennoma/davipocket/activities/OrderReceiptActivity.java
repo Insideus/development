@@ -159,7 +159,7 @@ public class OrderReceiptActivity extends BaseActivity{
 
         ImageView cardLogo = (ImageView) findViewById(R.id.card_logo);
         TextView fourDigits = (TextView) findViewById(R.id.last_card_digits);
-        ImageUtils.loadCardImage(this, cardLogo, cart.getSelectedCard().getBin().getImage());
+        ImageUtils.loadCardImage(this, cardLogo, cart.getSelectedCard().getBin().getLogo());
         fourDigits.setText(cart.getSelectedCard().getLastDigits());
 
         TextView receiptNumber = (TextView) findViewById(R.id.receipt_number);

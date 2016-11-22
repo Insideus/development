@@ -355,7 +355,7 @@ public class OrderPaymentActivity extends BaseActivity {
             final Card card = getItem(position);
             TextView cardNumber = (TextView) row.findViewById(R.id.four_digits);
             ImageView cardLogo = (ImageView) row.findViewById(R.id.card_logo);
-            ImageUtils.loadCardImage(OrderPaymentActivity.this, cardLogo, card.getBin().getImage());
+            ImageUtils.loadCardImage(OrderPaymentActivity.this, cardLogo, card.getBin().getLogo());
             cardNumber.setText(card.getLastDigits());
             if (selectedCard != null && selectedCard.getLastDigits().equals(card.getLastDigits())) {
                 cardNumber.setTextColor(ContextCompat.getColor(OrderPaymentActivity.this, R.color.combo_item_text_color_selected));
@@ -396,7 +396,7 @@ public class OrderPaymentActivity extends BaseActivity {
         if(cart.getSelectedCard() == null) {
             cart.setSelectedCard(preCheckoutData.getCards().get(0));
         }
-        ImageUtils.loadCardImage(this, cardLogo, cart.getSelectedCard().getBin().getImage());
+        ImageUtils.loadCardImage(this, cardLogo, cart.getSelectedCard().getBin().getLogo());
         fourDigits.setText(cart.getSelectedCard().getLastDigits());
         if(cart.getSelectedCard().getECard()){
             monthlyFeeDisabler.setVisibility(View.VISIBLE);

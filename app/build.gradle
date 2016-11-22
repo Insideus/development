@@ -22,8 +22,8 @@ android {
         applicationId "ar.com.fennoma.davipocket"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 20
-        versionName "1.1.9"
+        versionCode 21
+        versionName "1.2.0"
         multiDexEnabled true
     }
 

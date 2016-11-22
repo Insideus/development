@@ -100,6 +100,8 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
                     onBackPressed();
                 }
             });
+        } else {
+            toolbar.setNavigationOnClickListener(null);
         }
     }
 
@@ -180,11 +182,16 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
 
     public void showServiceGenericError(boolean closeActivity) {
         if(!closeActivity) {
-            DialogUtil.toast(this, getString(R.string.generic_service_error_title), "",
+            DialogUtil.toast(this,
+                    getString(R.string.generic_service_error_title),
+                    getString(R.string.generic_service_error_subtitle),
                     getString(R.string.generic_service_error));
         }else{
-            DialogUtil.toast(this, getString(R.string.generic_service_error_title), "",
-                    getString(R.string.generic_service_error), CLOSE_ACTIVITY_REQUEST);
+            DialogUtil.toast(this,
+                    getString(R.string.generic_service_error_title),
+                    getString(R.string.generic_service_error_subtitle),
+                    getString(R.string.generic_service_error),
+                    CLOSE_ACTIVITY_REQUEST);
         }
     }
 
@@ -427,6 +434,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
                 intent.putExtra(ActionDialogActivity.LOGOUT_REQUEST, true);
                 startActivityForResult(intent, LOGOUT_REQUEST);
                 overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
+                closeDrawer();
             }
         });
     }
@@ -502,6 +510,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         @Override
         protected void onPostExecute(Boolean response) {
             //Do nothing.
+            hideLoading();
         }
     }
 
@@ -513,6 +522,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
 
         @Override
         protected void onPostExecute(Boolean response) {
+            hideLoading();
             goLoginActivity();
         }
 
