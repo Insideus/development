@@ -392,8 +392,8 @@
     <string name="search_button_text">Buscar</string>
     <string name="my_shops_title">MIS COMPRAS</string>
     <string name="my_shops_shop_item_delivery_title">ENTREGADO EN:</string>
-    <string name="bought_items_go_home_button_title_1">CALIFICAR E IR</string>
-    <string name="bought_items_go_home_button_title_2">A HOME</string>
+    <string name="bought_items_go_home_button_title_1">IR AL</string>
+    <string name="bought_items_go_home_button_title_2">HOME</string>
     <string name="bought_items_repeat_purchase_button_title_1">CALIFICAR Y REPETIR</string>
     <string name="bought_items_repeat_purchase_button_title_2">PEDIDO</string>
     <plurals name="configuration_not_added_text">
@@ -454,6 +454,9 @@
     <string name="card_without_movements_error_title">NO TIENE</string>
     <string name="card_without_movements_error_subtitle">MOVIMIENTOS</string>
     <string name="card_without_movements_error_text">No se encontraron movimientos para la fecha seleccionada.</string>
+
+    <string name="selected_card_error_title">ERROR</string>
+    <string name="selected_card_error_text">Debe seleccionar una tarjeta para continuar.</string>
 
 </resources>
 

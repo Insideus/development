@@ -162,7 +162,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/my_shopping_separator"
-            android:background="@drawable/navigation_drawer_item_selector">
+            android:background="@drawable/navigation_drawer_item_selector"
+            android:visibility="gone">
 
             <TextView
                 fontPath="fonts/MyriadPro-Regular.otf"
@@ -184,14 +185,16 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/my_addresses_shortcut"
-            android:background="@android:color/white" />
+            android:background="@android:color/white"
+            android:visibility="gone"/>
 
         <FrameLayout
             android:id="@+id/preferences_shortcut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/my_addresses_separator"
-            android:background="@drawable/navigation_drawer_item_selector">
+            android:background="@drawable/navigation_drawer_item_selector"
+            android:visibility="gone">
 
             <TextView
                 fontPath="fonts/MyriadPro-Regular.otf"
@@ -213,7 +216,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/preferences_shortcut"
-            android:background="@android:color/white" />
+            android:background="@android:color/white"
+            android:visibility="gone"/>
 
         <FrameLayout
             android:id="@+id/help_shortcut"

@@ -194,13 +194,26 @@ public class OrderPaymentActivity extends BaseActivity {
         if(payButton == null){
             return;
         }
-        //Log.d("SHOP_JSON", cart.toServiceParams());
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new PayOrderTask(OrderPaymentActivity.this).execute();
+                if(validate()) {
+                    new PayOrderTask(OrderPaymentActivity.this).execute();
+                } else {
+                    DialogUtil.toast(OrderPaymentActivity.this,
+                            getString(R.string.selected_card_error_title),
+                            "",
+                            getString(R.string.selected_card_error_text));
+                }
             }
         });
+    }
+
+    private boolean validate() {
+        if(cart != null && cart.getSelectedCard() != null) {
+            return true;
+        }
+        return false;
     }
 
     private void scrollUp() {

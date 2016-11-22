@@ -228,7 +228,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        locationUtils.cancelListening();
+        if(locationUtils != null) {
+            locationUtils.cancelListening();
+        }
         hideLoading();
         super.onPause();
     }

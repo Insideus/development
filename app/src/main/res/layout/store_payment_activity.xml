@@ -61,13 +61,11 @@
 
                 <ImageView
                     android:id="@+id/brand_logo"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:paddingBottom="@dimen/store_largest_spacing"
-                    android:paddingLeft="@dimen/store_large_spacing"
-                    android:paddingRight="@dimen/store_large_spacing"
-                    android:paddingTop="@dimen/store_largest_spacing"
-                    android:scaleType="center"
+                    android:layout_margin="10dp"
+                    android:scaleType="centerInside"
+                    android:layout_centerVertical="true"
                     android:src="@drawable/placeholder_small" />
 
                 <LinearLayout

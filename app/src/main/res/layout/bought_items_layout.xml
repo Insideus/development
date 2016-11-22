@@ -293,13 +293,13 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-
                 android:background="@drawable/white_rounded_corners_background"
                 android:gravity="center"
                 android:paddingBottom="20dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="10dp">
+                android:paddingTop="10dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/repeat_purchase_button"
@@ -467,7 +467,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.5"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:id="@+id/repeat_order_button"

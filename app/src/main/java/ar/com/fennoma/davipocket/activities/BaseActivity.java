@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -393,16 +394,20 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
                 || preferences == null) {
             return;
         }
-        /*
+        myAddresses.setOnClickListener(null);
+        preferences.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeDrawer();
+            }
+        });
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                insecureDevice();
+                goToHelpPage();
+                closeDrawer();
             }
         });
-        */
-        myAddresses.setOnClickListener(null);
-        preferences.setOnClickListener(null);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -437,6 +442,11 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
                 closeDrawer();
             }
         });
+    }
+
+    private void goToHelpPage() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+        startActivity(browserIntent);
     }
 
     protected void goToHome() {

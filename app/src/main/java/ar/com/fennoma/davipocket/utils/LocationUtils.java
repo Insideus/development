@@ -195,9 +195,13 @@ public class LocationUtils implements LocationListener {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        locationManager.removeUpdates(this);
+        if(locationManager != null) {
+            locationManager.removeUpdates(this);
+        }
+        if(serviceHandler != null) {
+            serviceHandler.removeCallbacksAndMessages(null);
+        }
         locationCounter = 0;
-        serviceHandler.removeCallbacksAndMessages(null);
     }
 
 }
