@@ -83,9 +83,23 @@ public class OtpPaymentActivity extends BaseActivity {
         getOtpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetOttTokenTask(OtpPaymentActivity.this).execute();
+                if(validate()) {
+                    new GetOttTokenTask(OtpPaymentActivity.this).execute();
+                } else {
+                    DialogUtil.toast(OtpPaymentActivity.this,
+                            getString(R.string.selected_card_error_title),
+                            "",
+                            getString(R.string.selected_card_error_text));
+                }
             }
         });
+    }
+
+    private boolean validate() {
+        if(selectedCard != null) {
+            return true;
+        }
+        return false;
     }
 
     private void findCardLayouts() {

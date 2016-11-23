@@ -141,8 +141,8 @@ public class StoreItemDetailActivity extends BaseActivity {
                         config.getConfigurations().remove(i);
                         return true;
                     }
+                    i++;
                 }
-                i++;
             }
         }
         return false;

@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -115,6 +116,7 @@ public class StoreItemDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             @Override
             public void onClick(View v) {
                 //Remove item
+                Log.d("POSITION", String.valueOf(position) + " " + configurationItem.getName());
                 if(container.isSelected()) {
                     if(activity.removeConfiguration(configuration, configurationItem)) {
                         container.setSelected(false);
