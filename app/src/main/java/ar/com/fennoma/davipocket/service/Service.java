@@ -42,7 +42,7 @@ public class Service {
     public final static String BASE_URL = "http://davipocket-dev.paymentez.com/api";
     //private static String BASE_URL = "http://davivienda.fennoma.com.ar/api";
     public final static String IMAGE_BASE_URL = "http://davipocket-dev.paymentez.com";
-    private final static int CONNECTION_TIMEOUT = 30000;
+    private final static int CONNECTION_TIMEOUT = 50000;
     private final static int SUCCESS_CODE = 200;
     private final static String DATA_TAG = "data";
     private final static String ERROR_CODE_TAG = "error_code";

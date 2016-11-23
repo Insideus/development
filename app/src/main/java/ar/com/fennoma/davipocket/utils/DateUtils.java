@@ -12,7 +12,7 @@ import java.util.Locale;
 public class DateUtils {
 
     public static final String DDMMYY_FORMAT = "dd/MM/yy";
-    public static final String SPACED_DDMMMMYY_FORMAT = "dd MMMM yy";
+    public static final String SPACED_DDMMMMYY_FORMAT = "dd - MMMM - yy";
     public static final String DDMMYYYY_FORMAT = "dd/MM/yyyy";
     public static final String DOTTED_DDMMMYY_FORMAT = "dd · MMM · yy";
     public static final String DOTTED_DDMMMMYY_FORMAT = "dd · MMMM · yy";
@@ -102,37 +102,43 @@ public class DateUtils {
 
     public static String toCamelCase(String string) {
         String result = "";
-        if(TextUtils.isEmpty(string)){
+        if(TextUtils.isEmpty(string)) {
             return result;
         }
         char toAdd;
         boolean foundLetter = false;
-        for(int i = 0; i < string.length(); i++){
+        for(int i = 0; i < string.length(); i++) {
             toAdd = string.charAt(i);
-            if(Character.isLetter(toAdd)){
+            if(Character.isLetter(toAdd)) {
                 if(foundLetter){
                     result = result.concat(String.valueOf(toAdd).toLowerCase());
-                }else{
+                } else {
                     foundLetter = true;
                     result = result.concat(String.valueOf(toAdd).toUpperCase());
                 }
-            }else{
+            } else {
                 result = result.concat(String.valueOf(toAdd));
             }
         }
-        return string;
+        return result;
     }
 
     public static String getUserLastLogin(String lastLogin){
         DateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", Locale.getDefault());
         fromFormat.setLenient(false);
         DateFormat toFormat = new SimpleDateFormat("dd MMM yy / hh:mm", Locale.getDefault());
-        DateFormat lastPartFormat = new SimpleDateFormat("a", Locale.getDefault());
         toFormat.setLenient(false);
         try {
             Date fromDate = fromFormat.parse(lastLogin);
             String firstPart = toCamelCase(toFormat.format(fromDate));
-            String lastPart = lastPartFormat.format(fromDate).toUpperCase();
+            String lastPart;
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(fromDate);
+            if(calendar.get(Calendar.AM_PM) == Calendar.AM) {
+                lastPart = "a.m.";
+            } else {
+                lastPart = "p.m.";
+            }
             return firstPart.concat(" ").concat(lastPart);
         } catch (Exception e) {
             e.printStackTrace();

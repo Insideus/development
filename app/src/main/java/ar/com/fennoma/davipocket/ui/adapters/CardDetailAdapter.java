@@ -163,9 +163,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
             case ITEM: {
                 Transaction transaction = (Transaction) transactionsBeingShowed.get(position);
                 TransactionHolder holder = (TransactionHolder) genericHolder;
-                //holder.daviPoints.setText(String.valueOf(transaction.getDavipoints()));
                 holder.price.setText(CurrencyUtils.getCurrencyForString(transaction.getPrice()));
-                //holder.productAmount.setText(String.valueOf(transaction.getProductAmount()));
                 holder.name.setText(transaction.getName());
                 switch (getProperBackground(position)) {
                     case LONELY_ITEM: {

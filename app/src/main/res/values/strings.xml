@@ -201,7 +201,7 @@
     <string name="card_detail_item_transaction_product_title">Productos</string>
     <string name="card_detail_item_transaction_price_indicator">$</string>
     <string name="mocked_master_card_title">MASTERCARD BLACK</string>
-    <string name="card_detail_search_bar_hint">[Search] Buscar movimientos</string>
+    <string name="card_detail_search_bar_hint">Buscar movimientos</string>
 
     <!-- My Cards -->
     <string name="my_cards_activity_title">MIS TARJETAS</string>
@@ -387,7 +387,7 @@
     <string name="logout_dialog_text">¿Está seguro que desea salir?</string>
     <string name="store_detail_no_phone_number_error">La tienda no tiene número de teléfono.</string>
     <string name="store_detail_no_location_error">La tienda no ha especificado su locación.</string>
-    <string name="main_search_hint">Buscar tienda…</string>
+    <string name="main_search_hint">Buscar tienda</string>
     <string name="qr_button_text">Escanear</string>
     <string name="search_button_text">Buscar</string>
     <string name="my_shops_title">MIS COMPRAS</string>
@@ -414,8 +414,14 @@
     <string name="otp_payment_receipt_title">INFORME ESTE CÓDIGO AL ESTRABLECIMIENTO</string>
     <string name="otp_payment_start_counter_text">0:00</string>
     <string name="otp_payment_end_counter_text">4:00</string>
-    <string name="otp_payment_not_used_title">CANCELADO</string>
-    <string name="otp_payment_not_used_text">Se ha vencido su código de pago, por favor solicítelo nuevamente para pagar.</string>
+
+    <string name="otp_payment_not_used_title">SU CÓDIGO</string>
+    <string name="otp_payment_not_used_subtitle">HA VENCIDO</string>
+    <string name="otp_payment_not_used_text">Por favor haga click en Generar Código para finalizar su compra.</string>
+
+    <string name="otp_payment_expired_title">SU CÓDIGO</string>
+    <string name="otp_payment_expired_subtitle">HA VENCIDO</string>
+    <string name="otp_payment_expired_text">Su código venció antes de aprobar aprobar su compra.\nPor favor generar un código y presentarlo nuevamente en la caja.</string>
 
     <string name="payment_error_order_refund_title">PAGO</string>
     <string name="payment_error_order_refund_subtitle">NO REALIZADO</string>

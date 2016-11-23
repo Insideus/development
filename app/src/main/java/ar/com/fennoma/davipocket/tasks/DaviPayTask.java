@@ -40,4 +40,6 @@ public abstract class DaviPayTask<T> extends AsyncTask<Void, Void, T> {
         }
     }
 
+
+
 }

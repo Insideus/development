@@ -16,6 +16,7 @@ import java.util.Date;
 import ar.com.fennoma.davipocket.R;
 import ar.com.fennoma.davipocket.model.Cart;
 import ar.com.fennoma.davipocket.model.CartType;
+import ar.com.fennoma.davipocket.model.ErrorMessages;
 import ar.com.fennoma.davipocket.model.ServiceException;
 import ar.com.fennoma.davipocket.service.Service;
 import ar.com.fennoma.davipocket.session.Session;
@@ -272,6 +273,27 @@ public class OrderReceiptActivity extends BaseActivity{
             }
         }
 
+    }
+
+    public void processErrorAndContinue(ErrorMessages error, String additionalParam) {
+        if(error != null) {
+            switch(error) {
+                case OTT_EXPIRED:
+                    showOttExpiredMessage();
+                    break;
+                default:
+                    super.processErrorAndContinue(error, additionalParam);
+            }
+        } else {
+            showServiceGenericError();
+        }
+    }
+
+    private void showOttExpiredMessage() {
+        DialogUtil.toast(this,
+                getString(R.string.otp_payment_expired_title),
+                getString(R.string.otp_payment_expired_subtitle),
+                getString(R.string.otp_payment_expired_text));
     }
 
     @Override

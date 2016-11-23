@@ -260,11 +260,15 @@ public class OtpPaymentActivity extends BaseActivity {
         protected void onPostExecute(String response) {
             super.onPostExecute(response);
             if(!processedError) {
-                myCountDownTimer = new MyCountDownTimer(TIME_TO_USE, 1000, response);
-                myCountDownTimer.start();
+                startOttTimer(response);
             }
         }
 
+    }
+
+    private void startOttTimer(String response) {
+        myCountDownTimer = new MyCountDownTimer(TIME_TO_USE, 1000, response);
+        myCountDownTimer.start();
     }
 
     public class MyCountDownTimer extends CountDownTimer {
@@ -298,7 +302,7 @@ public class OtpPaymentActivity extends BaseActivity {
     private void showNotUsedMessage() {
         DialogUtil.toast(this,
                 getString(R.string.otp_payment_not_used_title),
-                "",
+                getString(R.string.otp_payment_not_used_subtitle),
                 getString(R.string.otp_payment_not_used_text));
     }
 

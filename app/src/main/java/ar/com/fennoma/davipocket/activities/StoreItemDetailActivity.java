@@ -79,9 +79,9 @@ public class StoreItemDetailActivity extends BaseActivity {
             ImageUtils.loadImageFullURL(productImage, product.getImage());
         }
         TextView name = (TextView) findViewById(R.id.name);
-        name.setText(product.getName());
+        name.setText(product.getAppDisplayName());
         TextView description = (TextView) findViewById(R.id.description);
-        description.setText(product.getAppDisplayName());
+        description.setText(product.getDescription());
         amount = (TextView) findViewById(R.id.product_amount);
         daviPointsAmount = (TextView) findViewById(R.id.store_davi_points_amount);
         setProductAmount();
