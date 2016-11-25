@@ -33,6 +33,7 @@ public class OrderReceiptActivity extends BaseActivity{
     public static final String CART_KEY = "cart_key";
     public static final String FROM_MADE_SHOP = "from_made_shop";
     public static final String FROM_OTT_NOTIFICATION = "from_ott_notification";
+    public static final String FROM_OTT_CONFIRMED_NOTIFICATION = "from_ott_confirmed_notification";
     public static final String FROM_ORDER_READY_NOTIFICATION_KEY = "from_order_ready_notification";
     private static final int PAY_REQUEST = 2003;
 
@@ -40,6 +41,7 @@ public class OrderReceiptActivity extends BaseActivity{
     private boolean fromMadeShop;
     private boolean fromOttNotification;
     private boolean fromOrderReadyNotification;
+    private boolean fromOttConfirmedNotification;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,12 +49,14 @@ public class OrderReceiptActivity extends BaseActivity{
         setContentView(R.layout.bought_items_layout);
         setToolbar(R.id.toolbar, false);
         handleIntent();
-        if(fromMadeShop || fromOttNotification || fromOrderReadyNotification){
+        if(fromMadeShop || fromOrderReadyNotification){
             setToolbar(R.id.toolbar, true, getString(R.string.store_made_receipt_title));
-            hideNeededLabel();
-        } else {
+        } else if(fromOttNotification) {
             setToolbarWOHomeButton(R.id.toolbar, getString(R.string.store_receipt_title));
+        } else {
+            setToolbarWOHomeButton(R.id.toolbar, getString(R.string.store_ott_confirmed_title));
         }
+        hideNeededLabel();
         setLayoutData();
         setRecycler();
         //setRatingBar();
@@ -68,6 +72,7 @@ public class OrderReceiptActivity extends BaseActivity{
         fromMadeShop = getIntent().getBooleanExtra(FROM_MADE_SHOP, false);
         fromOttNotification = getIntent().getBooleanExtra(FROM_OTT_NOTIFICATION, false);
         fromOrderReadyNotification = getIntent().getBooleanExtra(FROM_ORDER_READY_NOTIFICATION_KEY, false);
+        fromOttConfirmedNotification = getIntent().getBooleanExtra(FROM_OTT_CONFIRMED_NOTIFICATION, false);
         cart = getIntent().getParcelableExtra(CART_KEY);
         if(cart == null) {
             cart = new Cart();
@@ -80,6 +85,7 @@ public class OrderReceiptActivity extends BaseActivity{
         outState.putBoolean(FROM_MADE_SHOP, fromMadeShop);
         outState.putBoolean(FROM_OTT_NOTIFICATION, fromOttNotification);
         outState.putBoolean(FROM_ORDER_READY_NOTIFICATION_KEY, fromOrderReadyNotification);
+        outState.putBoolean(FROM_OTT_CONFIRMED_NOTIFICATION, fromOttConfirmedNotification);
         super.onSaveInstanceState(outState, outPersistentState);
     }
 
@@ -89,6 +95,7 @@ public class OrderReceiptActivity extends BaseActivity{
         outState.putBoolean(FROM_MADE_SHOP, fromMadeShop);
         outState.putBoolean(FROM_OTT_NOTIFICATION, fromOttNotification);
         outState.putBoolean(FROM_ORDER_READY_NOTIFICATION_KEY, fromOrderReadyNotification);
+        outState.putBoolean(FROM_OTT_CONFIRMED_NOTIFICATION, fromOttConfirmedNotification);
         super.onSaveInstanceState(outState);
     }
 
@@ -99,6 +106,7 @@ public class OrderReceiptActivity extends BaseActivity{
         fromMadeShop = savedInstanceState.getBoolean(FROM_MADE_SHOP, false);
         fromOttNotification = savedInstanceState.getBoolean(FROM_OTT_NOTIFICATION, false);
         fromOrderReadyNotification = savedInstanceState.getBoolean(FROM_ORDER_READY_NOTIFICATION_KEY, false);
+        fromOttConfirmedNotification = savedInstanceState.getBoolean(FROM_OTT_CONFIRMED_NOTIFICATION, false);
     }
 
     @Override
@@ -269,7 +277,7 @@ public class OrderReceiptActivity extends BaseActivity{
                 DialogUtil.toast(OrderReceiptActivity.this,
                         getString(R.string.ott_payment_title),
                         getString(R.string.ott_payment_subtitle),
-                        getString(R.string.ott_payment_text, cart.getSelectedCard().getLastDigits(), CurrencyUtils.getCurrencyForString(cart.getCartPrice())));
+                        getString(R.string.ott_payment_text));
             }
         }
 

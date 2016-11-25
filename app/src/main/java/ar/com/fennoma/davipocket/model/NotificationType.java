@@ -6,7 +6,8 @@ package ar.com.fennoma.davipocket.model;
 public enum NotificationType {
 
     ORDER_READY("order_ready"),
-    OTT_PAYMENT("ott_pay");
+    OTT_PAYMENT("ott_pay"),
+    OTT_CONFIRMED_PAYMENT("ott_pay_approval");
 
     NotificationType(String type) {
         this.type = type;

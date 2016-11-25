@@ -53,6 +53,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     public static final int SHOW_CREATED_ECARD_POPUP = 182;
     private static final int LOGOUT_REQUEST = 183;
     protected static final int CLOSE_ACTIVITY_REQUEST = 100;
+    public static String HELP_URL = "http://ayuda_davipay.paymentez.com/support/home";
 
     protected static final String FIRST_LOGIN_WITH_E_CARD = "first login with eCard";
 
@@ -273,6 +274,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
                     startActivity(getEcardActivity);
                     break;
                 case REGISTRATION_COMPLETED:
+                    Session.getCurrentSession(this).setPendingStep(null);
                     Intent mainActivityIntent = new Intent(this, MainActivity.class);
                     mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(mainActivityIntent);
@@ -445,7 +447,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     }
 
     private void goToHelpPage() {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(HELP_URL));
         startActivity(browserIntent);
     }
 

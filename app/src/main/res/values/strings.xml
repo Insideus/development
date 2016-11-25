@@ -375,6 +375,7 @@
     <string name="store_payment_on_back_text_explanation">¿Está seguro que desea cancelar su compra?</string>
     <string name="store_receipt_title">CONFIRMACIÓN DE COMPRA</string>
     <string name="store_made_receipt_title">COMPRA</string>
+    <string name="store_ott_confirmed_title">PAGO CONFIRMADO</string>
     <string name="store_detail_no_items_selected">Debe agregar al menos un item para continuar.</string>
     <string name="store_payment_davipoints_subtitle">DAVIPUNTOS</string>
     <string name="store_payment_cop_subtitle">COP</string>
@@ -444,14 +445,15 @@
 
     <string name="order_ready_notification_text">Su pedido número %1$s está listo.</string>
 
+    <string name="ott_pay_confirmed_notification_text">Pago confirmado. Recibo %1$s.</string>
     <string name="ott_pay_notification_text">Solicitud de pago.</string>
     <string name="ott_payment_confirmation_title">ACEPTAR</string>
     <string name="ott_payment_confirmation_subtitle">PAGO</string>
     <string name="ott_payment_confirmation_text">¿Usted confirma que desea realizar el pago con su tarjeta terminada en %1$s por un monto de $%2$s?</string>
 
-    <string name="ott_payment_title">PAGO</string>
-    <string name="ott_payment_subtitle">REALIZADO</string>
-    <string name="ott_payment_text">Se realizó el pago con su tarjeta terminada en %1$s por un monto de $%2$s</string>
+    <string name="ott_payment_title">PAGO EN</string>
+    <string name="ott_payment_subtitle">CURSO</string>
+    <string name="ott_payment_text">En unos instantes recibirá la confirmación del estado de su pago.</string>
 
     <string name="blocked_card_error_title">TARJETA</string>
     <string name="blocked_card_error_subtitle">BLOQUEADA</string>
