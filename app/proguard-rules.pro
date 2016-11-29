@@ -15,3 +15,9 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontwarn com.squareup.okhttp.**
+-dontwarn com.squareup.picasso.Transformation
+-dontwarn fr.ganfra.**
+-dontwarn net.easysol.**
+-dontwarn com.viewpagerindicator.LinePageIndicator
+

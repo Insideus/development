@@ -39,6 +39,7 @@ public class OtpPaymentActivity extends BaseActivity {
     private TextView fourDigits;
     private MyCountDownTimer myCountDownTimer;
     private MagicProgressBar progressBar;
+    private boolean showExpiredMessage = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -294,7 +295,9 @@ public class OtpPaymentActivity extends BaseActivity {
             findViewById(R.id.receipt_number_layout).setVisibility(View.GONE);
             findViewById(R.id.card_container).setEnabled(true);
             findViewById(R.id.get_otp_button).setEnabled(true);
-            showNotUsedMessage();
+            if(showExpiredMessage) {
+                showNotUsedMessage();
+            }
         }
 
     }
@@ -310,6 +313,13 @@ public class OtpPaymentActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         updateDaviPoints();
+        showExpiredMessage = true;
+    }
+
+    @Override
+    protected void onPause() {
+        showExpiredMessage = false;
+        super.onPause();
     }
 
     @Override
