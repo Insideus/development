@@ -7,7 +7,8 @@ public enum NotificationType {
 
     ORDER_READY("order_ready"),
     OTT_PAYMENT("ott_pay"),
-    OTT_CONFIRMED_PAYMENT("ott_pay_approval");
+    OTT_CONFIRMED_PAYMENT("ott_pay_approval"),
+    OTT_PAY_REJECTED("ott_pay_rejected");
 
     NotificationType(String type) {
         this.type = type;

@@ -54,6 +54,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     private static final int LOGOUT_REQUEST = 183;
     protected static final int CLOSE_ACTIVITY_REQUEST = 100;
     public static String HELP_URL = "http://ayuda_davipay.paymentez.com/support/home";
+    public static String TERMS_AND_CONDITIONS_URL = "https://s3.amazonaws.com/davipay.paymentez.com/REGLAMENTO+APP+DAVIPAY+V4+20161125.pdf";
 
     protected static final String FIRST_LOGIN_WITH_E_CARD = "first login with eCard";
 
@@ -447,7 +448,15 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     }
 
     private void goToHelpPage() {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(HELP_URL));
+        openWebPage(HELP_URL);
+    }
+
+    private void goToTermsAndConditionsPage() {
+        openWebPage(TERMS_AND_CONDITIONS_URL);
+    }
+
+    private void openWebPage(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(browserIntent);
     }
 

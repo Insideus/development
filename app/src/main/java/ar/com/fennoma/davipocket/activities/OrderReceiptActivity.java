@@ -35,6 +35,7 @@ public class OrderReceiptActivity extends BaseActivity{
     public static final String FROM_OTT_NOTIFICATION = "from_ott_notification";
     public static final String FROM_OTT_CONFIRMED_NOTIFICATION = "from_ott_confirmed_notification";
     public static final String FROM_ORDER_READY_NOTIFICATION_KEY = "from_order_ready_notification";
+    public static final String FROM_OTT_REJECTED_NOTIFICATION_KEY = "from_order_rejected_notification";
     private static final int PAY_REQUEST = 2003;
 
     private Cart cart;
@@ -42,6 +43,7 @@ public class OrderReceiptActivity extends BaseActivity{
     private boolean fromOttNotification;
     private boolean fromOrderReadyNotification;
     private boolean fromOttConfirmedNotification;
+    private boolean fromOttRejectedNotification;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class OrderReceiptActivity extends BaseActivity{
             setToolbar(R.id.toolbar, true, getString(R.string.store_made_receipt_title));
         } else if(fromOttNotification) {
             setToolbarWOHomeButton(R.id.toolbar, getString(R.string.store_receipt_title));
+        } else if(fromOttRejectedNotification) {
+            setToolbarWOHomeButton(R.id.toolbar, getString(R.string.store_ott_rejected_title));
         } else {
             setToolbarWOHomeButton(R.id.toolbar, getString(R.string.store_ott_confirmed_title));
         }
@@ -73,6 +77,7 @@ public class OrderReceiptActivity extends BaseActivity{
         fromOttNotification = getIntent().getBooleanExtra(FROM_OTT_NOTIFICATION, false);
         fromOrderReadyNotification = getIntent().getBooleanExtra(FROM_ORDER_READY_NOTIFICATION_KEY, false);
         fromOttConfirmedNotification = getIntent().getBooleanExtra(FROM_OTT_CONFIRMED_NOTIFICATION, false);
+        fromOttRejectedNotification = getIntent().getBooleanExtra(FROM_OTT_REJECTED_NOTIFICATION_KEY, false);
         cart = getIntent().getParcelableExtra(CART_KEY);
         if(cart == null) {
             cart = new Cart();
@@ -86,6 +91,7 @@ public class OrderReceiptActivity extends BaseActivity{
         outState.putBoolean(FROM_OTT_NOTIFICATION, fromOttNotification);
         outState.putBoolean(FROM_ORDER_READY_NOTIFICATION_KEY, fromOrderReadyNotification);
         outState.putBoolean(FROM_OTT_CONFIRMED_NOTIFICATION, fromOttConfirmedNotification);
+        outState.putBoolean(FROM_OTT_REJECTED_NOTIFICATION_KEY, fromOttRejectedNotification);
         super.onSaveInstanceState(outState, outPersistentState);
     }
 
@@ -96,6 +102,7 @@ public class OrderReceiptActivity extends BaseActivity{
         outState.putBoolean(FROM_OTT_NOTIFICATION, fromOttNotification);
         outState.putBoolean(FROM_ORDER_READY_NOTIFICATION_KEY, fromOrderReadyNotification);
         outState.putBoolean(FROM_OTT_CONFIRMED_NOTIFICATION, fromOttConfirmedNotification);
+        outState.putBoolean(FROM_OTT_REJECTED_NOTIFICATION_KEY, fromOttRejectedNotification);
         super.onSaveInstanceState(outState);
     }
 
@@ -107,6 +114,7 @@ public class OrderReceiptActivity extends BaseActivity{
         fromOttNotification = savedInstanceState.getBoolean(FROM_OTT_NOTIFICATION, false);
         fromOrderReadyNotification = savedInstanceState.getBoolean(FROM_ORDER_READY_NOTIFICATION_KEY, false);
         fromOttConfirmedNotification = savedInstanceState.getBoolean(FROM_OTT_CONFIRMED_NOTIFICATION, false);
+        fromOttRejectedNotification = savedInstanceState.getBoolean(FROM_OTT_REJECTED_NOTIFICATION_KEY, false);
     }
 
     @Override

@@ -40,11 +40,21 @@ public class DaviPayGcmListenerService extends GcmListenerService {
                         if(type == NotificationType.OTT_CONFIRMED_PAYMENT && notification.has("order")) {
                             sendOttPaymentConfirmedNotification(notification.getJSONObject("order"));
                         }
+                        if(type == NotificationType.OTT_PAY_REJECTED && notification.has("order")) {
+                            sendOttPaymentRejectedNotification(notification.getJSONObject("order"));
+                        }
                     }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void sendOttPaymentRejectedNotification(JSONObject order) {
+        Cart cart = Cart.fromJson(order);
+        if(cart != null) {
+            createOttPaymentRejectedNotification(cart);
         }
     }
 
@@ -123,6 +133,26 @@ public class DaviPayGcmListenerService extends GcmListenerService {
                 .setSmallIcon(R.drawable.ic_stat_ic_launcher)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.ott_pay_confirmed_notification_text, cart.getOttTransaccionId()))
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+        notificationManager.notify(notificationId, notificationBuilder.build());
+    }
+
+    private void createOttPaymentRejectedNotification(Cart cart) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder notificationBuilder;
+        Intent intent = new Intent(this, OrderReceiptActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(OrderReceiptActivity.CART_KEY, cart);
+        intent.putExtra(OrderReceiptActivity.FROM_OTT_REJECTED_NOTIFICATION_KEY, true);
+        int notificationId = Integer.valueOf(cart.getReceiptNumber());
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_stat_ic_launcher)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(getString(R.string.ott_pay_rejected_notification_text, cart.getOttTransaccionId()))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

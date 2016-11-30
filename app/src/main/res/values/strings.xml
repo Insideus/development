@@ -373,9 +373,10 @@
 
     <string name="configuration_not_added_title">ATENCIÓN</string>
     <string name="store_payment_on_back_text_explanation">¿Está seguro que desea cancelar su compra?</string>
-    <string name="store_receipt_title">CONFIRMACIÓN DE COMPRA</string>
+    <string name="store_receipt_title">CONFIRMACIÓN DE PAGO</string>
     <string name="store_made_receipt_title">COMPRA</string>
     <string name="store_ott_confirmed_title">PAGO CONFIRMADO</string>
+    <string name="store_ott_rejected_title">PAGO RECHAZADO</string>
     <string name="store_detail_no_items_selected">Debe agregar al menos un item para continuar.</string>
     <string name="store_payment_davipoints_subtitle">DAVIPUNTOS</string>
     <string name="store_payment_cop_subtitle">COP</string>
@@ -450,6 +451,7 @@
     <string name="ott_payment_confirmation_title">ACEPTAR</string>
     <string name="ott_payment_confirmation_subtitle">PAGO</string>
     <string name="ott_payment_confirmation_text">¿Usted confirma que desea realizar el pago con su tarjeta terminada en %1$s por un monto de $%2$s?</string>
+    <string name="ott_pay_rejected_notification_text">Pago %1$s rechazado.</string>
 
     <string name="ott_payment_title">PAGO EN</string>
     <string name="ott_payment_subtitle">CURSO</string>
