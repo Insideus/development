@@ -73,7 +73,7 @@
             android:paddingEnd="20dp"
             android:paddingStart="30dp"
             android:paddingTop="10dp"
-            android:text="@string/policy_picker_check_box_terms_and_conditions"
+            android:text="@string/policy_picker_check_box_terms_and_conditions_ecard"
             android:textColor="@color/checkbox_text_color_selector"
             android:textSize="@dimen/common_text_size" />
 

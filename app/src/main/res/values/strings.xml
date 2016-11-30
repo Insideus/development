@@ -64,7 +64,8 @@
     <string name="policy_picker_check_box_send_sms">Envío de SMS</string>
     <string name="politcy_picker_check_box_send_email">Envío de E-mails</string>
     <string name="policy_picker_check_box_phone_contact">Contacto Telefónico</string>
-    <string name="policy_picker_check_box_terms_and_conditions">Términos y condiciones eCard</string>
+    <string name="policy_picker_check_box_terms_and_conditions_ecard">Términos y condiciones eCard</string>
+    <string name="policy_picker_check_box_terms_and_conditions">Términos y condiciones</string>
     <string name="policy_picker_check_box_privacy_policy">Políticas de Privacidad</string>
     <string name="policy_picker_subtitle">Para tener una mejor experiencia,\nconfírmenos por cuáles medios desea recibir\ncomunicaciones de la aplicación y acepte\nTérminos y Condiciones, y Políticas de Privacidad.</string>
     <string name="policy_picker_title">AUTORIZACIÓN USO DE DATOS</string>

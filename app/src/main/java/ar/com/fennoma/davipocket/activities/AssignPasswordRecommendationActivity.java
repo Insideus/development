@@ -83,5 +83,11 @@ public class AssignPasswordRecommendationActivity extends BaseActivity {
                 }
             }
         });
+        findViewById(R.id.terms_and_conditions_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToTermsAndConditionsPage();
+            }
+        });
     }
 }
