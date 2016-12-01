@@ -305,6 +305,14 @@
     <string name="my_cards_activate_blocked_card_subtitle">BLOQUEADA</string>
     <string name="my_cards_activate_blocked_card_text">Su tarjeta ha sido bloqueada.</string>
 
+    <string name="my_cards_activate_card_result_title">TARJETA</string>
+    <string name="my_cards_activate_card_result_subtitle">ACTIVADA</string>
+    <string name="my_cards_activate_card_result_text">Su Tarjeta fue activada exitosamente.</string>
+
+    <string name="my_cards_enroled_card_result_title">TARJETA ACTIVADA</string>
+    <string name="my_cards_enroled_card_result_subtitle">EN DAVIPAY</string>
+    <string name="my_cards_enroled_card_result_text">Su Tarjeta fue activada exitosamente. Ya peude realizar compras en DaviPay.</string>
+
     <string name="card_24hr_blocked_title">TARJETA</string>
     <string name="card_24hr_blocked_subtitle">BLOQUEADA</string>
     <string name="card_24hr_blocked_text">Su tarjeta ha sido bloqueada por 24hs.</string>
@@ -374,7 +382,7 @@
 
     <string name="configuration_not_added_title">ATENCIÓN</string>
     <string name="store_payment_on_back_text_explanation">¿Está seguro que desea cancelar su compra?</string>
-    <string name="store_receipt_title">CONFIRMACIÓN DE PAGO</string>
+    <string name="store_receipt_title">CONFIRME SU PAGO</string>
     <string name="store_made_receipt_title">COMPRA</string>
     <string name="store_ott_confirmed_title">PAGO CONFIRMADO</string>
     <string name="store_ott_rejected_title">PAGO RECHAZADO</string>
@@ -414,7 +422,7 @@
     <string name="configuration_quantity_text">(MIN. %1$d, MAX. %2$d)</string>
 
     <string name="otp_payment_subtitle">GENERAR CÓDIGO DE PAGO</string>
-    <string name="otp_payment_receipt_title">INFORME ESTE CÓDIGO AL ESTRABLECIMIENTO</string>
+    <string name="otp_payment_receipt_title">Para continuar con el pago informe este código al establecimiento</string>
     <string name="otp_payment_start_counter_text">0:00</string>
     <string name="otp_payment_end_counter_text">4:00</string>
 
@@ -451,7 +459,7 @@
     <string name="ott_pay_notification_text">Solicitud de pago.</string>
     <string name="ott_payment_confirmation_title">ACEPTAR</string>
     <string name="ott_payment_confirmation_subtitle">PAGO</string>
-    <string name="ott_payment_confirmation_text">¿Usted confirma que desea realizar el pago con su tarjeta terminada en %1$s por un monto de $%2$s?</string>
+    <string name="ott_payment_confirmation_text">¿Confirma que desea realizar el pago con su tarjeta terminada en %1$s por un valor de $%2$s?</string>
     <string name="ott_pay_rejected_notification_text">Pago %1$s rechazado.</string>
 
     <string name="ott_payment_title">PAGO EN</string>

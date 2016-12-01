@@ -63,6 +63,7 @@
             android:paddingStart="@dimen/navigation_drawer_spacing_between_items"
             android:paddingTop="@dimen/my_cards_items_spacing_bar"
             android:textColorHint="@color/text_light_gray_color"
+            android:imeOptions="actionDone"
             android:textSize="@dimen/subtitle_text_size" />
 
         <ImageView

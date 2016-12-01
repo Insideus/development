@@ -8,7 +8,6 @@ import net.easysol.dsb.device_protector.SIMChangeListener;
 import net.easysol.dsb.malware_protector.overlay.OverlayListener;
 
 import ar.com.fennoma.davipocket.constants.Constants;
-import ar.com.fennoma.davipocket.service.Service;
 
 /**
  * Created by Julian Vega on 23/09/2016.
@@ -34,11 +33,15 @@ public class EasySolutionsUtils extends RiskUtils {
     }
 
     public static boolean isSecureCertificate(Context ctx) {
+        return true;
+        /*
         if(Service.BASE_URL.startsWith("https")) {
-            return DSB.sdk(ctx).CONNECTION_PROTECTOR_API.isSecureCertificate(Service.BASE_URL);
+            boolean secureCertificate = DSB.sdk(ctx).CONNECTION_PROTECTOR_API.isSecureCertificate(Service.BASE_URL);
+            return secureCertificate;
         } else {
             return true;
         }
+        */
     }
 
     public static void setSimChangeListener(Context ctx, SIMChangeListener listener) {

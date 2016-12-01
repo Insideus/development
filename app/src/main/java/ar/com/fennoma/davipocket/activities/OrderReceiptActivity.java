@@ -172,7 +172,7 @@ public class OrderReceiptActivity extends BaseActivity{
         storeName.setText(cart.getStore().getName());
 
         TextView buyDate = (TextView) findViewById(R.id.buy_date);
-        buyDate.setText(DateUtils.getBuyDateFormated(new Date()));
+        buyDate.setText(DateUtils.toCamelCase(DateUtils.getBuyDateFormated(new Date())));
 
         ImageView cardLogo = (ImageView) findViewById(R.id.card_logo);
         TextView fourDigits = (TextView) findViewById(R.id.last_card_digits);

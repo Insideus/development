@@ -38,10 +38,8 @@ import ar.com.fennoma.davipocket.utils.CurrencyUtils;
 
 public class Service {
 
-    //private static String BASE_URL = "http://davipocket-stg.paymentez.com/api";
-    public final static String BASE_URL = "http://davipocket-dev.paymentez.com/api";
-    //private static String BASE_URL = "http://davivienda.fennoma.com.ar/api";
-    public final static String IMAGE_BASE_URL = "http://davipocket-dev.paymentez.com";
+    public final static String BASE_URL = "https://davipay-stg.paymentez.com/api";
+    public final static String IMAGE_BASE_URL = "https://davipocket-dev.paymentez.com";
     private final static int CONNECTION_TIMEOUT = 50000;
     private final static int SUCCESS_CODE = 200;
     private final static String DATA_TAG = "data";

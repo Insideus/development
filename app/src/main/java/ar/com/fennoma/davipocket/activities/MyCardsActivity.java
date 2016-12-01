@@ -38,6 +38,8 @@ public class MyCardsActivity extends BaseActivity {
     private static final int E_CARD_SHOW_DATA = 13;
     private static final int CREATE_E_CARD = 14;
     private static final int BLOCK_CARD_RQ = 15;
+    private static final int ACTIVATE_CARD = 16;
+    private static final int ENROLED_CARD = 17;
     private CardsAdapter cardsAdapter;
     private int selectedCard = -1;
     private boolean refresh = false;
@@ -84,18 +86,20 @@ public class MyCardsActivity extends BaseActivity {
         if(card != null) {
             intent.putExtra(ActionDialogActivity.CARD_KEY, card);
         }
-        startOperationPopUp(intent, getString(R.string.my_cards_activate_card_title),
-                getString(R.string.my_cards_activate_card_subtitle),
-                getString(R.string.my_cards_activate_card_text));
+        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_activate_card_title));
+        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_activate_card_subtitle));
+        intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_activate_card_text));
+        startActivityForResult(intent, ACTIVATE_CARD);
     }
 
     private void enrollCardDialog(Card card) {
         Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
         intent.putExtra(ActionDialogActivity.IS_CCV_DIALOG, true);
         intent.putExtra(ActionDialogActivity.CARD_KEY, card);
-        startOperationPopUp(intent, getString(R.string.my_cards_enrole_card_title),
-                getString(R.string.my_cards_enrole_card_subtitle),
-                getString(R.string.my_cards_enrole_card_text));
+        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_enrole_card_title));
+        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_enrole_card_subtitle));
+        intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_enrole_card_text));
+        startActivityForResult(intent, ENROLED_CARD);
     }
 
     private void blockedCardDialog() {
@@ -215,9 +219,33 @@ public class MyCardsActivity extends BaseActivity {
             }
         } else if (requestCode == BLOCK_CARD_RQ) {
             if (resultCode == RESULT_OK) {
-                DialogUtil.toastWithResult(this, EXPLAINING_DIALOG, getString(R.string.my_cards_activate_blocked_card_title),
+                DialogUtil.toastWithResult(this,
+                        EXPLAINING_DIALOG,
+                        getString(R.string.my_cards_activate_blocked_card_title),
                         getString(R.string.my_cards_activate_blocked_card_subtitle),
                         getString(R.string.my_cards_activate_blocked_card_text));
+                refresh = true;
+            } else if (resultCode == ActionDialogActivity.RESULT_FAILED) {
+                generateErrorDialog(data);
+            }
+        } else if (requestCode == ACTIVATE_CARD) {
+            if (resultCode == RESULT_OK) {
+                DialogUtil.toastWithResult(this,
+                        EXPLAINING_DIALOG,
+                        getString(R.string.my_cards_activate_card_result_title),
+                        getString(R.string.my_cards_activate_card_result_subtitle),
+                        getString(R.string.my_cards_activate_card_result_text));
+                refresh = true;
+            } else if (resultCode == ActionDialogActivity.RESULT_FAILED) {
+                generateErrorDialog(data);
+            }
+        } else if (requestCode == ENROLED_CARD) {
+            if (resultCode == RESULT_OK) {
+                DialogUtil.toastWithResult(this,
+                        EXPLAINING_DIALOG,
+                        getString(R.string.my_cards_enroled_card_result_title),
+                        getString(R.string.my_cards_enroled_card_result_subtitle),
+                        getString(R.string.my_cards_enroled_card_result_text));
                 refresh = true;
             } else if (resultCode == ActionDialogActivity.RESULT_FAILED) {
                 generateErrorDialog(data);
