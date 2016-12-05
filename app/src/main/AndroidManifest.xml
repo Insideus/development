@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ar.com.fennoma.davipocket">
+    package="com.davivienda.billetera">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,13 +20,13 @@
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
 
     <permission
-        android:name="ar.com.fennoma.davipocket.permission.C2D_MESSAGE"
+        android:name="com.davivienda.billetera.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <uses-permission
-        android:name="ar.com.fennoma.davipocket.permission.C2D_MESSAGE" />
+        android:name="com.davivienda.billetera.permission.C2D_MESSAGE" />
 
     <application
-        android:name=".DavipocketApplication"
+        android:name="com.davivienda.billetera.DaviPayApplication"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
@@ -48,7 +48,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".activities.SplashActivity"
+            android:name="com.davivienda.billetera.activities.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/app_name"
@@ -60,7 +60,7 @@
         </activity>
 
         <activity
-            android:name=".activities.LoginActivity"
+            android:name="com.davivienda.billetera.activities.LoginActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -68,7 +68,7 @@
         </activity>
 
         <activity
-            android:name=".activities.LoginTokenActivity"
+            android:name="com.davivienda.billetera.activities.LoginTokenActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -76,105 +76,7 @@
         </activity>
 
         <activity
-            android:name=".activities.MainActivity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name=".activities.FacebookLoginActivity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name=".activities.LoginConfirmationActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name=".activities.AccountActivationActivity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name=".activities.PolicyPickerActivity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name=".activities.EcardLoginActivity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name=".activities.ChangePasswordStep1Activity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name=".activities.ChangePasswordStep2Activity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name=".activities.ChangePasswordStep3Activity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name=".activities.PasswordConfirmationActivity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name=".activities.MyCardsActivity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name=".activities.ActivatedPasswordActivity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity
-            android:name=".activities.CardPayDetailActivity"
+            android:name="com.davivienda.billetera.activities.MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -183,7 +85,105 @@
         </activity>
 
         <activity
-            android:name=".activities.ECardRechargeActivity"
+            android:name="com.davivienda.billetera.activities.FacebookLoginActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name="com.davivienda.billetera.activities.LoginConfirmationActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name="com.davivienda.billetera.activities.AccountActivationActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name="com.davivienda.billetera.activities.PolicyPickerActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name="com.davivienda.billetera.activities.EcardLoginActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name="com.davivienda.billetera.activities.ChangePasswordStep1Activity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name="com.davivienda.billetera.activities.ChangePasswordStep2Activity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name="com.davivienda.billetera.activities.ChangePasswordStep3Activity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name="com.davivienda.billetera.activities.PasswordConfirmationActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name="com.davivienda.billetera.activities.MyCardsActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name="com.davivienda.billetera.activities.ActivatedPasswordActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name="com.davivienda.billetera.activities.CardPayDetailActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name="com.davivienda.billetera.activities.ECardRechargeActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -192,7 +192,7 @@
         </activity>
 
         <activity
-            android:name=".activities.NewCardActivity"
+            android:name="com.davivienda.billetera.activities.NewCardActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -200,7 +200,7 @@
         </activity>
 
         <activity
-            android:name=".activities.CardDetailActivity"
+            android:name="com.davivienda.billetera.activities.CardDetailActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -209,7 +209,7 @@
         </activity>
 
         <activity
-            android:name=".activities.MovementsByDayActivity"
+            android:name="com.davivienda.billetera.activities.MovementsByDayActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -218,7 +218,7 @@
         </activity>
 
         <activity
-            android:name=".activities.ToastDialogActivity"
+            android:name="com.davivienda.billetera.activities.ToastDialogActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -226,7 +226,7 @@
         </activity>
 
         <activity
-            android:name=".activities.RateAppDialogActivity"
+            android:name="com.davivienda.billetera.activities.RateAppDialogActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -234,7 +234,7 @@
         </activity>
 
         <activity
-            android:name=".activities.AssignPasswordRecommendationActivity"
+            android:name="com.davivienda.billetera.activities.AssignPasswordRecommendationActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -242,7 +242,7 @@
         </activity>
 
         <activity
-            android:name=".activities.InterestsPickerActivity"
+            android:name="com.davivienda.billetera.activities.InterestsPickerActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -250,7 +250,7 @@
         </activity>
 
         <activity
-            android:name=".activities.ActionDialogActivity"
+            android:name="com.davivienda.billetera.activities.ActionDialogActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -258,7 +258,7 @@
         </activity>
 
         <activity
-            android:name=".activities.TourActivity"
+            android:name="com.davivienda.billetera.activities.TourActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -266,7 +266,7 @@
         </activity>
 
         <activity
-            android:name=".activities.InsecureDeviceActivity"
+            android:name="com.davivienda.billetera.activities.InsecureDeviceActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -274,7 +274,7 @@
         </activity>
 
         <activity
-            android:name=".activities.NewDeviceOtpActivity"
+            android:name="com.davivienda.billetera.activities.NewDeviceOtpActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -283,7 +283,7 @@
         </activity>
 
         <activity
-            android:name=".activities.StoreDetailActivity"
+            android:name="com.davivienda.billetera.activities.StoreDetailActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -291,7 +291,7 @@
         </activity>
 
         <activity
-            android:name=".activities.OrderPaymentActivity"
+            android:name="com.davivienda.billetera.activities.OrderPaymentActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -299,7 +299,7 @@
         </activity>
 
         <activity
-            android:name=".activities.MapActivity"
+            android:name="com.davivienda.billetera.activities.MapActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -307,7 +307,7 @@
         </activity>
 
         <activity
-            android:name=".activities.OrderReceiptActivity"
+            android:name="com.davivienda.billetera.activities.OrderReceiptActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -315,7 +315,7 @@
         </activity>
 
         <activity
-            android:name=".activities.StoreItemDetailActivity"
+            android:name="com.davivienda.billetera.activities.StoreItemDetailActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -323,7 +323,7 @@
         </activity>
 
         <activity
-            android:name=".activities.MyOrdersActivity"
+            android:name="com.davivienda.billetera.activities.MyOrdersActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -331,7 +331,7 @@
         </activity>
 
         <activity
-            android:name=".activities.NewEcardDialogActivity"
+            android:name="com.davivienda.billetera.activities.NewEcardDialogActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -339,7 +339,7 @@
         </activity>
 
         <activity
-            android:name=".activities.OtpPaymentActivity"
+            android:name="com.davivienda.billetera.activities.OtpPaymentActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -404,24 +404,24 @@
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="ar.com.fennoma.davipocket" />
+                <category android:name="com.davivienda.billetera" />
             </intent-filter>
         </receiver>
         <service
-            android:name="ar.com.fennoma.davipocket.gcm.DaviPayGcmListenerService"
+            android:name="com.davivienda.billetera.gcm.DaviPayGcmListenerService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-        <service android:name="ar.com.fennoma.davipocket.gcm.InstanceIdService"
+        <service android:name="com.davivienda.billetera.gcm.InstanceIdService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
         </service>
         <service
-            android:name="ar.com.fennoma.davipocket.gcm.RegistrationIntentService"
+            android:name="com.davivienda.billetera.gcm.RegistrationIntentService"
             android:exported="false">
         </service>
 

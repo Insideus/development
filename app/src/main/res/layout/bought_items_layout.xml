@@ -349,7 +349,7 @@
                 android:paddingRight="10dp"
                 android:paddingTop="10dp">
 
-                <ar.com.fennoma.davipocket.ui.controls.RatingBar
+                <com.davivienda.billetera.ui.controls.RatingBar
                     android:id="@+id/rating_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

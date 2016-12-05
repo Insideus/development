@@ -19,11 +19,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "ar.com.fennoma.davipocket"
+        applicationId "com.davivienda.billetera"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 26
-        versionName "1.2.5"
+        versionCode 27
+        versionName "1.2.6"
         multiDexEnabled true
     }
 

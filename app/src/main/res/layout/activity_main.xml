@@ -10,7 +10,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.MainActivity"
+        tools:context="com.davivienda.billetera.activities.MainActivity"
         tools:ignore="MissingPrefix">
 
         <include
@@ -22,7 +22,7 @@
 
         <fragment
             android:id="@+id/fragment"
-            android:name="ar.com.fennoma.davipocket.fragments.WithoutDeliveryStoreFragment"
+            android:name="com.davivienda.billetera.fragments.WithoutDeliveryStoreFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/bottom_bar"

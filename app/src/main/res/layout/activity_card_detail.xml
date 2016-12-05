@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/activity_background"
     android:orientation="vertical"
-    tools:context=".activities.CardPayDetailActivity"
+    tools:context="com.davivienda.billetera.activities.CardPayDetailActivity"
     tools:ignore="MissingPrefix">
 
     <include
