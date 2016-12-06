@@ -71,7 +71,8 @@ public class AssignPasswordRecommendationActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if(!termsAndConditions.isChecked()){
-                    DialogUtil.toast(AssignPasswordRecommendationActivity.this, getString(R.string.input_data_error_generic_title),
+                    DialogUtil.toast(AssignPasswordRecommendationActivity.this,
+                            getString(R.string.input_data_error_generic_title),
                             "",
                             getString(R.string.assign_password_recommendation_terms_and_conditions));
                 } else {
@@ -90,4 +91,5 @@ public class AssignPasswordRecommendationActivity extends BaseActivity {
             }
         });
     }
+
 }

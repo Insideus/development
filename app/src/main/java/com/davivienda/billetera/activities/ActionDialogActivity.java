@@ -379,8 +379,8 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
     }
 
     private void showECardCreateLayouts(TextView acceptButton, TextView ignoreButton) {
+        findViewById(R.id.checkbox_container).setVisibility(View.VISIBLE);
         final CheckBox termsAndConditions = (CheckBox) findViewById(R.id.terms_and_conditions);
-        termsAndConditions.setVisibility(View.VISIBLE);
         acceptButton.setText(getString(R.string.my_cards_block_card_accept));
         ignoreButton.setText(getString(R.string.my_cards_block_card_cancel));
         ignoreButton.setOnClickListener(new View.OnClickListener() {
@@ -398,6 +398,12 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                 } else {
                     eCardFailed(getString(R.string.card_action_terms_and_conditions_not_accepted_error));
                 }
+            }
+        });
+        findViewById(R.id.terms_and_conditions_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToEcardTermsAndConditionsPage();
             }
         });
     }

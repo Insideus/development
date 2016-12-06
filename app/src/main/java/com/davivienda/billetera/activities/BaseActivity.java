@@ -56,6 +56,8 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     public static String HELP_URL = "http://ayuda_davipay.paymentez.com/support/home";
     public static String GOOGLE_DOCS_URL = "http://docs.google.com/gview?embedded=true&url=";
     public static String TERMS_AND_CONDITIONS_URL = "https://s3.amazonaws.com/davipay.paymentez.com/REGLAMENTO+APP+DAVIPAY+V4+20161125.pdf";
+    public static String ECARD_TERMS_AND_CONDITIONS_URL = "https://s3.amazonaws.com/davipay.paymentez.com/CONTRATO+TARJETA+VIRTUAL+E-CARD.pdf";
+    public static String PRIVACY_POLICY_URL = "https://s3.amazonaws.com/davipay.paymentez.com/Politica+de+Privacidad+DaviPay.pdf";
     protected static final String FIRST_LOGIN_WITH_E_CARD = "first login with eCard";
 
     protected DialogPlus dialogPlus;
@@ -447,15 +449,23 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     }
 
     private void goToHelpPage() {
-        openWebPage(HELP_URL);
+        openPdf(HELP_URL);
     }
 
     public void goToTermsAndConditionsPage() {
-        openWebPage(GOOGLE_DOCS_URL + TERMS_AND_CONDITIONS_URL);
+        openPdf(TERMS_AND_CONDITIONS_URL);
     }
 
-    private void openWebPage(String url) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    public void goToEcardTermsAndConditionsPage() {
+        openPdf(ECARD_TERMS_AND_CONDITIONS_URL);
+    }
+
+    public void goToPrivacyPolicyPage() {
+        openPdf(PRIVACY_POLICY_URL);
+    }
+
+    private void openPdf(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GOOGLE_DOCS_URL + url));
         startActivity(browserIntent);
     }
 
@@ -529,7 +539,6 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
 
         @Override
         protected void onPostExecute(Boolean response) {
-            //Do nothing.
             hideLoading();
         }
     }
@@ -605,14 +614,12 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
 
     @Override
     protected void onDestroy() {
-        //Todo1Utils.destroyMobileSdk(this);
         hideLoading();
         super.onDestroy();
     }
 
     @Override
     public void onSuspiciousOverlay(OverlapingApp overlapingApp) {
-        //overlapingApp.appName
         insecureDevice();
     }
 
@@ -656,7 +663,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         }
     }
 
-    protected interface IComboListener{
+    protected interface IComboListener {
         void onAccept();
         void setSelectedItem();
     }
@@ -666,7 +673,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
                 .setAdapter(adapter)
                 .setContentHolder(new ComboHolder())
                 .setFooter(R.layout.combo_footer)
-                .setExpanded(false)  // This will enable the expand feature, (similar to android L share dialog)
+                .setExpanded(false)
                 .setOnBackPressListener(new OnBackPressListener() {
                     @Override
                     public void onBackPressed(DialogPlus dialogPlus) {

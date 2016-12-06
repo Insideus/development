@@ -14,9 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.model.ButtonCard;
 import com.davivienda.billetera.model.Card;
@@ -30,6 +27,9 @@ import com.davivienda.billetera.tasks.DaviPayTask;
 import com.davivienda.billetera.utils.CardsUtils;
 import com.davivienda.billetera.utils.DialogUtil;
 import com.davivienda.billetera.utils.ImageUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyCardsActivity extends BaseActivity {
 

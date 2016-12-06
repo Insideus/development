@@ -7,8 +7,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.model.ErrorMessages;
 import com.davivienda.billetera.model.LoginResponse;
@@ -22,6 +20,8 @@ import com.davivienda.billetera.tasks.GetInitDataTask;
 import com.davivienda.billetera.tasks.TaskCallback;
 import com.davivienda.billetera.utils.DialogUtil;
 import com.davivienda.billetera.utils.EncryptionUtils;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends LoginBaseActivity {
 
@@ -38,6 +38,17 @@ public class LoginActivity extends LoginBaseActivity {
             getSupportActionBar().hide();
         }
         setActionToButtons();
+        createECard();
+    }
+
+    private void createECard() {
+        Intent intent = new Intent(this, ActionDialogActivity.class);
+        intent.putExtra(ActionDialogActivity.E_CARD_CREATE, true);
+        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_e_card_create_title));
+        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_e_card_create_subtitle));
+        intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_e_card_create_text));
+        startActivityForResult(intent, 1001);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
     @Override

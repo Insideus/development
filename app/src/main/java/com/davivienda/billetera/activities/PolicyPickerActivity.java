@@ -5,9 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.CheckBox;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.model.LoginResponse;
 import com.davivienda.billetera.model.LoginSteps;
@@ -16,6 +13,9 @@ import com.davivienda.billetera.service.Service;
 import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.tasks.DaviPayTask;
 import com.davivienda.billetera.utils.DialogUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PolicyPickerActivity extends BaseActivity{
 
@@ -53,6 +53,12 @@ public class PolicyPickerActivity extends BaseActivity{
             @Override
             public void onClick(View v) {
                 goToTermsAndConditionsPage();
+            }
+        });
+        findViewById(R.id.privacy_policy_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPrivacyPolicyPage();
             }
         });
     }

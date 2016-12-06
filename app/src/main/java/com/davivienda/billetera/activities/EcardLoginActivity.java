@@ -50,6 +50,12 @@ public class EcardLoginActivity extends BaseActivity {
                 }
             }
         });
+        findViewById(R.id.terms_and_conditions_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToEcardTermsAndConditionsPage();
+            }
+        });
     }
 
     private class EcardCreateTask extends DaviPayTask<Card> {
