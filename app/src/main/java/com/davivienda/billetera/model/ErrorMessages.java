@@ -18,7 +18,7 @@ public enum  ErrorMessages {
     PASSWORD_EXPIRED_OTP_VALIDATION_NEEDED("error.login_error.virtual_password_expired.otp_validation_needed"),
     VIRTUAL_PASSWORD_VALIDATION_ERROR("error.virtual_password_validation"),
     CARD_BLOCKED_24("error.add_card.blocked_24"),
-    BLOCKED_CARD("error.product_blocked"),
+    BLOCKED_CARD("error.card_blocked"),
     NEW_DEVICE("error.new_device"),
     NEW_DEVICE_EXISTING_DEVICE("error.new_device_existing_device"),
     NEW_DEVICE_OTP_VALIDATION_NEEDED("error.new_device.otp_validation_needed"),

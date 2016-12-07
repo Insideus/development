@@ -38,17 +38,6 @@ public class LoginActivity extends LoginBaseActivity {
             getSupportActionBar().hide();
         }
         setActionToButtons();
-        createECard();
-    }
-
-    private void createECard() {
-        Intent intent = new Intent(this, ActionDialogActivity.class);
-        intent.putExtra(ActionDialogActivity.E_CARD_CREATE, true);
-        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_e_card_create_title));
-        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_e_card_create_subtitle));
-        intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_e_card_create_text));
-        startActivityForResult(intent, 1001);
-        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
     @Override

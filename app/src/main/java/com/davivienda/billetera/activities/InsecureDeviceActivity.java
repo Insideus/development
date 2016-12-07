@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.session.Session;
+import com.davivienda.billetera.utils.SharedPreferencesUtils;
 
 public class InsecureDeviceActivity extends BaseActivity {
 
@@ -65,6 +66,7 @@ public class InsecureDeviceActivity extends BaseActivity {
             super.onPostExecute(aBoolean);
             hideLoading();
             Session.getCurrentSession(InsecureDeviceActivity.this).logout();
+            SharedPreferencesUtils.logOut();
             finish();
         }
 

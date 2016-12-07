@@ -209,7 +209,8 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
                 case LOGIN_ERROR:
                     DialogUtil.toast(this,
                             getString(R.string.login_error_message_title),
-                            "", getString(R.string.login_error_message_text));
+                            "",
+                            getString(R.string.login_error_message_text));
                     break;
                 case WEB_PASSWORD_ERROR:
                     DialogUtil.toastWithCallButton(this,
@@ -220,12 +221,14 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
                     break;
                 case VALIDATE_PRODUCT_ERROR:
                     DialogUtil.toast(this,
-                            getString(R.string.login_error_message_title), "",
+                            getString(R.string.login_error_message_title),
+                            "",
                             getString(R.string.login_error_message_text));
                     break;
                 case VIRTUAL_PASSWORD_VALIDATION_ERROR:
                     DialogUtil.toast(this,
-                            getString(R.string.login_error_message_title), "",
+                            getString(R.string.login_error_message_title),
+                            "",
                             additionalParam);
                     break;
                 case OTP_VALIDATION_NEEDED:
@@ -559,6 +562,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
 
     public void goLoginActivity() {
         Session.getCurrentSession(this).logout();
+        SharedPreferencesUtils.logOut();
         Intent loginIntent = new Intent(this, LoginActivity.class);
         loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);

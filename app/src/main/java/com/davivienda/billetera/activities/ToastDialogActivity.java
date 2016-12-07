@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.session.Session;
+import com.davivienda.billetera.utils.SharedPreferencesUtils;
 
 public class ToastDialogActivity extends BaseActivity {
 
@@ -166,6 +167,7 @@ public class ToastDialogActivity extends BaseActivity {
 
     private void goToLoginActivity() {
         Session.getCurrentSession(this).logout();
+        SharedPreferencesUtils.logOut();
         Intent facebookIntent = new Intent(this, LoginActivity.class);
         facebookIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(facebookIntent);

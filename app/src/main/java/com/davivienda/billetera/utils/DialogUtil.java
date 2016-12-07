@@ -9,12 +9,12 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.davivienda.billetera.R;
+import com.davivienda.billetera.activities.ToastDialogActivity;
+
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
-
-import com.davivienda.billetera.R;
-
-import com.davivienda.billetera.activities.ToastDialogActivity;
 
 public class DialogUtil {
 
@@ -45,6 +45,14 @@ public class DialogUtil {
             return calendar.getTimeInMillis();
         } else if(date.equals(TODAY)){
             return calendar.getTimeInMillis();
+        } else if(date != null && date.length() > 0) {
+            try {
+                long timestamp = DateUtils.getDateTimeStamp(date);
+                return timestamp;
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return 0;
+            }
         }
         return 0;
     }

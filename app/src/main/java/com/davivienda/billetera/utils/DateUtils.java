@@ -81,6 +81,11 @@ public class DateUtils {
         return formatter.format(cal.getTime());
     }
 
+    public static long getDateTimeStamp(String date) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat(DDMMYYYY_FORMAT);
+        return formatter.parse(date).getTime();
+    }
+
     public static String getMonthFromExpirationDate(String expirationDate) {
         if(TextUtils.isEmpty(expirationDate) || expirationDate.length() < 7){
             return "●●";

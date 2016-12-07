@@ -12,15 +12,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.model.Account;
 import com.davivienda.billetera.model.Card;
+import com.davivienda.billetera.model.ErrorMessages;
 import com.davivienda.billetera.model.PaymentDetail;
 import com.davivienda.billetera.model.ServiceException;
 import com.davivienda.billetera.service.Service;
@@ -28,6 +23,12 @@ import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.tasks.DaviPayTask;
 import com.davivienda.billetera.utils.CurrencyUtils;
 import com.davivienda.billetera.utils.DialogUtil;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public abstract class AbstractPayActivity extends BaseActivity{
 
@@ -218,4 +219,19 @@ public abstract class AbstractPayActivity extends BaseActivity{
             finish();
         }
     }
+
+    public void processErrorAndContinue(ErrorMessages error, String additionalParam) {
+        if(error != null) {
+            switch(error) {
+                case BLOCKED_CARD:
+                    showServiceGenericError(true);
+                    break;
+                default:
+                    super.processErrorAndContinue(error, additionalParam);
+            }
+        } else {
+            showServiceGenericError();
+        }
+    }
+
 }

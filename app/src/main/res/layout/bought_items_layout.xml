@@ -135,7 +135,7 @@
                                 fontPath="fonts/MyriadPro-Regular.otf"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="0.33"
+                                android:layout_weight="0.2"
                                 android:drawableLeft="@drawable/davipoints_tiny_logo"
                                 android:gravity="center"
                                 android:paddingLeft="10dp"
@@ -148,7 +148,7 @@
                                 fontPath="fonts/MyriadPro-Regular.otf"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="0.33"
+                                android:layout_weight="0.4"
                                 android:gravity="center"
                                 android:textColor="@color/gray_text_color"
                                 android:textSize="@dimen/common_text_size" />
@@ -158,7 +158,7 @@
                                 fontPath="fonts/MyriadPro-Semibold.otf"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="0.33"
+                                android:layout_weight="0.4"
                                 android:gravity="right"
                                 android:textColor="@color/red_base_color"
                                 android:textSize="@dimen/common_text_size" />

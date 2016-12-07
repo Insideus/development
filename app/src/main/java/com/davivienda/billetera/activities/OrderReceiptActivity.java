@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.util.Date;
-
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.model.Cart;
 import com.davivienda.billetera.model.CartType;
@@ -27,6 +25,8 @@ import com.davivienda.billetera.utils.DateUtils;
 import com.davivienda.billetera.utils.DavipointUtils;
 import com.davivienda.billetera.utils.DialogUtil;
 import com.davivienda.billetera.utils.ImageUtils;
+
+import java.util.Date;
 
 public class OrderReceiptActivity extends BaseActivity{
 

@@ -11,10 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
 import com.davivienda.billetera.DaviPayApplication;
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.activities.AbstractPayActivity;
@@ -30,6 +26,10 @@ import com.davivienda.billetera.model.TransactionTitle;
 import com.davivienda.billetera.utils.CurrencyUtils;
 import com.davivienda.billetera.utils.DateUtils;
 import com.davivienda.billetera.utils.DialogUtil;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class CardDetailAdapter extends RecyclerView.Adapter {
 
@@ -50,6 +50,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
     private List<IShowableItem> transactionsBeingShowed;
     private ICardDetailAdapterOwner owner;
     private Boolean showPayButton;
+    private String dateFrom;
 
     public CardDetailAdapter(Activity activity, ICardDetailAdapterOwner owner) {
         this.activity = activity;
@@ -201,6 +202,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                                 holder.dateFromYear.setText(String.valueOf(year));
                                 holder.dateFromContainer.setVisibility(View.VISIBLE);
                                 barOwner.gotDateFrom(DateUtils.formatPickerDate(dayOfMonth, monthOfYear, year));
+                                dateFrom = DateUtils.formatPickerDate(dayOfMonth, monthOfYear, year);
                             }
                         }, DialogUtil.SIX_MONTHS_AGO, DialogUtil.TODAY);
                     }
@@ -208,6 +210,10 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                 holder.dateToFilter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        String dateFromFilter = DialogUtil.SIX_MONTHS_AGO;
+                        if(dateFrom != null && dateFrom.length() > 0) {
+                            dateFromFilter = dateFrom;
+                        }
                         DialogUtil.showDatePicker(activity, Calendar.getInstance(), new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -217,7 +223,7 @@ public class CardDetailAdapter extends RecyclerView.Adapter {
                                 holder.dateToContainer.setVisibility(View.VISIBLE);
                                 barOwner.gotDateTo(DateUtils.formatPickerDate(dayOfMonth, monthOfYear, year));
                             }
-                        }, DialogUtil.SIX_MONTHS_AGO, DialogUtil.TODAY);
+                        }, dateFromFilter, DialogUtil.TODAY);
                     }
                 });
                 holder.filterButton.setOnClickListener(new View.OnClickListener() {

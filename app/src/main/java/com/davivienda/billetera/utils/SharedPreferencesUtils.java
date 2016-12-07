@@ -7,6 +7,7 @@ import com.davivienda.billetera.DaviPayApplication;
 import com.davivienda.billetera.model.User;
 
 public class SharedPreferencesUtils {
+
     private static final String SP_USER_DAVI_POINTS = "sharedprefs_user_davipoints";
     private static final String SP_USER_LAST_LOGIN = "sharedprefs_user_lastlogin";
     private static final String SP_USER_NAME = "sharedprefs_user_name";
@@ -44,4 +45,13 @@ public class SharedPreferencesUtils {
                 getString(SP_USER_NAME));
         return user;
     }
+
+    public static void logOut() {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(DaviPayApplication.getInstance()).edit();
+        editor.remove(SP_USER_DAVI_POINTS);
+        editor.remove(SP_USER_LAST_LOGIN);
+        editor.remove(SP_USER_NAME);
+        editor.apply();
+    }
+
 }
