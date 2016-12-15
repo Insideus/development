@@ -144,7 +144,10 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     }
 
     protected void updateDaviPoints() {
-        ((TextView) findViewById(R.id.davi_points_amount)).setText(SharedPreferencesUtils.getUser().getPoints());
+        TextView davipoints = (TextView) findViewById(R.id.davi_points_amount);
+        if(davipoints != null) {
+            davipoints.setText(SharedPreferencesUtils.getUser().getPoints());
+        }
     }
 
     public void showLoading() {
@@ -387,6 +390,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         ((TextView) findViewById(R.id.drawer_last_login)).setText(user.getLastLogin());
         ((TextView) findViewById(R.id.drawer_davi_points_amount)).setText(String.format("%s", user.getPoints()));
         ((TextView) findViewById(R.id.drawer_name)).setText(user.getName());
+        updateDaviPoints();
     }
 
     private void setButtonListeners() {

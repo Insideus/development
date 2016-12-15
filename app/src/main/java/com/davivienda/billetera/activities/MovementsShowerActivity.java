@@ -81,8 +81,11 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
                     if(listener != null){
                         listener.onError();
                     } else {
-                        DialogUtil.toast(MovementsShowerActivity.this, getString(R.string.generic_service_error_title), "",
-                                getString(R.string.card_detail_get_transactions_error_text), CLOSE_ACTIVITY_REQUEST);
+                        DialogUtil.toast(MovementsShowerActivity.this,
+                                getString(R.string.generic_service_error_title),
+                                getString(R.string.generic_service_error_subtitle),
+                                getString(R.string.generic_service_error),
+                                CLOSE_ACTIVITY_REQUEST);
                     }
                 }
             } else {

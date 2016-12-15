@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/bottom_bar_davi_logo"
-                android:text="1.600"
+                android:text="N/D"
                 android:textAllCaps="true"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"

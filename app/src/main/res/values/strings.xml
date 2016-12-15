@@ -392,7 +392,6 @@
     <string name="login_retry_connection">Reintentar</string>
     <string name="login_close_app">Cerrar apicación</string>
     <string name="login_not_enough_data_text">No se pudo obtener la información necesaria para hacer login.</string>
-    <string name="card_detail_get_transactions_error_text">Se produjo un error obteniendo las transacciones.</string>
     <string name="logout_dialog_title">CERRAR</string>
     <string name="logout_dialog_subtitle">SESIÓN</string>
     <string name="logout_dialog_text">¿Está seguro que desea salir?</string>
@@ -405,6 +404,8 @@
     <string name="my_shops_shop_item_delivery_title">ENTREGADO EN:</string>
     <string name="bought_items_go_home_button_title_1">IR AL</string>
     <string name="bought_items_go_home_button_title_2">HOME</string>
+    <string name="cancel_ott_button_title_1">CANCELAR</string>
+    <string name="cancel_ott_button_title_2">PEDIDO</string>
     <string name="bought_items_repeat_purchase_button_title_1">CALIFICAR Y REPETIR</string>
     <string name="bought_items_repeat_purchase_button_title_2">PEDIDO</string>
     <plurals name="configuration_not_added_text">
