@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -554,6 +556,22 @@
                 </FrameLayout>
 
             </LinearLayout>
+
+            <!--com.davivienda.billetera.ui.controls.SeekArc
+                android:id="@+id/seekArc"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:padding="30dp"
+                app:rotation="173"
+                app:startAngle="18"
+                app:sweepAngle="342"
+                app:touchInside="false"
+                app:progressColor="#9d9d9d"
+                app:arcColor="#ed1c27"
+                app:progressWidth="12dp"
+                app:arcWidth="12dp"
+                app:roundEdges="true"/ -->
 
         </LinearLayout>
 
