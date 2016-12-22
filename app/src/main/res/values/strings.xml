@@ -478,6 +478,46 @@
     <string name="selected_card_error_title">ERROR</string>
     <string name="selected_card_error_text">Debe seleccionar una tarjeta para continuar.</string>
 
+    <string name="payment_invalid_account_title">CUENTA</string>
+    <string name="payment_invalid_account_subtitle">INACTIVA</string>
+    <string name="payment_invalid_account_text">La cuenta desde la cual desea pagar se encuentra inactiva.</string>
+
+    <string name="payment_transaction_error_title">ERROR EN</string>
+    <string name="payment_transaction_error_subtitle">LA TRANSACCIÓN</string>
+    <string name="payment_transaction_error_text">Se ha generado un error. Por favor intente más tarde.</string>
+
+    <string name="payment_inexistent_account_title">LA CUENTA</string>
+    <string name="payment_inexistent_account_subtitle">NO EXISTE</string>
+    <string name="payment_inexistent_account_text">Por favor verifique los datos e intente nuevamente.</string>
+
+    <string name="payment_insufficient_balance_title">VERIFIQUE</string>
+    <string name="payment_insufficient_balance_subtitle">SU SALDO</string>
+    <string name="payment_insufficient_balance_text">No se pudo completar el pago por fondos insuficientes en su cuenta.</string>
+
+    <string name="payment_check_data_title">VERIFIQUE</string>
+    <string name="payment_check_data_subtitle">LOS DATOS</string>
+    <string name="payment_check_data_text">El valor ingresado para el pago es incorrecto.</string>
+
+    <string name="recharge_transaction_error_title">ERROR EN</string>
+    <string name="recharge_transaction_error_subtitle">EL PROCESO</string>
+    <string name="recharge_transaction_error_text">Se ha generado un error. Por favor intente más tarde.</string>
+
+    <string name="recharge_invalid_account_title">CUENTA</string>
+    <string name="recharge_invalid_account_subtitle">INACTIVA</string>
+    <string name="recharge_invalid_account_text">Se ha generado un error. Por favor intente más tarde.</string>
+
+    <string name="recharge_inexistent_account_title">LA CUENTA</string>
+    <string name="recharge_inexistent_account_subtitle">NO EXISTE</string>
+    <string name="recharge_inexistent_account_text">Por favor verifique los datos e intente nuevamente.</string>
+
+    <string name="recharge_check_data_title">VERIFIQUE</string>
+    <string name="recharge_check_data_subtitle">LOS DATOS</string>
+    <string name="recharge_check_data_text">Valor de recarga inválido. Por favor verifique.</string>
+
+    <string name="recharge_insufficient_balance_title">FONDOS</string>
+    <string name="recharge_insufficient_balance_subtitle">INSUFICIENTES</string>
+    <string name="recharge_insufficient_balance_text">No se pudo completar la recarga por fondos insuficientes en su cuenta.</string>
+
 </resources>
 
 

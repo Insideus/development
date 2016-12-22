@@ -54,7 +54,7 @@ public class OrderReceiptActivity extends BaseActivity{
         if(fromMadeShop || fromOrderReadyNotification){
             setToolbar(R.id.toolbar, true, getString(R.string.store_made_receipt_title));
         } else if(fromOttNotification) {
-            setToolbarWOHomeButton(R.id.toolbar, getString(R.string.store_receipt_title));
+            setToolbar(R.id.toolbar, true, getString(R.string.store_receipt_title));
         } else if(fromOttRejectedNotification) {
             setToolbarWOHomeButton(R.id.toolbar, getString(R.string.store_ott_rejected_title));
         } else {
