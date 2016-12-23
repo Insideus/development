@@ -31,6 +31,8 @@ import com.davivienda.billetera.model.User;
 import com.davivienda.billetera.service.Service;
 import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.tasks.DaviPayTask;
+import com.davivienda.billetera.tasks.GetUserTask;
+import com.davivienda.billetera.tasks.TaskCallback;
 import com.davivienda.billetera.ui.controls.ComboHolder;
 import com.davivienda.billetera.utils.DialogUtil;
 import com.davivienda.billetera.utils.SharedPreferencesUtils;
@@ -74,6 +76,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         super.onCreate(savedInstanceState);
         EasySolutionsUtils.setMalwareDetectedListener(getApplicationContext(), this);
         EasySolutionsUtils.setSimChangeListener(getApplicationContext(), this);
+        getUser();
     }
 
     public static boolean checkPermission(String strPermission, Context context) {
@@ -144,7 +147,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     }
 
     protected void updateDaviPoints() {
-        TextView davipoints = (TextView) findViewById(R.id.davi_points_amount);
+        TextView davipoints = (TextView) findViewById(R.id.footer_davi_points_amount);
         if(davipoints != null) {
             davipoints.setText(SharedPreferencesUtils.getUser().getPoints());
         }
@@ -387,9 +390,14 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
 
     protected void updateUserData() {
         User user = SharedPreferencesUtils.getUser();
-        ((TextView) findViewById(R.id.drawer_last_login)).setText(user.getLastLogin());
-        ((TextView) findViewById(R.id.drawer_davi_points_amount)).setText(String.format("%s", user.getPoints()));
-        ((TextView) findViewById(R.id.drawer_name)).setText(user.getName());
+        TextView lasLogin = (TextView) findViewById(R.id.drawer_last_login);
+        TextView drawerDavipointsAmount = (TextView) findViewById(R.id.drawer_davi_points_amount);
+        TextView drawerUserName = (TextView) findViewById(R.id.drawer_name);
+        if(lasLogin != null && drawerDavipointsAmount != null && drawerUserName != null) {
+            drawerDavipointsAmount.setText(String.format("%s", user.getPoints()));
+            drawerUserName.setText(user.getName());
+            lasLogin.setText(user.getLastLogin());
+        }
         updateDaviPoints();
     }
 
@@ -710,6 +718,18 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
 
     public void startGcmService() {
         startService(new Intent(this, RegistrationIntentService.class));
+    }
+
+    public void getUser() {
+        new GetUserTask(this, new TaskCallback() {
+            @Override
+            public void execute(Object result) {
+                if(result != null) {
+                    SharedPreferencesUtils.setUser((User)result);
+                    updateUserData();
+                }
+            }
+        }).execute();
     }
 
 }

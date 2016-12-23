@@ -230,8 +230,10 @@
     <string name="my_cards_pay_continue_button_text">Cancelar</string>
 
     <string name="my_cards_pay_card_title">PAGAR</string>
+    <string name="my_cards_recharge_card_title">RECARGAR</string>
     <string name="my_cards_pay_card_subtitle">TARJETA</string>
     <string name="my_cards_pay_card_text_1">Su tarjeta tiene sobrecupo.\nUsted puede pagarla y utilizarla a través de DaviPay.</string>
+    <string name="my_cards_recharge_card_text_1">Su tarjeta tiene sobrecupo.\nUsted puede recargarla y utilizarla a través de DaviPay.</string>
     <string name="my_cards_pay_card_text_2">Su tarjeta tiene bloqueo de rediferido.\nUsted puede pagarla y utilizarla a través de DaviPay.</string>
 
     <string name="my_cards_show_ecard_three_times_card_title">NECESITA </string>
@@ -253,6 +255,8 @@
     <string name="tour_title">TOUR</string>
     <string name="card_pay_success_title">PAGO</string>
     <string name="card_pay_success_subtitle">REALIZADO</string>
+    <string name="card_recharge_success_title">RECARGA</string>
+    <string name="card_recharge_success_subtitle">REALIZADA</string>
     <string name="card_pay_success_text">Su pago fue realizado con éxito el día</string>
     <string name="my_cards_block_card_accept">Aceptar</string>
     <string name="my_cards_block_card_cancel">Cancelar</string>
