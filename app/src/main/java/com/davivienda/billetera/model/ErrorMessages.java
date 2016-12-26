@@ -19,7 +19,6 @@ public enum  ErrorMessages {
     VIRTUAL_PASSWORD_VALIDATION_ERROR("error.virtual_password_validation"),
     CARD_BLOCKED_24("error.add_card.blocked_24"),
     BLOCKED_CARD("error.card_blocked"),
-    PRODUCT_BLOCKED("error.product_blocked"),
     NEW_DEVICE("error.new_device"),
     NEW_DEVICE_EXISTING_DEVICE("error.new_device_existing_device"),
     NEW_DEVICE_OTP_VALIDATION_NEEDED("error.new_device.otp_validation_needed"),
@@ -30,17 +29,7 @@ public enum  ErrorMessages {
     ORDER_PAY_ERROR("error.pay_error"),
     ECARD_NOT_CREATED("error.ecard_not_created"),
     ECARD_DATA_NOT_SENT("error.ecard_data_not_sent"),
-    OTT_EXPIRED("error.ott_expired"),
-    PAYMENT_INVALID_ACCOUNT("error.payment.invalid_account"),
-    PAYMENT_TRANSACTION_ERROR("error.payment.transaction_error"),
-    PAYMENT_INEXISTENT_ACCOUNT("error.payment.inexistent_account"),
-    PAYMENT_INSUFFICIENT_BALANCE("error.payment.insufficient_balance"),
-    PAYMENT_CHECK_DATA("error.payment.check_data"),
-    RECHARGE_TRANSACTION_ERROR("error.recharge.transaction_error"),
-    RECHARGE_INVALID_ACCOUNT("error.recharge.invalid_account"),
-    RECHARGE_INEXISTENT_ACCOUNT("error.recharge.inexistent_account"),
-    RECHARGE_CHECK_DATA("error.recharge.check_data"),
-    RECHARGE_INSUFFICIENT_BALANCE("error.recharge.insufficient_balance");
+    OTT_EXPIRED("error.ott_expired");
 
     ErrorMessages(String errorCode) {
         this.errorCode = errorCode;

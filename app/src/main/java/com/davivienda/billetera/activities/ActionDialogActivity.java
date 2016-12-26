@@ -334,6 +334,13 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                 finish();
             }
         });
+
+        findViewById(R.id.terms_and_conditions_text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToEcardTermsAndConditionsPage(getString(R.string.policy_picker_check_box_terms_and_conditions));
+            }
+        });
     }
 
     private void setECardShowDataLayouts(TextView acceptButton, TextView ignoreButton) {
@@ -353,6 +360,13 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                     eCardFailed(getString(R.string.my_cards_failed_opperation_message));
                 }
                 new ECardShowData(ActionDialogActivity.this, lastFourDigits, null).execute();
+            }
+        });
+
+        findViewById(R.id.terms_and_conditions_text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToEcardTermsAndConditionsPage(getString(R.string.policy_picker_check_box_terms_and_conditions));
             }
         });
     }
@@ -400,10 +414,10 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                 }
             }
         });
-        findViewById(R.id.terms_and_conditions_button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.terms_and_conditions_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToEcardTermsAndConditionsPage();
+                goToEcardTermsAndConditionsPage(getString(R.string.policy_picker_check_box_terms_and_conditions));
             }
         });
     }

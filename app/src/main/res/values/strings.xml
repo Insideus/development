@@ -64,8 +64,9 @@
     <string name="policy_picker_check_box_send_sms">Envío de SMS</string>
     <string name="politcy_picker_check_box_send_email">Envío de E-mails</string>
     <string name="policy_picker_check_box_phone_contact">Contacto Telefónico</string>
-    <string name="policy_picker_check_box_terms_and_conditions_ecard">Términos y condiciones eCard</string>
-    <string name="policy_picker_check_box_terms_and_conditions">Términos y condiciones</string>
+    <string name="policy_picker_check_box_terms_and_conditions_ecard">
+        eCard</string>
+    <string name="policy_picker_check_box_terms_and_conditions"><u>Términos y condiciones</u></string>
     <string name="policy_picker_check_box_privacy_policy">Políticas de Privacidad</string>
     <string name="policy_picker_subtitle">Para tener una mejor experiencia,\nconfírmenos por cuáles medios desea recibir\ncomunicaciones de la aplicación y acepte\nTérminos y Condiciones, y Políticas de Privacidad.</string>
     <string name="policy_picker_title">AUTORIZACIÓN USO DE DATOS</string>
@@ -230,10 +231,8 @@
     <string name="my_cards_pay_continue_button_text">Cancelar</string>
 
     <string name="my_cards_pay_card_title">PAGAR</string>
-    <string name="my_cards_recharge_card_title">RECARGAR</string>
     <string name="my_cards_pay_card_subtitle">TARJETA</string>
     <string name="my_cards_pay_card_text_1">Su tarjeta tiene sobrecupo.\nUsted puede pagarla y utilizarla a través de DaviPay.</string>
-    <string name="my_cards_recharge_card_text_1">Su tarjeta tiene sobrecupo.\nUsted puede recargarla y utilizarla a través de DaviPay.</string>
     <string name="my_cards_pay_card_text_2">Su tarjeta tiene bloqueo de rediferido.\nUsted puede pagarla y utilizarla a través de DaviPay.</string>
 
     <string name="my_cards_show_ecard_three_times_card_title">NECESITA </string>
@@ -255,8 +254,6 @@
     <string name="tour_title">TOUR</string>
     <string name="card_pay_success_title">PAGO</string>
     <string name="card_pay_success_subtitle">REALIZADO</string>
-    <string name="card_recharge_success_title">RECARGA</string>
-    <string name="card_recharge_success_subtitle">REALIZADA</string>
     <string name="card_pay_success_text">Su pago fue realizado con éxito el día</string>
     <string name="my_cards_block_card_accept">Aceptar</string>
     <string name="my_cards_block_card_cancel">Cancelar</string>
@@ -396,20 +393,20 @@
     <string name="login_retry_connection">Reintentar</string>
     <string name="login_close_app">Cerrar apicación</string>
     <string name="login_not_enough_data_text">No se pudo obtener la información necesaria para hacer login.</string>
+    <string name="card_detail_get_transactions_error_text">Se produjo un error obteniendo las transacciones.</string>
     <string name="logout_dialog_title">CERRAR</string>
     <string name="logout_dialog_subtitle">SESIÓN</string>
     <string name="logout_dialog_text">¿Está seguro que desea salir?</string>
     <string name="store_detail_no_phone_number_error">La tienda no tiene número de teléfono.</string>
     <string name="store_detail_no_location_error">La tienda no ha especificado su locación.</string>
     <string name="main_search_hint">Buscar tienda</string>
+    <string name="my_orders_search_hint">Buscar compra</string>
     <string name="qr_button_text">Escanear</string>
     <string name="search_button_text">Buscar</string>
     <string name="my_shops_title">MIS COMPRAS</string>
     <string name="my_shops_shop_item_delivery_title">ENTREGADO EN:</string>
     <string name="bought_items_go_home_button_title_1">IR AL</string>
     <string name="bought_items_go_home_button_title_2">HOME</string>
-    <string name="cancel_ott_button_title_1">CANCELAR</string>
-    <string name="cancel_ott_button_title_2">PEDIDO</string>
     <string name="bought_items_repeat_purchase_button_title_1">CALIFICAR Y REPETIR</string>
     <string name="bought_items_repeat_purchase_button_title_2">PEDIDO</string>
     <plurals name="configuration_not_added_text">
@@ -424,7 +421,7 @@
         <item quantity="one">(Elegir %1$d ítem)</item>
         <item quantity="other">(Elegir %1$d ítems)</item>
     </plurals>
-    <string name="configuration_quantity_text">(MIN. %1$d, MAX. %2$d)</string>
+    <string name="configuration_quantity_text">(Elegir MAX. %1$d)</string>
 
     <string name="otp_payment_subtitle">GENERAR CÓDIGO DE PAGO</string>
     <string name="otp_payment_receipt_title">Para continuar con el pago informe este código al establecimiento</string>
@@ -481,46 +478,6 @@
 
     <string name="selected_card_error_title">ERROR</string>
     <string name="selected_card_error_text">Debe seleccionar una tarjeta para continuar.</string>
-
-    <string name="payment_invalid_account_title">CUENTA</string>
-    <string name="payment_invalid_account_subtitle">INACTIVA</string>
-    <string name="payment_invalid_account_text">La cuenta desde la cual desea pagar se encuentra inactiva.</string>
-
-    <string name="payment_transaction_error_title">ERROR EN</string>
-    <string name="payment_transaction_error_subtitle">LA TRANSACCIÓN</string>
-    <string name="payment_transaction_error_text">Se ha generado un error. Por favor intente más tarde.</string>
-
-    <string name="payment_inexistent_account_title">LA CUENTA</string>
-    <string name="payment_inexistent_account_subtitle">NO EXISTE</string>
-    <string name="payment_inexistent_account_text">Por favor verifique los datos e intente nuevamente.</string>
-
-    <string name="payment_insufficient_balance_title">VERIFIQUE</string>
-    <string name="payment_insufficient_balance_subtitle">SU SALDO</string>
-    <string name="payment_insufficient_balance_text">No se pudo completar el pago por fondos insuficientes en su cuenta.</string>
-
-    <string name="payment_check_data_title">VERIFIQUE</string>
-    <string name="payment_check_data_subtitle">LOS DATOS</string>
-    <string name="payment_check_data_text">El valor ingresado para el pago es incorrecto.</string>
-
-    <string name="recharge_transaction_error_title">ERROR EN</string>
-    <string name="recharge_transaction_error_subtitle">EL PROCESO</string>
-    <string name="recharge_transaction_error_text">Se ha generado un error. Por favor intente más tarde.</string>
-
-    <string name="recharge_invalid_account_title">CUENTA</string>
-    <string name="recharge_invalid_account_subtitle">INACTIVA</string>
-    <string name="recharge_invalid_account_text">Se ha generado un error. Por favor intente más tarde.</string>
-
-    <string name="recharge_inexistent_account_title">LA CUENTA</string>
-    <string name="recharge_inexistent_account_subtitle">NO EXISTE</string>
-    <string name="recharge_inexistent_account_text">Por favor verifique los datos e intente nuevamente.</string>
-
-    <string name="recharge_check_data_title">VERIFIQUE</string>
-    <string name="recharge_check_data_subtitle">LOS DATOS</string>
-    <string name="recharge_check_data_text">Valor de recarga inválido. Por favor verifique.</string>
-
-    <string name="recharge_insufficient_balance_title">FONDOS</string>
-    <string name="recharge_insufficient_balance_subtitle">INSUFICIENTES</string>
-    <string name="recharge_insufficient_balance_text">No se pudo completar la recarga por fondos insuficientes en su cuenta.</string>
 
 </resources>
 

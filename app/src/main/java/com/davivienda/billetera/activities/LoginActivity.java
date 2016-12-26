@@ -43,7 +43,7 @@ public class LoginActivity extends LoginBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(finishingUpApp){
+        if (finishingUpApp) {
             finishingUpApp = false;
             return;
         }
@@ -51,10 +51,10 @@ public class LoginActivity extends LoginBaseActivity {
     }
 
     private void checkForEssentialData() {
-        if(initDataTask != null && initDataTask.isRunning()){
+        if (initDataTask != null && initDataTask.isRunning()) {
             return;
         }
-        if(Session.getCurrentSession(this).getPersonIdTypes().isEmpty()){
+        if (Session.getCurrentSession(this).getPersonIdTypes().isEmpty()) {
             Intent intent = new Intent(this, ActionDialogActivity.class);
             intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.generic_service_error_title));
             intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.login_not_enough_data_text));
@@ -86,7 +86,7 @@ public class LoginActivity extends LoginBaseActivity {
         });
         selectedIdTypeText = (TextView) findViewById(R.id.login_id_type_text);
         ArrayList<PersonIdType> personIdTypes = Session.getCurrentSession(this).getPersonIdTypes();
-        if(personIdTypes != null && personIdTypes.size() > 0) {
+        if (personIdTypes != null && personIdTypes.size() > 0) {
             selectedIdType = personIdTypes.get(0);
             setSelectedIdTypeName();
         }
@@ -133,11 +133,11 @@ public class LoginActivity extends LoginBaseActivity {
         return errors;
     }
 
-    private void resetLayouts(){
+    private void resetLayouts() {
         personIdNumber.setText("");
         virtualPasswordText.setText("");
         ArrayList<PersonIdType> personIdTypes = Session.getCurrentSession(this).getPersonIdTypes();
-        if(personIdTypes == null || personIdTypes.isEmpty()){
+        if (personIdTypes == null || personIdTypes.isEmpty()) {
             return;
         }
         selectedIdType = personIdTypes.get(0);
@@ -148,8 +148,8 @@ public class LoginActivity extends LoginBaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ESSENTIAL_DATA_CHECK){
-            if(resultCode == RESULT_OK || resultCode == RESULT_CANCELED){
+        if (requestCode == ESSENTIAL_DATA_CHECK) {
+            if (resultCode == RESULT_OK || resultCode == RESULT_CANCELED) {
                 initDataTask = new GetInitDataTask(this, true, new TaskCallback() {
                     @Override
                     public void execute(Object result) {
@@ -189,7 +189,7 @@ public class LoginActivity extends LoginBaseActivity {
             try {
                 String encryptedPassword = EncryptionUtils.encryptPassword(LoginActivity.this, password);
                 response = Service.login(personId, personIdType, encryptedPassword, getTodo1Data());
-            }  catch (ServiceException e) {
+            } catch (ServiceException e) {
                 errorCode = e.getErrorCode();
                 additionalData = e.getAdditionalData();
             }
@@ -199,20 +199,19 @@ public class LoginActivity extends LoginBaseActivity {
         @Override
         protected void onPostExecute(LoginResponse response) {
             super.onPostExecute(response);
-            if(!processedError) {
+            if (!processedError) {
                 //Success login.
                 LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
                 Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(), response.getAccountStatus());
                 if (step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
-                //new GetUserTask(LoginActivity.this, response.getSid()).execute();
-                getUser();
+                new GetUserTask(LoginActivity.this, response.getSid()).execute();
                 goToRegistrationStep(step);
-            } else if(errorCode != null) {
+            } else if (errorCode != null) {
                 //Expected error.
                 ErrorMessages error = ErrorMessages.getError(errorCode);
-                if(error == ErrorMessages.LOGIN_ERROR || error == ErrorMessages.WEB_PASSWORD_ERROR) {
+                if (error == ErrorMessages.LOGIN_ERROR || error == ErrorMessages.WEB_PASSWORD_ERROR) {
                     resetLayouts();
                 }
             } else {

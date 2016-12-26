@@ -20,11 +20,10 @@ import com.davivienda.billetera.R;
 import com.davivienda.billetera.fragments.WithoutDeliveryStoreFragment;
 import com.davivienda.billetera.model.Card;
 import com.davivienda.billetera.utils.LocationUtils;
-import com.davivienda.billetera.utils.SharedPreferencesUtils;
 
 public class MainActivity extends BaseActivity {
 
-    public static final String OPEN_TOUR = "tour open";
+
     public static final String SHOULD_RECREATE_KEY = "should_recreate_key";
     public static int LOCATION_PERMISSION_CODE = 169;
 
@@ -75,7 +74,7 @@ public class MainActivity extends BaseActivity {
         findFragment();
         checkLocationPermissions();
         setToolbar(R.id.toolbar, false, getString(R.string.main_activity_title));
-        checkForTour();
+        //checkForTour();
         fragment.setLocation(latLng);
     }
 
@@ -124,20 +123,7 @@ public class MainActivity extends BaseActivity {
         locationUtils.locUpdate(2000, 1);
     }
 
-    private void checkForTour() {
-        if (getIntent() != null && getIntent().getBooleanExtra(OPEN_TOUR, false)) {
-            startTour();
-            return;
-        }
-        if (TextUtils.isEmpty(SharedPreferencesUtils.getString(OPEN_TOUR))) {
-            startTour();
-            SharedPreferencesUtils.setString(OPEN_TOUR, SharedPreferencesUtils.FALSE);
-        }
-    }
 
-    private void startTour() {
-        startActivity(new Intent(this, TourActivity.class));
-    }
 
     @Override
     public void onBackPressed() {

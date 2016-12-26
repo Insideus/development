@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.activities.OrderReceiptActivity;
@@ -17,13 +21,11 @@ import com.davivienda.billetera.utils.DateUtils;
 import com.davivienda.billetera.utils.DavipointUtils;
 import com.davivienda.billetera.utils.ImageUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MyOrdersAdapter extends RecyclerView.Adapter<MyShopHolder>{
 
     private Context context;
     private List<Cart> ordersList;
+    private List<Cart> allOrders;
 
     public MyOrdersAdapter(Context context){
         this.context = context;
@@ -44,13 +46,13 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyShopHolder>{
             holder.brandLogo.setImageResource(R.drawable.placeholder_small);
         }
 
-        //Hidden by definition
-        //if(TextUtils.isEmpty(cart.getDeliveredTo())){
-        //  holder.deliveryContainer.setVisibility(View.GONE);
-        //} else {
-        //  holder.deliveryContainer.setVisibility(View.VISIBLE);
-        //  holder.deliveredTo.setText(cart.getDeliveredTo());
-        //}
+//        Hidden by definition
+//        if(TextUtils.isEmpty(cart.getDeliveredTo())){
+//            holder.deliveryContainer.setVisibility(View.GONE);
+//        }else{
+//            holder.deliveryContainer.setVisibility(View.VISIBLE);
+//            holder.deliveredTo.setText(cart.getDeliveredTo());
+//        }
 
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +78,29 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyShopHolder>{
     }
 
     public void setOrdersList(List<Cart> ordersList) {
-        this.ordersList = ordersList;
+        this.allOrders  = ordersList;
+        this.ordersList.clear();
+        this.ordersList.addAll(allOrders);
         notifyDataSetChanged();
     }
+
+    public void doQuery(String newText) {
+        List<Cart> toShow = new ArrayList<>();
+        for(Cart cart : allOrders){
+            if(cart != null && cart.getStore().getName().toLowerCase().contains(newText.toLowerCase())){
+                toShow.add(cart);
+            }
+        }
+        ordersList.clear();
+        ordersList.addAll(toShow);
+        notifyDataSetChanged();
+    }
+
+    public void showAllResults() {
+        ordersList.clear();
+        ordersList.addAll(allOrders);
+        notifyDataSetChanged();
+    }
+
+
 }

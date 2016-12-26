@@ -220,78 +220,11 @@ public abstract class AbstractPayActivity extends BaseActivity{
         }
     }
 
-    /*
-    DialogUtil.toast(this,
-            getString(R.string.input_data_error_generic_title),
-            getString(R.string.input_data_error_generic_subtitle),
-            getString(R.string.confirmation_service_error));
-    */
-
     public void processErrorAndContinue(ErrorMessages error, String additionalParam) {
         if(error != null) {
             switch(error) {
                 case BLOCKED_CARD:
                     showServiceGenericError(true);
-                    break;
-                case PAYMENT_INVALID_ACCOUNT:
-                    DialogUtil.toast(this,
-                            getString(R.string.payment_invalid_account_title),
-                            getString(R.string.payment_invalid_account_subtitle),
-                            getString(R.string.payment_invalid_account_text));
-                    break;
-                case PAYMENT_TRANSACTION_ERROR:
-                    DialogUtil.toast(this,
-                            getString(R.string.payment_transaction_error_title),
-                            getString(R.string.payment_transaction_error_subtitle),
-                            getString(R.string.payment_transaction_error_text));
-                    break;
-                case PAYMENT_INEXISTENT_ACCOUNT:
-                    DialogUtil.toast(this,
-                            getString(R.string.payment_inexistent_account_title),
-                            getString(R.string.payment_inexistent_account_subtitle),
-                            getString(R.string.payment_inexistent_account_text));
-                    break;
-                case PAYMENT_INSUFFICIENT_BALANCE:
-                    DialogUtil.toast(this,
-                            getString(R.string.payment_insufficient_balance_title),
-                            getString(R.string.payment_insufficient_balance_subtitle),
-                            getString(R.string.payment_insufficient_balance_text));
-                    break;
-                case PAYMENT_CHECK_DATA:
-                    DialogUtil.toast(this,
-                            getString(R.string.payment_check_data_title),
-                            getString(R.string.payment_check_data_subtitle),
-                            getString(R.string.payment_check_data_text));
-                    break;
-                case RECHARGE_TRANSACTION_ERROR:
-                    DialogUtil.toast(this,
-                            getString(R.string.recharge_transaction_error_title),
-                            getString(R.string.recharge_transaction_error_subtitle),
-                            getString(R.string.recharge_transaction_error_text));
-                    break;
-                case RECHARGE_INVALID_ACCOUNT:
-                    DialogUtil.toast(this,
-                            getString(R.string.recharge_invalid_account_title),
-                            getString(R.string.recharge_invalid_account_subtitle),
-                            getString(R.string.recharge_invalid_account_text));
-                    break;
-                case RECHARGE_INEXISTENT_ACCOUNT:
-                    DialogUtil.toast(this,
-                            getString(R.string.recharge_inexistent_account_title),
-                            getString(R.string.recharge_inexistent_account_subtitle),
-                            getString(R.string.recharge_inexistent_account_text));
-                    break;
-                case RECHARGE_CHECK_DATA:
-                    DialogUtil.toast(this,
-                            getString(R.string.recharge_check_data_title),
-                            getString(R.string.recharge_check_data_subtitle),
-                            getString(R.string.recharge_check_data_text));
-                    break;
-                case RECHARGE_INSUFFICIENT_BALANCE:
-                    DialogUtil.toast(this,
-                            getString(R.string.recharge_insufficient_balance_title),
-                            getString(R.string.recharge_insufficient_balance_subtitle),
-                            getString(R.string.recharge_insufficient_balance_text));
                     break;
                 default:
                     super.processErrorAndContinue(error, additionalParam);

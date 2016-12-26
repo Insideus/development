@@ -49,16 +49,16 @@ public class PolicyPickerActivity extends BaseActivity{
                 }
             }
         });
-        findViewById(R.id.terms_and_conditions_button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.terms_and_conditions_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToTermsAndConditionsPage();
+                goToTermsAndConditionsPage(getString(R.string.policy_picker_check_box_terms_and_conditions));
             }
         });
         findViewById(R.id.privacy_policy_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToPrivacyPolicyPage();
+                goToPrivacyPolicyPage(getString(R.string.policy_picker_check_box_terms_and_conditions));
             }
         });
     }

@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -17,11 +18,12 @@ import com.davivienda.billetera.tasks.GetInitDataTask;
 import com.davivienda.billetera.tasks.TaskCallback;
 import com.davivienda.billetera.utils.ConnectionUtils;
 import com.davivienda.billetera.utils.DialogUtil;
+import com.davivienda.billetera.utils.SharedPreferencesUtils;
 import com.davivienda.billetera.utils.risk.EasySolutionsUtils;
 import com.davivienda.billetera.utils.risk.RiskUtils;
 
 public class SplashActivity extends BaseActivity {
-
+    public static final String OPEN_TOUR = "tour open";
     private static final int RETRY_CONNECTION_REQUEST = 1;
     private View splashLoading;
 
@@ -103,10 +105,23 @@ public class SplashActivity extends BaseActivity {
                 startActivity(intent);
             }
         } else {
-            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            checkForTour();
+        }
+    }
+
+    private void checkForTour() {
+        if (TextUtils.isEmpty(SharedPreferencesUtils.getString(OPEN_TOUR))) {
+            startTour();
+            SharedPreferencesUtils.setString(OPEN_TOUR, SharedPreferencesUtils.FALSE);
+        }else{
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
+    }
+
+    private void startTour() {
+        startActivity(new Intent(this, TourActivity.class));
     }
 
     private void startAnimating() {

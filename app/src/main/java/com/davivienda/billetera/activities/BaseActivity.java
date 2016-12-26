@@ -31,8 +31,6 @@ import com.davivienda.billetera.model.User;
 import com.davivienda.billetera.service.Service;
 import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.tasks.DaviPayTask;
-import com.davivienda.billetera.tasks.GetUserTask;
-import com.davivienda.billetera.tasks.TaskCallback;
 import com.davivienda.billetera.ui.controls.ComboHolder;
 import com.davivienda.billetera.utils.DialogUtil;
 import com.davivienda.billetera.utils.SharedPreferencesUtils;
@@ -76,7 +74,6 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         super.onCreate(savedInstanceState);
         EasySolutionsUtils.setMalwareDetectedListener(getApplicationContext(), this);
         EasySolutionsUtils.setSimChangeListener(getApplicationContext(), this);
-        getUser();
     }
 
     public static boolean checkPermission(String strPermission, Context context) {
@@ -147,10 +144,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     }
 
     protected void updateDaviPoints() {
-        TextView davipoints = (TextView) findViewById(R.id.footer_davi_points_amount);
-        if(davipoints != null) {
-            davipoints.setText(SharedPreferencesUtils.getUser().getPoints());
-        }
+        ((TextView) findViewById(R.id.davi_points_amount)).setText(SharedPreferencesUtils.getUser().getPoints());
     }
 
     public void showLoading() {
@@ -390,15 +384,9 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
 
     protected void updateUserData() {
         User user = SharedPreferencesUtils.getUser();
-        TextView lasLogin = (TextView) findViewById(R.id.drawer_last_login);
-        TextView drawerDavipointsAmount = (TextView) findViewById(R.id.drawer_davi_points_amount);
-        TextView drawerUserName = (TextView) findViewById(R.id.drawer_name);
-        if(lasLogin != null && drawerDavipointsAmount != null && drawerUserName != null) {
-            drawerDavipointsAmount.setText(String.format("%s", user.getPoints()));
-            drawerUserName.setText(user.getName());
-            lasLogin.setText(user.getLastLogin());
-        }
-        updateDaviPoints();
+        ((TextView) findViewById(R.id.drawer_last_login)).setText(user.getLastLogin());
+        ((TextView) findViewById(R.id.drawer_davi_points_amount)).setText(String.format("%s", user.getPoints()));
+        ((TextView) findViewById(R.id.drawer_name)).setText(user.getName());
     }
 
     private void setButtonListeners() {
@@ -423,7 +411,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToHelpPage();
+                goToHelpPage(getString(R.string.navigation_drawer_help_title));
                 closeDrawer();
             }
         });
@@ -463,25 +451,31 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         });
     }
 
-    private void goToHelpPage() {
-        openPdf(HELP_URL);
+    private void goToHelpPage(String title) {
+        openPdf(HELP_URL,title);
     }
 
-    public void goToTermsAndConditionsPage() {
-        openPdf(TERMS_AND_CONDITIONS_URL);
+    public void goToTermsAndConditionsPage(String title) {
+        openPdf(TERMS_AND_CONDITIONS_URL,title);
     }
 
-    public void goToEcardTermsAndConditionsPage() {
-        openPdf(ECARD_TERMS_AND_CONDITIONS_URL);
+    public void goToEcardTermsAndConditionsPage(String title) {
+        openPdf(ECARD_TERMS_AND_CONDITIONS_URL,title);
     }
 
-    public void goToPrivacyPolicyPage() {
-        openPdf(PRIVACY_POLICY_URL);
+    public void goToPrivacyPolicyPage(String title) {
+        openPdf(PRIVACY_POLICY_URL,title);
     }
 
-    private void openPdf(String url) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GOOGLE_DOCS_URL + url));
-        startActivity(browserIntent);
+    private void openPdf(String url,String title) {
+        /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GOOGLE_DOCS_URL + url));
+        startActivity(browserIntent);*/
+        Intent intent = new Intent(this, WebContentActivity.class);
+        String urlW = GOOGLE_DOCS_URL + url;
+        intent.putExtra(WebContentActivity.URL,urlW);
+        intent.putExtra(WebContentActivity.TITLE,title);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     protected void goToHome() {
@@ -718,18 +712,6 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
 
     public void startGcmService() {
         startService(new Intent(this, RegistrationIntentService.class));
-    }
-
-    public void getUser() {
-        new GetUserTask(this, new TaskCallback() {
-            @Override
-            public void execute(Object result) {
-                if(result != null) {
-                    SharedPreferencesUtils.setUser((User)result);
-                    updateUserData();
-                }
-            }
-        }).execute();
     }
 
 }

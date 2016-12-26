@@ -16,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
+import java.util.List;
+
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.model.Card;
 import com.davivienda.billetera.model.Cart;
@@ -26,15 +30,11 @@ import com.davivienda.billetera.service.Service;
 import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.tasks.DaviPayTask;
 import com.davivienda.billetera.ui.adapters.CategoryItemAdapter;
-import com.davivienda.billetera.ui.controls.SeekArc;
 import com.davivienda.billetera.utils.CurrencyUtils;
 import com.davivienda.billetera.utils.DavipointUtils;
 import com.davivienda.billetera.utils.DialogUtil;
 import com.davivienda.billetera.utils.ImageUtils;
 import com.davivienda.billetera.utils.LocationUtils;
-import com.davivienda.billetera.utils.SharedPreferencesUtils;
-
-import java.util.List;
 
 public class OrderPaymentActivity extends BaseActivity {
 
@@ -114,7 +114,6 @@ public class OrderPaymentActivity extends BaseActivity {
     }
 
     private void setSeekBar() {
-        /*
         DiscreteSeekBar seekBar = (DiscreteSeekBar) findViewById(R.id.davipoints_cash_seekbar);
         seekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
             @Override
@@ -139,40 +138,6 @@ public class OrderPaymentActivity extends BaseActivity {
             Integer currentDaviPointAmount = DavipointUtils.toDavipoints(cartPrice.intValue());
             seekBar.setMin(0);
             seekBar.setMax(currentDaviPointAmount);
-            seekBar.setProgress(cart.getCartDavipoints());
-            updatePriceAndDavipoints(cart.getCartDavipoints());
-        } else {
-            seekBar.setEnabled(false);
-        }
-        */
-        SeekArc seekBar = (SeekArc) findViewById(R.id.davipoints_cash_seekbar);
-        seekBar.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
-            @Override
-            public void onProgressChanged(SeekArc seekArc, int progress, boolean fromUser) {
-                if(fromUser) {
-                    updatePriceAndDavipoints(progress);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekArc seekArc) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekArc seekArc) {
-
-            }
-        });
-        Double cartPrice = cart.getCartPrice();
-        if(cartPrice != null) {
-            Integer currentDaviPointAmount = DavipointUtils.toDavipoints(cartPrice.intValue());
-            if(currentDaviPointAmount > SharedPreferencesUtils.getUser().getPointsInt()) {
-                seekBar.setMax(SharedPreferencesUtils.getUser().getPointsInt());
-            } else {
-                seekBar.setMax(currentDaviPointAmount);
-            }
-            //seekBar.setMin(0);
             seekBar.setProgress(cart.getCartDavipoints());
             updatePriceAndDavipoints(cart.getCartDavipoints());
         } else {

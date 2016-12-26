@@ -52,11 +52,8 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
         new GetCardTransactionDetailsTask(this, new ITransactionDetailListener() {
             @Override
             public void onError() {
-                DialogUtil.toast(CardDetailActivity.this,
-                        getString(R.string.generic_service_error_title),
-                        getString(R.string.generic_service_error_subtitle),
-                        getString(R.string.generic_service_error),
-                        CLOSE_ACTIVITY_REQUEST);
+                DialogUtil.toast(CardDetailActivity.this, getString(R.string.generic_service_error_title), "",
+                        getString(R.string.card_detail_get_transactions_error_text), CLOSE_ACTIVITY_REQUEST);
             }
         }).execute();
     }

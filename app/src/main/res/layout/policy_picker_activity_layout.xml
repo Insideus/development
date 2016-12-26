@@ -114,39 +114,7 @@
             android:layout_height="1dp"
             android:background="#b0b0b0" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/check_box_padding_top_and_bottom"
-            android:paddingEnd="20dp"
-            android:paddingStart="30dp"
-            android:paddingTop="@dimen/check_box_padding_top_and_bottom"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/terms_and_conditions"
-                fontPath="fonts/MyriadPro-Regular.otf"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:button="@android:color/transparent"
-                android:drawablePadding="15dp"
-                android:drawableStart="@drawable/checkbox_selector"
-                android:text="@string/policy_picker_check_box_terms_and_conditions"
-                android:textColor="@color/checkbox_text_color_selector"
-                android:textSize="@dimen/common_text_size" />
-
-            <ImageView
-                android:id="@+id/terms_and_conditions_button"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerInside"
-                android:clickable="true"
-                android:src="@drawable/information_icon_selector"/>
-
-        </LinearLayout>
+        <include layout="@layout/terms_condition_checkbox"></include>
 
         <View
             android:layout_width="match_parent"

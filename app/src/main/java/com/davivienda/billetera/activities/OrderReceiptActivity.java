@@ -54,7 +54,7 @@ public class OrderReceiptActivity extends BaseActivity{
         if(fromMadeShop || fromOrderReadyNotification){
             setToolbar(R.id.toolbar, true, getString(R.string.store_made_receipt_title));
         } else if(fromOttNotification) {
-            setToolbar(R.id.toolbar, true, getString(R.string.store_receipt_title));
+            setToolbarWOHomeButton(R.id.toolbar, getString(R.string.store_receipt_title));
         } else if(fromOttRejectedNotification) {
             setToolbarWOHomeButton(R.id.toolbar, getString(R.string.store_ott_rejected_title));
         } else {
@@ -191,16 +191,10 @@ public class OrderReceiptActivity extends BaseActivity{
                 showPaymentDetails();
             }
         });
-        findViewById(R.id.cancel_ott_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+
     }
 
     private void showPaymentDetails() {
-        /*
         Intent intent = new Intent(this, ActionDialogActivity.class);
         intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.ott_payment_confirmation_title));
         intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.ott_payment_confirmation_subtitle));
@@ -208,8 +202,6 @@ public class OrderReceiptActivity extends BaseActivity{
         intent.putExtra(ActionDialogActivity.IS_CARD_PAY, true);
         startActivityForResult(intent, PAY_REQUEST);
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
-        */
-        new PayOttTask(this).execute();
     }
 
     private void setButtons() {

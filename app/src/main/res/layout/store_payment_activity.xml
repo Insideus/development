@@ -398,6 +398,17 @@
                 android:background="@drawable/white_rounded_corners_background"
                 android:orientation="vertical">
 
+                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                    android:id="@+id/davipoints_cash_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:dsb_min="0"
+                    app:dsb_max="50"
+                    app:dsb_value="0"
+                    app:dsb_progressColor="@color/red_base_color"
+                    app:dsb_indicatorColor="@color/red_base_color" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -444,43 +455,6 @@
                         android:src="@drawable/card_payment_pay_button_selector"
                         android:layout_marginTop="@dimen/store_medium_spacing"
                         android:layout_marginBottom="10dp"/>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.5"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/store_medium_spacing"
-                        android:layout_marginBottom="10dp"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/pay_button_points"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/card_payment_pay_button_selector"
-                            android:adjustViewBounds="true"
-                            android:scaleType="centerInside"
-                            android:layout_margin="18dp"
-                            android:layout_centerInParent="true"
-                            android:visibility="invisible"/>
-
-                        <com.davivienda.billetera.ui.controls.SeekArc
-                            android:id="@+id/davipoints_cash_seekbar"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:layout_gravity="center"
-                            android:layout_centerInParent="true"
-                            app:rotation="173"
-                            app:startAngle="18"
-                            app:sweepAngle="342"
-                            app:touchInside="false"
-                            app:progressColor="#9d9d9d"
-                            app:arcColor="#ed1c27"
-                            app:progressWidth="12dp"
-                            app:arcWidth="12dp"
-                            app:roundEdges="true"/>
-
-                    </RelativeLayout>
 
                     <LinearLayout
                         android:id="@+id/davi_points_cart_layout"
@@ -550,7 +524,7 @@
             android:src="@drawable/nav_davi_logo_bottom_bar" />
 
         <TextView
-            android:id="@+id/footer_davi_points_amount"
+            android:id="@+id/davi_points_amount"
             fontPath="fonts/MyriadPro-Semibold.otf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -567,7 +541,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
-            android:layout_toEndOf="@id/footer_davi_points_amount"
+            android:layout_toEndOf="@id/davi_points_amount"
             android:text="@string/navigation_drawer_bottom_bar_second_text"
             android:textAllCaps="true"
             android:textColor="@android:color/black"

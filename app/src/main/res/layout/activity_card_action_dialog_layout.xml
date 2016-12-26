@@ -140,42 +140,7 @@
             android:textSize="@dimen/common_text_size"
             android:visibility="gone" /-->
 
-        <LinearLayout
-            android:id="@+id/checkbox_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/card_pay_detail_spacing_between_items"
-            android:paddingEnd="@dimen/card_pay_detail_items_horizonal_margin"
-            android:paddingStart="@dimen/card_pay_detail_items_horizonal_margin"
-            android:paddingTop="@dimen/card_pay_detail_spacing_between_items"
-            android:gravity="center_vertical"
-            android:layout_above="@+id/continue_button"
-            android:visibility="gone"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/terms_and_conditions"
-                fontPath="fonts/MyriadPro-Regular.otf"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:button="@android:color/transparent"
-                android:drawablePadding="15dp"
-                android:drawableStart="@drawable/gray_checkbox_selector"
-                android:text="@string/policy_picker_check_box_terms_and_conditions"
-                android:textColor="@color/checkbox_text_color_selector"
-                android:textSize="@dimen/common_text_size" />
-
-            <ImageView
-                android:id="@+id/terms_and_conditions_button"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerInside"
-                android:clickable="true"
-                android:src="@drawable/information_icon_selector"/>
-
-        </LinearLayout>
+        <include layout="@layout/terms_condition_checkbox"></include>
 
         <TextView
             android:id="@+id/accept_button"

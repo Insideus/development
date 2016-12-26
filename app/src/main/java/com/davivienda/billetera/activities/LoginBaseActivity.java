@@ -1,12 +1,19 @@
 package com.davivienda.billetera.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.model.ErrorMessages;
@@ -18,12 +25,8 @@ import com.davivienda.billetera.model.User;
 import com.davivienda.billetera.service.Service;
 import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.tasks.DaviPayTask;
-import com.davivienda.billetera.tasks.GetUserTask;
-import com.davivienda.billetera.tasks.TaskCallback;
 import com.davivienda.billetera.utils.DialogUtil;
 import com.davivienda.billetera.utils.SharedPreferencesUtils;
-
-import java.util.ArrayList;
 
 public class LoginBaseActivity extends BaseActivity {
 
@@ -46,7 +49,6 @@ public class LoginBaseActivity extends BaseActivity {
         }
     }
 
-    /*
     public class GetUserTask extends DaviPayTask<User> {
 
         private String sid;
@@ -71,7 +73,6 @@ public class LoginBaseActivity extends BaseActivity {
             SharedPreferencesUtils.setUser(resultingUser);
         }
     }
-    */
 
     public void showCombo(){
         final ComboAdapter adapter = new ComboAdapter(Session.getCurrentSession(this).getPersonIdTypes(), selectedIdType);
@@ -100,10 +101,12 @@ public class LoginBaseActivity extends BaseActivity {
         ArrayList<PersonIdType> types;
         PersonIdType selectedType;
 
+
         ComboAdapter(ArrayList<PersonIdType> types, PersonIdType selectedType) {
             this.types = types;
             this.selectedType = selectedType;
         }
+
 
         @Override
         public int getCount() {
@@ -141,6 +144,7 @@ public class LoginBaseActivity extends BaseActivity {
                 public void onClick(View v) {
                     selectedType = type;
                     notifyDataSetChanged();
+
                 }
             });
             return row;
@@ -332,7 +336,7 @@ public class LoginBaseActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(final LoginResponse response) {
+        protected void onPostExecute(LoginResponse response) {
             super.onPostExecute(response);
             if(!processedError) {
                 //Success login.
@@ -342,8 +346,7 @@ public class LoginBaseActivity extends BaseActivity {
                 if (step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
-                //new GetUserTask(LoginBaseActivity.this, response.getSid()).execute();
-                getUser();
+                new GetUserTask(LoginBaseActivity.this, response.getSid()).execute();
                 goToRegistrationStep(step);
             }
         }

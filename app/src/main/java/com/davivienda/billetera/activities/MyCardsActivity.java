@@ -121,6 +121,17 @@ public class MyCardsActivity extends BaseActivity {
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
+    /*
+    private void eCardGetCVV(String lastDigits){
+        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+        intent.putExtra(ActionDialogActivity.E_CARD_GET_CVV, true);
+        intent.putExtra(ActionDialogActivity.LAST_FOUR_DIGITS, lastDigits);
+        startOperationPopUp(intent, getString(R.string.my_cards_e_card_get_cvv_title),
+                getString(R.string.my_cards_e_card_get_cvv_subtitle),
+                getString(R.string.my_cards_e_card_get_cvv_text));
+    }
+    */
+
     private void eCardShowData(String lastDigits) {
         Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
         intent.putExtra(ActionDialogActivity.E_CARD_SHOW_DATA, true);
@@ -467,19 +478,11 @@ public class MyCardsActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     if (card.getPay() && card.getMessage() != null) {
-                        Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
-                        if(card.getECard()) {
-                            intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_recharge_card_title));
-                        } else {
-                            intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_pay_card_title));
-                        }
+                            Intent intent = new Intent(MyCardsActivity.this, ActionDialogActivity.class);
+                        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.my_cards_pay_card_title));
                         intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.my_cards_pay_card_subtitle));
                         if (card.getMessage().equalsIgnoreCase("card_status.blocked_sobrecupo")) {
-                            if(card.getECard()) {
-                                intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_recharge_card_text_1));
-                            } else {
-                                intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_pay_card_text_1));
-                            }
+                            intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_pay_card_text_1));
                         }
                         if (card.getMessage().equalsIgnoreCase("card_status.blocked_rediferido")) {
                             intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.my_cards_pay_card_text_2));
