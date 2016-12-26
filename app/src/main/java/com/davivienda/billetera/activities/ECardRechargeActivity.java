@@ -228,9 +228,11 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
             super.onPostExecute(response);
             if(!processedError) {
                 if (response) {
-                    DialogUtil.toast(ECardRechargeActivity.this, getString(R.string.card_pay_success_title),
-                            getString(R.string.card_pay_success_subtitle),
-                            getSuccessText(getString(R.string.e_card_recharge_success_text)), ON_CLOSE_REQUEST);
+                    DialogUtil.toast(ECardRechargeActivity.this,
+                            getString(R.string.card_recharge_success_title),
+                            getString(R.string.card_recharge_success_subtitle),
+                            getSuccessText(getString(R.string.e_card_recharge_success_text)),
+                            ON_CLOSE_REQUEST);
                 }
             }
         }

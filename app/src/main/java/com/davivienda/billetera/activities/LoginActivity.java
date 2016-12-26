@@ -206,7 +206,8 @@ public class LoginActivity extends LoginBaseActivity {
                 if (step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
-                new GetUserTask(LoginActivity.this, response.getSid()).execute();
+                //new GetUserTask(LoginActivity.this, response.getSid()).execute();
+                getUser();
                 goToRegistrationStep(step);
             } else if (errorCode != null) {
                 //Expected error.

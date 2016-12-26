@@ -52,7 +52,7 @@
                 android:src="@drawable/nav_davi_logo_bottom_bar" />
 
             <TextView
-                android:id="@+id/davi_points_amount"
+                android:id="@+id/footer_davi_points_amount"
                 fontPath="fonts/MyriadPro-Semibold.otf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
-                android:layout_toEndOf="@+id/davi_points_amount"
+                android:layout_toEndOf="@+id/footer_davi_points_amount"
                 android:text="@string/navigation_drawer_bottom_bar_second_text"
                 android:textAllCaps="true"
                 android:textColor="@android:color/black"

@@ -9,9 +9,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.activities.OrderReceiptActivity;
 import com.davivienda.billetera.model.Cart;
@@ -20,6 +17,9 @@ import com.davivienda.billetera.utils.CurrencyUtils;
 import com.davivienda.billetera.utils.DateUtils;
 import com.davivienda.billetera.utils.DavipointUtils;
 import com.davivienda.billetera.utils.ImageUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyOrdersAdapter extends RecyclerView.Adapter<MyShopHolder>{
 
@@ -46,13 +46,13 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyShopHolder>{
             holder.brandLogo.setImageResource(R.drawable.placeholder_small);
         }
 
-//        Hidden by definition
-//        if(TextUtils.isEmpty(cart.getDeliveredTo())){
-//            holder.deliveryContainer.setVisibility(View.GONE);
-//        }else{
-//            holder.deliveryContainer.setVisibility(View.VISIBLE);
-//            holder.deliveredTo.setText(cart.getDeliveredTo());
-//        }
+        //Hidden by definition
+        //if(TextUtils.isEmpty(cart.getDeliveredTo())){
+        //  holder.deliveryContainer.setVisibility(View.GONE);
+        //} else {
+        //  holder.deliveryContainer.setVisibility(View.VISIBLE);
+        //  holder.deliveredTo.setText(cart.getDeliveredTo());
+        //}
 
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
