@@ -12,17 +12,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.model.StoreConfiguration;
 import com.davivienda.billetera.model.StoreConfigurationItem;
 import com.davivienda.billetera.model.StoreProduct;
 import com.davivienda.billetera.ui.adapters.StoreItemDetailAdapter;
 import com.davivienda.billetera.utils.CurrencyUtils;
-import com.davivienda.billetera.utils.DavipointUtils;
 import com.davivienda.billetera.utils.DialogUtil;
 import com.davivienda.billetera.utils.ImageUtils;
+import com.davivienda.billetera.utils.SharedPreferencesUtils;
+
+import java.util.ArrayList;
 
 public class StoreItemDetailActivity extends BaseActivity {
 
@@ -92,7 +92,7 @@ public class StoreItemDetailActivity extends BaseActivity {
 
     public void setProductAmount() {
         currentAmount = selectedProduct.getSelectedProductPrice();
-        currentDaviPointAmount = currentAmount.intValue() / DavipointUtils.getDavipointsEquivalence();
+        currentDaviPointAmount = currentAmount.intValue() / SharedPreferencesUtils.getPointsEquivalence();
         daviPointsAmount.setText(String.valueOf(currentDaviPointAmount));
         amount.setText(CurrencyUtils.getCurrencyForString(currentAmount));
     }

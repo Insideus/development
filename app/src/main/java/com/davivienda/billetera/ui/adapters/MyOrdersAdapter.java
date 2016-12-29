@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,6 +16,7 @@ import com.davivienda.billetera.utils.CurrencyUtils;
 import com.davivienda.billetera.utils.DateUtils;
 import com.davivienda.billetera.utils.DavipointUtils;
 import com.davivienda.billetera.utils.ImageUtils;
+import com.davivienda.billetera.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +65,7 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyShopHolder>{
         });
 
         holder.daviPrice.setText(String.valueOf(curCart.getCartDavipoints()));
-        Double cashAmount = DavipointUtils.cashDifference(curCart.getCartPrice(), curCart.getCartDavipoints());
+        Double cashAmount = DavipointUtils.cashDifference(curCart.getCartPrice(), curCart.getCartDavipoints(), SharedPreferencesUtils.getPointsEquivalence());
         holder.cashPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cashAmount)));
         holder.brandName.setText(curCart.getStore().getName());
         holder.totalPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(curCart.getCartPrice())));

@@ -1438,7 +1438,7 @@ public class Service {
                 JSONObject json = getJsonFromResponse(in);
                 JSONObject responseJson = json.getJSONObject(DATA_TAG);
                 if (json.has("error") && !json.getBoolean("error")) {
-                    return User.fromJson(responseJson.getJSONObject("user"));
+                    return User.fromJson(responseJson);
                 } else {
                     String errorCode = responseJson.getString(ERROR_CODE_TAG);
                     throw new ServiceException(errorCode);

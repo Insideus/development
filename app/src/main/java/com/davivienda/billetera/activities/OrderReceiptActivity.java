@@ -25,6 +25,7 @@ import com.davivienda.billetera.utils.DateUtils;
 import com.davivienda.billetera.utils.DavipointUtils;
 import com.davivienda.billetera.utils.DialogUtil;
 import com.davivienda.billetera.utils.ImageUtils;
+import com.davivienda.billetera.utils.SharedPreferencesUtils;
 
 import java.util.Date;
 
@@ -161,7 +162,7 @@ public class OrderReceiptActivity extends BaseActivity{
         TextView daviPrice = (TextView) findViewById(R.id.davi_price);
         daviPrice.setText(String.valueOf(cart.getCartDavipoints()));
 
-        Double cashAmount = DavipointUtils.cashDifference(cart.getCartPrice(), cart.getCartDavipoints());
+        Double cashAmount = DavipointUtils.cashDifference(cart.getCartPrice(), cart.getCartDavipoints(), SharedPreferencesUtils.getPointsEquivalence());
         TextView cashPrice = (TextView) findViewById(R.id.cash_price);
         cashPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cashAmount)));
 
