@@ -102,5 +102,4 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyShopHolder>{
         notifyDataSetChanged();
     }
 
-
 }

@@ -64,10 +64,9 @@
     <string name="policy_picker_check_box_send_sms">Envío de SMS</string>
     <string name="politcy_picker_check_box_send_email">Envío de E-mails</string>
     <string name="policy_picker_check_box_phone_contact">Contacto Telefónico</string>
-    <string name="policy_picker_check_box_terms_and_conditions_ecard">
-        eCard</string>
+    <string name="policy_picker_check_box_terms_and_conditions_ecard">Términos y condiciones eCard</string>
     <string name="policy_picker_check_box_terms_and_conditions"><u>Términos y condiciones</u></string>
-    <string name="policy_picker_check_box_privacy_policy">Políticas de Privacidad</string>
+    <string name="policy_picker_check_box_privacy_policy"><u>Políticas de Privacidad</u></string>
     <string name="policy_picker_subtitle">Para tener una mejor experiencia,\nconfírmenos por cuáles medios desea recibir\ncomunicaciones de la aplicación y acepte\nTérminos y Condiciones, y Políticas de Privacidad.</string>
     <string name="policy_picker_title">AUTORIZACIÓN USO DE DATOS</string>
     <string name="policy_picker_terms_and_conditions_not_checked_error">Debe aceptar los términos y condiciones</string>
@@ -426,7 +425,8 @@
         <item quantity="one">(Elegir %1$d ítem)</item>
         <item quantity="other">(Elegir %1$d ítems)</item>
     </plurals>
-    <string name="configuration_quantity_text">(Elegir MAX. %1$d)</string>
+    <string name="configuration_quantity_text">(MIN. %1$d, MAX. %2$d)</string>
+    <string name="configuration_cero_quantity_text">(Elegir MAX. %1$d)</string>
 
     <string name="otp_payment_subtitle">GENERAR CÓDIGO DE PAGO</string>
     <string name="otp_payment_receipt_title">Para continuar con el pago informe este código al establecimiento</string>
@@ -523,6 +523,14 @@
     <string name="recharge_insufficient_balance_title">FONDOS</string>
     <string name="recharge_insufficient_balance_subtitle">INSUFICIENTES</string>
     <string name="recharge_insufficient_balance_text">No se pudo completar la recarga por fondos insuficientes en su cuenta.</string>
+
+    <string name="recharge_ecard_account_blocked_error_title">CUENTA</string>
+    <string name="recharge_ecard_account_blocked_error_subtitle">BLOQUEADA</string>
+    <string name="recharge_ecard_account_blocked_error_text">La cuenta desde la cual desea recargar se encuentra bloqueada.</string>
+
+    <string name="pay_card_ecard_account_blocked_error_title">CUENTA</string>
+    <string name="pay_card_ecard_account_blocked_error_subtitle">BLOQUEADA</string>
+    <string name="pay_card_ecard_account_blocked_error_text">La cuenta desde la cual desea pagar se encuentra bloqueada.</string>
 
 </resources>
 

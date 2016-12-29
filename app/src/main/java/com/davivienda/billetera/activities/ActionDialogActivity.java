@@ -414,7 +414,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
                 }
             }
         });
-        findViewById(R.id.terms_and_conditions_text).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.terms_and_conditions_link).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToEcardTermsAndConditionsPage(getString(R.string.policy_picker_check_box_terms_and_conditions));

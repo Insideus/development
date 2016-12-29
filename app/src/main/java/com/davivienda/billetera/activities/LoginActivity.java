@@ -20,6 +20,7 @@ import com.davivienda.billetera.tasks.GetInitDataTask;
 import com.davivienda.billetera.tasks.TaskCallback;
 import com.davivienda.billetera.utils.DialogUtil;
 import com.davivienda.billetera.utils.EncryptionUtils;
+import com.davivienda.billetera.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class LoginActivity extends LoginBaseActivity {
     private static final int ESSENTIAL_DATA_CHECK = 11;
     private GetInitDataTask initDataTask;
     private boolean finishingUpApp = false;
+    public static final String OPEN_TOUR = "tour open";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class LoginActivity extends LoginBaseActivity {
             finishingUpApp = false;
             return;
         }
+        checkForTour();
         checkForEssentialData();
     }
 
@@ -220,6 +223,21 @@ public class LoginActivity extends LoginBaseActivity {
             }
         }
 
+    }
+
+    private void checkForTour() {
+        if (getIntent() != null && getIntent().getBooleanExtra(OPEN_TOUR, false)) {
+            startTour();
+            return;
+        }
+        if (TextUtils.isEmpty(SharedPreferencesUtils.getString(OPEN_TOUR))) {
+            startTour();
+            SharedPreferencesUtils.setString(OPEN_TOUR, SharedPreferencesUtils.FALSE);
+        }
+    }
+
+    private void startTour() {
+        startActivity(new Intent(this, TourActivity.class));
     }
 
 }

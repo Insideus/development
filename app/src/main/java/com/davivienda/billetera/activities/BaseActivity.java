@@ -479,15 +479,11 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         openPdf(PRIVACY_POLICY_URL,title);
     }
 
-    private void openPdf(String url,String title) {
-        /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GOOGLE_DOCS_URL + url));
-        startActivity(browserIntent);*/
-        Intent intent = new Intent(this, WebContentActivity.class);
-        String urlW = GOOGLE_DOCS_URL + url;
-        intent.putExtra(WebContentActivity.URL,urlW);
-        intent.putExtra(WebContentActivity.TITLE,title);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+    private void openPdf(String url, String title) {
+        Intent browserIntent = new Intent(this, WebContentActivity.class);
+        browserIntent.putExtra(WebContentActivity.URL,GOOGLE_DOCS_URL + url);
+        browserIntent.putExtra(WebContentActivity.TITLE,title);
+        startActivity(browserIntent);
     }
 
     protected void goToHome() {

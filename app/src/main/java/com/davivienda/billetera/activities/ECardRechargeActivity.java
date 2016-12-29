@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.davivienda.billetera.R;
+import com.davivienda.billetera.model.ErrorMessages;
 import com.davivienda.billetera.model.ServiceException;
 import com.davivienda.billetera.service.Service;
 import com.davivienda.billetera.session.Session;
@@ -241,6 +242,23 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
     @Override
     public void onOtpCodeReceived(String otpCode) {
         new RechargeECardTask(this, getAmount(), otpCode).execute();
+    }
+
+    public void processErrorAndContinue(ErrorMessages error, String additionalParam) {
+        if(error != null) {
+            switch(error) {
+                case ACCOUNT_BLOCKED:
+                    DialogUtil.toast(this,
+                            getString(R.string.recharge_ecard_account_blocked_error_title),
+                            getString(R.string.recharge_ecard_account_blocked_error_subtitle),
+                            getSuccessText(getString(R.string.recharge_ecard_account_blocked_error_text)));
+                    break;
+                default:
+                    super.processErrorAndContinue(error, additionalParam);
+            }
+        } else {
+            showServiceGenericError();
+        }
     }
 
 }

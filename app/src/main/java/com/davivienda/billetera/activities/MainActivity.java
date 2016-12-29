@@ -23,7 +23,6 @@ import com.davivienda.billetera.utils.LocationUtils;
 
 public class MainActivity extends BaseActivity {
 
-
     public static final String SHOULD_RECREATE_KEY = "should_recreate_key";
     public static int LOCATION_PERMISSION_CODE = 169;
 
@@ -74,7 +73,6 @@ public class MainActivity extends BaseActivity {
         findFragment();
         checkLocationPermissions();
         setToolbar(R.id.toolbar, false, getString(R.string.main_activity_title));
-        //checkForTour();
         fragment.setLocation(latLng);
     }
 

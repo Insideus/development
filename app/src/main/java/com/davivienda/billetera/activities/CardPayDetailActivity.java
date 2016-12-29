@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.davivienda.billetera.R;
+import com.davivienda.billetera.model.ErrorMessages;
 import com.davivienda.billetera.model.ServiceException;
 import com.davivienda.billetera.model.TransactionDetails;
 import com.davivienda.billetera.service.Service;
@@ -321,12 +322,30 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         protected void onPostExecute(Boolean response) {
             super.onPostExecute(response);
             if(!processedError) {
-                DialogUtil.toast(CardPayDetailActivity.this, getString(R.string.card_pay_success_title),
+                DialogUtil.toast(CardPayDetailActivity.this,
+                        getString(R.string.card_pay_success_title),
                         getString(R.string.card_pay_success_subtitle),
                         getSuccessText(getString(R.string.card_pay_success_text)), ON_CLOSE_REQUEST);
             }
         }
 
+    }
+
+    public void processErrorAndContinue(ErrorMessages error, String additionalParam) {
+        if(error != null) {
+            switch(error) {
+                case ACCOUNT_BLOCKED:
+                    DialogUtil.toast(this,
+                            getString(R.string.pay_card_ecard_account_blocked_error_title),
+                            getString(R.string.pay_card_ecard_account_blocked_error_subtitle),
+                            getSuccessText(getString(R.string.pay_card_ecard_account_blocked_error_text)));
+                    break;
+                default:
+                    super.processErrorAndContinue(error, additionalParam);
+            }
+        } else {
+            showServiceGenericError();
+        }
     }
 
 }

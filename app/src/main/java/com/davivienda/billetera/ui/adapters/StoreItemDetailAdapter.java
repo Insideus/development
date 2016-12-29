@@ -60,7 +60,12 @@ public class StoreItemDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     text = res.getQuantityString(R.plurals.configuration_quantity_required_text, configuration.getMaxConfiguration(), configuration.getMaxConfiguration());
                     holder.quantity.setText(text);
                 } else {
-                    text = res.getString(R.string.configuration_quantity_text, configuration.getMaxConfiguration());
+                    if(configuration.getMinConfiguration() == 0){
+                        text = res.getString(R.string.configuration_cero_quantity_text,configuration.getMaxConfiguration());
+                    }else{
+                        text = res.getString(R.string.configuration_quantity_text, configuration.getMinConfiguration(), configuration.getMaxConfiguration());
+
+                    }
                     holder.quantity.setText(text);
                 }
                 if(holder.container.getChildCount() > 1) {
