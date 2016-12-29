@@ -4,14 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.util.Pair;
 
+import com.davivienda.billetera.utils.CurrencyUtils;
+import com.davivienda.billetera.utils.SharedPreferencesUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.davivienda.billetera.utils.CurrencyUtils;
 
 public class Cart implements Parcelable {
 
@@ -197,8 +198,17 @@ public class Cart implements Parcelable {
         List<Pair<String, String>> params = new ArrayList<>();
         Pair<String, String> storeIdParam = new Pair("store_id", String.valueOf(store.getId()));
         params.add(storeIdParam);
-        Pair<String, String> amountParam = new Pair("amount", CurrencyUtils.getCurrencyForStringWithDecimal(getCartPrice()));
+
+        Pair<String, String> amountParam;
+        if(cartDavipoints > 0) {
+            int davipointsEquivalence = SharedPreferencesUtils.getPointsEquivalence();
+            Integer davipointCashAmount = cartDavipoints * davipointsEquivalence;
+            amountParam = new Pair("amount", CurrencyUtils.getCurrencyForStringWithDecimal(getCartPrice() - davipointCashAmount));
+        } else {
+            amountParam = new Pair("amount", CurrencyUtils.getCurrencyForStringWithDecimal(getCartPrice()));
+        }
         params.add(amountParam);
+
         Pair<String, String> davipointsParam = new Pair("davipoints", String.valueOf(cartDavipoints));
         params.add(davipointsParam);
         Pair<String, String> installmentsParam = new Pair("installments", String.valueOf(selectedInstallment));

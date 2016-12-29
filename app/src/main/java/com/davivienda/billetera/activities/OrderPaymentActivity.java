@@ -111,6 +111,12 @@ public class OrderPaymentActivity extends BaseActivity {
             findViewById(R.id.davi_points_cart_layout).setVisibility(View.VISIBLE);
             findViewById(R.id.pay_points_layout).setVisibility(View.VISIBLE);
             findViewById(R.id.pay_button).setVisibility(View.GONE);
+            findViewById(R.id.pay_button_points).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    validateAndPay();
+                }
+            });
         } else {
             findViewById(R.id.price_cart_layout).setVisibility(View.GONE);
             findViewById(R.id.davi_points_cart_layout).setVisibility(View.GONE);
@@ -119,38 +125,18 @@ public class OrderPaymentActivity extends BaseActivity {
         }
     }
 
-    private void setSeekBar() {
-        /*
-        DiscreteSeekBar seekBar = (DiscreteSeekBar) findViewById(R.id.davipoints_cash_seekbar);
-        seekBar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
-            @Override
-            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
-                if(fromUser) {
-                    updatePriceAndDavipoints(value);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
-
-            }
-        });
-        Double cartPrice = cart.getCartPrice();
-        if(cartPrice != null) {
-            Integer currentDaviPointAmount = DavipointUtils.toDavipoints(cartPrice.intValue());
-            seekBar.setMin(0);
-            seekBar.setMax(currentDaviPointAmount);
-            seekBar.setProgress(cart.getCartDavipoints());
-            updatePriceAndDavipoints(cart.getCartDavipoints());
+    private void validateAndPay() {
+        if(validate()) {
+            new PayOrderTask(OrderPaymentActivity.this).execute();
         } else {
-            seekBar.setEnabled(false);
+            DialogUtil.toast(OrderPaymentActivity.this,
+                    getString(R.string.selected_card_error_title),
+                    "",
+                    getString(R.string.selected_card_error_text));
         }
-        */
+    }
+
+    private void setSeekBar() {
         SeekArc seekBar = (SeekArc) findViewById(R.id.davipoints_cash_seekbar);
         seekBar.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
             @Override
@@ -178,11 +164,8 @@ public class OrderPaymentActivity extends BaseActivity {
             } else {
                 seekBar.setMax(currentDaviPointAmount);
             }
-            //seekBar.setMin(0);
             seekBar.setProgress(cart.getCartDavipoints());
             updatePriceAndDavipoints(cart.getCartDavipoints());
-        } else {
-            //seekBar.setEnabled(false);
         }
     }
 
@@ -238,14 +221,7 @@ public class OrderPaymentActivity extends BaseActivity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validate()) {
-                    new PayOrderTask(OrderPaymentActivity.this).execute();
-                } else {
-                    DialogUtil.toast(OrderPaymentActivity.this,
-                            getString(R.string.selected_card_error_title),
-                            "",
-                            getString(R.string.selected_card_error_text));
-                }
+                validateAndPay();
             }
         });
     }

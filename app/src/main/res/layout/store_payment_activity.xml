@@ -452,15 +452,6 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone">
 
-                        <ImageView
-                            android:id="@+id/pay_button_points"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/card_payment_pay_button_2"
-                            android:adjustViewBounds="true"
-                            android:scaleType="centerInside"
-                            android:layout_centerInParent="true"/>
-
                         <com.davivienda.billetera.ui.controls.SeekArc
                             android:id="@+id/davipoints_cash_seekbar"
                             android:layout_width="150dp"
@@ -477,6 +468,16 @@
                             app:progressWidth="12dp"
                             app:arcWidth="12dp"
                             app:roundEdges="true"/>
+
+                        <ImageView
+                            android:id="@+id/pay_button_points"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/card_payment_pay_button_2"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerInside"
+                            android:clickable="true"
+                            android:layout_centerInParent="true"/>
 
                     </RelativeLayout>
 
