@@ -407,7 +407,7 @@
                         android:id="@+id/price_cart_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.25"
+                        android:layout_weight="0.21"
                         android:layout_gravity="center_vertical"
                         android:orientation="vertical"
                         android:gravity="center">
@@ -423,7 +423,7 @@
                             android:layout_marginTop="@dimen/store_medium_spacing"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16dp"
+                            android:textSize="14dp"
                             android:textColor="@color/common_dark_gray_color"/>
 
                         <TextView
@@ -431,7 +431,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/store_payment_cop_subtitle"
-                            android:textSize="@dimen/common_text_size"
+                            android:textSize="13dp"
                             android:textColor="@color/common_dark_gray_color"/>
 
                     </LinearLayout>
@@ -439,40 +439,38 @@
                     <ImageView
                         android:id="@+id/pay_button"
                         android:layout_width="0dp"
-                        android:layout_weight="0.5"
+                        android:layout_weight="0.58"
                         android:layout_height="wrap_content"
                         android:src="@drawable/card_payment_pay_button_selector"
                         android:layout_marginTop="@dimen/store_medium_spacing"
                         android:layout_marginBottom="10dp"/>
 
                     <RelativeLayout
+                        android:id="@+id/pay_points_layout"
                         android:layout_width="0dp"
-                        android:layout_weight="0.5"
+                        android:layout_weight="0.58"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/store_medium_spacing"
-                        android:layout_marginBottom="10dp"
                         android:visibility="gone">
 
                         <ImageView
                             android:id="@+id/pay_button_points"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/card_payment_pay_button_selector"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/card_payment_pay_button_2"
                             android:adjustViewBounds="true"
                             android:scaleType="centerInside"
-                            android:layout_margin="18dp"
-                            android:layout_centerInParent="true"
-                            android:visibility="invisible"/>
+                            android:layout_centerInParent="true"/>
 
                         <com.davivienda.billetera.ui.controls.SeekArc
                             android:id="@+id/davipoints_cash_seekbar"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
                             android:layout_gravity="center"
                             android:layout_centerInParent="true"
+                            android:padding="30dp"
                             app:rotation="173"
-                            app:startAngle="18"
-                            app:sweepAngle="342"
+                            app:startAngle="21"
+                            app:sweepAngle="339"
                             app:touchInside="false"
                             app:progressColor="#9d9d9d"
                             app:arcColor="#ed1c27"
@@ -486,7 +484,7 @@
                         android:id="@+id/davi_points_cart_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.25"
+                        android:layout_weight="0.21"
                         android:layout_gravity="center_vertical"
                         android:orientation="vertical"
                         android:gravity="center">
@@ -502,7 +500,7 @@
                             android:layout_marginTop="@dimen/store_medium_spacing"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16dp"
+                            android:textSize="14dp"
                             android:textColor="@color/common_dark_gray_color"/>
 
                         <TextView
@@ -510,7 +508,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/store_payment_davipoints_subtitle"
-                            android:textSize="@dimen/common_text_size"
+                            android:textSize="13dp"
                             android:textColor="@color/common_dark_gray_color"/>
 
                     </LinearLayout>

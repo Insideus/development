@@ -106,10 +106,16 @@ public class OrderPaymentActivity extends BaseActivity {
     }
 
     private void setDavipointsLayout() {
-        if(cart.getStore() != null && !cart.getStore().getAcceptDavipoints()) {
+        if(cart.getStore() != null && cart.getStore().getAcceptDavipoints() && SharedPreferencesUtils.getUser().getPointsInt() > 0) {
+            findViewById(R.id.price_cart_layout).setVisibility(View.VISIBLE);
+            findViewById(R.id.davi_points_cart_layout).setVisibility(View.VISIBLE);
+            findViewById(R.id.pay_points_layout).setVisibility(View.VISIBLE);
+            findViewById(R.id.pay_button).setVisibility(View.GONE);
+        } else {
             findViewById(R.id.price_cart_layout).setVisibility(View.GONE);
             findViewById(R.id.davi_points_cart_layout).setVisibility(View.GONE);
-            findViewById(R.id.davipoints_cash_seekbar).setVisibility(View.GONE);
+            findViewById(R.id.pay_points_layout).setVisibility(View.GONE);
+            findViewById(R.id.pay_button).setVisibility(View.VISIBLE);
         }
     }
 
@@ -176,7 +182,7 @@ public class OrderPaymentActivity extends BaseActivity {
             seekBar.setProgress(cart.getCartDavipoints());
             updatePriceAndDavipoints(cart.getCartDavipoints());
         } else {
-            seekBar.setEnabled(false);
+            //seekBar.setEnabled(false);
         }
     }
 

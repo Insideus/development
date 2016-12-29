@@ -212,7 +212,7 @@ public class Store implements Parcelable {
             }
             if(json.has("accept_points")){
                 store.setAcceptDavipoints(json.getBoolean("accept_points"));
-                //store.setAcceptDavipoints(true);
+                store.setAcceptDavipoints(true);
             }
         } catch (JSONException e) {
             e.printStackTrace();
