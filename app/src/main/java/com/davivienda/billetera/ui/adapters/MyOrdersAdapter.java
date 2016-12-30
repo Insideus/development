@@ -14,9 +14,7 @@ import com.davivienda.billetera.model.Cart;
 import com.davivienda.billetera.model.MyShopHolder;
 import com.davivienda.billetera.utils.CurrencyUtils;
 import com.davivienda.billetera.utils.DateUtils;
-import com.davivienda.billetera.utils.DavipointUtils;
 import com.davivienda.billetera.utils.ImageUtils;
-import com.davivienda.billetera.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,10 +63,10 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyShopHolder>{
         });
 
         holder.daviPrice.setText(String.valueOf(curCart.getCartDavipoints()));
-        Double cashAmount = DavipointUtils.cashDifference(curCart.getCartPrice(), curCart.getCartDavipoints(), SharedPreferencesUtils.getPointsEquivalence());
+        Double cashAmount = curCart.getCartPrice();
         holder.cashPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cashAmount)));
         holder.brandName.setText(curCart.getStore().getName());
-        holder.totalPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(curCart.getCartPrice())));
+        holder.totalPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(curCart.getCartTotal())));
         holder.buyDate.setText(DateUtils.formatDate(DateUtils.DEFAULT_FORMAT, DateUtils.DOTTED_DDMMMMYYHHMM_FORMAT, curCart.getDate()));
     }
 

@@ -248,6 +248,7 @@ public class Cart implements Parcelable {
             }
             cart.setReceiptNumber(jsonObject.getString("id"));
             cart.setCartPrice(jsonObject.getDouble("total"));
+            cart.setCartDavipoints(jsonObject.getInt("davipoints"));
             cart.setDate(jsonObject.getString("date"));
 
             // Objects and arrays
@@ -267,6 +268,19 @@ public class Cart implements Parcelable {
             return null;
         }
         return cart;
+    }
+
+    public Double getCartTotal() {
+        Double total = 0d;
+        if(cartPrice != null) {
+            if(cartDavipoints > 0) {
+                Integer davipointCashAmount = cartDavipoints * SharedPreferencesUtils.getPointsEquivalence();
+                return cartPrice + davipointCashAmount;
+            } else {
+                return cartPrice;
+            }
+        }
+        return total;
     }
 
 }

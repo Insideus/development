@@ -22,10 +22,8 @@ import com.davivienda.billetera.tasks.DaviPayTask;
 import com.davivienda.billetera.ui.adapters.CategoryItemAdapter;
 import com.davivienda.billetera.utils.CurrencyUtils;
 import com.davivienda.billetera.utils.DateUtils;
-import com.davivienda.billetera.utils.DavipointUtils;
 import com.davivienda.billetera.utils.DialogUtil;
 import com.davivienda.billetera.utils.ImageUtils;
-import com.davivienda.billetera.utils.SharedPreferencesUtils;
 
 import java.util.Date;
 
@@ -162,12 +160,11 @@ public class OrderReceiptActivity extends BaseActivity{
         TextView daviPrice = (TextView) findViewById(R.id.davi_price);
         daviPrice.setText(String.valueOf(cart.getCartDavipoints()));
 
-        Double cashAmount = DavipointUtils.cashDifference(cart.getCartPrice(), cart.getCartDavipoints(), SharedPreferencesUtils.getPointsEquivalence());
         TextView cashPrice = (TextView) findViewById(R.id.cash_price);
-        cashPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cashAmount)));
+        cashPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cart.getCartPrice())));
 
         TextView totalPrice = (TextView) findViewById(R.id.total_price);
-        totalPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cart.getCartPrice())));
+        totalPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cart.getCartTotal())));
 
         TextView storeName = (TextView) findViewById(R.id.brand_name);
         storeName.setText(cart.getStore().getName());

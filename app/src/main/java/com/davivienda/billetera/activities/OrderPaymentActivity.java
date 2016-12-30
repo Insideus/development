@@ -507,6 +507,8 @@ public class OrderPaymentActivity extends BaseActivity {
             super.onPostExecute(response);
             if(!processedError) {
                 cart.setReceiptNumber(response);
+                Double amount = DavipointUtils.cashDifference(cart.getCartPrice(), cart.getCartDavipoints(), SharedPreferencesUtils.getPointsEquivalence());
+                cart.setCartPrice(amount);
                 goToReceiptActivity();
             }
         }

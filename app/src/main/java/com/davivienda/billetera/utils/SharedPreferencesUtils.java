@@ -50,7 +50,9 @@ public class SharedPreferencesUtils {
         setString(SP_USER_LAST_LOGIN, user.getLastLogin());
         setString(SP_USER_NAME, user.getName());
         setInt(POINTS_EQUIVALENCE, user.getPointsEquivalence());
-        setBoolean(SP_USER_CAN_USE_POINTS, user.getCanUseDavipoints());
+        if(user.getCanUseDavipoints() != null) {
+            setBoolean(SP_USER_CAN_USE_POINTS, user.getCanUseDavipoints());
+        }
     }
 
     public static User getUser() {
