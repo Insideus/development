@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -21,6 +20,7 @@ import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.davivienda.billetera.DaviPayApplication;
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.gcm.RegistrationIntentService;
 import com.davivienda.billetera.model.Card;
@@ -68,8 +68,10 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     private Runnable loadingRunnable = null;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private boolean activityResumed;
 
     public OtpCodeReceived otpCodeReceived;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -320,14 +322,6 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         intent.putExtra(ToastDialogActivity.TEXT_KEY, text);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
-    }
-
-    @Override
-    protected void onPause() {
-        if (loadingDialog != null) {
-            hideLoading();
-        }
-        super.onPause();
     }
 
     protected void hideTitle() {
@@ -626,17 +620,6 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        hideLoading();
-        super.onDestroy();
-    }
-
-    @Override
     public void onSuspiciousOverlay(OverlapingApp overlapingApp) {
         insecureDevice();
     }
@@ -732,6 +715,35 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
                 }
             }
         }).execute();
+    }
+
+    public boolean isActivityResumed() {
+        return activityResumed;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DaviPayApplication appContext = (DaviPayApplication) this.getApplicationContext();
+        appContext.setActivity(this);
+        activityResumed = true;
+    }
+
+    @Override
+    protected void onPause() {
+        if (loadingDialog != null) {
+            hideLoading();
+        }
+        DaviPayApplication appContext = (DaviPayApplication) this.getApplicationContext();
+        appContext.setActivity(null);
+        activityResumed = false;
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        hideLoading();
+        super.onDestroy();
     }
 
 }

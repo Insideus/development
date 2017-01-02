@@ -2,6 +2,7 @@ package com.davivienda.billetera;
 
 import android.support.multidex.MultiDexApplication;
 
+import com.davivienda.billetera.activities.BaseActivity;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -18,6 +19,7 @@ public class DaviPayApplication extends MultiDexApplication {
 
     private static DaviPayApplication instance;
     private static ImageLoader imageManager;
+    private static BaseActivity activity;
 
     @Override
     public void onCreate() {
@@ -27,6 +29,7 @@ public class DaviPayApplication extends MultiDexApplication {
         EasySolutionsUtils.initEasySolution(this, getApplicationContext());
         initImageLoader();
         instance = this;
+        setActivity(null);
     }
 
     private void initFacebookSdk() {
@@ -55,5 +58,14 @@ public class DaviPayApplication extends MultiDexApplication {
     public static ImageLoader getImageManager() {
         return imageManager;
     }
+
+    public BaseActivity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(BaseActivity activity) {
+        DaviPayApplication.activity = activity;
+    }
+
 
 }

@@ -27,7 +27,7 @@ import com.davivienda.billetera.utils.ImageUtils;
 
 import java.util.Date;
 
-public class OrderReceiptActivity extends BaseActivity{
+public class OrderReceiptActivity extends BaseActivity {
 
     public static final String CART_KEY = "cart_key";
     public static final String FROM_MADE_SHOP = "from_made_shop";

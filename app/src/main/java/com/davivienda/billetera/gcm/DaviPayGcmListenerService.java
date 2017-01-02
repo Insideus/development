@@ -9,16 +9,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
-import com.google.android.gms.gcm.GcmListenerService;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.davivienda.billetera.DaviPayApplication;
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.activities.OrderReceiptActivity;
 import com.davivienda.billetera.model.Cart;
 import com.davivienda.billetera.model.NotificationType;
 import com.davivienda.billetera.session.Session;
+import com.google.android.gms.gcm.GcmListenerService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DaviPayGcmListenerService extends GcmListenerService {
 
@@ -80,83 +80,111 @@ public class DaviPayGcmListenerService extends GcmListenerService {
     }
 
     private void createOrderReadyNotification(Cart cart) {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder notificationBuilder;
+        DaviPayApplication appContext = (DaviPayApplication) this.getApplicationContext();
         Intent intent = new Intent(this, OrderReceiptActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(OrderReceiptActivity.CART_KEY, cart);
         intent.putExtra(OrderReceiptActivity.FROM_ORDER_READY_NOTIFICATION_KEY, true);
-        int notificationId = Integer.valueOf(cart.getReceiptNumber());
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_stat_ic_launcher)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(getString(R.string.order_ready_notification_text, cart.getReceiptNumber()))
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
-        notificationManager.notify(notificationId, notificationBuilder.build());
+        if(isAppRunning(appContext)) {
+            appContext.getActivity().startActivity(intent);
+        } else {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder notificationBuilder;
+            int notificationId = Integer.valueOf(cart.getReceiptNumber());
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            notificationBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.ic_stat_ic_launcher)
+                    .setContentTitle(getString(R.string.app_name))
+                    .setContentText(getString(R.string.order_ready_notification_text, cart.getReceiptNumber()))
+                    .setAutoCancel(true)
+                    .setSound(defaultSoundUri)
+                    .setContentIntent(pendingIntent);
+            notificationManager.notify(notificationId, notificationBuilder.build());
+        }
     }
 
     private void createOttPaymentNotification(Cart cart) {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder notificationBuilder;
         Intent intent = new Intent(this, OrderReceiptActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(OrderReceiptActivity.CART_KEY, cart);
         intent.putExtra(OrderReceiptActivity.FROM_OTT_NOTIFICATION, true);
-        int notificationId = Integer.valueOf(cart.getReceiptNumber());
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_stat_ic_launcher)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(getString(R.string.ott_pay_notification_text))
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
-        notificationManager.notify(notificationId, notificationBuilder.build());
+        DaviPayApplication appContext = (DaviPayApplication) this.getApplicationContext();
+        if(isAppRunning(appContext)) {
+            appContext.getActivity().startActivity(intent);
+        } else {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder notificationBuilder;
+            int notificationId = Integer.valueOf(cart.getReceiptNumber());
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            notificationBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.ic_stat_ic_launcher)
+                    .setContentTitle(getString(R.string.app_name))
+                    .setContentText(getString(R.string.ott_pay_notification_text))
+                    .setAutoCancel(true)
+                    .setSound(defaultSoundUri)
+                    .setContentIntent(pendingIntent);
+            notificationManager.notify(notificationId, notificationBuilder.build());
+        }
     }
 
     private void createOttPaymentConfirmedNotification(Cart cart) {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder notificationBuilder;
         Intent intent = new Intent(this, OrderReceiptActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(OrderReceiptActivity.CART_KEY, cart);
         intent.putExtra(OrderReceiptActivity.FROM_OTT_CONFIRMED_NOTIFICATION, true);
-        int notificationId = Integer.valueOf(cart.getReceiptNumber());
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_stat_ic_launcher)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(getString(R.string.ott_pay_confirmed_notification_text, cart.getOttTransaccionId()))
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
-        notificationManager.notify(notificationId, notificationBuilder.build());
+        DaviPayApplication appContext = (DaviPayApplication) this.getApplicationContext();
+        if(isAppRunning(appContext)) {
+            appContext.getActivity().startActivity(intent);
+        } else {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder notificationBuilder;
+            int notificationId = Integer.valueOf(cart.getReceiptNumber());
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            notificationBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.ic_stat_ic_launcher)
+                    .setContentTitle(getString(R.string.app_name))
+                    .setContentText(getString(R.string.ott_pay_confirmed_notification_text, cart.getOttTransaccionId()))
+                    .setAutoCancel(true)
+                    .setSound(defaultSoundUri)
+                    .setContentIntent(pendingIntent);
+            notificationManager.notify(notificationId, notificationBuilder.build());
+        }
     }
 
     private void createOttPaymentRejectedNotification(Cart cart) {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder notificationBuilder;
         Intent intent = new Intent(this, OrderReceiptActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(OrderReceiptActivity.CART_KEY, cart);
         intent.putExtra(OrderReceiptActivity.FROM_OTT_REJECTED_NOTIFICATION_KEY, true);
-        int notificationId = Integer.valueOf(cart.getReceiptNumber());
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_stat_ic_launcher)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(getString(R.string.ott_pay_rejected_notification_text, cart.getOttTransaccionId()))
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
-        notificationManager.notify(notificationId, notificationBuilder.build());
+        DaviPayApplication appContext = (DaviPayApplication) this.getApplicationContext();
+        if(isAppRunning(appContext)) {
+            appContext.getActivity().startActivity(intent);
+        } else {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder notificationBuilder;
+            int notificationId = Integer.valueOf(cart.getReceiptNumber());
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            notificationBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.ic_stat_ic_launcher)
+                    .setContentTitle(getString(R.string.app_name))
+                    .setContentText(getString(R.string.ott_pay_rejected_notification_text, cart.getOttTransaccionId()))
+                    .setAutoCancel(true)
+                    .setSound(defaultSoundUri)
+                    .setContentIntent(pendingIntent);
+            notificationManager.notify(notificationId, notificationBuilder.build());
+        }
+    }
+
+    private boolean isAppRunning(DaviPayApplication appContext) {
+        if (appContext != null && appContext.getActivity() != null && appContext.getActivity().isActivityResumed()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
