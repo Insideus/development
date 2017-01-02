@@ -1,6 +1,7 @@
 package com.davivienda.billetera.activities;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -62,9 +63,8 @@ public class StoreDetailActivity extends BaseActivity {
     private void setStoreButtons() {
         View callButton = findViewById(R.id.call_button);
         View locationButton = findViewById(R.id.location_button);
-        if (callButton == null || locationButton == null) {
-            return;
-        }
+        View wazeButton = findViewById(R.id.go_with_waze_button);
+
         callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,6 +97,26 @@ public class StoreDetailActivity extends BaseActivity {
                         store.getName(),
                         ")")));
                 startActivity(intent);
+            }
+        });
+        wazeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(store.getLatitude() == null || store.getLongitude() == null){
+                    DialogUtil.toast(StoreDetailActivity.this, getString(R.string.input_data_error_generic_title),
+                            "", getString(R.string.store_detail_no_location_error));
+                    return;
+                }
+                try {
+                    //waze://?ll=<lat>,<lon>&navigate=yes
+                    String url = "waze://?ll=";
+                    url += String.valueOf(store.getLatitude()) + "," + String.valueOf(store.getLongitude() + "&navigate=yes");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                } catch (ActivityNotFoundException ex) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.waze"));
+                    startActivity(intent);
+                }
             }
         });
     }

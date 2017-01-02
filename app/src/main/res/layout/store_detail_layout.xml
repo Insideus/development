@@ -98,16 +98,15 @@
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:paddingLeft="@dimen/store_largest_spacing"
-                        android:paddingRight="@dimen/store_largest_spacing"
-                        android:visibility="gone">
+                        android:paddingRight="@dimen/store_largest_spacing">
 
-                        <ImageView
+                        <!---ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.2"
                             android:paddingBottom="20dp"
                             android:paddingTop="@dimen/store_largest_spacing"
-                            android:src="@drawable/store_upload_icon" />
+                            android:src="@drawable/store_upload_icon" /-->
 
                         <ImageView
                             android:id="@+id/call_button"
@@ -117,6 +116,7 @@
                             android:background="@drawable/store_button_background_selector"
                             android:paddingBottom="@dimen/store_largest_spacing"
                             android:paddingTop="@dimen/store_largest_spacing"
+                            android:clickable="true"
                             android:src="@drawable/store_phone_icon_selector" />
 
                         <ImageView
@@ -127,17 +127,21 @@
                             android:background="@drawable/store_button_background_selector"
                             android:paddingBottom="@dimen/store_largest_spacing"
                             android:paddingTop="@dimen/store_largest_spacing"
+                            android:clickable="true"
                             android:src="@drawable/store_location_icon_selector" />
 
-                        <!--ImageView
+                        <ImageView
+                            android:id="@+id/go_with_waze_button"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.2"
                             android:paddingBottom="20dp"
                             android:paddingTop="20dp"
-                            android:src="@drawable/store_how_to_go_icon" />
+                            android:clickable="true"
+                            android:background="@drawable/store_button_background_selector"
+                            android:src="@drawable/store_how_to_go_icon_selector" />
 
-                        <ImageView
+                        <!--ImageView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.2"
