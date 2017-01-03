@@ -57,7 +57,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     protected static final int CLOSE_ACTIVITY_REQUEST = 100;
     public static String HELP_URL = "http://ayuda_davipay.paymentez.com/support/home";
     public static String GOOGLE_DOCS_URL = "http://docs.google.com/gview?embedded=true&url=";
-    public static String TERMS_AND_CONDITIONS_URL = "https://s3.amazonaws.com/davipay.paymentez.com/REGLAMENTO+APP+DAVIPAY+V4+20161125.pdf";
+    public static String TERMS_AND_CONDITIONS_URL = "https://s3.amazonaws.com/davipay.paymentez.com/REGLAMENTO+APP+DAVIPAY.pdf";
     public static String ECARD_TERMS_AND_CONDITIONS_URL = "https://s3.amazonaws.com/davipay.paymentez.com/CONTRATO+TARJETA+VIRTUAL+E-CARD.pdf";
     public static String PRIVACY_POLICY_URL = "https://s3.amazonaws.com/davipay.paymentez.com/Politica+de+Privacidad+DaviPay.pdf";
     protected static final String FIRST_LOGIN_WITH_E_CARD = "first login with eCard";
@@ -458,24 +458,27 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     }
 
     private void goToHelpPage(String title) {
-        openPdf(HELP_URL,title);
+        openUrl(HELP_URL, title, false);
     }
 
     public void goToTermsAndConditionsPage(String title) {
-        openPdf(TERMS_AND_CONDITIONS_URL,title);
+        openUrl(TERMS_AND_CONDITIONS_URL, title, true);
     }
 
     public void goToEcardTermsAndConditionsPage(String title) {
-        openPdf(ECARD_TERMS_AND_CONDITIONS_URL,title);
+        openUrl(ECARD_TERMS_AND_CONDITIONS_URL, title, true);
     }
 
     public void goToPrivacyPolicyPage(String title) {
-        openPdf(PRIVACY_POLICY_URL,title);
+        openUrl(PRIVACY_POLICY_URL, title, true);
     }
 
-    private void openPdf(String url, String title) {
+    private void openUrl(String url, String title, boolean isPdf) {
         Intent browserIntent = new Intent(this, WebContentActivity.class);
-        browserIntent.putExtra(WebContentActivity.URL,GOOGLE_DOCS_URL + url);
+        if(isPdf) {
+            url = GOOGLE_DOCS_URL + url;
+        }
+        browserIntent.putExtra(WebContentActivity.URL, url);
         browserIntent.putExtra(WebContentActivity.TITLE,title);
         startActivity(browserIntent);
     }
