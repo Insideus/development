@@ -65,59 +65,54 @@ public class StoreDetailActivity extends BaseActivity {
         View locationButton = findViewById(R.id.location_button);
         View wazeButton = findViewById(R.id.go_with_waze_button);
 
-        callButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(TextUtils.isEmpty(store.getPhone())){
-                    DialogUtil.toast(StoreDetailActivity.this, getString(R.string.input_data_error_generic_title),
-                            "", getString(R.string.store_detail_no_phone_number_error));
-                    return;
+        if (TextUtils.isEmpty(store.getPhone())) {
+            callButton.setEnabled(false);
+        } else {
+            callButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!checkPermission(android.Manifest.permission.CALL_PHONE, getApplicationContext())) {
+                        requestPermission(android.Manifest.permission.CALL_PHONE, CALL_PHONE_PERMISSION_REQUEST);
+                    } else {
+                        makeCall();
+                    }
                 }
-                if (!checkPermission(android.Manifest.permission.CALL_PHONE, getApplicationContext())) {
-                    requestPermission(android.Manifest.permission.CALL_PHONE, CALL_PHONE_PERMISSION_REQUEST);
-                }else {
-                    makeCall();
-                }
-            }
-        });
-        locationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(store.getLatitude() == null || store.getLongitude() == null){
-                    DialogUtil.toast(StoreDetailActivity.this, getString(R.string.input_data_error_generic_title),
-                            "", getString(R.string.store_detail_no_location_error));
-                    return;
-                }
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(String.format("%s%s%s%s%s%s%s",
-                        "geo:0,0?q=",
-                        String.valueOf(store.getLatitude()),
-                        ",",
-                        String.valueOf(store.getLongitude()),
-                        "(",
-                        store.getName(),
-                        ")")));
-                startActivity(intent);
-            }
-        });
-        wazeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(store.getLatitude() == null || store.getLongitude() == null){
-                    DialogUtil.toast(StoreDetailActivity.this, getString(R.string.input_data_error_generic_title),
-                            "", getString(R.string.store_detail_no_location_error));
-                    return;
-                }
-                try {
-                    String url = "waze://?ll=";
-                    url += String.valueOf(store.getLatitude()) + "," + String.valueOf(store.getLongitude() + "&navigate=yes");
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(intent);
-                } catch (ActivityNotFoundException ex) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.waze"));
+            });
+        }
+        if (store.getLatitude() == null || store.getLongitude() == null) {
+            locationButton.setEnabled(false);
+            wazeButton.setEnabled(false);
+        } else {
+            locationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse(String.format("%s%s%s%s%s%s%s",
+                            "geo:0,0?q=",
+                            String.valueOf(store.getLatitude()),
+                            ",",
+                            String.valueOf(store.getLongitude()),
+                            "(",
+                            store.getName(),
+                            ")")));
                     startActivity(intent);
                 }
-            }
-        });
+            });
+            wazeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        String url = "waze://?ll=";
+                        url += String.valueOf(store.getLatitude()) + "," + String.valueOf(store.getLongitude() + "&navigate=yes");
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException ex) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.waze"));
+                        startActivity(intent);
+                    }
+                }
+            });
+        }
     }
 
     private void makeCall() {
