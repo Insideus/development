@@ -107,8 +107,7 @@ public class OrderPaymentActivity extends BaseActivity {
     }
 
     private void setDavipointsLayout() {
-        //if(cart.getStore() != null && cart.getStore().getAcceptDavipoints() && SharedPreferencesUtils.getUser().getCanUseDavipoints() && SharedPreferencesUtils.getUser().getPointsInt() > 0) {
-        if(true) {
+        if(cart.getStore() != null && cart.getStore().getAcceptDavipoints() && SharedPreferencesUtils.getUser().getCanUseDavipoints() && SharedPreferencesUtils.getUser().getPointsInt() > 0) {
             findViewById(R.id.price_cart_layout).setVisibility(View.VISIBLE);
             findViewById(R.id.davi_points_cart_layout).setVisibility(View.VISIBLE);
             findViewById(R.id.pay_points_layout).setVisibility(View.VISIBLE);
