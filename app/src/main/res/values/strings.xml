@@ -531,6 +531,13 @@
     <string name="pay_card_ecard_account_blocked_error_title">CUENTA</string>
     <string name="pay_card_ecard_account_blocked_error_subtitle">BLOQUEADA</string>
     <string name="pay_card_ecard_account_blocked_error_text">La cuenta desde la cual desea pagar se encuentra bloqueada.</string>
+    <string name="login_dialog_title">INGRESE</string>
+    <string name="login_dialog_subtitle">SU CLAVE</string>
+    <string name="login_dialog_token_subtitle">Clave y token</string>
+    <string name="login_dialog_text">Ingrese su clave para completar\nla transacción:</string>
+    <string name="login_dialog_token_text">Ingrese su clave y token para completar\nla transacción:</string>
+    <string name="login_dialog_invalid_password">Debe ingresar su contraseña.</string>
+    <string name="login_dialog_invalid_token">Debe ingresar su token.</string>
 
 </resources>
 
