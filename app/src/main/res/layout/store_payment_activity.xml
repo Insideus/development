@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="MissingPrefix">
@@ -38,8 +37,8 @@
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_container"
-        android:layout_above="@+id/bottom_bar">
+        android:layout_above="@+id/bottom_bar"
+        android:layout_below="@id/title_container">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,9 +62,9 @@
                     android:id="@+id/brand_logo"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_centerVertical="true"
                     android:layout_margin="10dp"
                     android:scaleType="centerInside"
-                    android:layout_centerVertical="true"
                     android:src="@drawable/placeholder_small" />
 
                 <LinearLayout
@@ -135,26 +134,34 @@
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/store_largest_spacing"/>
+                    android:layout_marginTop="@dimen/store_largest_spacing" />
 
             </LinearLayout>
 
-            <EditText
-                fontPath="fonts/MyriadPro-Semibold.otf"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/white_rounded_corners_background"
                 android:layout_marginLeft="@dimen/store_small_spacing"
                 android:layout_marginRight="@dimen/store_small_spacing"
-                android:layout_marginTop="@dimen/store_medium_spacing"
-                android:background="@drawable/white_rounded_corners_background"
-                android:gravity="center"
-                android:hint="@string/discount_coupon"
-                android:paddingBottom="@dimen/store_large_spacing"
-                android:singleLine="true"
-                android:paddingTop="@dimen/store_large_spacing"
-                android:textColor="@color/red_base_color"
-                android:textColorHint="@color/common_dark_gray_color"
-                android:textSize="@dimen/store_category_title_size" />
+                android:layout_marginTop="@dimen/store_medium_spacing">
+
+                <TextView
+                    android:id="@+id/insert_discount_coupon"
+                    fontPath="fonts/MyriadPro-Semibold.otf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/store_large_spacing"
+                    android:paddingTop="@dimen/store_large_spacing"
+                    android:singleLine="true"
+                    android:visibility="gone"
+                    android:text="@string/discount_coupon"
+                    android:textColor="@color/red_base_color"
+                    android:textSize="@dimen/store_category_title_size" />
+
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -243,10 +250,10 @@
                     android:textSize="23dp" />
 
                 <TextView
-                    android:layout_marginTop="-4dp"
                     fontPath="fonts/MyriadPro-Regular.otf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="-4dp"
                     android:text="@string/store_payment_shop_price_title"
                     android:textColor="@color/common_dark_gray_color"
                     android:textSize="15dp" />
@@ -271,7 +278,7 @@
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:scaleType="centerInside"/>
+                    android:scaleType="centerInside" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -283,9 +290,9 @@
                         fontPath="fonts/MyriadPro-Regular.otf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:text="@string/card_numbers_replacement"
                         android:textColor="@color/text_light_gray_color"
-                        android:gravity="center_vertical"
                         android:textSize="@dimen/dotted_card_text_size" />
 
                     <TextView
@@ -294,8 +301,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/store_small_spacing"
-                        android:textColor="@color/common_dark_gray_color"
                         android:gravity="center_vertical"
+                        android:textColor="@color/common_dark_gray_color"
                         android:textSize="16dp" />
 
                 </LinearLayout>
@@ -381,20 +388,20 @@
 
                 <View
                     android:id="@+id/monthly_fee_disabler"
-                    android:clickable="true"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/overlay_disabled_color"/>
+                    android:background="@color/overlay_disabled_color"
+                    android:clickable="true" />
 
             </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
                 android:layout_marginLeft="@dimen/store_small_spacing"
                 android:layout_marginRight="@dimen/store_small_spacing"
                 android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
                 android:background="@drawable/white_rounded_corners_background"
                 android:orientation="vertical">
 
@@ -407,57 +414,57 @@
                         android:id="@+id/price_cart_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.21"
                         android:layout_gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:layout_weight="0.21"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/payment_cash_amount_icon"/>
+                            android:src="@drawable/payment_cash_amount_icon" />
 
                         <TextView
-                            fontPath="fonts/MyriadPro-Semibold.otf"
                             android:id="@+id/cash_amount"
-                            android:layout_marginTop="@dimen/store_medium_spacing"
+                            fontPath="fonts/MyriadPro-Semibold.otf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="14dp"
-                            android:textColor="@color/common_dark_gray_color"/>
+                            android:layout_marginTop="@dimen/store_medium_spacing"
+                            android:textColor="@color/common_dark_gray_color"
+                            android:textSize="14dp" />
 
                         <TextView
                             fontPath="fonts/MyriadPro-Regular.otf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/store_payment_cop_subtitle"
-                            android:textSize="13dp"
-                            android:textColor="@color/common_dark_gray_color"/>
+                            android:textColor="@color/common_dark_gray_color"
+                            android:textSize="13dp" />
 
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/pay_button"
                         android:layout_width="0dp"
-                        android:layout_weight="0.58"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/card_payment_pay_button_selector"
+                        android:layout_marginBottom="10dp"
                         android:layout_marginTop="@dimen/store_medium_spacing"
-                        android:layout_marginBottom="10dp"/>
+                        android:layout_weight="0.58"
+                        android:src="@drawable/card_payment_pay_button_selector" />
 
                     <RelativeLayout
                         android:id="@+id/pay_points_layout"
                         android:layout_width="0dp"
-                        android:layout_weight="0.58"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.58"
                         android:visibility="gone">
 
                         <com.davivienda.billetera.ui.controls.SeekArc
                             android:id="@+id/davipoints_cash_seekbar"
                             android:layout_width="150dp"
                             android:layout_height="150dp"
-                            android:layout_gravity="center"
                             android:layout_centerInParent="true"
+                            android:layout_gravity="center"
                             android:padding="30dp"
                             app:rotation="168"
                             app:startAngle="24"
@@ -473,11 +480,11 @@
                             android:id="@+id/pay_button_points"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/card_payment_pay_button_2"
+                            android:layout_centerInParent="true"
                             android:adjustViewBounds="true"
-                            android:scaleType="centerInside"
                             android:clickable="true"
-                            android:layout_centerInParent="true"/>
+                            android:scaleType="centerInside"
+                            android:src="@drawable/card_payment_pay_button_2" />
 
                     </RelativeLayout>
 
@@ -485,32 +492,32 @@
                         android:id="@+id/davi_points_cart_layout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.21"
                         android:layout_gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:layout_weight="0.21"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/payment_davi_points_logo"/>
+                            android:src="@drawable/payment_davi_points_logo" />
 
                         <TextView
-                            fontPath="fonts/MyriadPro-Semibold.otf"
                             android:id="@+id/davi_points_cart"
-                            android:layout_marginTop="@dimen/store_medium_spacing"
+                            fontPath="fonts/MyriadPro-Semibold.otf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="14dp"
-                            android:textColor="@color/common_dark_gray_color"/>
+                            android:layout_marginTop="@dimen/store_medium_spacing"
+                            android:textColor="@color/common_dark_gray_color"
+                            android:textSize="14dp" />
 
                         <TextView
                             fontPath="fonts/MyriadPro-Regular.otf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/store_payment_davipoints_subtitle"
-                            android:textSize="13dp"
-                            android:textColor="@color/common_dark_gray_color"/>
+                            android:textColor="@color/common_dark_gray_color"
+                            android:textSize="13dp" />
 
                     </LinearLayout>
 
