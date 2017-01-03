@@ -56,7 +56,8 @@ public class SharedPreferencesUtils {
     }
 
     public static User getUser() {
-        User user = new User(getInt(SP_USER_DAVI_POINTS),
+        //getInt(SP_USER_DAVI_POINTS)
+        User user = new User(200000,
                 getString(SP_USER_LAST_LOGIN),
                 getString(SP_USER_NAME),
                 getBoolean(SP_USER_CAN_USE_POINTS),

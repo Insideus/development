@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +107,8 @@ public class OrderPaymentActivity extends BaseActivity {
     }
 
     private void setDavipointsLayout() {
-        if(cart.getStore() != null && cart.getStore().getAcceptDavipoints() && SharedPreferencesUtils.getUser().getCanUseDavipoints() && SharedPreferencesUtils.getUser().getPointsInt() > 0) {
+        //if(cart.getStore() != null && cart.getStore().getAcceptDavipoints() && SharedPreferencesUtils.getUser().getCanUseDavipoints() && SharedPreferencesUtils.getUser().getPointsInt() > 0) {
+        if(true) {
             findViewById(R.id.price_cart_layout).setVisibility(View.VISIBLE);
             findViewById(R.id.davi_points_cart_layout).setVisibility(View.VISIBLE);
             findViewById(R.id.pay_points_layout).setVisibility(View.VISIBLE);
@@ -142,6 +144,7 @@ public class OrderPaymentActivity extends BaseActivity {
             @Override
             public void onProgressChanged(SeekArc seekArc, int progress, boolean fromUser) {
                 if(fromUser) {
+                    Log.d("Progress", String.valueOf(progress));
                     updatePriceAndDavipoints(progress);
                 }
             }
@@ -156,17 +159,9 @@ public class OrderPaymentActivity extends BaseActivity {
 
             }
         });
-        Double cartPrice = cart.getCartPrice();
-        if(cartPrice != null) {
-            Integer currentDaviPointAmount = DavipointUtils.toDavipoints(cartPrice.intValue(), SharedPreferencesUtils.getPointsEquivalence());
-            if(currentDaviPointAmount > SharedPreferencesUtils.getUser().getPointsInt()) {
-                seekBar.setMax(SharedPreferencesUtils.getUser().getPointsInt());
-            } else {
-                seekBar.setMax(currentDaviPointAmount);
-            }
-            seekBar.setProgress(cart.getCartDavipoints());
-            updatePriceAndDavipoints(cart.getCartDavipoints());
-        }
+        seekBar.setMax(100);
+        seekBar.setProgress(cart.getCartDavipoints());
+        updatePriceAndDavipoints(cart.getCartDavipoints());
     }
 
     private void setPriceLayout() {
@@ -176,17 +171,32 @@ public class OrderPaymentActivity extends BaseActivity {
         }
     }
 
-    private void updatePriceAndDavipoints(int davipointsQuantitySelected) {
+    private void updatePriceAndDavipoints(int progress) {
+        int davipointsQuantitySelected = getDavipointsForProgress(progress);
         cart.setCartDavipoints(davipointsQuantitySelected);
         int davipointsEquivalence = SharedPreferencesUtils.getPointsEquivalence();
         Integer davipointCashAmount = davipointsQuantitySelected * davipointsEquivalence;
         Double cashAmount = cart.getCartPrice() - davipointCashAmount;
-
+        if(cashAmount < 0) {
+            cashAmount = 0d;
+        }
         TextView cashAmountTv = (TextView) findViewById(R.id.cash_amount);
         cashAmountTv.setText(CurrencyUtils.getCurrencyForString(cashAmount));
 
         TextView davipointsAmountTv = (TextView) findViewById(R.id.davi_points_cart);
         davipointsAmountTv.setText(String.valueOf(davipointsQuantitySelected));
+    }
+
+    private int getDavipointsForProgress(int progress) {
+        int selectedDavipoints = 0;
+        Double cartPrice = cart.getCartPrice();
+        int maxDavipoints = DavipointUtils.toDavipoints(cartPrice.intValue(), SharedPreferencesUtils.getPointsEquivalence());
+
+        if(maxDavipoints > SharedPreferencesUtils.getUser().getPointsInt()) {
+            maxDavipoints = SharedPreferencesUtils.getUser().getPointsInt();
+        }
+        selectedDavipoints = (maxDavipoints * progress) / 100;
+        return selectedDavipoints;
     }
 
     private void setStoreLayout() {

@@ -270,7 +270,7 @@ public class MyCardsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         updateDaviPoints();
-        if (refresh) {
+        if(refresh) {
             refreshCardList();
         }
     }
