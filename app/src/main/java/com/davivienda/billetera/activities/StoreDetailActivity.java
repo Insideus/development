@@ -108,7 +108,6 @@ public class StoreDetailActivity extends BaseActivity {
                     return;
                 }
                 try {
-                    //waze://?ll=<lat>,<lon>&navigate=yes
                     String url = "waze://?ll=";
                     url += String.valueOf(store.getLatitude()) + "," + String.valueOf(store.getLongitude() + "&navigate=yes");
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
