@@ -22,6 +22,7 @@ import com.davivienda.billetera.model.ServiceException;
 import com.davivienda.billetera.service.Service;
 import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.tasks.DaviPayTask;
+import com.davivienda.billetera.utils.DialogUtil;
 
 public class ActionDialogActivity extends BaseActivity implements BaseActivity.OtpCodeReceived {
 
@@ -60,6 +61,9 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
     public static final String LOGOUT_REQUEST = "logout request";
     public static final String NEXT_TO_EXPIRE = "next to expire";
 
+    public static final String IS_COUPON_INSERT = "coupon insert";
+    public static final String INSERTED_COUPON = "inserted coupon";
+
     public static final int RESULT_FAILED = -2;
 
     private String title;
@@ -83,6 +87,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
     private Boolean loginDataCheck;
     private Boolean logoutRequest;
     private boolean nextToExpire;
+    private boolean couponInsert;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,6 +115,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             loginDataCheck = savedInstanceState.getBoolean(LOGIN_DATA_CHECK, false);
             logoutRequest = savedInstanceState.getBoolean(LOGOUT_REQUEST, false);
             nextToExpire = savedInstanceState.getBoolean(NEXT_TO_EXPIRE, false);
+            couponInsert = savedInstanceState.getBoolean(IS_COUPON_INSERT, false);
         } else {
             title = getIntent().getStringExtra(TITLE_KEY);
             subtitle = getIntent().getStringExtra(SUBTITLE_KEY);
@@ -132,6 +138,7 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             loginDataCheck = getIntent().getBooleanExtra(LOGIN_DATA_CHECK, false);
             logoutRequest = getIntent().getBooleanExtra(LOGOUT_REQUEST, false);
             nextToExpire = getIntent().getBooleanExtra(NEXT_TO_EXPIRE, false);
+            couponInsert = getIntent().getBooleanExtra(IS_COUPON_INSERT, false);
         }
         setLayouts();
         animateOpening();
@@ -234,6 +241,10 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
             setNextToExpireLabel(acceptButton, ignoreButton);
         }
 
+        if(couponInsert){
+            setCouponInsertLabel(acceptButton, ignoreButton);
+        }
+
         TextView titleTv = (TextView) findViewById(R.id.toast_title);
         if (title != null && title.length() > 0) {
             titleTv.setText(title);
@@ -252,6 +263,26 @@ public class ActionDialogActivity extends BaseActivity implements BaseActivity.O
         } else {
             textTv.setVisibility(LinearLayout.GONE);
         }
+    }
+
+    private void setCouponInsertLabel(TextView acceptButton, TextView ignoreButton) {
+        acceptButton.setText(getString(R.string.coupon_insert_accept_button));
+        ignoreButton.setVisibility(View.GONE);
+        final TextView couponCode = (TextView) findViewById(R.id.coupon_code);
+        couponCode.setVisibility(View.VISIBLE);
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(TextUtils.isEmpty(couponCode.getText())){
+                    DialogUtil.toast(ActionDialogActivity.this,getString(R.string.login_invalid_inputs_error_title),
+                            getString(R.string.login_invalid_inputs_error_subtitle),
+                            getString(R.string.login_invalid_insert_coupon_error));
+                }else{
+                    setResult(RESULT_OK, new Intent().putExtra(INSERTED_COUPON, couponCode.getText().toString()));
+                    finish();
+                }
+            }
+        });
     }
 
     private void setNextToExpireLabel(TextView acceptButton, TextView ignoreButton) {

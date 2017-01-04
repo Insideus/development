@@ -538,6 +538,15 @@
     <string name="login_dialog_token_text">Ingrese su clave y token para completar\nla transacción:</string>
     <string name="login_dialog_invalid_password">Debe ingresar su contraseña.</string>
     <string name="login_dialog_invalid_token">Debe ingresar su token.</string>
+    <string name="order_payment_coupon_insert_request_content">Ingrese la palabra clave para\nobtener el descuento</string>
+    <string name="order_payment_coupon_insert_request_title">Cupón de</string>
+    <string name="coupon_insert_accept_button">Aplicar cupón</string>
+    <string name="login_invalid_insert_coupon_error">Debe ingresar un cupón</string>
+    <string name="order_payment_coupon_insert_request_subtitle">DESCUENTO</string>
+    <string name="store_payment_activity_discount_title">Descuento</string>
+    <string name="store_payment_activity_subtotal_title">Subtotal</string>
+    <string name="store_payment_activity_total_title">Total</string>
+    <string name="order_payment_coupon_invalid_error">El cupón ingresado no es válido.</string>
 
 </resources>
 

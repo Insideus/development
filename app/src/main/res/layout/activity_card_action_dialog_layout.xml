@@ -119,6 +119,24 @@
             android:textColor="@color/red_base_color"
             android:textSize="@dimen/number_code_text_size" />
 
+        <EditText
+            android:id="@+id/coupon_code"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/code_number_background"
+            android:gravity="center"
+            android:inputType="textNoSuggestions|textCapCharacters"
+            android:visibility="gone"
+            android:textCursorDrawable="@null"
+            android:textAllCaps="true"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/red_base_color"
+            android:textSize="40dp" />
+
         <!--CheckBox
             android:id="@+id/terms_and_conditions"
             fontPath="fonts/MyriadPro-Regular.otf"

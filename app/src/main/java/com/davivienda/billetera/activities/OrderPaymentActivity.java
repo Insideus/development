@@ -1,6 +1,7 @@
 package com.davivienda.billetera.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -41,6 +42,7 @@ public class OrderPaymentActivity extends BaseActivity {
 
     public static final String CART_KEY = "cart_key";
     public static final String PRE_CHECKOUT_DATA_KEY = "pre_checkout_data_key";
+    private static final int COUPON_INSERT_REQUEST = 501;
 
     private Cart cart;
     private PreCheckout preCheckoutData;
@@ -51,6 +53,10 @@ public class OrderPaymentActivity extends BaseActivity {
     private TextView fourDigits;
     private TextView monthlyFee;
     private View monthlyFeeDisabler;
+
+    private View couponButton;
+    private View acceptedCouponContainer;
+    private TextView discountAmount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,6 +102,7 @@ public class OrderPaymentActivity extends BaseActivity {
 
     private void setLayouts() {
         setStoreLayout();
+        setCouponLayouts();
         setRecycler();
         setSeekBar();
         setPriceLayout();
@@ -104,6 +111,54 @@ public class OrderPaymentActivity extends BaseActivity {
         setPayButton();
         scrollUp();
         setDavipointsLayout();
+    }
+
+    private void setCouponLayouts() {
+        couponButton = findViewById(R.id.insert_discount_coupon);
+        discountAmount = (TextView) findViewById(R.id.discount_amount);
+        setDiscountAmount(0);
+        acceptedCouponContainer = findViewById(R.id.accepted_coupon_container);
+        findViewById(R.id.remove_code).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setDiscountAmount(0);
+                acceptedCouponContainer.setVisibility(View.GONE);
+                couponButton.setVisibility(View.VISIBLE);
+            }
+        });
+        couponButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OrderPaymentActivity.this, ActionDialogActivity.class);
+                intent.putExtra(ActionDialogActivity.IS_COUPON_INSERT, true);
+                intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.order_payment_coupon_insert_request_title));
+                intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.order_payment_coupon_insert_request_subtitle));
+                intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.order_payment_coupon_insert_request_content));
+                startActivityForResult(intent, COUPON_INSERT_REQUEST);
+            }
+        });
+    }
+
+    private void setDiscountAmount(double amount) {
+        if(amount == 0){
+            discountAmount.setText("$".concat(CurrencyUtils.getCurrencyForString(amount)));
+        }else{
+            discountAmount.setText("-$".concat(CurrencyUtils.getCurrencyForString(amount)));
+        }
+        TextView totalAmount = (TextView) findViewById(R.id.cart_price);
+        double total = cart.getCartPrice() - amount;
+        total = total <= 0 ? 0 : total;
+        totalAmount.setText("$".concat(CurrencyUtils.getCurrencyForString(total)));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == COUPON_INSERT_REQUEST && resultCode == RESULT_OK && data != null &&
+                !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.INSERTED_COUPON))){
+            String couponCode = data.getStringExtra(ActionDialogActivity.INSERTED_COUPON);
+            new CouponCheckTask(couponCode).execute();
+        }
     }
 
     private void setDavipointsLayout() {
@@ -164,7 +219,7 @@ public class OrderPaymentActivity extends BaseActivity {
     }
 
     private void setPriceLayout() {
-        TextView cartPrice = (TextView) findViewById(R.id.cart_price);
+        TextView cartPrice = (TextView) findViewById(R.id.subtotal_amount);
         if(cart.getCartPrice() != null) {
             cartPrice.setText("$".concat(CurrencyUtils.getCurrencyForString(cart.getCartPrice())));
         }
@@ -577,4 +632,47 @@ public class OrderPaymentActivity extends BaseActivity {
         updateDaviPoints();
     }
 
+    private class CouponCheckTask extends AsyncTask<Void, Void, Void>{
+
+        private double discount = 100000;
+        private final String couponCode;
+
+        CouponCheckTask(String couponCode) {
+            this.couponCode = couponCode;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoading();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            hideLoading();
+            if(discount != -1) {
+                ((TextView) findViewById(R.id.code)).setText(couponCode);
+                acceptedCouponContainer.setVisibility(View.VISIBLE);
+                couponButton.setVisibility(View.GONE);
+                setDiscountAmount(discount);
+            }else{
+                setDiscountAmount(0);
+                DialogUtil.toast(OrderPaymentActivity.this,
+                        getString(R.string.generic_service_error_title),
+                        "",
+                        getString(R.string.order_payment_coupon_invalid_error));
+            }
+        }
+    }
 }
