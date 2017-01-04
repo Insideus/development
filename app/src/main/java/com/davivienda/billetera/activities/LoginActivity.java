@@ -13,6 +13,7 @@ import com.davivienda.billetera.model.LoginResponse;
 import com.davivienda.billetera.model.LoginSteps;
 import com.davivienda.billetera.model.PersonIdType;
 import com.davivienda.billetera.model.ServiceException;
+import com.davivienda.billetera.model.UserLoginType;
 import com.davivienda.billetera.service.Service;
 import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.tasks.DaviPayTask;
@@ -201,6 +202,7 @@ public class LoginActivity extends LoginBaseActivity {
 
         @Override
         protected void onPostExecute(LoginResponse response) {
+            Session.getCurrentSession(getApplicationContext()).setLoginUserData(personId, personIdType, UserLoginType.NORMAL.getType());
             super.onPostExecute(response);
             if (!processedError) {
                 //Success login.
@@ -209,7 +211,6 @@ public class LoginActivity extends LoginBaseActivity {
                 if (step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
-                //new GetUserTask(LoginActivity.this, response.getSid()).execute();
                 getUser();
                 goToRegistrationStep(step);
             } else if (errorCode != null) {
@@ -220,6 +221,7 @@ public class LoginActivity extends LoginBaseActivity {
                 }
             } else {
                 resetLayouts();
+                Session.getCurrentSession(getApplicationContext()).removeUserData();
             }
         }
 

@@ -7,17 +7,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.model.LoginResponse;
 import com.davivienda.billetera.model.LoginSteps;
 import com.davivienda.billetera.model.PersonIdType;
 import com.davivienda.billetera.model.ServiceException;
+import com.davivienda.billetera.model.UserLoginType;
 import com.davivienda.billetera.service.Service;
 import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.tasks.DaviPayTask;
 import com.davivienda.billetera.utils.DialogUtil;
+
+import java.util.ArrayList;
 
 public class LoginTokenActivity extends LoginBaseActivity {
 
@@ -215,16 +216,18 @@ public class LoginTokenActivity extends LoginBaseActivity {
         @Override
         protected void onPostExecute(LoginResponse response) {
             resetLayoutOnFail();
+            Session.getCurrentSession(getApplicationContext()).setLoginUserData(personId, personIdType, UserLoginType.TOKEN.getType());
             super.onPostExecute(response);
             if(!processedError) {
                 //Success login.
                 LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
-                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(),
-                        response.getAccountStatus());
+                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(), response.getAccountStatus());
                 if (step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
                 goToRegistrationStep(step);
+            } else {
+                Session.getCurrentSession(getApplicationContext()).removeUserData();
             }
         }
 
@@ -269,17 +272,19 @@ public class LoginTokenActivity extends LoginBaseActivity {
 
         @Override
         protected void onPostExecute(LoginResponse response) {
+            Session.getCurrentSession(getApplicationContext()).setLoginUserData(personId, personIdType, UserLoginType.TOKEN.getType());
             resetLayoutOnFail();
             super.onPostExecute(response);
             if(!processedError) {
                 //Success login.
                 LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
-                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(),
-                        response.getAccountStatus());
+                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(), response.getAccountStatus());
                 if (step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
                 goToRegistrationStep(step);
+            } else {
+                Session.getCurrentSession(getApplicationContext()).removeUserData();
             }
         }
     }

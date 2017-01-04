@@ -211,6 +211,10 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         DialogUtil.invalidSessionToast(this);
     }
 
+    public void showInvalidSessionError() {
+        DialogUtil.invalidSessionToast(this);
+    }
+
     public void processErrorAndContinue(ErrorMessages error, String additionalParam) {
         if (error != null) {
             switch (error) {

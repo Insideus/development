@@ -55,7 +55,6 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="@string/help_dialog_activity_text"
             android:textColor="@color/gray_text_color"
             android:textSize="@dimen/common_text_size" />
 

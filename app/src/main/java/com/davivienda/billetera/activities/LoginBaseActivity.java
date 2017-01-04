@@ -1,17 +1,12 @@
 package com.davivienda.billetera.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.model.ErrorMessages;
@@ -19,14 +14,10 @@ import com.davivienda.billetera.model.LoginResponse;
 import com.davivienda.billetera.model.LoginSteps;
 import com.davivienda.billetera.model.PersonIdType;
 import com.davivienda.billetera.model.ServiceException;
-import com.davivienda.billetera.model.User;
 import com.davivienda.billetera.service.Service;
 import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.tasks.DaviPayTask;
-import com.davivienda.billetera.tasks.GetUserTask;
-import com.davivienda.billetera.tasks.TaskCallback;
 import com.davivienda.billetera.utils.DialogUtil;
-import com.davivienda.billetera.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 
@@ -50,33 +41,6 @@ public class LoginBaseActivity extends BaseActivity {
             super.onBackPressed();
         }
     }
-
-    /*
-    public class GetUserTask extends DaviPayTask<User> {
-
-        private String sid;
-
-        GetUserTask(BaseActivity activity, String sid) {
-            super(activity);
-            this.sid = sid;
-        }
-
-        @Override
-        protected User doInBackground(Void... params) {
-            try {
-                return Service.getUser(sid);
-            }  catch (ServiceException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(User resultingUser) {
-            SharedPreferencesUtils.setUser(resultingUser);
-        }
-    }
-    */
 
     public void showCombo(){
         final ComboAdapter adapter = new ComboAdapter(Session.getCurrentSession(this).getPersonIdTypes(), selectedIdType);
@@ -259,11 +223,19 @@ public class LoginBaseActivity extends BaseActivity {
             expiredOtpPasswordIntent.putExtra(PasswordConfirmationActivity.EXPIRED_PASSWORD_KEY, true);
             startActivity(expiredOtpPasswordIntent);
         }
-        if(requestCode == NEW_DEVICE_DETECTED && resultCode == RESULT_OK){
-            registerDevice();
+        if(requestCode == NEW_DEVICE_DETECTED ) {
+            if(resultCode == RESULT_OK) {
+                registerDevice();
+            } else {
+                Session.getCurrentSession(this).removeUserData();
+            }
         }
-        if(requestCode == NEW_DEVICE_OTP_VALIDATION && resultCode == RESULT_OK){
-            goToNewDeviceOTPScreen();
+        if(requestCode == NEW_DEVICE_OTP_VALIDATION) {
+            if (resultCode == RESULT_OK) {
+                goToNewDeviceOTPScreen();
+            } else {
+                Session.getCurrentSession(this).removeUserData();
+            }
         }
     }
 
@@ -345,14 +317,15 @@ public class LoginBaseActivity extends BaseActivity {
             if(!processedError) {
                 //Success login.
                 LoginSteps step = LoginSteps.getStep(response.getAccountStatus());
-                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(),
-                        response.getAccountStatus());
+                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(), response.getAccountStatus());
                 if (step == null) {
                     step = LoginSteps.REGISTRATION_COMPLETED;
                 }
                 //new GetUserTask(LoginBaseActivity.this, response.getSid()).execute();
                 getUser();
                 goToRegistrationStep(step);
+            } else {
+                Session.getCurrentSession(LoginBaseActivity.this).removeUserData();
             }
         }
 

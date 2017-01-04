@@ -3,17 +3,16 @@ package com.davivienda.billetera.session;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.davivienda.billetera.model.BankProduct;
+import com.davivienda.billetera.model.Country;
+import com.davivienda.billetera.model.PersonIdType;
+import com.davivienda.billetera.model.UserInterest;
 import com.facebook.login.LoginManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import com.davivienda.billetera.model.BankProduct;
-import com.davivienda.billetera.model.Country;
-import com.davivienda.billetera.model.PersonIdType;
-import com.davivienda.billetera.model.UserInterest;
 
 public class Session {
 
@@ -25,6 +24,9 @@ public class Session {
     private static String PREF_SESSION_KEY = "SessionKey";
     private static String PENDING_STEP = "PendingStep";
     private static String PREF_GCM_TOKEN_KEY = "GcmTokenKey";
+    private static String PREF_USER_ID_KEY = "UserIdKey";
+    private static String PREF_USER_ID_TYPE_KEY = "UserIdTypeKey";
+    private static String PREF_USER_LOGIN_TYPE_KEY = "UserLoginTypeKey";
 
     private static Session instance = null;
     private SharedPreferences sharedPreferences;
@@ -35,6 +37,9 @@ public class Session {
     private String sid;
     private String pendingStep;
     private String gcmToken;
+    private String userId;
+    private String userIdType;
+    private String userLoginType;
 
     private Session() {
 
@@ -47,6 +52,9 @@ public class Session {
             instance.sid = instance.sharedPreferences.getString(PREF_SESSION_KEY, null);
             instance.pendingStep = instance.sharedPreferences.getString(PENDING_STEP, null);
             instance.gcmToken = instance.sharedPreferences.getString(PREF_GCM_TOKEN_KEY, null);
+            instance.userId = instance.sharedPreferences.getString(PREF_USER_ID_KEY, null);
+            instance.userIdType = instance.sharedPreferences.getString(PREF_USER_ID_TYPE_KEY, null);
+            instance.userLoginType = instance.sharedPreferences.getString(PREF_USER_LOGIN_TYPE_KEY, null);
             try {
                 String jsonIdTypes = instance.sharedPreferences.getString(PERSON_ID_TYPES, null);
                 if (jsonIdTypes != null) {
@@ -104,10 +112,16 @@ public class Session {
         editor.remove(PREF_SESSION_KEY);
         editor.remove(PENDING_STEP);
         editor.remove(PREF_GCM_TOKEN_KEY);
+        editor.remove(PREF_USER_ID_KEY);
+        editor.remove(PREF_USER_ID_TYPE_KEY);
+        editor.remove(PREF_USER_LOGIN_TYPE_KEY);
         editor.apply();
         this.sid = null;
         this.pendingStep = null;
         this.gcmToken = null;
+        this.userId = null;
+        this.userIdType = null;
+        this.userLoginType = null;
         LoginManager.getInstance().logOut();
     }
 
@@ -175,6 +189,56 @@ public class Session {
 
     public boolean hasPengingStep() {
         return instance.pendingStep != null;
+    }
+
+    public String getUserId() {
+        return instance.userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_USER_ID_KEY, userId);
+        editor.apply();
+    }
+
+    public String getUserIdType() {
+        return instance.userIdType;
+    }
+
+    public void setUserIdType(String userIdType) {
+        this.userIdType = userIdType;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_USER_ID_TYPE_KEY, userIdType);
+        editor.apply();
+    }
+
+    public String getUserLoginType() {
+        return instance.userLoginType;
+    }
+
+    public void setUserLoginType(String userLoginType) {
+        this.userLoginType = userLoginType;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_USER_LOGIN_TYPE_KEY, userLoginType);
+        editor.apply();
+    }
+
+    public void setLoginUserData(String userId, String userIdType, String userLoginType) {
+        setUserId(userId);
+        setUserIdType(userIdType);
+        setUserLoginType(userLoginType);
+    }
+
+    public void removeUserData() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(PREF_USER_ID_KEY);
+        editor.remove(PREF_USER_ID_TYPE_KEY);
+        editor.remove(PREF_USER_LOGIN_TYPE_KEY);
+        editor.apply();
+        this.userId = null;
+        this.userIdType = null;
+        this.userLoginType = null;
     }
 
 }
