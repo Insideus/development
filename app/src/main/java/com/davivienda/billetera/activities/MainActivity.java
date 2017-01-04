@@ -184,7 +184,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.otp_pay) {
-            startActivity(new Intent(this, OtpPaymentActivity.class));
+            startActivity(new Intent(this, OtpStoreListActivity.class).putExtra(OtpStoreListActivity.LOCATION_KEY, latLng));
             return true;
         }
         return super.onOptionsItemSelected(item);

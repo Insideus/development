@@ -96,6 +96,7 @@ public class Service {
     //Store
     private static final String STORE_LIST = "/store/get_list";
     private static final String STORE_BY_ID = "/store/get_menu";
+    private static final String STORE_OTP_LIST = "/store/get_otp_list";
 
     //Order
     private static final String PRE_CHECKOUT = "/order/pre_checkout";
@@ -2141,4 +2142,50 @@ public class Service {
         return urlConnection;
     }
 
+    public static List<Store> getStoresOtp(String sid, String latitude, String longitude) throws ServiceException {
+        List<Store> response = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(STORE_OTP_LIST, sid);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            if(!TextUtils.isEmpty(latitude) && !TextUtils.isEmpty(longitude)) {
+                OutputStream os = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+                List<Pair<String, String>> params = new ArrayList<>();
+                Pair<String, String> latitudeParam = new Pair("latitude", latitude);
+                params.add(latitudeParam);
+                Pair<String, String> longitudeParam = new Pair("longitude", longitude);
+                params.add(longitudeParam);
+
+                writer.write(getQuery(params));
+                writer.flush();
+                writer.close();
+                os.close();
+            }
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                if (json.has("error") && !json.getBoolean("error")) {
+                    response = Store.fromJsonArray(responseJson.getJSONArray("stores"));
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
 }
