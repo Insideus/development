@@ -12,15 +12,11 @@ import com.davivienda.billetera.model.ErrorMessages;
 import com.davivienda.billetera.model.LoginResponse;
 import com.davivienda.billetera.model.LoginSteps;
 import com.davivienda.billetera.model.PersonIdType;
-import com.davivienda.billetera.model.ServiceException;
 import com.davivienda.billetera.model.UserLoginType;
-import com.davivienda.billetera.service.Service;
 import com.davivienda.billetera.session.Session;
-import com.davivienda.billetera.tasks.DaviPayTask;
 import com.davivienda.billetera.tasks.GetInitDataTask;
 import com.davivienda.billetera.tasks.TaskCallback;
 import com.davivienda.billetera.utils.DialogUtil;
-import com.davivienda.billetera.utils.EncryptionUtils;
 import com.davivienda.billetera.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
@@ -168,36 +164,10 @@ public class LoginActivity extends LoginBaseActivity {
         }
     }
 
-    public class LoginTask extends DaviPayTask<LoginResponse> {
-
-        String personId;
-        String personIdType;
-        String password;
+    public class LoginTask extends com.davivienda.billetera.tasks.LoginTask {
 
         public LoginTask(BaseActivity activity, String personId, String personIdType, String password) {
-            super(activity);
-            this.personId = personId;
-            this.personIdType = personIdType;
-            this.password = password;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showLoading();
-        }
-
-        @Override
-        protected LoginResponse doInBackground(Void... params) {
-            LoginResponse response = null;
-            try {
-                String encryptedPassword = EncryptionUtils.encryptPassword(LoginActivity.this, password);
-                response = Service.login(personId, personIdType, encryptedPassword, getTodo1Data());
-            } catch (ServiceException e) {
-                errorCode = e.getErrorCode();
-                additionalData = e.getAdditionalData();
-            }
-            return response;
+            super(activity, personId, personIdType, password);
         }
 
         @Override

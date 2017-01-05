@@ -50,7 +50,7 @@
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:paddingLeft="10dp"
@@ -61,7 +61,7 @@
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
@@ -71,15 +71,16 @@
             android:maxLength="8"
             android:padding="10dp"
             android:singleLine="true"
+            android:hint="@string/login_password_hint"
+            android:textColorHint="@color/gray_text_color"
             android:textColor="@color/red_base_color"
             android:textCursorDrawable="@null"
-            android:textSize="@dimen/number_code_text_size" />
+            android:textSize="@dimen/login_input_text_size" />
 
         <EditText
             android:id="@+id/token_code"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:visibility="gone"
+            android:layout_height="50dp"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
@@ -90,8 +91,11 @@
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/red_base_color"
+            android:hint="@string/login_token_hint"
+            android:textColorHint="@color/gray_text_color"
             android:textCursorDrawable="@null"
-            android:textSize="@dimen/number_code_text_size" />
+            android:textSize="@dimen/login_input_text_size"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/accept_button"
@@ -101,7 +105,7 @@
             android:layout_gravity="start"
             android:layout_marginLeft="@dimen/button_without_cardview_padding"
             android:layout_marginRight="@dimen/button_without_cardview_padding"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/red_button_background"
             android:padding="15dp"
             android:text="@string/my_cards_pay_button_text"
@@ -123,7 +127,8 @@
             android:text="@string/login_forgot_password_button_text"
             android:textColor="@color/login_button_color"
             android:textSize="@dimen/login_input_text_size"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/ignore_button"

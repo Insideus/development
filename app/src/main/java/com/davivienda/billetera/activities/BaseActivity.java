@@ -55,6 +55,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     public static final int SHOW_CREATED_ECARD_POPUP = 182;
     private static final int LOGOUT_REQUEST = 183;
     protected static final int CLOSE_ACTIVITY_REQUEST = 100;
+    protected static final int LOGIN_DIALOG_ACTIVITY_REQUEST = 198;
     public static String HELP_URL = "http://ayuda_davipay.paymentez.com/support/home";
     public static String GOOGLE_DOCS_URL = "http://docs.google.com/gview?embedded=true&url=";
     public static String TERMS_AND_CONDITIONS_URL = "https://s3.amazonaws.com/davipay.paymentez.com/REGLAMENTO+APP+DAVIPAY.pdf";
@@ -208,7 +209,17 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     }
 
     public void handleInvalidSessionError() {
-        DialogUtil.invalidSessionToast(this);
+        if(Session.getCurrentSession(this).canLoginWithPopup()) {
+            showLoginPopup();
+        } else {
+            showInvalidSessionError();
+        }
+    }
+
+    public void showLoginPopup() {
+        Intent intent = new Intent(this, LoginDialogActivity.class);
+        startActivityForResult(intent, LOGIN_DIALOG_ACTIVITY_REQUEST);
+        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
     public void showInvalidSessionError() {
@@ -619,6 +630,9 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         }
         if(requestCode == LOGOUT_REQUEST && resultCode == RESULT_OK){
             new LogoutTask(this).execute();
+        }
+        if(requestCode == LOGIN_DIALOG_ACTIVITY_REQUEST && resultCode != RESULT_OK){
+            showInvalidSessionError();
         }
     }
 

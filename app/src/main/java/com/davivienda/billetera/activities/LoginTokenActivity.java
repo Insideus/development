@@ -142,8 +142,11 @@ public class LoginTokenActivity extends LoginBaseActivity {
                     getString(R.string.login_token_invalid_inputs_subtitle),
                     getString(R.string.login_token_invalid_inputs_text));
         } else {
-            new LoginWithTokenTask(this, personIdNumber.getText().toString(), String.valueOf(selectedIdType.getId()),
-                    virtualPasswordText.getText().toString(), token.getText().toString()).execute();
+            new LoginWithTokenTask(this,
+                    personIdNumber.getText().toString(),
+                    String.valueOf(selectedIdType.getId()),
+                    virtualPasswordText.getText().toString(),
+                    token.getText().toString()).execute();
         }
     }
 
@@ -237,37 +240,10 @@ public class LoginTokenActivity extends LoginBaseActivity {
         token.setText("");
     }
 
-    public class LoginWithTokenTask extends DaviPayTask<LoginResponse> {
-
-        String personId;
-        String personIdType;
-        String password;
-        String token;
+    public class LoginWithTokenTask extends com.davivienda.billetera.tasks.LoginWithTokenTask {
 
         public LoginWithTokenTask(BaseActivity activity, String personId, String personIdType, String password, String token) {
-            super(activity);
-            this.personId = personId;
-            this.personIdType = personIdType;
-            this.password = password;
-            this.token = token;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showLoading();
-        }
-
-        @Override
-        protected LoginResponse doInBackground(Void... params) {
-            LoginResponse response = null;
-            try {
-                response = Service.loginWithToken(personId, personIdType, password, token, getTodo1Data());
-            }  catch (ServiceException e) {
-                errorCode = e.getErrorCode();
-                additionalData = e.getAdditionalData();
-            }
-            return response;
+            super(activity, personId, personIdType, password, token);
         }
 
         @Override
@@ -287,6 +263,7 @@ public class LoginTokenActivity extends LoginBaseActivity {
                 Session.getCurrentSession(getApplicationContext()).removeUserData();
             }
         }
+
     }
 
 }

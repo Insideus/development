@@ -1,6 +1,5 @@
 package com.davivienda.billetera.activities;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -8,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.davivienda.billetera.R;
+import com.davivienda.billetera.model.LoginResponse;
 import com.davivienda.billetera.model.UserLoginType;
 import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.utils.DialogUtil;
@@ -71,7 +71,18 @@ public class LoginDialogActivity extends BaseActivity {
                             getString(R.string.login_invalid_inputs_error_subtitle),
                             errors);
                 } else {
-                    new RequestTask().execute();
+                    if(needsToken) {
+                        new LoginWithTokenTask(LoginDialogActivity.this,
+                                Session.getCurrentSession(getApplicationContext()).getUserId(),
+                                Session.getCurrentSession(getApplicationContext()).getUserIdType(),
+                                password.getText().toString(),
+                                tokenCode.getText().toString()).execute();
+                    } else {
+                        new LoginTask(LoginDialogActivity.this,
+                                Session.getCurrentSession(getApplicationContext()).getUserId(),
+                                Session.getCurrentSession(getApplicationContext()).getUserIdType(),
+                                password.getText().toString()).execute();
+                    }
                 }
             }
         });
@@ -100,10 +111,40 @@ public class LoginDialogActivity extends BaseActivity {
         finish();
     }
 
-    private class RequestTask extends AsyncTask<Void, Void, Void>{
-        @Override
-        protected Void doInBackground(Void... voids) {
-            return null;
+    public class LoginTask extends com.davivienda.billetera.tasks.LoginTask {
+
+        public LoginTask(BaseActivity activity, String personId, String personIdType, String password) {
+            super(activity, personId, personIdType, password);
         }
+
+        @Override
+        protected void onPostExecute(LoginResponse response) {
+            if(response != null && response.getSid() != null && response.getSid().length() > 0) {
+                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(), response.getAccountStatus());
+                finish(RESULT_OK);
+            } else {
+                finish(RESULT_CANCELED);
+            }
+        }
+
     }
+
+    public class LoginWithTokenTask extends com.davivienda.billetera.tasks.LoginWithTokenTask {
+
+        public LoginWithTokenTask(BaseActivity activity, String personId, String personIdType, String password, String token) {
+            super(activity, personId, personIdType, password, token);
+        }
+
+        @Override
+        protected void onPostExecute(LoginResponse response) {
+            if(response != null && response.getSid() != null && response.getSid().length() > 0) {
+                Session.getCurrentSession(getApplicationContext()).loginUser(response.getSid(), response.getAccountStatus());
+                finish(RESULT_OK);
+            } else {
+                finish(RESULT_CANCELED);
+            }
+        }
+
+    }
+
 }

@@ -241,4 +241,8 @@ public class Session {
         this.userLoginType = null;
     }
 
+    public boolean canLoginWithPopup() {
+        return instance.userId != null && instance.userIdType != null && instance.userLoginType != null;
+    }
+
 }

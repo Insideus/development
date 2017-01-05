@@ -168,9 +168,9 @@ public class ToastDialogActivity extends BaseActivity {
     private void goToLoginActivity() {
         Session.getCurrentSession(this).logout();
         SharedPreferencesUtils.logOut();
-        Intent facebookIntent = new Intent(this, LoginActivity.class);
-        facebookIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(facebookIntent);
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loginIntent);
     }
 
 
