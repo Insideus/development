@@ -12,11 +12,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.liulishuo.magicprogresswidget.MagicProgressBar;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.model.Card;
 import com.davivienda.billetera.model.ServiceException;
@@ -25,6 +20,10 @@ import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.tasks.DaviPayTask;
 import com.davivienda.billetera.utils.DialogUtil;
 import com.davivienda.billetera.utils.ImageUtils;
+import com.liulishuo.magicprogresswidget.MagicProgressBar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OtpPaymentActivity extends BaseActivity {
 
@@ -46,7 +45,6 @@ public class OtpPaymentActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.otp_payment_activity);
         setToolbar(R.id.toolbar, true, getString(R.string.main_activity_title));
-        new GetCardsToPay(this).execute();
     }
 
     @Override
@@ -314,6 +312,7 @@ public class OtpPaymentActivity extends BaseActivity {
         super.onResume();
         updateDaviPoints();
         showExpiredMessage = true;
+        new GetCardsToPay(this).execute();
     }
 
     @Override

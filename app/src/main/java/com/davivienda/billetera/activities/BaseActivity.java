@@ -1,12 +1,15 @@
 package com.davivienda.billetera.activities;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -35,9 +38,11 @@ import com.davivienda.billetera.tasks.GetUserTask;
 import com.davivienda.billetera.tasks.TaskCallback;
 import com.davivienda.billetera.ui.controls.ComboHolder;
 import com.davivienda.billetera.utils.DialogUtil;
+import com.davivienda.billetera.utils.LocationUtils;
 import com.davivienda.billetera.utils.SharedPreferencesUtils;
 import com.davivienda.billetera.utils.risk.EasySolutionsUtils;
 import com.davivienda.billetera.utils.risk.Todo1Utils;
+import com.google.android.gms.maps.model.LatLng;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnBackPressListener;
 
@@ -56,6 +61,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     private static final int LOGOUT_REQUEST = 183;
     protected static final int CLOSE_ACTIVITY_REQUEST = 100;
     protected static final int LOGIN_DIALOG_ACTIVITY_REQUEST = 198;
+    public static int LOCATION_PERMISSION_CODE = 169;
     public static String HELP_URL = "http://ayuda_davipay.paymentez.com/support/home";
     public static String GOOGLE_DOCS_URL = "http://docs.google.com/gview?embedded=true&url=";
     public static String TERMS_AND_CONDITIONS_URL = "https://s3.amazonaws.com/davipay.paymentez.com/REGLAMENTO+APP+DAVIPAY.pdf";
@@ -73,6 +79,9 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
 
     public OtpCodeReceived otpCodeReceived;
 
+    private LocationUtils locationUtils;
+    public LatLng latLng;
+    public OnLocationUpdate locationListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -738,8 +747,58 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         }).execute();
     }
 
+    public void checkLocationPermissions() {
+        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, getApplicationContext())) {
+            requestPermission(android.Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_PERMISSION_CODE);
+        } else {
+            getLocation();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == LOCATION_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLocation();
+            } else {
+                hideLoading();
+                if(locationListener != null) {
+                    locationListener.failedGettingLocation();
+                }
+            }
+        }
+    }
+
+    private void getLocation() {
+        showLoading();
+        locationUtils = new LocationUtils(this, new LocationUtils.ILocationListener() {
+            @Override
+            public void onGotLocation(Location location) {
+                if(locationListener != null) {
+                    locationListener.onGotLocation(location);
+                }
+            }
+
+            @Override
+            public void failedGettingLocation() {
+                if(locationListener != null) {
+                    locationListener.failedGettingLocation();
+                }
+            }
+        });
+        locationUtils.locUpdate(2000, 1);
+    }
+
     public boolean isActivityResumed() {
         return activityResumed;
+    }
+
+    public interface OnLocationUpdate {
+
+        public void onGotLocation(Location location);
+        public void failedGettingLocation();
+
     }
 
     @Override
@@ -754,6 +813,9 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     protected void onPause() {
         if (loadingDialog != null) {
             hideLoading();
+        }
+        if(locationUtils != null) {
+            locationUtils.cancelListening();
         }
         DaviPayApplication appContext = (DaviPayApplication) this.getApplicationContext();
         appContext.setActivity(null);

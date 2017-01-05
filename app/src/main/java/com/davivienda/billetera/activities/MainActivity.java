@@ -1,34 +1,26 @@
 package com.davivienda.billetera.activities;
 
-import android.Manifest;
 import android.app.SearchManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.fragments.WithoutDeliveryStoreFragment;
 import com.davivienda.billetera.model.Card;
-import com.davivienda.billetera.utils.LocationUtils;
+import com.google.android.gms.maps.model.LatLng;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements BaseActivity.OnLocationUpdate {
 
     public static final String SHOULD_RECREATE_KEY = "should_recreate_key";
-    public static int LOCATION_PERMISSION_CODE = 169;
 
     private WithoutDeliveryStoreFragment fragment;
-    private LatLng latLng;
-    private LocationUtils locationUtils;
 
     private boolean shouldRecreate = false;
 
@@ -43,6 +35,7 @@ public class MainActivity extends BaseActivity {
         createScreen();
         // Start IntentService to register this application with GCM.
         startGcmService();
+        locationListener = this;
     }
 
     private void handleIntent() {
@@ -73,19 +66,10 @@ public class MainActivity extends BaseActivity {
         findFragment();
         checkLocationPermissions();
         setToolbar(R.id.toolbar, false, getString(R.string.main_activity_title));
-        fragment.setLocation(latLng);
     }
 
     private void findFragment() {
         fragment = (WithoutDeliveryStoreFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-    }
-
-    public void checkLocationPermissions() {
-        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, getApplicationContext())) {
-            requestPermission(android.Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_PERMISSION_CODE);
-        } else {
-            getLocation();
-        }
     }
 
     @Override
@@ -98,31 +82,6 @@ public class MainActivity extends BaseActivity {
         updateDaviPoints();
     }
 
-    private void getLocation() {
-        showLoading();
-        locationUtils = new LocationUtils(this, new LocationUtils.ILocationListener() {
-            @Override
-            public void onGotLocation(Location location) {
-                hideLoading();
-                if(location == null){
-                    failedGettingLocation();
-                    return;
-                }
-                latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                fragment.setLocation(latLng);
-            }
-
-            @Override
-            public void failedGettingLocation() {
-                fragment.setLocation(null);
-                hideLoading();
-            }
-        });
-        locationUtils.locUpdate(2000, 1);
-    }
-
-
-
     @Override
     public void onBackPressed() {
         if(!isMenuOpened()) {
@@ -130,11 +89,6 @@ public class MainActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    protected void goToHome() {
-        //startTour();
     }
 
     @Override
@@ -184,7 +138,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.otp_pay) {
-            startActivity(new Intent(this, OtpStoreListActivity.class).putExtra(OtpStoreListActivity.LOCATION_KEY, latLng));
+            startActivity(new Intent(this, OtpStoreListActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -198,25 +152,26 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == LOCATION_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLocation();
-            } else {
-                hideLoading();
-                fragment.setLocation(null);
-            }
-        }
+    protected void onPause() {
+        hideLoading();
+        super.onPause();
     }
 
     @Override
-    protected void onPause() {
-        if(locationUtils != null) {
-            locationUtils.cancelListening();
-        }
+    public void onGotLocation(Location location) {
         hideLoading();
-        super.onPause();
+        if(location == null){
+            failedGettingLocation();
+            return;
+        }
+        latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        fragment.setLocation(latLng);
+    }
+
+    @Override
+    public void failedGettingLocation() {
+        fragment.setLocation(null);
+        hideLoading();
     }
 
 }

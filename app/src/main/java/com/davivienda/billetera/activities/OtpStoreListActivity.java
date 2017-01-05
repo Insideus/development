@@ -1,6 +1,5 @@
 package com.davivienda.billetera.activities;
 
-import android.Manifest;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,20 +15,13 @@ import com.davivienda.billetera.service.Service;
 import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.tasks.DaviPayTask;
 import com.davivienda.billetera.ui.adapters.OtpStoreListAdapter;
-import com.davivienda.billetera.utils.LocationUtils;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-import static com.davivienda.billetera.activities.MainActivity.LOCATION_PERMISSION_CODE;
-
-public class OtpStoreListActivity extends BaseActivity {
-
-    public static final String LOCATION_KEY = "location key";
+public class OtpStoreListActivity extends BaseActivity implements BaseActivity.OnLocationUpdate  {
 
     private OtpStoreListAdapter adapter;
-    private LatLng latLng;
-    private LocationUtils locationUtils;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,6 +29,8 @@ public class OtpStoreListActivity extends BaseActivity {
         setContentView(R.layout.otp_store_list_layout);
         setToolbar(R.id.toolbar, true, getString(R.string.main_activity_title));
         handleIntent();
+        locationListener = this;
+        checkLocationPermissions();
     }
 
     @Override
@@ -49,47 +43,11 @@ public class OtpStoreListActivity extends BaseActivity {
         if(getIntent() == null){
             return;
         }
-        latLng = getIntent().getParcelableExtra(LOCATION_KEY);
         setViews();
-        if(latLng == null){
-            checkLocationPermissions();
-        } else {
-            new GetStoresTask(this).execute();
-        }
-    }
-
-    public void checkLocationPermissions() {
-        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, getApplicationContext())) {
-            requestPermission(android.Manifest.permission.ACCESS_FINE_LOCATION, LOCATION_PERMISSION_CODE);
-        } else {
-            getLocation();
-        }
-    }
-
-    private void getLocation() {
-        showLoading();
-        locationUtils = new LocationUtils(this, new LocationUtils.ILocationListener() {
-            @Override
-            public void onGotLocation(Location location) {
-                hideLoading();
-                if(location == null){
-                    failedGettingLocation();
-                    return;
-                }
-                latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                new GetStoresTask(OtpStoreListActivity.this).execute();
-            }
-
-            @Override
-            public void failedGettingLocation() {
-                hideLoading();
-            }
-        });
-        locationUtils.locUpdate(2000, 1);
     }
 
     private void setViews() {
-        setRecycler();
+
     }
 
     private void setRecycler() {
@@ -158,4 +116,24 @@ public class OtpStoreListActivity extends BaseActivity {
         }
 
     }
+
+    @Override
+    public void onGotLocation(Location location) {
+        hideLoading();
+        if(location == null){
+            failedGettingLocation();
+            return;
+        }
+        latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        setRecycler();
+        new GetStoresTask(OtpStoreListActivity.this).execute();
+    }
+
+    @Override
+    public void failedGettingLocation() {
+        hideLoading();
+        setRecycler();
+        new GetStoresTask(OtpStoreListActivity.this).execute();
+    }
+
 }
