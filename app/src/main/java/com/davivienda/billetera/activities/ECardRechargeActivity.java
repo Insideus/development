@@ -38,7 +38,6 @@ public class ECardRechargeActivity extends AbstractPayActivity implements BaseAc
         cardTitle.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
         setLayouts();
         setOtpCodeReceived(this);
-        new GetCardPayDetail(this).execute();
     }
 
     private void handleIntent(Bundle savedInstanceState) {

@@ -25,6 +25,8 @@ import android.widget.TextView;
 
 import com.davivienda.billetera.DaviPayApplication;
 import com.davivienda.billetera.R;
+import com.davivienda.billetera.activities.interfaces.OnLocationUpdate;
+import com.davivienda.billetera.activities.interfaces.OnNewUserSession;
 import com.davivienda.billetera.gcm.RegistrationIntentService;
 import com.davivienda.billetera.model.Card;
 import com.davivienda.billetera.model.ErrorMessages;
@@ -82,6 +84,7 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
     private LocationUtils locationUtils;
     public LatLng latLng;
     public OnLocationUpdate locationListener;
+    public OnNewUserSession newUserSessionListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -619,32 +622,6 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == OTP_NEEDED) {
-            if (resultCode == RESULT_OK && data != null) {
-                String otpCode = data.getStringExtra(ActionDialogActivity.OTP_VALIDATION_DIALOG_TEXT_KEY);
-                if(otpCodeReceived != null) {
-                    otpCodeReceived.onOtpCodeReceived(otpCode);
-                }
-            } else if (resultCode == ActionDialogActivity.RESULT_CANCELED) {
-                DialogUtil.toast(this,
-                        getString(R.string.otp_needed_canceled_title),
-                        getString(R.string.otp_needed_canceled_subtitle),
-                        getString(R.string.otp_needed_canceled_text));
-            } else {
-                showServiceGenericError();
-            }
-        }
-        if(requestCode == LOGOUT_REQUEST && resultCode == RESULT_OK){
-            new LogoutTask(this).execute();
-        }
-        if(requestCode == LOGIN_DIALOG_ACTIVITY_REQUEST && resultCode != RESULT_OK){
-            showInvalidSessionError();
-        }
-    }
-
     public interface OtpCodeReceived {
         void onOtpCodeReceived(String otpCode);
     }
@@ -794,11 +771,36 @@ public class BaseActivity extends AppCompatActivity implements OverlayListener, 
         return activityResumed;
     }
 
-    public interface OnLocationUpdate {
-
-        public void onGotLocation(Location location);
-        public void failedGettingLocation();
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == OTP_NEEDED) {
+            if (resultCode == RESULT_OK && data != null) {
+                String otpCode = data.getStringExtra(ActionDialogActivity.OTP_VALIDATION_DIALOG_TEXT_KEY);
+                if(otpCodeReceived != null) {
+                    otpCodeReceived.onOtpCodeReceived(otpCode);
+                }
+            } else if (resultCode == ActionDialogActivity.RESULT_CANCELED) {
+                DialogUtil.toast(this,
+                        getString(R.string.otp_needed_canceled_title),
+                        getString(R.string.otp_needed_canceled_subtitle),
+                        getString(R.string.otp_needed_canceled_text));
+            } else {
+                showServiceGenericError();
+            }
+        }
+        if(requestCode == LOGOUT_REQUEST && resultCode == RESULT_OK){
+            new LogoutTask(this).execute();
+        }
+        if(requestCode == LOGIN_DIALOG_ACTIVITY_REQUEST){
+            if(resultCode == RESULT_OK) {
+                if(newUserSessionListener != null) {
+                    newUserSessionListener.onNewSession();
+                }
+            } else if(resultCode == RESULT_CANCELED) {
+                showInvalidSessionError();
+            }
+        }
     }
 
     @Override

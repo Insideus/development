@@ -12,11 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.davivienda.billetera.R;
+import com.davivienda.billetera.activities.interfaces.OnLocationUpdate;
 import com.davivienda.billetera.fragments.WithoutDeliveryStoreFragment;
 import com.davivienda.billetera.model.Card;
 import com.google.android.gms.maps.model.LatLng;
 
-public class MainActivity extends BaseActivity implements BaseActivity.OnLocationUpdate {
+public class MainActivity extends BaseActivity implements OnLocationUpdate {
 
     public static final String SHOULD_RECREATE_KEY = "should_recreate_key";
 

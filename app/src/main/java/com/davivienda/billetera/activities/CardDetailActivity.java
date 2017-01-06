@@ -14,13 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.davivienda.billetera.R;
+import com.davivienda.billetera.activities.interfaces.OnNewUserSession;
 import com.davivienda.billetera.ui.adapters.CardDetailAdapter;
 import com.davivienda.billetera.utils.CardsUtils;
 import com.davivienda.billetera.utils.CurrencyUtils;
 import com.davivienda.billetera.utils.DateUtils;
 import com.davivienda.billetera.utils.DialogUtil;
 
-public class CardDetailActivity extends MovementsShowerActivity implements CardDetailAdapter.ICardDetailAdapterOwner {
+public class CardDetailActivity extends MovementsShowerActivity implements CardDetailAdapter.ICardDetailAdapterOwner, OnNewUserSession {
 
     public static String CARD_KEY = "card_key";
     private boolean refresh = false;
@@ -49,16 +50,8 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
         cardTitle.setText(CardsUtils.getMaskedCardNumber(card.getLastDigits()));
         setRecycler();
         setSearcher();
-        new GetCardTransactionDetailsTask(this, new ITransactionDetailListener() {
-            @Override
-            public void onError() {
-                DialogUtil.toast(CardDetailActivity.this,
-                        getString(R.string.generic_service_error_title),
-                        getString(R.string.generic_service_error_subtitle),
-                        getString(R.string.generic_service_error),
-                        CLOSE_ACTIVITY_REQUEST);
-            }
-        }).execute();
+        newUserSessionListener = this;
+        getCardMovements();
     }
 
     private void setSearcher() {
@@ -162,9 +155,28 @@ public class CardDetailActivity extends MovementsShowerActivity implements CardD
         return super.onOptionsItemSelected(item);
     }
 
+    private void getCardMovements() {
+        new GetCardTransactionDetailsTask(this, new ITransactionDetailListener() {
+            @Override
+            public void onError() {
+                DialogUtil.toast(CardDetailActivity.this,
+                        getString(R.string.generic_service_error_title),
+                        getString(R.string.generic_service_error_subtitle),
+                        getString(R.string.generic_service_error),
+                        CLOSE_ACTIVITY_REQUEST);
+            }
+        }).execute();
+    }
+
     @Override
     public void loadMore() {
         ((EditText) findViewById(R.id.query)).setText("");
         super.loadMore();
     }
+
+    @Override
+    public void onNewSession() {
+        getCardMovements();
+    }
+
 }

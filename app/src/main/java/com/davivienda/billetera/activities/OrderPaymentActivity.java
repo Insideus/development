@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.davivienda.billetera.R;
+import com.davivienda.billetera.activities.interfaces.OnNewUserSession;
 import com.davivienda.billetera.model.Card;
 import com.davivienda.billetera.model.Cart;
 import com.davivienda.billetera.model.ErrorMessages;
@@ -38,7 +39,7 @@ import com.davivienda.billetera.utils.SharedPreferencesUtils;
 
 import java.util.List;
 
-public class OrderPaymentActivity extends BaseActivity {
+public class OrderPaymentActivity extends BaseActivity implements OnNewUserSession {
 
     public static final String CART_KEY = "cart_key";
     public static final String PRE_CHECKOUT_DATA_KEY = "pre_checkout_data_key";
@@ -64,9 +65,8 @@ public class OrderPaymentActivity extends BaseActivity {
         setContentView(R.layout.store_payment_activity);
         handleIntent();
         setToolbar(R.id.toolbar, true, getString(R.string.main_activity_title));
-        if(cart != null && cart.getStore() != null) {
-            new GetPreCheckoutData(this, cart.getStore().getId()).execute();
-        }
+        newUserSessionListener = this;
+        getPreCheckoutData();
     }
 
     private void handleIntent() {
@@ -675,4 +675,16 @@ public class OrderPaymentActivity extends BaseActivity {
             }
         }
     }
+
+    private void getPreCheckoutData() {
+        if(cart != null && cart.getStore() != null) {
+            new GetPreCheckoutData(this, cart.getStore().getId()).execute();
+        }
+    }
+
+    @Override
+    public void onNewSession() {
+        getPreCheckoutData();
+    }
+
 }

@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.davivienda.billetera.R;
+import com.davivienda.billetera.activities.interfaces.OnNewUserSession;
 import com.davivienda.billetera.model.Account;
 import com.davivienda.billetera.model.Card;
 import com.davivienda.billetera.model.ErrorMessages;
@@ -30,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public abstract class AbstractPayActivity extends BaseActivity{
+public abstract class AbstractPayActivity extends BaseActivity implements OnNewUserSession {
 
     public static final String CARD_KEY = "card key";
     public static final int PAY_REQUEST = 12;
@@ -48,6 +49,8 @@ public abstract class AbstractPayActivity extends BaseActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         priceIndicator = getString(R.string.card_detail_item_transaction_price_indicator);
+        newUserSessionListener = this;
+        new GetCardPayDetail(this).execute();
     }
 
     protected boolean validateAmount(Double amount) {
@@ -220,13 +223,6 @@ public abstract class AbstractPayActivity extends BaseActivity{
         }
     }
 
-    /*
-    DialogUtil.toast(this,
-            getString(R.string.input_data_error_generic_title),
-            getString(R.string.input_data_error_generic_subtitle),
-            getString(R.string.confirmation_service_error));
-    */
-
     public void processErrorAndContinue(ErrorMessages error, String additionalParam) {
         if(error != null) {
             switch(error) {
@@ -299,6 +295,11 @@ public abstract class AbstractPayActivity extends BaseActivity{
         } else {
             showServiceGenericError();
         }
+    }
+
+    @Override
+    public void onNewSession() {
+        new GetCardPayDetail(this).execute();
     }
 
 }

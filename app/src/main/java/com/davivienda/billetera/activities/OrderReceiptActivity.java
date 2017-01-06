@@ -198,15 +198,6 @@ public class OrderReceiptActivity extends BaseActivity {
     }
 
     private void showPaymentDetails() {
-        /*
-        Intent intent = new Intent(this, ActionDialogActivity.class);
-        intent.putExtra(ActionDialogActivity.TITLE_KEY, getString(R.string.ott_payment_confirmation_title));
-        intent.putExtra(ActionDialogActivity.SUBTITLE_KEY, getString(R.string.ott_payment_confirmation_subtitle));
-        intent.putExtra(ActionDialogActivity.TEXT_KEY, getString(R.string.ott_payment_confirmation_text, cart.getSelectedCard().getLastDigits(), CurrencyUtils.getCurrencyForString(cart.getCartPrice())));
-        intent.putExtra(ActionDialogActivity.IS_CARD_PAY, true);
-        startActivityForResult(intent, PAY_REQUEST);
-        overridePendingTransition(R.anim.fade_in_anim, R.anim.fade_out_anim);
-        */
         new PayOttTask(this).execute();
     }
 

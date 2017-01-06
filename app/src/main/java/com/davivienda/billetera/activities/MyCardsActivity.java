@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.davivienda.billetera.R;
+import com.davivienda.billetera.activities.interfaces.OnNewUserSession;
 import com.davivienda.billetera.model.ButtonCard;
 import com.davivienda.billetera.model.Card;
 import com.davivienda.billetera.model.CardState;
@@ -31,7 +32,7 @@ import com.davivienda.billetera.utils.ImageUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyCardsActivity extends BaseActivity {
+public class MyCardsActivity extends BaseActivity implements OnNewUserSession {
 
     private static final int EXPLAINING_DIALOG = 11;
     private static final int OPERATION_RESULT = 12;
@@ -51,6 +52,7 @@ public class MyCardsActivity extends BaseActivity {
         setContentView(R.layout.activity_my_cards);
         setToolbar(R.id.toolbar_layout, false, getString(R.string.my_cards_activity_title));
         setRecycler();
+        newUserSessionListener = this;
         refreshCardList();
         showNewEcardButton = false;
     }
@@ -672,6 +674,11 @@ public class MyCardsActivity extends BaseActivity {
                 cardsAdapter.setList(addButtons(response));
             }
         }
+    }
+
+    @Override
+    public void onNewSession() {
+        refreshCardList();
     }
 
 }

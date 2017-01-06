@@ -71,13 +71,13 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
                 ErrorMessages error = ErrorMessages.getError(errorCode);
                 if(error != null && error == ErrorMessages.INVALID_SESSION) {
                     handleInvalidSessionError();
-                } if(error != null && error == ErrorMessages.BLOCKED_CARD) {
+                } else if(error != null && error == ErrorMessages.BLOCKED_CARD) {
                     DialogUtil.toast(MovementsShowerActivity.this,
                             getString(R.string.blocked_card_error_title),
                             getString(R.string.blocked_card_error_subtitle),
                             getString(R.string.blocked_card_error_text),
                             CLOSE_ACTIVITY_REQUEST);
-                } else  if(error != null && error == ErrorMessages.PRODUCT_BLOCKED) {
+                } else if(error != null && error == ErrorMessages.PRODUCT_BLOCKED) {
                     DialogUtil.toast(MovementsShowerActivity.this,
                             getString(R.string.blocked_card_error_title),
                             getString(R.string.blocked_card_error_subtitle),
@@ -156,4 +156,5 @@ public abstract class MovementsShowerActivity extends BaseActivity implements Ca
         curPage++;
         new CardDetailActivity.GetCardTransactionDetailsTask(this).execute();
     }
+
 }

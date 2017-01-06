@@ -44,6 +44,7 @@ public class CardPayDetailActivity extends AbstractPayActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        newUserSessionListener = this;
         if (savedInstanceState != null) {
             card = savedInstanceState.getParcelable(CARD_KEY);
             transactionDetails = savedInstanceState.getParcelable(TRANSACTION_DETAILS);
@@ -54,7 +55,6 @@ public class CardPayDetailActivity extends AbstractPayActivity {
         setContentView(R.layout.activity_card_pay_detail);
         setToolbar(R.id.toolbar_layout, true, card.getBin().getFranchise().toUpperCase());
         setLayouts();
-        new GetCardPayDetail(this).execute();
     }
 
     @Override

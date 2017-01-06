@@ -7,9 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.davivienda.billetera.R;
+import com.davivienda.billetera.activities.interfaces.OnNewUserSession;
 import com.davivienda.billetera.model.IShowableItem;
 import com.davivienda.billetera.model.TransactionByDayBar;
 import com.davivienda.billetera.ui.adapters.CardDetailAdapter;
@@ -17,7 +16,9 @@ import com.davivienda.billetera.utils.CardsUtils;
 import com.davivienda.billetera.utils.CurrencyUtils;
 import com.davivienda.billetera.utils.DateUtils;
 
-public class MovementsByDayActivity extends MovementsShowerActivity implements CardDetailAdapter.IByDayBarOwner{
+import java.util.ArrayList;
+
+public class MovementsByDayActivity extends MovementsShowerActivity implements CardDetailAdapter.IByDayBarOwner, OnNewUserSession {
 
     public static final String LOADED_TRANSACTIONS = "loaded transactions";
     public static final String LOADED_PAGE = "loaded page";
@@ -31,6 +32,7 @@ public class MovementsByDayActivity extends MovementsShowerActivity implements C
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movement_by_day_layout);
+        newUserSessionListener = this;
         ArrayList<IShowableItem> transactions;
         if(savedInstanceState != null){
             card = savedInstanceState.getParcelable(CardDetailActivity.CARD_KEY);
@@ -38,7 +40,7 @@ public class MovementsByDayActivity extends MovementsShowerActivity implements C
             curPage = savedInstanceState.getInt(LOADED_PAGE);
             transactionDetails = savedInstanceState.getParcelable(CardPayDetailActivity.TRANSACTION_DETAILS);
             loadMore = savedInstanceState.getBoolean(LOAD_MORE);
-        }else{
+        } else {
             card = getIntent().getParcelableExtra(CardDetailActivity.CARD_KEY);
             transactions = getIntent().getParcelableArrayListExtra(LOADED_TRANSACTIONS);
             curPage = getIntent().getIntExtra(LOADED_PAGE, -1);
@@ -48,7 +50,7 @@ public class MovementsByDayActivity extends MovementsShowerActivity implements C
         setFooterLayouts();
         if(card != null && card.getECard() != null && card.getECard()){
             setToolbar(R.id.toolbar_layout, true, getString(R.string.e_card_title));
-        }else {
+        } else {
             setToolbar(R.id.toolbar_layout, true, card.getBin().getFranchise().toUpperCase());
         }
         TextView cardTitle = (TextView) findViewById(R.id.card_title);
@@ -119,11 +121,20 @@ public class MovementsByDayActivity extends MovementsShowerActivity implements C
 
     @Override
     public void onFilter() {
+        getFilteredMovements();
+    }
+
+    private void getFilteredMovements() {
         if(TextUtils.isEmpty(dateTo) || TextUtils.isEmpty(dateFrom)){
             return;
         }
         replaceList = true;
         new GetCardTransactionDetailsTask(this, dateFrom, dateTo).execute();
+    }
+
+    @Override
+    public void onNewSession() {
+        getFilteredMovements();
     }
 
 }

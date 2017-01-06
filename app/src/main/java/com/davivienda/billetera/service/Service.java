@@ -220,10 +220,6 @@ public class Service {
             params.add(passwordParam);
             Pair<String, String> todo1Param = new Pair("todo1", todo1);
             params.add(todo1Param);
-            /*
-            Pair<String, String> android = new Pair("android", "true");
-            params.add(android);
-            */
 
             writer.write(getQuery(params));
             writer.flush();

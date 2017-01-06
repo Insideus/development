@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.davivienda.billetera.R;
+import com.davivienda.billetera.activities.interfaces.OnLocationUpdate;
 import com.davivienda.billetera.model.ServiceException;
 import com.davivienda.billetera.model.Store;
 import com.davivienda.billetera.service.Service;
@@ -19,7 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-public class OtpStoreListActivity extends BaseActivity implements BaseActivity.OnLocationUpdate  {
+public class OtpStoreListActivity extends BaseActivity implements OnLocationUpdate {
 
     private OtpStoreListAdapter adapter;
 
