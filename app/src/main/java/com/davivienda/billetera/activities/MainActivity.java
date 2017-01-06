@@ -141,6 +141,10 @@ public class MainActivity extends BaseActivity implements OnLocationUpdate {
         if (item.getItemId() == R.id.otp_pay) {
             startActivity(new Intent(this, OtpStoreListActivity.class));
             return true;
+        } else if (item.getItemId() == R.id.map){
+            startActivity(new Intent(this, MapActivity.class)
+                    .putExtra(MapActivity.LAT_LNG_KEY, latLng)
+                    .putExtra(MapActivity.FROM_HOME_KEY, true));
         }
         return super.onOptionsItemSelected(item);
     }

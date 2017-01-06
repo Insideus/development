@@ -56,8 +56,10 @@ import java.util.Map;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+
 public class BaseActivity extends AppCompatActivity implements OverlayListener, SIMChangeListener {
 
+    public static final String STORE_KEY = "store_key";
     private static final int OTP_NEEDED = 181;
     public static final int SHOW_CREATED_ECARD_POPUP = 182;
     private static final int LOGOUT_REQUEST = 183;

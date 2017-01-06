@@ -39,7 +39,6 @@ public class StoreDetailActivity extends BaseActivity {
 
     private static final int CANCEL_PURCHASE_REQUEST = 10;
 
-    public static final String STORE_KEY = "store_key";
     public static final String CART_KEY = "cart_key";
 
     public static final int ADD_ITEM_TO_CART = 190;

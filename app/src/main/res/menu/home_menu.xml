@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/map"
+        android:orderInCategory="2"
+        android:icon="@drawable/home_maps_context_button"
+        android:title="@string/map_button_text"
+        app:showAsAction="ifRoom|collapseActionView"/>
+
     <item android:id="@+id/action_search"
         android:title="@string/search_button_text"
         android:icon="@drawable/white_search_button"

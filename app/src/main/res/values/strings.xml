@@ -548,6 +548,7 @@
     <string name="store_payment_activity_total_title">Total</string>
     <string name="order_payment_coupon_invalid_error">El cupón ingresado no es válido.</string>
     <string name="map_button_text">Mapa</string>
+    <string name="context_list_button_text">Ir a Lista</string>
 
 </resources>
 

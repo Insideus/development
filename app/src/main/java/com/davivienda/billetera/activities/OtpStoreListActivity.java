@@ -1,5 +1,6 @@
 package com.davivienda.billetera.activities;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -73,7 +74,9 @@ public class OtpStoreListActivity extends BaseActivity implements OnLocationUpda
     }
 
     private void goToMap() {
-
+        startActivity(new Intent(this, MapActivity.class)
+                .putExtra(MapActivity.LAT_LNG_KEY, latLng)
+                .putExtra(MapActivity.FROM_OTP_KEY, true));
     }
 
     private class GetStoresTask extends DaviPayTask<List<Store>> {

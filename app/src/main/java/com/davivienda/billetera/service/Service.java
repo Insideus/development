@@ -1729,8 +1729,8 @@ public class Service {
         return response;
     }
 
-    public static List<Store> getStoresWithoutDelivery(String sid, String latitude, String longitude) throws ServiceException {
-        List<Store> response = null;
+    public static ArrayList<Store> getStoresWithoutDelivery(String sid, String latitude, String longitude) throws ServiceException {
+        ArrayList<Store> response = null;
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(STORE_LIST, sid);
@@ -2138,8 +2138,8 @@ public class Service {
         return urlConnection;
     }
 
-    public static List<Store> getStoresOtp(String sid, String latitude, String longitude) throws ServiceException {
-        List<Store> response = null;
+    public static ArrayList<Store> getStoresOtp(String sid, String latitude, String longitude) throws ServiceException {
+        ArrayList<Store> response = null;
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = getHttpURLConnectionWithHeader(STORE_OTP_LIST, sid);

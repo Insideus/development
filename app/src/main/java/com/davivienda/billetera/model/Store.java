@@ -150,8 +150,8 @@ public class Store implements Parcelable {
         this.acceptDavipoints = acceptDavipoints;
     }
 
-    public static List<Store> fromJsonArray(JSONArray jsonArray) {
-        List<Store> stores = new ArrayList<>();
+    public static ArrayList<Store> fromJsonArray(JSONArray jsonArray) {
+        ArrayList<Store> stores = new ArrayList<>();
         if(jsonArray == null){
             return null;
         }
