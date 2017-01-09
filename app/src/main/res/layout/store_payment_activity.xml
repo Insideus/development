@@ -33,64 +33,13 @@
 
     </FrameLayout>
 
-    <RelativeLayout
-        android:id="@+id/bottom_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/white">
-
-        <TextView
-            fontPath="fonts/MyriadPro-Regular.otf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/bottom_bar_davi_logo"
-            android:text="@string/navigation_drawer_bottom_bar_first_text"
-            android:textAllCaps="true"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
-
-        <ImageView
-            android:id="@+id/bottom_bar_davi_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:padding="@dimen/navigation_drawer_basic_padding"
-            android:src="@drawable/nav_davi_logo_bottom_bar" />
-
-        <TextView
-            android:id="@+id/footer_davi_points_amount"
-            fontPath="fonts/MyriadPro-Semibold.otf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/bottom_bar_davi_logo"
-            android:textAllCaps="true"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"
-            android:textStyle="bold" />
-
-        <TextView
-            fontPath="fonts/MyriadPro-Regular.otf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
-            android:layout_toEndOf="@id/footer_davi_points_amount"
-            android:text="@string/navigation_drawer_bottom_bar_second_text"
-            android:textAllCaps="true"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
-
-    </RelativeLayout>
-
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/title_container">
+        android:layout_below="@+id/title_container"
+        android:layout_above="@id/bottom_bar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -696,5 +645,57 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white">
+
+        <TextView
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/bottom_bar_davi_logo"
+            android:text="@string/navigation_drawer_bottom_bar_first_text"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
+
+        <ImageView
+            android:id="@+id/bottom_bar_davi_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/navigation_drawer_basic_padding"
+            android:src="@drawable/nav_davi_logo_bottom_bar" />
+
+        <TextView
+            android:id="@+id/footer_davi_points_amount"
+            fontPath="fonts/MyriadPro-Semibold.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/bottom_bar_davi_logo"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            fontPath="fonts/MyriadPro-Regular.otf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/navigation_drawer_spacing_between_text"
+            android:layout_toEndOf="@id/footer_davi_points_amount"
+            android:text="@string/navigation_drawer_bottom_bar_second_text"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/navigation_drawer_bottom_bar_text_size" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

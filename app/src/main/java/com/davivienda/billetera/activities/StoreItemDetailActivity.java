@@ -85,7 +85,7 @@ public class StoreItemDetailActivity extends BaseActivity {
         amount = (TextView) findViewById(R.id.product_amount);
         daviPointsAmount = (TextView) findViewById(R.id.store_davi_points_amount);
         setProductAmount();
-        if(!acceptDavipoints) {
+        if(!acceptDavipoints && SharedPreferencesUtils.getPointsEquivalence() > 0) {
             daviPointsAmount.setVisibility(View.GONE);
         }
     }
