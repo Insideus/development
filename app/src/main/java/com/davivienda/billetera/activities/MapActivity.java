@@ -1,12 +1,17 @@
 package com.davivienda.billetera.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.davivienda.billetera.R;
 import com.davivienda.billetera.activities.interfaces.OnLocationUpdate;
@@ -15,6 +20,7 @@ import com.davivienda.billetera.model.Store;
 import com.davivienda.billetera.service.Service;
 import com.davivienda.billetera.session.Session;
 import com.davivienda.billetera.tasks.DaviPayTask;
+import com.davivienda.billetera.ui.controls.MapMarkerInfoShower;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,6 +47,8 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, OnL
     private ArrayList<Store> stores;
     private HashMap<String, Store> allMarkers;
     private GoogleMap googleMap;
+    private MapMarkerInfoShower infoShower;
+    private View infoShowerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,19 +79,26 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, OnL
         super.onRestoreInstanceState(savedInstanceState);
         stores = savedInstanceState.getParcelableArrayList(STORE_KEY);
         latLng = savedInstanceState.getParcelable(LAT_LNG_KEY);
-        if(stores == null || stores.isEmpty() && latLng != null){
+        if (stores == null || stores.isEmpty() && latLng != null) {
             new GetStoresTask(this).execute();
         }
     }
 
     private void handleIntent() {
-        if(getIntent() == null){
+        if (getIntent() == null) {
             return;
         }
         fromHome = getIntent().getBooleanExtra(FROM_HOME_KEY, false);
         fromOtp = getIntent().getBooleanExtra(FROM_OTP_KEY, false);
         latLng = getIntent().getParcelableExtra(LAT_LNG_KEY);
+        setInfoShowerData();
+
         checkForDefaultWay();
+    }
+
+    private void setInfoShowerData() {
+        infoShowerView = findViewById(R.id.marker_data);
+        infoShower = new MapMarkerInfoShower(this, latLng, infoShowerView, fromHome);
     }
 
     private void checkForDefaultWay() {
@@ -103,11 +118,11 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, OnL
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.list_button){
+        if (item.getItemId() == R.id.list_button) {
             Intent intent;
-            if(fromHome) {
+            if (fromHome) {
                 intent = new Intent(this, MainActivity.class);
-            }else{
+            } else {
                 intent = new Intent(this, OtpStoreListActivity.class);
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -120,7 +135,13 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, OnL
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        if(latLng != null) {
+        this.googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                infoShowerView.setVisibility(View.GONE);
+            }
+        });
+        if (latLng != null) {
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, STARTING_ZOOM);
             googleMap.moveCamera(cameraUpdate);
             new GetStoresTask(this).execute();
@@ -132,12 +153,22 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, OnL
     @Override
     public void onGotLocation(Location location) {
         hideLoading();
+        showMyLocation();
         if(location == null){
             failedGettingLocation();
             return;
         }
         latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        infoShower = new MapMarkerInfoShower(this, latLng, infoShowerView, fromHome);
         new GetStoresTask(this).execute();
+    }
+
+    private void showMyLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        googleMap.setMyLocationEnabled(true);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
     }
 
     @Override
@@ -212,24 +243,25 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, OnL
             }
 
             if (allMarkers.size() > 0) {
-                int padding = 100;
+                BitmapFactory.Options dimensions = new BitmapFactory.Options();
+                dimensions.inJustDecodeBounds = true;
+                BitmapFactory.decodeResource(getResources(), R.drawable.davi_marker, dimensions);
+                int padding = dimensions.outHeight;
+                padding += 10;
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(builder.build(), padding);
                 googleMap.animateCamera(cameraUpdate);
             }
 
-            googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
-                public void onInfoWindowClick(Marker marker) {
-                    Store store = allMarkers.get(marker.getId());
-                    Intent in;
-                    if(fromHome) {
-                        in = new Intent(MapActivity.this, StoreDetailActivity.class);
-                    } else {
-                        in = new Intent(MapActivity.this, OtpPaymentActivity.class);
-                    }
-                    in.putExtra(STORE_KEY, store);
-                    startActivity(in);
+                public boolean onMarkerClick(Marker marker) {
                     marker.hideInfoWindow();
+                    Store store = allMarkers.get(marker.getId());
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(store.getLatitude(),
+                            store.getLongitude()), googleMap.getCameraPosition().zoom));
+                    infoShower.setStore(store);
+                    infoShowerView.setVisibility(View.VISIBLE);
+                    return true;
                 }
             });
         }
