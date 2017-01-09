@@ -1,6 +1,5 @@
 package com.davivienda.billetera.activities;
 
-import android.Manifest;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.davivienda.billetera.R;
+import com.davivienda.billetera.activities.interfaces.OnLocationUpdate;
 import com.davivienda.billetera.model.ServiceException;
 import com.davivienda.billetera.model.Store;
 import com.davivienda.billetera.service.Service;
@@ -28,9 +28,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
-public class MapActivity extends BaseActivity implements OnMapReadyCallback, BaseActivity.OnLocationUpdate {
+public class MapActivity extends BaseActivity implements OnMapReadyCallback, OnLocationUpdate {
 
     public final static String LAT_LNG_KEY = "lat lang key";
     public final static String FROM_HOME_KEY = "from home key";
