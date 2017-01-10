@@ -101,6 +101,7 @@ public class Service {
     //Order
     private static final String PRE_CHECKOUT = "/order/pre_checkout";
     private static final String PAY_ORDER = "/order/pay";
+    private static final String APPLY_DISCOUNT = "/order/validate_discount";
 
     //OTT
     private final static String OTT_CARDS = "/ott/cards";
@@ -1522,8 +1523,9 @@ public class Service {
             result.append("=");
             if (pair.second == null) {
                 result.append(URLEncoder.encode("", "UTF-8"));
+            } else {
+                result.append(URLEncoder.encode(pair.second, "UTF-8"));
             }
-            result.append(URLEncoder.encode(pair.second, "UTF-8"));
         }
         return result.toString();
     }
@@ -1876,7 +1878,7 @@ public class Service {
             OutputStream os = urlConnection.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 
-            List<Pair<String, String>> params = cart.toServiceParams();
+            List<Pair<String, String>> params = cart.toPayServiceParams();
 
             writer.write(getQuery(params));
             writer.flush();
@@ -2109,35 +2111,6 @@ public class Service {
         }
     }
 
-    @NonNull
-    private static HttpURLConnection getHttpURLConnection(String method) throws IOException {
-        URL url = new URL(BASE_URL + method);
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.setRequestProperty("Connection", "close");
-        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
-        urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
-        return urlConnection;
-    }
-
-    @NonNull
-    private static HttpURLConnection getHttpURLConnectionWithHeader(String method, String token) throws IOException {
-        URL url = new URL(BASE_URL + method);
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.setRequestProperty("sid", token);
-        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
-        urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
-        return urlConnection;
-    }
-
-    @NonNull
-    private static HttpURLConnection getHttpURLConnection(String sid, String getCardMovements) throws IOException {
-        HttpURLConnection urlConnection = getHttpURLConnectionWithHeader(getCardMovements, sid);
-        urlConnection.setRequestMethod("POST");
-        urlConnection.setDoInput(true);
-        urlConnection.setDoOutput(true);
-        return urlConnection;
-    }
-
     public static ArrayList<Store> getStoresOtp(String sid, String latitude, String longitude) throws ServiceException {
         ArrayList<Store> response = null;
         HttpURLConnection urlConnection = null;
@@ -2184,4 +2157,75 @@ public class Service {
         }
         return response;
     }
+
+    public static Double applyDiscount(String sid, Cart cart) throws ServiceException {
+        Double response = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = getHttpURLConnectionWithHeader(APPLY_DISCOUNT, sid);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+
+            List<Pair<String, String>> params = cart.toServiceParams();
+
+            writer.write(getQuery(params));
+            writer.flush();
+            writer.close();
+            os.close();
+            urlConnection.connect();
+
+            if (isValidStatusLineCode(urlConnection.getResponseCode())) {
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                JSONObject json = getJsonFromResponse(in);
+                JSONObject responseJson = json.getJSONObject(DATA_TAG);
+                if (json.has("error") && !json.getBoolean("error")) {
+                    response = responseJson.getDouble("discount");
+                } else {
+                    String errorCode = responseJson.getString(ERROR_CODE_TAG);
+                    throw new ServiceException(errorCode);
+                }
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return response;
+    }
+
+    @NonNull
+    private static HttpURLConnection getHttpURLConnection(String method) throws IOException {
+        URL url = new URL(BASE_URL + method);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestProperty("Connection", "close");
+        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+        urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
+        return urlConnection;
+    }
+
+    @NonNull
+    private static HttpURLConnection getHttpURLConnectionWithHeader(String method, String token) throws IOException {
+        URL url = new URL(BASE_URL + method);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestProperty("sid", token);
+        urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+        urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
+        return urlConnection;
+    }
+
+    @NonNull
+    private static HttpURLConnection getHttpURLConnection(String sid, String getCardMovements) throws IOException {
+        HttpURLConnection urlConnection = getHttpURLConnectionWithHeader(getCardMovements, sid);
+        urlConnection.setRequestMethod("POST");
+        urlConnection.setDoInput(true);
+        urlConnection.setDoOutput(true);
+        return urlConnection;
+    }
+
 }

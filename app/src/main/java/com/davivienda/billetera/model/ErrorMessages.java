@@ -41,7 +41,8 @@ public enum  ErrorMessages {
     RECHARGE_INEXISTENT_ACCOUNT("error.recharge.inexistent_account"),
     RECHARGE_CHECK_DATA("error.recharge.check_data"),
     RECHARGE_INSUFFICIENT_BALANCE("error.recharge.insufficient_balance"),
-    ACCOUNT_BLOCKED("error.account_blocked");
+    ACCOUNT_BLOCKED("error.account_blocked"),
+    INVALID_COUPON("error.code_discount_incorrect");
 
     ErrorMessages(String errorCode) {
         this.errorCode = errorCode;

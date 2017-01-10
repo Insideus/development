@@ -1,7 +1,6 @@
 package com.davivienda.billetera.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -116,12 +115,12 @@ public class OrderPaymentActivity extends BaseActivity implements OnNewUserSessi
     private void setCouponLayouts() {
         couponButton = findViewById(R.id.insert_discount_coupon);
         discountAmount = (TextView) findViewById(R.id.discount_amount);
-        setDiscountAmount(0);
+        setDiscountAmount(null, 0);
         acceptedCouponContainer = findViewById(R.id.accepted_coupon_container);
         findViewById(R.id.remove_code).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setDiscountAmount(0);
+                setDiscountAmount(null, 0);
                 acceptedCouponContainer.setVisibility(View.GONE);
                 couponButton.setVisibility(View.VISIBLE);
             }
@@ -139,14 +138,18 @@ public class OrderPaymentActivity extends BaseActivity implements OnNewUserSessi
         });
     }
 
-    private void setDiscountAmount(double amount) {
+    private void setDiscountAmount(String code, double amount) {
+        setSeekBar();
+        cart.setDiscountCode(code);
+        cart.setCartDiscount(amount);
+        cart.calculateCartPrice();
         if(amount == 0){
             discountAmount.setText("$".concat(CurrencyUtils.getCurrencyForString(amount)));
         }else{
             discountAmount.setText("-$".concat(CurrencyUtils.getCurrencyForString(amount)));
         }
         TextView totalAmount = (TextView) findViewById(R.id.cart_price);
-        double total = cart.getCartPrice() - amount;
+        double total = cart.getCartPrice();
         total = total <= 0 ? 0 : total;
         totalAmount.setText("$".concat(CurrencyUtils.getCurrencyForString(total)));
     }
@@ -157,7 +160,7 @@ public class OrderPaymentActivity extends BaseActivity implements OnNewUserSessi
         if(requestCode == COUPON_INSERT_REQUEST && resultCode == RESULT_OK && data != null &&
                 !TextUtils.isEmpty(data.getStringExtra(ActionDialogActivity.INSERTED_COUPON))){
             String couponCode = data.getStringExtra(ActionDialogActivity.INSERTED_COUPON);
-            new CouponCheckTask(couponCode).execute();
+            new CouponCheckTask(this, couponCode).execute();
         }
     }
 
@@ -213,6 +216,7 @@ public class OrderPaymentActivity extends BaseActivity implements OnNewUserSessi
 
             }
         });
+        seekBar.setProgress(0);
         seekBar.setMax(100);
         seekBar.setProgress(cart.getCartDavipoints());
         updatePriceAndDavipoints(cart.getCartDavipoints());
@@ -606,6 +610,7 @@ public class OrderPaymentActivity extends BaseActivity implements OnNewUserSessi
         startActivity(intent);
     }
 
+    @Override
     public void processErrorAndContinue(ErrorMessages error, String additionalParam) {
         if(error != null) {
             switch(error) {
@@ -617,6 +622,12 @@ public class OrderPaymentActivity extends BaseActivity implements OnNewUserSessi
                     break;
                 case ORDER_REFUND_ERROR:
                     showOrderRefundErrorMessage();
+                    break;
+                case INVALID_COUPON:
+                    DialogUtil.toast(OrderPaymentActivity.this,
+                            getString(R.string.order_payment_coupon_invalid_error_title),
+                            getString(R.string.order_payment_coupon_invalid_error_subtitle),
+                            getString(R.string.order_payment_coupon_invalid_error_text));
                     break;
                 default:
                     super.processErrorAndContinue(error, additionalParam);
@@ -632,12 +643,12 @@ public class OrderPaymentActivity extends BaseActivity implements OnNewUserSessi
         updateDaviPoints();
     }
 
-    private class CouponCheckTask extends AsyncTask<Void, Void, Void>{
+    private class CouponCheckTask extends DaviPayTask<Double>{
 
-        private double discount = 100000;
         private final String couponCode;
 
-        CouponCheckTask(String couponCode) {
+        CouponCheckTask(BaseActivity act, String couponCode) {
+            super(act);
             this.couponCode = couponCode;
         }
 
@@ -648,30 +659,30 @@ public class OrderPaymentActivity extends BaseActivity implements OnNewUserSessi
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Double doInBackground(Void... voids) {
+            Double discountAmount = null;
             try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
+                cart.setDiscountCode(couponCode);
+                discountAmount = Service.applyDiscount(Session.getCurrentSession(getApplicationContext()).getSid(), cart);
+            } catch (ServiceException e) {
                 e.printStackTrace();
+                errorCode = e.getErrorCode();
             }
-            return null;
+            return discountAmount;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(Double discount) {
+            super.onPostExecute(discount);
             hideLoading();
-            if(discount != -1) {
+            if(!processedError) {
                 ((TextView) findViewById(R.id.code)).setText(couponCode);
                 acceptedCouponContainer.setVisibility(View.VISIBLE);
                 couponButton.setVisibility(View.GONE);
-                setDiscountAmount(discount);
-            }else{
-                setDiscountAmount(0);
-                DialogUtil.toast(OrderPaymentActivity.this,
-                        getString(R.string.generic_service_error_title),
-                        "",
-                        getString(R.string.order_payment_coupon_invalid_error));
+                setDiscountAmount(couponCode, discount);
+            } else {
+                cart.setDiscountCode(null);
+                setDiscountAmount(null, 0);
             }
         }
     }

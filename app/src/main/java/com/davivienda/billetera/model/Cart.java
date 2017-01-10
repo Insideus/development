@@ -30,6 +30,8 @@ public class Cart implements Parcelable {
     private String receiptNumber;
     private String cartType;
     private String ottTransaccionId;
+    private String discountCode;
+    private Double cartDiscount;
 
     public Store getStore() {
         return store;
@@ -135,12 +137,31 @@ public class Cart implements Parcelable {
         this.ottTransaccionId = ottTransaccionId;
     }
 
+    public String getDiscountCode() {
+        return discountCode;
+    }
+
+    public void setDiscountCode(String discountCode) {
+        this.discountCode = discountCode;
+    }
+
+    public Double getCartDiscount() {
+        return cartDiscount;
+    }
+
+    public void setCartDiscount(Double cartDiscount) {
+        this.cartDiscount = cartDiscount;
+    }
+
     public void calculateCartPrice() {
         Double price = 0d;
         for(StoreProduct product : getProducts()) {
             price += product.getSelectedProductPrice();
         }
-        this.cartPrice = price;
+        if(cartDiscount == null) {
+            cartDiscount = 0d;
+        }
+        this.cartPrice = price - cartDiscount;
     }
 
     public Cart() {
@@ -165,6 +186,8 @@ public class Cart implements Parcelable {
         dest.writeString(this.receiptNumber);
         dest.writeString(this.cartType);
         dest.writeString(this.ottTransaccionId);
+        dest.writeString(this.discountCode);
+        dest.writeValue(this.cartDiscount);
     }
 
     protected Cart(Parcel in) {
@@ -180,6 +203,8 @@ public class Cart implements Parcelable {
         this.receiptNumber = in.readString();
         this.cartType = in.readString();
         this.ottTransaccionId = in.readString();
+        this.discountCode = in.readString();
+        this.cartDiscount = (Double) in.readValue(Double.class.getClassLoader());
     }
 
     public static final Creator<Cart> CREATOR = new Creator<Cart>() {
@@ -194,11 +219,8 @@ public class Cart implements Parcelable {
         }
     };
 
-    public List<Pair<String, String>> toServiceParams() {
-        List<Pair<String, String>> params = new ArrayList<>();
-        Pair<String, String> storeIdParam = new Pair("store_id", String.valueOf(store.getId()));
-        params.add(storeIdParam);
-
+    public List<Pair<String, String>> toPayServiceParams() {
+        List<Pair<String, String>> params = toServiceParams();
         Pair<String, String> amountParam;
         if(cartDavipoints > 0) {
             int davipointsEquivalence = SharedPreferencesUtils.getPointsEquivalence();
@@ -208,13 +230,21 @@ public class Cart implements Parcelable {
             amountParam = new Pair("amount", CurrencyUtils.getCurrencyForStringWithDecimal(getCartPrice()));
         }
         params.add(amountParam);
-
         Pair<String, String> davipointsParam = new Pair("davipoints", String.valueOf(cartDavipoints));
         params.add(davipointsParam);
         Pair<String, String> installmentsParam = new Pair("installments", String.valueOf(selectedInstallment));
         params.add(installmentsParam);
         Pair<String, String> cardNumberParam = new Pair("last_digits", selectedCard.getLastDigits());
         params.add(cardNumberParam);
+        return params;
+    }
+
+    public List<Pair<String, String>> toServiceParams() {
+        List<Pair<String, String>> params = new ArrayList<>();
+        Pair<String, String> storeIdParam = new Pair("store_id", String.valueOf(store.getId()));
+        params.add(storeIdParam);
+        Pair<String, String> discountParam = new Pair("code_discount", discountCode);
+        params.add(discountParam);
         JSONArray productsJson = new JSONArray();
         for(StoreProduct p : products) {
             JSONObject productJson = p.toCartJson();
